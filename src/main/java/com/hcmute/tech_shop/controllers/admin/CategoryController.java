@@ -61,7 +61,9 @@ public class CategoryController {
     }
 
     @PostMapping("/insert")
-    public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("category") CategoryDTO categoryDTO, BindingResult bindingResult) {
+    public ModelAndView saveOrUpdate(ModelMap model,
+                                     @Valid @ModelAttribute("category") CategoryDTO categoryDTO,
+                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("admin/category/add");
         }
@@ -72,7 +74,7 @@ public class CategoryController {
         // Save category to database
         iCategoryService.save(category);
 
-        if (categoryModel.getIsEdit() == true){
+        if (categoryDTO.getIsEdit() == true){
             model.addAttribute("message", "Category updated successfully");
         }
         else {
