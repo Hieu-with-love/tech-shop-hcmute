@@ -1,7 +1,6 @@
-<head th:fragment="head">
+<div th:fragment="head">
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>eTrade || Home-03</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="" />
     <meta
@@ -12,7 +11,7 @@
     <link
             rel="shortcut icon"
             type="image/x-icon"
-            href="assets/images/favicon.png"
+            th:href="@{/user/assets/images/favicon.png}"
     />
 
     <!-- CSS
@@ -47,4 +46,4 @@
     />
     <link rel="stylesheet" th:href="@{/user/assets/css/vendor/base.css}" />
     <link rel="stylesheet" th:href="@{/user/assets/css/style.min.css}" />
-</head>
+</div>

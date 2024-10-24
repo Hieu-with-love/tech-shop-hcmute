@@ -1,8 +1,10 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
-
+<head>
+    <title>Tech Shop || Sign in</title>
+    <div th:insert="~{user/fragments/head :: head}"></div>
+</head>
 <!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
-<div th:replace="~{user/fragments/head::head}"></div>
 
 
 <body>
@@ -58,7 +60,7 @@
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->
-    <div th:replace="/user/fragments/script::script"></div>
+    <div th:replace="~{/user/fragments/script::script}"></div>
 
 </body>
 
