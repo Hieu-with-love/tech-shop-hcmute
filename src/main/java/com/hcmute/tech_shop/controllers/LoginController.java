@@ -1,12 +1,14 @@
 package com.hcmute.tech_shop.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController("/users")
 public class LoginController {
-    @GetMapping("login")
-    public String login(){
-        return "login";
+    @GetMapping("log-in")
+    public ResponseEntity<?> login(){
+        return ResponseEntity.ok().build();
     }
 }

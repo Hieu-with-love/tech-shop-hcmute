@@ -39,6 +39,6 @@ public class User extends TrackingDate{
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Cart cart;
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
 }
