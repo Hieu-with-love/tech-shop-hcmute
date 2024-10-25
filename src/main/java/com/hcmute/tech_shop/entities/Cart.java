@@ -23,9 +23,8 @@ public class Cart {
     @Column(name = "total_price", nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT 0")
     private BigDecimal totalPrice;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @OneToMany(mappedBy = "cart")
     private List<CartDetail> cartDetails;
