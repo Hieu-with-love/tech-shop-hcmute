@@ -19,11 +19,9 @@ public class ProductController {
     IProductService productService;
 
     @GetMapping("") // localhost:8080/admin/products?page=1&limit=10
-    public String index(Model model,
-                        @RequestParam("page") Optional<Integer> page,
-                        @RequestParam("limit") Optional<Integer> limit) {
-        List<Product> products = productService.findAll();
-        model.addAttribute("products", products);
-        return "admin/products/index";
+    public String index(Model model) {
+//        List<Product> products = productService.findAll();
+//        model.addAttribute("products", products);
+        return "admin/products/productlist";
     }
 }
