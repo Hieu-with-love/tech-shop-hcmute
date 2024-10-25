@@ -1,7 +1,13 @@
 package com.hcmute.tech_shop.controllers.admin;
 
+import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
+import com.hcmute.tech_shop.services.classes.CategoryService;
+import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,19 +17,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/categories")
 public class CategoryController {
-//    @Autowired
-//    ICategoryService iCategoryService;
-//
-//    @GetMapping("") // localhost:8080/admin/categories?page=1&limit=10
-//    public String index(Model model, @RequestParam("page") int page, @RequestParam("limit") int limit) {
-//        List<Category> categories = iCategoryService.findAll();
-//        model.addAttribute("categories", categories);
-//        return "admin/categories/index";
-//    }
+
+    @Autowired
+    ICategoryService categoryService;
+
+    @GetMapping("")
+    public String index(Model model) {
+        List<CategoryDTO> categoryDTOList = categoryService.findAll();
+        model.addAttribute("categories", categoryDTOList);
+        return "admin/categories/list-category";
+    }
+
 //
 //    @GetMapping("/add")
 //    public String add(ModelMap model) {
