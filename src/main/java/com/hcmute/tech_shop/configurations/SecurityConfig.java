@@ -20,34 +20,34 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect"};
-
-    @Value("${jwt.signedKey}")
-    @NonFinal
-    private String signedKey;
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .anyRequest().authenticated());
-
-        http.oauth2ResourceServer(oauth2 ->
-            oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
-        );
-
-        http.csrf(AbstractHttpConfigurer::disable);
-
-        return http.build();
-    }
-
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKetSpec = new SecretKeySpec(signedKey.getBytes(), "HS512");
-        return NimbusJwtDecoder
-                .withSecretKey(secretKetSpec)
-                .macAlgorithm(MacAlgorithm.HS512)
-                .build();
-    }
+//    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect"};
+//
+//    @Value("${jwt.signedKey}")
+//    @NonFinal
+//    private String signedKey;
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests(request ->
+//                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+//                        .anyRequest().authenticated());
+//
+//        http.oauth2ResourceServer(oauth2 ->
+//            oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
+//        );
+//
+//        http.csrf(AbstractHttpConfigurer::disable);
+//
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public JwtDecoder jwtDecoder() {
+//        SecretKeySpec secretKetSpec = new SecretKeySpec(signedKey.getBytes(), "HS512");
+//        return NimbusJwtDecoder
+//                .withSecretKey(secretKetSpec)
+//                .macAlgorithm(MacAlgorithm.HS512)
+//                .build();
+//    }
 
 }
