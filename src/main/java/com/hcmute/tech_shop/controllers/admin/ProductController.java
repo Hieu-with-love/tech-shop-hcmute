@@ -20,8 +20,13 @@ public class ProductController {
 
     @GetMapping("") // localhost:8080/admin/products?page=1&limit=10
     public String index(Model model) {
-//        List<Product> products = productService.findAll();
-//        model.addAttribute("products", products);
+        List<Product> products = productService.findAll();
+        model.addAttribute("products", products);
         return "admin/products/productlist";
+    }
+
+    @GetMapping("/add")
+    public String add(Model model) {
+        return "admin/products/add";
     }
 }
