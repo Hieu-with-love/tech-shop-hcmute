@@ -2,38 +2,38 @@ package com.hcmute.tech_shop.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.tech_shop.entities.Cart;
-import com.hcmute.tech_shop.entities.Role;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDTO {
     @NotNull(message = "Email is required")
-    private String email;
+    String email;
 
     @NotNull(message = "Password is required")
-    private String password;
+    String password;
 
     @JsonProperty("phone_number")
-    private String phoneNumber;
+    String phoneNumber;
 
     @JsonProperty("firstname")
-    private String firstName;
+    String firstName;
 
     @JsonProperty("lastname")
-    private String lastName;
+    String lastName;
 
-    private boolean active;
+    boolean active;
 
     @NotNull(message = "Role ID is foreign key, not null")
     @JsonProperty("role_id")
-    private Long roleId;
+    Set<String> roles;
 
 }
