@@ -1,14 +1,31 @@
-package com.hcmute.tech_shop.repositories;
+package com.hcmute.tech_shop.services.interfaces;
 
+import com.hcmute.tech_shop.dtos.requests.ProductDTO;
 import com.hcmute.tech_shop.entities.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface IProductService{
+    Product createProduct(ProductDTO productDTO) throws IOException;
+
+    // has completed yet
+    boolean isValidImageSuffix(String img);
+
+    String storeFile(MultipartFile file) throws IOException;
+
+    boolean isImage(MultipartFile file);
+
+    Product updateProduct(Long productId, ProductDTO productDTO) throws IOException;
+
+    void deleteProduct(Long productId);
+
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
     List<Product> findByName(String name);
 
@@ -47,4 +64,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.stockQuantity = ?1")
     List<Product> findByStockQuantity(int stockQuantity);
+
+    List<Product> findAll();
+
+    <S extends Product> S save(S entity);
+
+    Optional<Product> findById(Long aLong);
+
+    boolean existsById(Long aLong);
+
+    long count();
+
+    void deleteById(Long aLong);
+
+    List<Product> findAll(Sort sort);
+
+    Page<Product> findAll(Pageable pageable);
 }

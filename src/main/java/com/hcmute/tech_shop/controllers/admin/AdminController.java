@@ -9,4 +9,14 @@ public class AdminController {
     public String dashboard() {
         return "admin/index";
     }
+
+    @GetMapping(value = "/userlist")
+    public String userlist() {
+        return "admin/userlists";
+    }
+
+    @GetMapping(value = "/add-user")
+    public String addUser() {
+        return "admin/newuser";
+    }
 }
