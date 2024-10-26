@@ -14,4 +14,7 @@ public class CategoryConvert {
     public CategoryDTO toDTO(Category category) {
         return modelMapper.map(category, CategoryDTO.class);
     }
+    public Category toEntity(CategoryDTO categoryDTO) {
+        return modelMapper.map(categoryDTO, Category.class);
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,4 +34,56 @@ public class CategoryService implements ICategoryService {
         }
         return categoryDTOList;
     }
+
+    @Override
+    public Optional<CategoryDTO> findById(Long id) {
+        Category category = categoryRepository.findById(id).orElse(null);
+        return Optional.ofNullable(categoryConvert.toDTO(category));
+    }
+
+    @Override
+    public boolean existsByCategoryName(String categoryName) {
+        return categoryRepository.findCategoriesByName(categoryName) != null;
+    }
+
+    @Override
+    public boolean addCategory(CategoryDTO categoryDTO) {
+        try {
+            if(this.existsByCategoryName(categoryDTO.getName())) {
+                return false;
+            }
+            Category category = categoryConvert.toEntity(categoryDTO);
+            categoryRepository.save(category);
+            return true;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateCategory(CategoryDTO categoryDTO) {
+        try {
+            Category category = categoryConvert.toEntity(categoryDTO);
+            categoryRepository.save(category);
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteCategory(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

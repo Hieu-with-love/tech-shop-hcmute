@@ -19,4 +19,6 @@ public class CategoryDTO {
 
     @NotNull(message = "Category name is required")
     private String name;
+
+    private String description;
 }

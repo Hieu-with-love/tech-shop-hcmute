@@ -44,7 +44,7 @@
                     <h6>View/Search product Category</h6>
                 </div>
                 <div class="page-btn">
-                    <a href="addcategory.html" class="btn btn-added">
+                    <a th:href="@{/admin/categories/add-category}" class="btn btn-added">
                         <img th:src="@{/admin/assets/img/icons/plus.svg}" class="me-1" alt="img">Add Category
                     </a>
                 </div>
@@ -151,10 +151,11 @@
                                 </td>
                                 <td th:text="${category.name}"></td>
                                 <td>
-                                    <a class="me-3" href="editcategory.html">
+                                    <a class="me-3" th:href="@{/admin/categories/edit-category/{id}(id=${category.id})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
-                                    <a class="me-3 confirm-text" href="javascript:void(0);">
+<!--                                    -->
+                                    <a class="me-3 confirm-text" th:href="@{/admin/categories/delete-category/{id}(id=${category.id})}" >
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>
