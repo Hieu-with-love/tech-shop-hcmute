@@ -175,7 +175,16 @@
                                 <td th:text="${product.getPrice()}"></td>
                                 <td th:text="${product.getStockQuantity()}"></td>
                                 <td>
-                                    <a class="me-3" th:href="@{/admin/products/detail(id=${product.getId()})}">
+                                    <a th:attr="hidden=${product.getCategory().getName() == 'Computer' ? null : 'hidden'}"
+                                       class="me-3" th:href="@{/admin/products/computerDetail(id=${product.getId()})}">
+                                        <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
+                                    </a>
+                                    <a th:attr="hidden=${product.getCategory().getName() == 'Phone' ? null : 'hidden'}"
+                                       class="me-3" th:href="@{/admin/products/phoneDetail(id=${product.getId()})}">
+                                        <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
+                                    </a>
+                                    <a th:attr="hidden=${product.getCategory().getName() == 'Accessory' ? null : 'hidden'}"
+                                       class="me-3" th:href="@{/admin/products/accessoryDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
                                     <a class="me-3" th:href="@{/admin/products/edit(id=${product.getId()})}">

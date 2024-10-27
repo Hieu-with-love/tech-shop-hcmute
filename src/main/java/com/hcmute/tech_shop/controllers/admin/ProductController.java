@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,6 +24,27 @@ public class ProductController {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
         return "admin/products/productlist";
+    }
+
+    @GetMapping("/computerDetail")
+    public String computerDetail(Model model, @RequestParam Long id) {
+        Optional<Product> product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "admin/products/computerDetail";
+    }
+
+    @GetMapping("/phoneDetail")
+    public String phoneDetail(Model model, @RequestParam Long id) {
+        Optional<Product> product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "admin/products/phoneDetail";
+    }
+
+    @GetMapping("/accessoryDetail")
+    public String accessoryDetail(Model model, @RequestParam Long id) {
+        Optional<Product> product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "admin/products/accessoryDetail";
     }
 
     @GetMapping("/add")
