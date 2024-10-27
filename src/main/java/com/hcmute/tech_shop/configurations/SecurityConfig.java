@@ -23,9 +23,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
 
     private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/token", "/api/auth/introspect", "/api/auth/log-in",
-            "/register"
+            "/api/users/register"
     };
-    private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/user/home"};
+    private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home"};
 
     @Value("${jwt.signedKey}")
     @NonFinal
@@ -39,7 +39,14 @@ public class SecurityConfig {
                     .requestMatchers("/user/assets/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/users").hasAuthority("SCOPE_ADMIN")
                     .anyRequest().authenticated()
-        );
+            )
+                .formLogin(form ->
+                    form.loginPage("/login").permitAll()
+                )
+                .logout(logout ->
+                    logout.logoutUrl("/logout").permitAll()
+                )
+        ;
 
         // you can custom SCOPE_ADMIN -> ROLE_ADMIN
         http.oauth2ResourceServer(oauth2 ->

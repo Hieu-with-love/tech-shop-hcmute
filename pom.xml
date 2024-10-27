@@ -99,8 +99,6 @@
 			<artifactId>webjars-locator</artifactId>
 			<version>0.52</version>
 		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>

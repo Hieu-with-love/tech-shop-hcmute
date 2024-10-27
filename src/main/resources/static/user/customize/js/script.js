@@ -35,3 +35,46 @@ $(document).read(function(){
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const registerForm = document.getElementById("registerForm");
+
+    // Bắt sự kiện submit
+    registerForm.addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn hành vi submit mặc định
+        registerUser(); // Gọi hàm xử lý đăng ký qua AJAX
+    });
+});
+function registerUser() {
+    let user = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        confirmPassword: document.getElementById('confirmPassword').value,
+        phoneNumber: document.getElementById('phoneNumber').value,
+        firstName: document.getElementById('firstname').value,
+        lastName: document.getElementById('lastname').value,
+        gender: document.querySelector('input[name="gender"]:checked').value,
+        dayOfBirth: document.getElementById('dob').value
+    };
+
+    fetch("/api/users/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (response.ok) {
+                alert(data); // Register successfully
+            }else {
+                let errors = "";
+                for (const [key, value] of Object.entries(data)){
+                    errors += `${key}: ${value}\n`;
+                }
+                alert(errors)
+            }
+        })
+        .catch(error => console.error("Error: ", error))
+}
