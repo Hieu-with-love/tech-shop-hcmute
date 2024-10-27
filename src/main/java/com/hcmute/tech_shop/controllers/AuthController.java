@@ -1,12 +1,12 @@
 package com.hcmute.tech_shop.controllers;
 
-import com.hcmute.tech_shop.dtos.requests.AuthenticationRequest;
+import com.hcmute.tech_shop.dtos.requests.AuthRequest;
 import com.hcmute.tech_shop.dtos.requests.IntrospectRequest;
-import com.hcmute.tech_shop.dtos.responses.AuthenticationResponse;
+import com.hcmute.tech_shop.dtos.responses.AuthResponse;
 import com.hcmute.tech_shop.dtos.responses.IntrospectResponse;
 import com.hcmute.tech_shop.dtos.responses.UserResponse;
 import com.hcmute.tech_shop.entities.User;
-import com.hcmute.tech_shop.services.classes.AuthenticationService;
+import com.hcmute.tech_shop.services.classes.AuthServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -27,12 +27,12 @@ import java.util.List;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
-    AuthenticationService authenticationService;
+    AuthServiceImpl authenticationService;
     UserService userService;
 
     @PostMapping("/log-in")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        AuthenticationResponse result = authenticationService.authenticate(request);
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+        AuthResponse result = authenticationService.authenticate(request);
         return ResponseEntity.ok(result);
     }
 
