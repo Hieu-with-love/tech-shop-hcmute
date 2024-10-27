@@ -1,14 +1,15 @@
 package com.hcmute.tech_shop.services.classes;
 
-import com.hcmute.tech_shop.dtos.requests.AuthenticationRequest;
+import com.hcmute.tech_shop.dtos.requests.AuthRequest;
 import com.hcmute.tech_shop.dtos.requests.IntrospectRequest;
-import com.hcmute.tech_shop.dtos.responses.AuthenticationResponse;
+import com.hcmute.tech_shop.dtos.responses.AuthResponse;
 import com.hcmute.tech_shop.dtos.responses.IntrospectResponse;
+import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.repositories.UserRepository;
+import com.hcmute.tech_shop.services.interfaces.AuthService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
-import com.nimbusds.jwt.JWTClaimNames;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.AccessLevel;
@@ -20,16 +21,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationService {
+public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
 
     @NonFinal
@@ -51,7 +54,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthResponse authenticate(AuthRequest request) {
         var user = userRepository.findByEmail(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(request.getUsername()));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
@@ -59,23 +62,33 @@ public class AuthenticationService {
         if (!authenticated) {
             throw new UsernameNotFoundException("Not found" + request.getUsername());
         }
-        var token = generateToken(request.getUsername());
-        return AuthenticationResponse.builder()
+        var token = generateToken(user);
+        return AuthResponse.builder()
                 .authenticated(authenticated)
                 .token(token)
                 .build();
     }
 
-    private String generateToken(String username) {
+    private String buildScope(User user){
+        // roles spare by space
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(user.getRoles())){
+            user.getRoles().forEach(stringJoiner::add);
+        }
+        return stringJoiner.toString();
+    }
+
+    private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(user.getEmail())
                 .issuer("devzeus.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
+                .claim("scope", buildScope(user))
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
