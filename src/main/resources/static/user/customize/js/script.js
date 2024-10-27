@@ -20,6 +20,23 @@
 // });
 //
 
+// Get user credential details
+$(document).ready(function() {
+    $.ajax({
+        url: '/api/auth/user/details',
+        type: 'GET',
+        headers: { "Authorization": "Bearer " + localStorage.getItem('authToken') },
+        success: function(user) {
+            // Hiển thị thông tin người dùng trong form
+            $('#username').text(user.email);
+            $('#password').text(user.firstName);
+        },
+        error: function() {
+            $('#message').text('Không thể tải thông tin người dùng.');
+        }
+    });
+});
+
 $(document).read(function(){
     $.ajax({
         url: '/api/auth/user/details',

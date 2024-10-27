@@ -3,16 +3,15 @@ package com.hcmute.tech_shop.controllers;
 import com.hcmute.tech_shop.dtos.requests.UserDTO;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @RestController
@@ -43,5 +42,10 @@ public class UserRestController {
         // save user when pass error
         User user = userService.createUser(userDTO);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/log-out")
+    public ResponseEntity<?> logout() {
+        return ResponseEntity.ok("Logout successfully");
     }
 }

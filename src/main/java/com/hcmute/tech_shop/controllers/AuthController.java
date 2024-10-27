@@ -9,6 +9,7 @@ import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.classes.AuthServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +32,9 @@ public class AuthController {
     UserService userService;
 
     @PostMapping("/log-in")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> authenticate(
+            @RequestBody AuthRequest request
+    ) {
         AuthResponse result = authenticationService.authenticate(request);
         return ResponseEntity.ok(result);
     }
@@ -69,7 +72,7 @@ public class AuthController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("log-in")
+    @GetMapping("/log-in")
     public ResponseEntity<?> login(){
         return ResponseEntity.ok().build();
     }
