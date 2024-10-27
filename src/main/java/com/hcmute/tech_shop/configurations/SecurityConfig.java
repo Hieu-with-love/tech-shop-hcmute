@@ -22,11 +22,10 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect"};
-    private final String[] PUBLIC_POST_ENDPOINTS = { "/auth/token", "/auth/introspect", "/auth/log-in",
-            "/register"
+    private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/token", "/api/auth/introspect", "/api/auth/log-in",
+            "/api/users/register"
     };
-    private final String[] PUBLIC_GET_ENDPOINTS = {"/users",};
+    private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home"};
 
     @Value("${jwt.signedKey}")
     @NonFinal
@@ -37,9 +36,17 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request ->
             request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                     .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
+                    .requestMatchers("/user/assets/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/users").hasAuthority("SCOPE_ADMIN")
                     .anyRequest().authenticated()
-        );
+            )
+                .formLogin(form ->
+                    form.loginPage("/login").permitAll()
+                )
+                .logout(logout ->
+                    logout.logoutUrl("/logout").permitAll()
+                )
+        ;
 
         // you can custom SCOPE_ADMIN -> ROLE_ADMIN
         http.oauth2ResourceServer(oauth2 ->
@@ -47,6 +54,11 @@ public class SecurityConfig {
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
+
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests((request) -> {
+//                    request.anyRequest().permitAll(); // Cho phép tất cả các request
+//                });
 
         return http.build();
     }

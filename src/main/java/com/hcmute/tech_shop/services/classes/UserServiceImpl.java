@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(userDTO.getPhoneNumber())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
+                .gender(userDTO.getGender())
+                .dateOfBirth(userDTO.getDob())
                 .active(true)
                 .build();
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -71,5 +73,10 @@ public class UserServiceImpl implements UserService {
             existingUser.setActive(false);
             userRepository.save(existingUser);
         }
+    }
+
+    @Override
+    public boolean existsUser(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
