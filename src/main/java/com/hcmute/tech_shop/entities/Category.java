@@ -19,6 +19,9 @@ public class Category {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(length = 500)
+    private String description;
+
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
