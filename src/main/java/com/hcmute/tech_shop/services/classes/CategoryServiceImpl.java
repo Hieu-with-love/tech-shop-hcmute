@@ -6,18 +6,14 @@ import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class CategoryService implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
@@ -43,7 +39,9 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public boolean existsByCategoryName(String categoryName) {
-        return categoryRepository.findCategoriesByName(categoryName) != null;
+        if(categoryRepository.findCategoriesByName(categoryName).isEmpty())
+            return false;
+        return true;
     }
 
     @Override

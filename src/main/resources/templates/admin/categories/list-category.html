@@ -24,6 +24,7 @@
     <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/all.min.css}">
 
     <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
+
 </head>
 <body>
 <div id="global-loader">
@@ -150,12 +151,12 @@
                                     </label>
                                 </td>
                                 <td th:text="${category.name}"></td>
+                                <input type="hidden" id="categoryId" th:value="${category.id}">
                                 <td>
                                     <a class="me-3" th:href="@{/admin/categories/edit-category/{id}(id=${category.id})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
-<!--                                    -->
-                                    <a class="me-3 confirm-text" th:href="@{/admin/categories/delete-category/{id}(id=${category.id})}" >
+                                    <a class="me-3 confirm-text-delete">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>
@@ -172,6 +173,7 @@
 </div>
 
 
+
 <script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
 
 <script th:src="@{/admin/assets/js/feather.min.js}"></script>
@@ -186,7 +188,49 @@
 <script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
 
 <script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
-<script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $(".confirm-text-delete").on("click", function () {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false
+            }).then(function (t) {
+                if(t.value){
+                    var categoryId = $("#categoryId").val();
+                    $.ajax({
+                        url: `/admin/categories/delete-category/${categoryId}`,
+                        method: "GET",
+                        data: {categoryId: categoryId},
+                        success: function () {
+                            Swal.fire({
+                                type: "success",
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                confirmButtonClass: "btn btn-success"
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error!",
+                                text: `Failed to delete the category.`,
+                                confirmButtonClass: "btn btn-danger"
+                            });
+                        }
+                    });
+                }
+            });
+        })
+    });
+</script>
 
 <script th:src="@{/admin/assets/js/script.js}"></script>
 </body>
