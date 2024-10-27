@@ -4,16 +4,16 @@ import com.hcmute.tech_shop.dtos.requests.AuthenticationRequest;
 import com.hcmute.tech_shop.dtos.requests.IntrospectRequest;
 import com.hcmute.tech_shop.dtos.responses.AuthenticationResponse;
 import com.hcmute.tech_shop.dtos.responses.IntrospectResponse;
+import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.classes.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,5 +32,27 @@ public class AuthenticationController {
             throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getUsers() {
+        User user1 = User.builder()
+                .id(1L)
+                .email("user1@gmail.com")
+                .firstName("John")
+                .lastName("Doe")
+                .active(true)
+                .build();
+        User user2 = User.builder()
+                .id(1L)
+                .email("user1@gmail.com")
+                .firstName("Hieu")
+                .lastName("Tran Trung")
+                .active(true)
+                .build();
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        return ResponseEntity.ok(users);
     }
 }
