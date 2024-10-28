@@ -2,6 +2,7 @@ package com.hcmute.tech_shop.controllers.admin;
 
 import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping("/insert")
-    public String addCategory(@ModelAttribute("category") CategoryDTO categoryDTO, BindingResult bindingResult) {
+    public String addCategory(@Valid @ModelAttribute("category") CategoryDTO categoryDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/categories/list-category";
         }
