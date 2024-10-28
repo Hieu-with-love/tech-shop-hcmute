@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserDTO;
+import com.hcmute.tech_shop.dtos.responses.AuthResponse;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -35,13 +36,21 @@ public class UserRestController {
             return ResponseEntity.badRequest().body(errors);
         }
         // check have already username in use ?
-        if (userService.existsUser(userDTO.getEmail())){
-            errors.put("email", "Email address already in use");
+        if (userService.existsUser(userDTO.getUsername())){
+            errors.put("username", "Username already in use");
             return ResponseEntity.badRequest().body(errors);
         }
         // save user when pass error
         User user = userService.createUser(userDTO);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyAccount(@RequestParam("token") String token){
+        boolean isSuccess = userService.verifyToken(token);
+        return ResponseEntity.ok(AuthResponse.builder()
+                .authenticated(isSuccess)
+                .build());
     }
 
     @GetMapping("/log-out")

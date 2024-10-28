@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/api/users/register"
     };
     private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home",
-        "/log-out"
+        "/log-out", "/api/users/verify"
     };
 
     @Value("${jwt.signedKey}")

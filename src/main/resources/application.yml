@@ -1,11 +1,13 @@
 # declare global variable
 SERVER_PORT: 8080
-EMAIL_HOST: smtp.gmail.com
+
 #port of smtp protocol
+EMAIL_HOST: smtp.gmail.com
 EMAIL_PORT: 587
 EMAIL_ID: hieu01bdvn@gmail.com
 EMAIL_PASSWORD: ocvqndmbczmueyks
 VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
+
 # server run with port 8080 - default
 server:
   port: ${SERVER_PORT}

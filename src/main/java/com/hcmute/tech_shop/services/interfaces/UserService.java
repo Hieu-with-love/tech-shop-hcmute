@@ -13,4 +13,5 @@ public interface UserService {
     User updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
     boolean existsUser(String email);
+    boolean verifyToken(String token);
 }
