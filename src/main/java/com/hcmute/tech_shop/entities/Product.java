@@ -27,8 +27,6 @@ public class Product {
     @Min(value = 1, message = "Price of product must be greater than 0")
     private BigDecimal price;
 
-    private String brand;
-
     private String cpu;
 
     private String ram;
@@ -62,6 +60,11 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    // a product must have brand_id, and load all Brand, and obligated foreign key
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
 
     @OneToMany(mappedBy = "product")
     private List<ProductImage> images;
