@@ -72,9 +72,4 @@ public class AuthController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/log-in")
-    public ResponseEntity<?> login(){
-        return ResponseEntity.ok().build();
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.configurations;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -25,7 +27,9 @@ public class SecurityConfig {
     private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/token", "/api/auth/introspect", "/api/auth/log-in",
             "/api/users/register"
     };
-    private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home"};
+    private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home",
+        "/log-out"
+    };
 
     @Value("${jwt.signedKey}")
     @NonFinal
@@ -44,10 +48,11 @@ public class SecurityConfig {
                     form.loginPage("/login").permitAll()
                 )
                 .logout(logout ->
-                    logout.logoutUrl("/logout").permitAll()
+                    logout.logoutUrl("/log-out")
+                            .logoutSuccessHandler(customLogout())
+                            .permitAll()
                 )
         ;
-
         // you can custom SCOPE_ADMIN -> ROLE_ADMIN
         http.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
@@ -55,12 +60,12 @@ public class SecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable);
 
-//        http.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests((request) -> {
-//                    request.anyRequest().permitAll(); // Cho phép tất cả các request
-//                });
-
         return http.build();
+    }
+
+    private LogoutSuccessHandler customLogout() {
+        // set status 200, instead redirect to login
+        return (req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Bean

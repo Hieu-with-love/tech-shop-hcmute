@@ -10,6 +10,12 @@ public class UserController {
     public String login() {
         return "user/sign-in";
     }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "redirect:/login";
+    }
+
     @GetMapping("/register")
     public String register(Model model) {
 

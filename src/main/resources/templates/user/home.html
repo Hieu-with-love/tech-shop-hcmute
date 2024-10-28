@@ -975,14 +975,50 @@
 
     if (token) {
       // Nếu token tồn tại, hiển thị Logout
+      authBtn.id = "logoutId"
       authBtn.href = '/log-out';  // Đường dẫn đăng xuất
       authBtn.innerText = 'Logout';
     } else {
       // Nếu token không tồn tại, hiển thị Login
-      authBtn.href = '/log-in';  // Đường dẫn đăng nhập
+      authBtn.id="loginId"
+      authBtn.href = '/login';  // Đường dẫn đăng nhập
       authBtn.innerText = 'Login';
     }
   });
+
+  function logout() {
+    $.ajax({
+      url: '/log-out',
+      type: 'GET',
+      success: function(response) {
+        // Xoá token khỏi localStorage
+        localStorage.removeItem('authToken');
+        alert(response); // Hiển thị thông báo từ server
+        window.location.href = "/login"; // Chuyển hướng đến trang đăng nhập nếu cần
+      },
+      error: function(error) {
+        console.error('Logout error:', error);
+        alert("Logout failed!");
+      }
+    });
+  }
+
+
+  $('#logoutId').on('click', function (event){
+    event.preventDefault();
+    $.ajax({
+      url: '/log-out',
+      headers: {'Authorization':'Bearer ' + localStorage.getItem('authToken')},
+      type: 'GET',
+      success: function (message){
+        localStorage.removeItem('authToken')
+        alert(message);
+      },
+      error: function (){
+        alert('Loi khong the dang xuat');
+      }
+    })
+  })
 
 </script>
   </body>
