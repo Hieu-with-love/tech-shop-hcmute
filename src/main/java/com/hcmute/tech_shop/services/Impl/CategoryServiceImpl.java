@@ -1,4 +1,4 @@
-package com.hcmute.tech_shop.services.classes;
+package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.convert.CategoryConvert;
 import com.hcmute.tech_shop.dtos.requests.CategoryDTO;

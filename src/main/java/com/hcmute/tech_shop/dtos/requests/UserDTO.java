@@ -17,6 +17,9 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDTO {
+    @NotNull(message = "Username is required")
+    String username;
+
     @NotNull(message = "Email is required")
     @Email(message = "Email should be valid")
     String email;

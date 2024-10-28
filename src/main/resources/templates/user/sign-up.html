@@ -36,6 +36,12 @@
                         <p class="b2 mb--55">Enter your detail below</p>
                         <form id="registerForm" class="singin-form">
                             <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="Enter username"
+                                >
+                            </div>
+                            <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="Enter email"
@@ -120,6 +126,7 @@
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
+                    username: $('#username').val(),
                     email: $('#email').val(),
                     password: $('#password').val(),
                     confirm_password: $('#confirmPassword').val(), // Corrected key

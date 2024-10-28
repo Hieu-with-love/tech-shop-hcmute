@@ -1,14 +1,12 @@
-package com.hcmute.tech_shop.services.classes;
+package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.UserDTO;
-import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.enums.Role;
 import com.hcmute.tech_shop.repositories.UserRepository;
 import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +23,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserDTO userDTO) {
         User user = User.builder()
+                .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .gender(userDTO.getGender())
                 .dateOfBirth(userDTO.getDob())
-                .active(true)
+                .isActive(false)
                 .build();
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
@@ -55,9 +54,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Not found User with email " + email));
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Not found User with username " + username));
     }
 
     @Override
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existsUser(String email) {
-        return userRepository.existsByEmail(email);
+    public boolean existsUser(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

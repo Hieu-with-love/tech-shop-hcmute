@@ -1,4 +1,4 @@
-package com.hcmute.tech_shop.services.classes;
+package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.AuthRequest;
 import com.hcmute.tech_shop.dtos.requests.IntrospectRequest;
@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public AuthResponse authenticate(AuthRequest request) {
-        var user = userRepository.findByEmail(request.getUsername())
+        var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(request.getUsername()));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());

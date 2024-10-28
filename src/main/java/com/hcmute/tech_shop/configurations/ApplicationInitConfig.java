@@ -25,13 +25,14 @@ public class ApplicationInitConfig {
         var roles = new HashSet<String>();
         roles.add(Role.ADMIN.name());
         return args -> {
-            if(userRepository.findByEmail("admindev@gmail.com").isEmpty()){
+            if(userRepository.findByUsername("admin").isEmpty()){
                 com.hcmute.tech_shop.entities.User user = User.builder()
-                        .email("admindev@gmail.com")
+                        .username("admin")
+                        .email("admin@gmail.com")
                         .password(passwordEncoder.encode("admin"))
                         .firstName("admin")
                         .lastName("tech system")
-                        .active(true)
+                        .isActive(true)
                         .roles(roles)
                         .build();
                 userRepository.save(user);
