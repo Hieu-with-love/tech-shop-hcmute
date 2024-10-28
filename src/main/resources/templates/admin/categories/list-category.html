@@ -215,6 +215,8 @@
                                 title: "Deleted!",
                                 text: "Your file has been deleted.",
                                 confirmButtonClass: "btn btn-success"
+                            }).then((result) => {
+                                window.location.reload();
                             });
                         },
                         error: function () {
@@ -223,7 +225,7 @@
                                 title: "Error!",
                                 text: `Failed to delete the category.`,
                                 confirmButtonClass: "btn btn-danger"
-                            });
+                            })
                         }
                     });
                 }
