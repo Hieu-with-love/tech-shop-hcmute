@@ -6,7 +6,7 @@ import com.hcmute.tech_shop.dtos.responses.AuthResponse;
 import com.hcmute.tech_shop.dtos.responses.IntrospectResponse;
 import com.hcmute.tech_shop.dtos.responses.UserResponse;
 import com.hcmute.tech_shop.entities.User;
-import com.hcmute.tech_shop.services.classes.AuthServiceImpl;
+import com.hcmute.tech_shop.services.Impl.AuthServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -31,7 +31,9 @@ public class AuthController {
     UserService userService;
 
     @PostMapping("/log-in")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> authenticate(
+            @RequestBody AuthRequest request
+    ) {
         AuthResponse result = authenticationService.authenticate(request);
         return ResponseEntity.ok(result);
     }
@@ -67,11 +69,6 @@ public class AuthController {
 
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("log-in")
-    public ResponseEntity<?> login(){
-        return ResponseEntity.ok().build();
     }
 
 }

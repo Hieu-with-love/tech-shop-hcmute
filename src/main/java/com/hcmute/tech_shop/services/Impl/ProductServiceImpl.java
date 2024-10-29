@@ -1,4 +1,4 @@
-package com.hcmute.tech_shop.services.classes;
+package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.ProductDTO;
 import com.hcmute.tech_shop.entities.Category;
@@ -44,7 +44,6 @@ public class ProductServiceImpl implements IProductService {
 
         Product product = Product.builder()
                 .battery(productDTO.getBattery())
-                .brand(productDTO.getBrand())
                 .cpu(productDTO.getCpu())
                 .description(productDTO.getDescription())
                 .frontCamera(productDTO.getFrontCamera())
@@ -177,12 +176,6 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> findByName(String name) {
         return productRepository.findByName(name);
-    }
-
-    @Query("SELECT p FROM Product p WHERE p.brand LIKE %?1%")
-    @Override
-    public List<Product> findByBrand(String brand) {
-        return productRepository.findByBrand(brand);
     }
 
     @Query("SELECT p FROM Product p WHERE p.cpu LIKE %?1%")

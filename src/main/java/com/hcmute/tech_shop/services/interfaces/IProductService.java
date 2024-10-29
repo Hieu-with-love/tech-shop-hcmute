@@ -29,9 +29,6 @@ public interface IProductService{
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
     List<Product> findByName(String name);
 
-    @Query("SELECT p FROM Product p WHERE p.brand LIKE %?1%")
-    List<Product> findByBrand(String brand);
-
     @Query("SELECT p FROM Product p WHERE p.cpu LIKE %?1%")
     List<Product> findByCpu(String cpu);
 

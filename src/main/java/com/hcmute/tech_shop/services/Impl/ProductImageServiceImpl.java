@@ -1,7 +1,6 @@
-package com.hcmute.tech_shop.services.classes;
+package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.ProductImageDTO;
-import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.ProductImage;
 import com.hcmute.tech_shop.repositories.ProductImageRepository;

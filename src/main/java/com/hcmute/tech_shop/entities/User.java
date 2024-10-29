@@ -21,7 +21,10 @@ public class User extends TrackingDate{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 100)
+    private String username;
+
+    @Column(unique = true ,nullable = false, length = 100)
     private String email;
 
     @Column(nullable = false, length = 255)
@@ -45,8 +48,8 @@ public class User extends TrackingDate{
     @ElementCollection(fetch = FetchType.EAGER)
     Set<String> roles;
 
-    @Column(nullable = false)
-    private boolean active;
+    @Column(name = "active",nullable = false)
+    private boolean isActive;
 
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;

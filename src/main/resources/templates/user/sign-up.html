@@ -1,10 +1,9 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
-
-<!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
-<div th:replace="~{user/fragments/head::head}"></div>
-
-
+<head>
+    <title>Tech Shop || Sign-up</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+</head>
 <body>
     <div class="axil-signin-area">
 
@@ -12,12 +11,12 @@
         <div class="signin-header">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <a href="index.html" class="site-logo"><img th:src="@{/user/assets/images/logo/logo.png}" alt="logo"></a>
+                    <a th:href="@{/login}" class="site-logo"><img th:src="@{/user/assets/images/logo/logo.png}" alt="logo"></a>
                 </div>
                 <div class="col-md-6">
                     <div class="singin-header-btn">
                         <p>Already a member?</p>
-                        <a href="sign-in.html" class="axil-btn btn-bg-secondary sign-up-btn">Sign In</a>
+                        <a th:href="@{/login}" class="axil-btn btn-bg-secondary sign-up-btn">Sign In</a>
                     </div>
                 </div>
             </div>
@@ -35,21 +34,73 @@
                     <div class="axil-signin-form">
                         <h3 class="title">I'm New Here</h3>
                         <p class="b2 mb--55">Enter your detail below</p>
-                        <form class="singin-form">
+                        <form id="registerForm" class="singin-form">
                             <div class="form-group">
-                                <label>User Name</label>
-                                <input type="text" class="form-control" name="username" value="anniemario">
+                                <label>Username</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="Enter username"
+                                >
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" name="email" value="annie@example.com">
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Enter email"
+                                >
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" class="form-control" name="password" value="123456789">
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Enter password"
+                                >
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="axil-btn btn-bg-primary submit-btn">Create Account</button>
+                                <label>Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword"
+                                       name="confirmPassword"
+                                       placeholder="Enter confirm password"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                    placeholder="Enter phone number"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" id="firstname" name="firstname"
+                                    placeholder="Enter first name"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                    placeholder="Enter last name"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <div class="gender-box">
+                                    <h3>Gender</h3>
+                                    <div class="gender-option">
+                                        <div class="gender">
+                                            <input type="radio" id="check-male" name="gender" value="Nam" checked/>
+                                            <label for="check-male">male</label>
+                                        </div>
+                                        <div class="gender">
+                                            <input type="radio" id="check-female" name="gender" value="Nữ"/>
+                                            <label for="check-female">Female</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Day of birth</label>
+                                <input type="date" class="form-control" id="dob" name="dob">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="axil-btn btn-bg-primary submit-btn">
+                                    Create Account
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -58,13 +109,50 @@
         </div>
     </div>
 
-    <!-- JS
-============================================ -->
-    <!-- Modernizer JS -->
-    <div th:replace="/user/fragments/script::script"></div>
+    <div th:insert="~{/user/fragments/script::script}"></div>
+    <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $('#registerForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Validate if password and confirm password match
+            if ($('#password').val() !== $('#confirmPassword').val()) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            $.ajax({
+                url: '/api/users/register',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    username: $('#username').val(),
+                    email: $('#email').val(),
+                    password: $('#password').val(),
+                    confirm_password: $('#confirmPassword').val(), // Corrected key
+                    phone_number: $('#phoneNumber').val(), // Corrected key
+                    firstname: $('#firstname').val(), // Corrected key
+                    lastname: $('#lastname').val(), // Corrected key
+                    gender: $('input[name="gender"]:checked').val(), // Get selected gender
+                    dob: $('#dob').val()
+                }),
+                success: function(response) {
+                    // Handle successful registration
+                    alert('Registration successful!');
+                    window.location.href = '/login'; // Corrected navigation
+                },
+                error: function(xhr) {
+                    let errors = xhr.responseJSON; // Corrected response fetching
+                    let errorMessage = "Registration failed:\n";
+                    // Display each error
+                    for (let key in errors) {
+                        errorMessage += `${key}: ${errors[key]}\n`;
+                    }
+                    alert(errorMessage); // Display errors to user
+                }
+            });
+        });
+    </script>
 
 </body>
-
-
-<!-- Mirrored from new.axilthemes.com/demo/template/etrade/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:30 GMT -->
 </html>
