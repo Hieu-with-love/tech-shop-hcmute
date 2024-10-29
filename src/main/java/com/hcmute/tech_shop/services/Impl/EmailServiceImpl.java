@@ -47,11 +47,13 @@ public class EmailServiceImpl implements EmailService {
         existingUser.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(existingUser);
         try{
+            String contentMail = "New your password is: " + newPassword
+                                + "\n\nThe support by [4 con ong team]";
             SimpleMailMessage message = new SimpleMailMessage();
             message.setSubject("Provide New Password");
             message.setFrom(fromEmail);
             message.setTo(existingUser.getEmail());
-            message.setText("New your password is: " + newPassword);
+            message.setText(contentMail);
             mailSender.send(message);
         }catch (Exception e){
             throw new RuntimeException("Has error occured while sending email to get password\n\n"
