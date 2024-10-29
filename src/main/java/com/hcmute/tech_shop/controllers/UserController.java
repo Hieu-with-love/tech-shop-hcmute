@@ -21,4 +21,9 @@ public class UserController {
 
         return "user/sign-up";
     }
+
+    @GetMapping("/forgot-password")
+    public String forgotPassword(Model model) {
+        return "user/forgot-password";
+    }
 }

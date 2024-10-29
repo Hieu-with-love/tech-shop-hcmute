@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.controllers;
 import com.hcmute.tech_shop.dtos.requests.UserDTO;
 import com.hcmute.tech_shop.dtos.responses.AuthResponse;
 import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.services.interfaces.EmailService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -21,6 +22,7 @@ import java.util.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRestController {
     UserService userService;
+    EmailService emailService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
@@ -36,7 +38,7 @@ public class UserRestController {
             return ResponseEntity.badRequest().body(errors);
         }
         // check have already username in use ?
-        if (userService.existsUser(userDTO.getUsername())){
+        if (userService.existsUsername(userDTO.getUsername())){
             errors.put("username", "Username already in use");
             return ResponseEntity.badRequest().body(errors);
         }
@@ -56,5 +58,19 @@ public class UserRestController {
     @GetMapping("/log-out")
     public ResponseEntity<?> logout() {
         return ResponseEntity.ok("Logout successfully");
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request){
+        String email = request.get("email");
+        if (!userService.existsEmail(email)){
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("msg", "Email không tồn tại trong hệ thống"));
+        }
+
+        emailService.sendEmailToReactivePassword(email);
+
+        return ResponseEntity.ok(
+                Collections.singletonMap("msg","New password has been issued. Go to your email to get."));
     }
 }

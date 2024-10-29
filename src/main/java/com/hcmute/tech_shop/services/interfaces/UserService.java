@@ -9,9 +9,11 @@ public interface UserService {
     List<User> getAllUsers();
     User getUser(Long id);
     User getUserByUsername(String username);
+    User getUserByEmail(String email);
     User createUser(UserDTO userDTO);
     User updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
-    boolean existsUser(String email);
+    boolean existsEmail(String email);
+    boolean existsUsername(String username);
     boolean verifyToken(String token);
 }

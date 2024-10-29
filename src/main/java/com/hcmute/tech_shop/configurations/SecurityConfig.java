@@ -24,11 +24,10 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/token", "/api/auth/introspect", "/api/auth/log-in",
-            "/api/users/register"
+    private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/log-in", "/api/users/**"
     };
     private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home",
-        "/log-out", "/api/users/verify"
+        "/log-out", "/forgot-password", "/api/users/**"
     };
 
     @Value("${jwt.signedKey}")

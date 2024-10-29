@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     CartService cartService;
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
-    AuthService authService;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
 
@@ -104,6 +103,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("Not found User with email " + email));
+    }
+
+    @Override
     public User updateUser(Long id, UserDTO userDTO) {
         // logic update user
         return null;
@@ -119,8 +124,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existsUser(String username) {
+    public boolean existsUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
 
