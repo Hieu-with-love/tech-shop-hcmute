@@ -151,7 +151,7 @@
                                     </label>
                                 </td>
                                 <td th:text="${category.name}"></td>
-                                <input type="hidden" id="categoryId" th:value="${category.id}">
+                                <input type="hidden" class="category-id" th:value="${category.id}">
                                 <td>
                                     <a class="me-3" th:href="@{/admin/categories/edit-category/{id}(id=${category.id})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
@@ -191,6 +191,7 @@
 <script>
     $(document).ready(function () {
         $(".confirm-text-delete").on("click", function () {
+            var categoryId = $(this).closest("tr").find(".category-id").val(); // Lấy giá trị categoryId từ hàng hiện tại
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -204,20 +205,27 @@
                 buttonsStyling: false
             }).then(function (t) {
                 if(t.value){
-                    var categoryId = $("#categoryId").val();
                     $.ajax({
                         url: `/admin/categories/delete-category/${categoryId}`,
                         method: "GET",
-                        data: {categoryId: categoryId},
-                        success: function () {
-                            Swal.fire({
-                                type: "success",
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                confirmButtonClass: "btn btn-success"
-                            }).then((result) => {
-                                window.location.reload();
-                            });
+                        success: function (response) {
+                            if (response.status === "success") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-success"
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-danger"
+                                });
+                            }
                         },
                         error: function () {
                             Swal.fire({
