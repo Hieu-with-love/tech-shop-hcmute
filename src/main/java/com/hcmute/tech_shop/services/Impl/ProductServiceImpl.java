@@ -8,6 +8,7 @@ import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -228,5 +234,17 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<ProductDTO> findByCategoryName(String categoryName) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        List<Product> products = productRepository.findByCategoryName(categoryName);
+        for (Product product : products) {
+            ProductDTO productDTO = new ProductDTO();
+            BeanUtils.copyProperties(product, productDTO);
+            productDTOList.add(productDTO);
+        }
+        return productDTOList;
     }
 }

@@ -69,4 +69,6 @@ public interface IProductService {
     List<Product> findAll(Sort sort);
 
     Page<Product> findAll(Pageable pageable);
+
+    List<ProductDTO> findByCategoryName(String categoryName);
 }
