@@ -1,28 +1,20 @@
 package com.hcmute.tech_shop.services.interfaces;
 
-import com.hcmute.tech_shop.dtos.requests.ProductRequest;
+import com.hcmute.tech_shop.dtos.requests.ProductDTO;
 import com.hcmute.tech_shop.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public interface IProductService{
-    Product createProduct(ProductRequest productRequest) throws IOException;
+public interface IProductService {
+    boolean createProduct(ProductDTO productDTO) throws IOException;
 
-    // has completed yet
-    boolean isValidImageSuffix(String img);
-
-    String storeFile(MultipartFile file) throws IOException;
-
-    boolean isImage(MultipartFile file);
-
-    Product updateProduct(Long productId, ProductRequest productRequest) throws IOException;
+    Product updateProduct(Long productId, ProductDTO productDTO) throws IOException;
 
     void deleteProduct(Long productId);
 
@@ -77,4 +69,6 @@ public interface IProductService{
     List<Product> findAll(Sort sort);
 
     Page<Product> findAll(Pageable pageable);
+
+    List<ProductDTO> findByCategoryName(String categoryName);
 }

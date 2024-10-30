@@ -44,4 +44,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.stockQuantity = ?1")
     List<Product> findByStockQuantity(int stockQuantity);
+
+    List<Product> findByCategoryName(String categoryName);
 }

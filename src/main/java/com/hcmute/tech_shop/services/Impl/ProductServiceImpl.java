@@ -1,27 +1,30 @@
 package com.hcmute.tech_shop.services.Impl;
 
-import com.hcmute.tech_shop.dtos.requests.ProductRequest;
+import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
+import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -29,6 +32,8 @@ public class ProductServiceImpl implements IProductService {
     ProductRepository productRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    BrandRepository brandRepository;
 
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
@@ -36,113 +41,70 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product createProduct(ProductRequest productRequest) throws IOException {
+    public boolean createProduct(ProductDTO productDTO) throws IOException {
+        try {
+            System.out.println(productDTO.getCategoryId());
+            Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
+            Category categoryExisting = category.get();
+            Brand brand = brandRepository.findById(productDTO.getBrandId()).get();
+            Product product = Product.builder()
+                    .name(productDTO.getName())
+                    .description(productDTO.getDescription())
+                    .price(productDTO.getPrice())
+                    .cpu(productDTO.getCpu())
+                    .ram(productDTO.getRam())
+                    .os(productDTO.getOs())
+                    .monitor(productDTO.getMonitor())
+                    .battery(productDTO.getBattery())
+                    .graphicCard(productDTO.getGraphicCard())
+                    .port(productDTO.getPort())
+                    .rearCamera(productDTO.getRearCamera())
+                    .frontCamera(productDTO.getFrontCamera())
+                    .stockQuantity(productDTO.getStockQuantity())
+                    .warranty(productDTO.getWarranty())
+                    .weight(productDTO.getWeight())
+                    .category(categoryExisting)
+                    .brand(brand)
+                    .build();
+            productRepository.save(product);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Product updateProduct(Long productId, ProductDTO productDTO) throws IOException {
         Category categoryExisting = categoryRepository
-                .findById(productRequest.getCategoryId())
+                .findById(productDTO.getCategoryId())
                 .get();
-//                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
-
-        Product product = Product.builder()
-                .battery(productRequest.getBattery())
-                .cpu(productRequest.getCpu())
-                .description(productRequest.getDescription())
-                .frontCamera(productRequest.getFrontCamera())
-                .graphicCard(productRequest.getGraphicCard())
-                .monitor(productRequest.getMonitor())
-                .name(productRequest.getName())
-                .os(productRequest.getOs())
-                .port(productRequest.getPort())
-                .price(productRequest.getPrice())
-                .ram(productRequest.getRam())
-                .rearCamera(productRequest.getRearCamera())
-                .stockQuantity(productRequest.getStockQuantity())
-                .warranty(productRequest.getWarranty())
-                .weight(productRequest.getWeight())
-                .category(categoryExisting)
-                .build();
-        return productRepository.save(product);
-    }
-
-    // has completed yet
-    @Override
-    public boolean isValidImageSuffix(String img) {
-        return img.endsWith(".jpg") || img.endsWith(".jpeg") ||
-                img.endsWith(".png") || img.endsWith(".gif") ||
-                img.endsWith(".bmp");
-    }
-
-    @Override
-    public String storeFile(MultipartFile file) throws IOException {
-        if (file.getSize() == 0)
-            return "File is empty";
-        if (file.getSize() > 10 * 1024 * 1024) {
-            return "File is too large. Maximum size is 10MB";
-        }
-        if (!isImage(file)) {
-            return "File is not an image";
-        }
-        // get file name
-        String fileName = file.getOriginalFilename();
-        // generate code random base on UUID
-        String uniqueFileName = UUID.randomUUID().toString() + "_" + LocalDate.now() + "_" + fileName;
-        java.nio.file.Path uploadDir = Paths.get("uploads");
-        // check and create if haven't existed
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectory(uploadDir);
-        }
-        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFileName);
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-        return uniqueFileName;
-    }
-
-    @Override
-    public boolean isImage(MultipartFile file) {
-        String contentType = file.getContentType();
-        return contentType != null && contentType.startsWith("image/");
-    }
-
-    @Override
-    public Product updateProduct(Long productId, ProductRequest productRequest) throws IOException {
-        Category categoryExisting = categoryRepository
-                .findById(productRequest.getCategoryId())
+        Brand brandExisting = brandRepository
+                .findById(productDTO.getBrandId())
                 .get();
 //                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
 
         // get product old by id
         Product existingProduct = productRepository.findById(productId).get();
-
-        // handle delete old image if has image uploaded
-//        if (!productDTO.getFileImage().isEmpty()) {
-//            if (!isValidImageSuffix(Objects.requireNonNull(productDTO.getFileImage().getOriginalFilename()))) {
-//                throw new NotFoundException("File is not an image");
-//            }
-//            String uploadDir = "uploads/";
-//            java.nio.file.Path oldImagePath = Paths.get(uploadDir + existingProduct.getThumbnail());
-//            try {
-//                if (!oldImagePath.getFileName().toString().equals("default-product.jpg")) {
-//                    Files.delete(oldImagePath);
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException("Cannot delete old image." + e.getMessage());
-//            }
-//            // store file be able to exception
-//            String newThumbnail = storeFile(productDTO.getFileImage());
-//            existingProduct.setThumbnail(newThumbnail);
-//        }
-
-        existingProduct.setName(productRequest.getName());
-        existingProduct.setPrice(productRequest.getPrice());
-        existingProduct.setRam(productRequest.getRam());
-        existingProduct.setBattery(productRequest.getBattery());
-        existingProduct.setDescription(productRequest.getDescription());
-        existingProduct.setMonitor(productRequest.getMonitor());
-        existingProduct.setStockQuantity(productRequest.getStockQuantity());
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setDescription(productDTO.getDescription());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setCpu(productDTO.getCpu());
+        existingProduct.setRam(productDTO.getRam());
+        existingProduct.setOs(productDTO.getOs());
+        existingProduct.setMonitor(productDTO.getMonitor());
+        existingProduct.setBattery(productDTO.getBattery());
+        existingProduct.setGraphicCard(productDTO.getGraphicCard());
+        existingProduct.setPort(productDTO.getPort());
+        existingProduct.setRearCamera(productDTO.getRearCamera());
+        existingProduct.setFrontCamera(productDTO.getFrontCamera());
+        existingProduct.setStockQuantity(productDTO.getStockQuantity());
+        existingProduct.setWarranty(productDTO.getWarranty());
+        existingProduct.setWeight(productDTO.getWeight());
         existingProduct.setCategory(categoryExisting);
-
+        existingProduct.setBrand(brandExisting);
         // create if chua ton tai, update if ton tai
         return productRepository.save(existingProduct);
-
     }
 
 //    public void createProductImage(Long productId, ProductImageDTO productImageDTO) {
@@ -159,17 +121,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void deleteProduct(Long productId) {
         Product product = findById(productId).get();
-        if (product == null)
-//            throw new NotFoundException("Product with id = " + productId + " not found");
-//        java.nio.file.Path oldImagePath = Paths.get("uploads/", product.getThumbnail());
-//        try {
-//            if (!oldImagePath.getFileName().toString().equals("default-product.jpg")) {
-//                Files.delete(oldImagePath);
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException("Cannot delete old image. \n" + e.getMessage());
-//        }
-            productRepository.deleteById(productId);
+        productRepository.delete(product);
     }
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
@@ -282,5 +234,17 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<ProductDTO> findByCategoryName(String categoryName) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        List<Product> products = productRepository.findByCategoryName(categoryName);
+        for (Product product : products) {
+            ProductDTO productDTO = new ProductDTO();
+            BeanUtils.copyProperties(product, productDTO);
+            productDTOList.add(productDTO);
+        }
+        return productDTOList;
     }
 }

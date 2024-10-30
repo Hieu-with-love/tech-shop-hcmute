@@ -22,45 +22,40 @@ public class ProductRequest implements Serializable {
     @NotEmpty(message = "Product description must not be empty")
     private String description;
 
-    @NotEmpty(message = "Product price must not be empty")
     @Min(value = 1, message = "Price of product must be greater than 0")
     private BigDecimal price;
 
-    @NotEmpty(message = "Product brand must not be empty")
-    private String brand;
+    private String cpu = "";
 
-    @NotEmpty(message = "Product cpu must not be empty")
-    private String cpu;
+    private String ram = "";
 
-    @NotEmpty(message = "Product ram must not be empty")
-    private String ram;
+    private String os = "";
 
-    @NotEmpty(message = "Product os must not be empty")
-    private String os;
+    private String monitor = "";
 
-    @NotEmpty(message = "Product monitor must not be empty")
-    private String monitor;
+    @Min(value = 1, message = "Weight of product must be greater than 0")
+    private Double weight = 0.0;
 
-    private Double weight;
+    private String battery = "";
 
-    @NotEmpty(message = "Product battery must not be empty")
-    private String battery;
+    private String graphicCard = "";
 
-    private String graphicCard;
+    private String port = "";
 
-    private String port;
+    private String rearCamera = "";
 
-    private String rearCamera;
+    private String frontCamera = "";
 
-    private String frontCamera;
-
-    @NotEmpty(message = "Product stock quantity must not be empty")
+    @Min(value = 1, message = "Stock quantity of product must be greater than 0")
     private int stockQuantity;
 
     @NotEmpty(message = "Product warranty must not be empty")
     private String warranty;
 
     private Long categoryId;
+
+//    @NotEmpty(message = "Product brand's name must not be empty")
+    private Long brandId;
 
     private Boolean isEdit = false;
 
