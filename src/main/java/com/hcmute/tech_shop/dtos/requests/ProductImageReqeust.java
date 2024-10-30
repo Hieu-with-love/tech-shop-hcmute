@@ -1,6 +1,5 @@
 package com.hcmute.tech_shop.dtos.requests;
 
-import com.hcmute.tech_shop.entities.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -12,7 +11,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImageDTO implements Serializable {
+public class ProductImageReqeust implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

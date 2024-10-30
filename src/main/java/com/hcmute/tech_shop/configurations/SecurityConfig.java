@@ -62,8 +62,7 @@ public class SecurityConfig {
                     logout.logoutUrl("/log-out")
                             .logoutSuccessHandler(logoutSuccessHandler)
                             .permitAll()
-                )
-        ;
+                );
         // you can custom SCOPE_ADMIN -> ROLE_ADMIN
         http.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())

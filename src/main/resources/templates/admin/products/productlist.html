@@ -84,64 +84,64 @@
                         </div>
                     </div>
 
-<!--                    <div class="card mb-0" id="filter_inputs">-->
-<!--                        <div class="card-body pb-0">-->
-<!--                            <div class="row">-->
-<!--                                <div class="col-lg-12 col-sm-12">-->
-<!--                                    <div class="row">-->
-<!--                                        <div class="col-lg col-sm-6 col-12">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <select class="select">-->
-<!--                                                    <option>Choose Product</option>-->
-<!--                                                    <option>Macbook pro</option>-->
-<!--                                                    <option>Orange</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-lg col-sm-6 col-12">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <select class="select">-->
-<!--                                                    <option>Choose Category</option>-->
-<!--                                                    <option>Computers</option>-->
-<!--                                                    <option>Fruits</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-lg col-sm-6 col-12">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <select class="select">-->
-<!--                                                    <option>Choose Sub Category</option>-->
-<!--                                                    <option>Computer</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-lg col-sm-6 col-12">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <select class="select">-->
-<!--                                                    <option>Brand</option>-->
-<!--                                                    <option>N/D</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-lg col-sm-6 col-12 ">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <select class="select">-->
-<!--                                                    <option>Price</option>-->
-<!--                                                    <option>150.00</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-lg-1 col-sm-6 col-12">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <a class="btn btn-filters ms-auto"><img-->
-<!--                                                        th:src="@{/admin/assets/img/icons/search-whites.svg}" alt="img"></a>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="card mb-0" id="filter_inputs">
+                        <div class="card-body pb-0">
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <select class="select">
+                                                    <option>Choose Product</option>
+                                                    <option>Macbook pro</option>
+                                                    <option>Orange</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <select class="select">
+                                                    <option>Choose Category</option>
+                                                    <option>Computers</option>
+                                                    <option>Fruits</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <select class="select">
+                                                    <option>Choose Sub Category</option>
+                                                    <option>Computer</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <select class="select">
+                                                    <option>Brand</option>
+                                                    <option>N/D</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg col-sm-6 col-12 ">
+                                            <div class="form-group">
+                                                <select class="select">
+                                                    <option>Price</option>
+                                                    <option>150.00</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <a class="btn btn-filters ms-auto"><img
+                                                        th:src="@{/admin/assets/img/icons/search-whites.svg}" alt="img"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table  datanew">
@@ -171,17 +171,29 @@
                                 </td>
                                 <td th:text="${product.getName()}"></td>
                                 <td th:text="${product.getCategory().getName()}"></td>
-                                <td th:text="${product.getBrand()}"></td>
+                                <td th:text="${product.getBrand().getName()}"></td>
                                 <td th:text="${product.getPrice()}"></td>
                                 <td th:text="${product.getStockQuantity()}"></td>
                                 <td>
-                                    <a class="me-3" th:href="@{/admin/products/detail(id=${product.getId()})}">
+                                    <a th:attr="hidden=${product.getCategory().getName() == 'Computer' ? null : 'hidden'}"
+                                       class="me-3" th:href="@{/admin/products/computerDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
+                                    </a>
+                                    <a th:attr="hidden=${product.getCategory().getName() == 'Phone' ? null : 'hidden'}"
+                                       class="me-3" th:href="@{/admin/products/phoneDetail(id=${product.getId()})}">
+                                        <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
+                                    </a>
+                                    <a th:attr="hidden=${product.getCategory().getName() == 'Accessory' ? null : 'hidden'}"
+                                       class="me-3" th:href="@{/admin/products/accessoryDetail(id=${product.getId()})}">
+                                        <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
+                                    </a>
+                                    <a class="me-3" th:href="@{/admin/products/images(product_id=${product.getId()})}">
+                                        <img th:src="@{/admin/assets/img/icons/dash4.svg}" alt="img">
                                     </a>
                                     <a class="me-3" th:href="@{/admin/products/edit(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
-                                    <a class="confirm-text" th:href="@{/admin/product/delete(id=${product.getId()})}">
+                                    <a class="confirm-text" th:href="@{/admin/products/delete(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>

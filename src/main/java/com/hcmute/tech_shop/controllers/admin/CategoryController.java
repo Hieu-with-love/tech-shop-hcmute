@@ -1,6 +1,6 @@
 package com.hcmute.tech_shop.controllers.admin;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +20,24 @@ public class CategoryController {
 
     @GetMapping("")
     public String index(Model model) {
-        List<CategoryDTO> categoryDTOList = categoryService.findAll();
-        model.addAttribute("categories", categoryDTOList);
+        List<CategoryRequest> categoryRequestList = categoryService.findAll();
+        model.addAttribute("categories", categoryRequestList);
         return "admin/categories/list-category";
     }
 
     @GetMapping("/add-category")
     public String addCategory(Model model) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        model.addAttribute("category", categoryDTO);
+        CategoryRequest categoryRequest = new CategoryRequest();
+        model.addAttribute("category", categoryRequest);
         return "admin/categories/add-category";
     }
 
     @PostMapping("/insert")
-    public String addCategory(@Valid @ModelAttribute("category") CategoryDTO categoryDTO, BindingResult bindingResult) {
+    public String addCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/categories/list-category";
         }
-        if(categoryService.addCategory(categoryDTO)) {
+        if(categoryService.addCategory(categoryRequest)) {
             return "redirect:/admin/categories";
         }
         return "admin/categories/add-category";
@@ -45,19 +45,19 @@ public class CategoryController {
 
     @GetMapping("/edit-category/{id}")
     public String editCategory(Model model, @PathVariable(value = "id") Long id) {
-        CategoryDTO categoryDTO = categoryService.findById(id).get();
-        model.addAttribute("category", categoryDTO);
+        CategoryRequest categoryRequest = categoryService.findById(id).get();
+        model.addAttribute("category", categoryRequest);
         return "admin/categories/edit-category";
     }
 
     @PostMapping("/edit-category")
-    public String editCategory(Model model, @ModelAttribute("category") CategoryDTO categoryDTO) {
-        if (categoryService.updateCategory(categoryDTO)) {
+    public String editCategory(Model model, @ModelAttribute("category") CategoryRequest categoryRequest) {
+        if (categoryService.updateCategory(categoryRequest)) {
             return "redirect:/admin/categories";
         }
         else {
-            model.addAttribute("category", categoryDTO);
-            return "redirect:/admin/edit-category/"+categoryDTO.getId();
+            model.addAttribute("category", categoryRequest);
+            return "redirect:/admin/edit-category/"+ categoryRequest.getId();
         }
     }
 

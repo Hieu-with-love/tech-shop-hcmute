@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "vouchers")
-public class Voucher {
+public class Voucher extends TrackingDate{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -13,6 +13,7 @@ public class EmailUtil {
     public static String getVerificationUrl(String host, String token){
         return host + "/api/users/verify?token=" + token;
     }
+
     public static String generateRandomPassword(){
         int length = 8;
         return RandomStringUtils.randomAlphanumeric(length);

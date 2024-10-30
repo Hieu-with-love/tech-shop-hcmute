@@ -1,11 +1,10 @@
 package com.hcmute.tech_shop.controllers;
 
-import com.hcmute.tech_shop.dtos.requests.UserDTO;
+import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.AuthResponse;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.EmailService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class UserRestController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
-            @RequestBody @Valid UserDTO userDTO,
+            @RequestBody @Valid UserRequest userRequest,
             BindingResult binResult
     ) {
         Map<String, String> errors = new HashMap<>();
@@ -38,12 +37,12 @@ public class UserRestController {
             return ResponseEntity.badRequest().body(errors);
         }
         // check have already username in use ?
-        if (userService.existsUsername(userDTO.getUsername())){
+        if (userService.existsUsername(userRequest.getUsername())){
             errors.put("username", "Username already in use");
             return ResponseEntity.badRequest().body(errors);
         }
         // save user when pass error
-        User user = userService.createUser(userDTO);
+        User user = userService.createUser(userRequest);
         return ResponseEntity.ok(user);
     }
 

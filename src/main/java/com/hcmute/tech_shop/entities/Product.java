@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product extends TrackingDate{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,6 +55,8 @@ public class Product {
 
     @Column(name = "warranty", nullable = false)
     private String warranty;
+
+    private String thumbnail;
 
     // a product must have category_id, and load Category once called, and obligated foreign key
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -1,7 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.convert.CategoryConvert;
-import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
@@ -21,18 +21,18 @@ public class CategoryServiceImpl implements ICategoryService {
     CategoryConvert categoryConvert;
 
     @Override
-    public List<CategoryDTO> findAll() {
+    public List<CategoryRequest> findAll() {
         List<Category> categories = categoryRepository.findAll();
-        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        List<CategoryRequest> categoryRequestList = new ArrayList<>();
         for (Category category : categories) {
-            CategoryDTO categoryDTO = categoryConvert.toDTO(category);
-            categoryDTOList.add(categoryDTO);
+            CategoryRequest categoryRequest = categoryConvert.toDTO(category);
+            categoryRequestList.add(categoryRequest);
         }
-        return categoryDTOList;
+        return categoryRequestList;
     }
 
     @Override
-    public Optional<CategoryDTO> findById(Long id) {
+    public Optional<CategoryRequest> findById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
         return Optional.ofNullable(categoryConvert.toDTO(category));
     }
@@ -45,12 +45,12 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public boolean addCategory(CategoryDTO categoryDTO) {
+    public boolean addCategory(CategoryRequest categoryRequest) {
         try {
-            if(this.existsByCategoryName(categoryDTO.getName())) {
+            if(this.existsByCategoryName(categoryRequest.getName())) {
                 return false;
             }
-            Category category = categoryConvert.toEntity(categoryDTO);
+            Category category = categoryConvert.toEntity(categoryRequest);
             categoryRepository.save(category);
             return true;
         }
@@ -61,9 +61,9 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public boolean updateCategory(CategoryDTO categoryDTO) {
+    public boolean updateCategory(CategoryRequest categoryRequest) {
         try {
-            Category category = categoryConvert.toEntity(categoryDTO);
+            Category category = categoryConvert.toEntity(categoryRequest);
             categoryRepository.save(category);
             return true;
         }catch (Exception e) {
