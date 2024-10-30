@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="POS - Bootstrap Admin Template">
+    <meta name="keywords"
+          content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
+    <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dreams Pos admin template</title>
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/admin/assets/img/favicon.jpg}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/animate.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/select2/css/select2.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/owlcarousel/owl.carousel.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/dataTables.bootstrap4.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/fontawesome.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/all.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
+</head>
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"></div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{admin/fragments/header::admin-header}"></div>
+
+    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Product Update</h4>
+                    <h6>Edit product</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="tabs-set">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="phone" role="tabpanel">
+                                <div class="table-responsive">
+                                    <form action="/admin/products/update" method="post" enctype="multipart/form-data"
+                                          th:object="${product}">
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <input type="text" th:field="*{id}" hidden="hidden">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Product Name</label>
+                                                <input type="text" th:field="*{name}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Category</label>
+                                                <select class="select" name="categoryId">
+                                                    <option th:each="category : ${categories}"
+                                                            th:value="${category.getId()}"
+                                                            th:text="${category.getName()}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Brand</label>
+                                                <select class="select" name="brandId">
+                                                    <option th:each="brand : ${brands}"
+                                                            th:value="${brand.getId()}"
+                                                            th:text="${brand.name}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Stock Quantity</label>
+                                                <input type="text" th:field="*{stockQuantity}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Price</label>
+                                                <input type="text" th:field="*{price}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>CPU</label>
+                                                <input type="text" th:field="*{cpu}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>RAM</label>
+                                                <input type="text" th:field="*{ram}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>OS</label>
+                                                <input type="text" th:field="*{os}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Monitor</label>
+                                                <input type="text" th:field="*{monitor}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Battery</label>
+                                                <input type="text" th:field="*{battery}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Front Camera</label>
+                                                <input type="text" th:field="*{frontCamera}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Rear Camera</label>
+                                                <input type="text" th:field="*{rearCamera}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Warranty</label>
+                                                <textarea class="form-control" th:field="*{warranty}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <textarea class="form-control" th:field="*{description}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label> Product Image</label>
+                                                <div class="image-upload">
+                                                    <input type="file">
+                                                    <div class="image-uploads">
+                                                        <img src="assets/img/icons/upload.svg" alt="img">
+                                                        <h4>Drag and drop a file to upload</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input class="btn btn-submit me-2" type="submit" th:value="Add">
+                                            <a href="/admin/products" class="btn btn-cancel">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/feather.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/admin/assets/plugins/owlcarousel/owl.carousel.min.js}"></script>
+
+<script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
+
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/script.js}"></script>
+</body>
+</html>
