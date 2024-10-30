@@ -1,8 +1,6 @@
 package com.hcmute.tech_shop.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hcmute.tech_shop.entities.Cart;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDTO {
+public class UserRequest {
     @NotNull(message = "Username is required")
     String username;
 

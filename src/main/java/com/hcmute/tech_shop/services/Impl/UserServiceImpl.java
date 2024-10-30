@@ -1,21 +1,17 @@
 package com.hcmute.tech_shop.services.Impl;
 
-import com.hcmute.tech_shop.dtos.requests.AuthRequest;
-import com.hcmute.tech_shop.dtos.requests.UserDTO;
-import com.hcmute.tech_shop.dtos.responses.AuthResponse;
+import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Confirmation;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.enums.Role;
 import com.hcmute.tech_shop.repositories.ConfirmationRepository;
 import com.hcmute.tech_shop.repositories.UserRepository;
-import com.hcmute.tech_shop.services.interfaces.AuthService;
 import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.EmailService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.cglib.core.Local;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,19 +32,18 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public User createUser(UserRequest userRequest) {
         User user = User.builder()
-                .username(userDTO.getUsername())
-                .email(userDTO.getEmail())
-                .phoneNumber(userDTO.getPhoneNumber())
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
-                .gender(userDTO.getGender())
-                .dateOfBirth(userDTO.getDob())
+                .username(userRequest.getUsername())
+                .email(userRequest.getEmail())
+                .phoneNumber(userRequest.getPhoneNumber())
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .gender(userRequest.getGender())
+                .dateOfBirth(userRequest.getDob())
                 .isActive(false)
                 .build();
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
         user.setRoles(roles);
@@ -109,7 +104,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long id, UserDTO userDTO) {
+    public User updateUser(Long id, UserRequest userRequest) {
         // logic update user
         return null;
     }

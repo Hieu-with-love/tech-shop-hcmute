@@ -1,11 +1,9 @@
 package com.hcmute.tech_shop.dtos.requests;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,12 +13,8 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO implements Serializable {
+public class ProductRequest implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @NotEmpty(message = "Product name must not be empty")
     private String name;
@@ -69,4 +63,6 @@ public class ProductDTO implements Serializable {
     private Long categoryId;
 
     private Boolean isEdit = false;
+
+    private MultipartFile thumbnail;
 }

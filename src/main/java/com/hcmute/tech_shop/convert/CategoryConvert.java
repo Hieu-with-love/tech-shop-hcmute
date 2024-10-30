@@ -1,6 +1,6 @@
 package com.hcmute.tech_shop.convert;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.entities.Category;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,10 @@ public class CategoryConvert {
     @Autowired
     private ModelMapper modelMapper;
 
-    public CategoryDTO toDTO(Category category) {
-        return modelMapper.map(category, CategoryDTO.class);
+    public CategoryRequest toDTO(Category category) {
+        return modelMapper.map(category, CategoryRequest.class);
     }
-    public Category toEntity(CategoryDTO categoryDTO) {
-        return modelMapper.map(categoryDTO, Category.class);
+    public Category toEntity(CategoryRequest categoryRequest) {
+        return modelMapper.map(categoryRequest, Category.class);
     }
 }

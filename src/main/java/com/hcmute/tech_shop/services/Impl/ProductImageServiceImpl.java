@@ -1,6 +1,6 @@
 package com.hcmute.tech_shop.services.Impl;
 
-import com.hcmute.tech_shop.dtos.requests.ProductImageDTO;
+import com.hcmute.tech_shop.dtos.requests.ProductImageReqeust;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.ProductImage;
 import com.hcmute.tech_shop.repositories.ProductImageRepository;
@@ -25,16 +25,16 @@ public class ProductImageServiceImpl implements IProductImageService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductImage> createProductImages(List<ProductImageDTO> productImagesDTO) {
+    public List<ProductImage> createProductImages(List<ProductImageReqeust> productImagesDTO) {
         List<ProductImage> productImages = new ArrayList<>();
-        for (ProductImageDTO productImageDTO : productImagesDTO) {
+        for (ProductImageReqeust productImageReqeust : productImagesDTO) {
             Product product = productRepository
-                    .findById(productImageDTO.getProductId())
+                    .findById(productImageReqeust.getProductId())
                     .get();
 //                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
 
             ProductImage productImage = ProductImage.builder()
-                    .url(productImageDTO.getUrl())
+                    .url(productImageReqeust.getUrl())
                     .product(product)
                     .build();
             productImages.add(productImage);

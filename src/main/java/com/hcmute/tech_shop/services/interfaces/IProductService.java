@@ -1,6 +1,6 @@
 package com.hcmute.tech_shop.services.interfaces;
 
-import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProductService{
-    Product createProduct(ProductDTO productDTO) throws IOException;
+    Product createProduct(ProductRequest productRequest) throws IOException;
 
     // has completed yet
     boolean isValidImageSuffix(String img);
@@ -22,7 +22,7 @@ public interface IProductService{
 
     boolean isImage(MultipartFile file);
 
-    Product updateProduct(Long productId, ProductDTO productDTO) throws IOException;
+    Product updateProduct(Long productId, ProductRequest productRequest) throws IOException;
 
     void deleteProduct(Long productId);
 

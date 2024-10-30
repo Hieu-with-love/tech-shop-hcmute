@@ -1,6 +1,6 @@
 package com.hcmute.tech_shop.services.Impl;
 
-import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
@@ -36,28 +36,28 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product createProduct(ProductDTO productDTO) throws IOException {
+    public Product createProduct(ProductRequest productRequest) throws IOException {
         Category categoryExisting = categoryRepository
-                .findById(productDTO.getCategoryId())
+                .findById(productRequest.getCategoryId())
                 .get();
 //                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
 
         Product product = Product.builder()
-                .battery(productDTO.getBattery())
-                .cpu(productDTO.getCpu())
-                .description(productDTO.getDescription())
-                .frontCamera(productDTO.getFrontCamera())
-                .graphicCard(productDTO.getGraphicCard())
-                .monitor(productDTO.getMonitor())
-                .name(productDTO.getName())
-                .os(productDTO.getOs())
-                .port(productDTO.getPort())
-                .price(productDTO.getPrice())
-                .ram(productDTO.getRam())
-                .rearCamera(productDTO.getRearCamera())
-                .stockQuantity(productDTO.getStockQuantity())
-                .warranty(productDTO.getWarranty())
-                .weight(productDTO.getWeight())
+                .battery(productRequest.getBattery())
+                .cpu(productRequest.getCpu())
+                .description(productRequest.getDescription())
+                .frontCamera(productRequest.getFrontCamera())
+                .graphicCard(productRequest.getGraphicCard())
+                .monitor(productRequest.getMonitor())
+                .name(productRequest.getName())
+                .os(productRequest.getOs())
+                .port(productRequest.getPort())
+                .price(productRequest.getPrice())
+                .ram(productRequest.getRam())
+                .rearCamera(productRequest.getRearCamera())
+                .stockQuantity(productRequest.getStockQuantity())
+                .warranty(productRequest.getWarranty())
+                .weight(productRequest.getWeight())
                 .category(categoryExisting)
                 .build();
         return productRepository.save(product);
@@ -103,9 +103,9 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId, ProductDTO productDTO) throws IOException {
+    public Product updateProduct(Long productId, ProductRequest productRequest) throws IOException {
         Category categoryExisting = categoryRepository
-                .findById(productDTO.getCategoryId())
+                .findById(productRequest.getCategoryId())
                 .get();
 //                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
 
@@ -131,13 +131,13 @@ public class ProductServiceImpl implements IProductService {
 //            existingProduct.setThumbnail(newThumbnail);
 //        }
 
-        existingProduct.setName(productDTO.getName());
-        existingProduct.setPrice(productDTO.getPrice());
-        existingProduct.setRam(productDTO.getRam());
-        existingProduct.setBattery(productDTO.getBattery());
-        existingProduct.setDescription(productDTO.getDescription());
-        existingProduct.setMonitor(productDTO.getMonitor());
-        existingProduct.setStockQuantity(productDTO.getStockQuantity());
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setPrice(productRequest.getPrice());
+        existingProduct.setRam(productRequest.getRam());
+        existingProduct.setBattery(productRequest.getBattery());
+        existingProduct.setDescription(productRequest.getDescription());
+        existingProduct.setMonitor(productRequest.getMonitor());
+        existingProduct.setStockQuantity(productRequest.getStockQuantity());
         existingProduct.setCategory(categoryExisting);
 
         // create if chua ton tai, update if ton tai
