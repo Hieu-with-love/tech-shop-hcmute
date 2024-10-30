@@ -21,33 +21,25 @@ public class CategoryServiceImpl implements ICategoryService {
     CategoryConvert categoryConvert;
 
     @Override
-    public List<CategoryRequest> findAll() {
-        List<Category> categories = categoryRepository.findAll();
-        List<CategoryRequest> categoryRequestList = new ArrayList<>();
-        for (Category category : categories) {
-            CategoryRequest categoryRequest = categoryConvert.toDTO(category);
-            categoryRequestList.add(categoryRequest);
-        }
-        return categoryRequestList;
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 
     @Override
-    public Optional<CategoryRequest> findById(Long id) {
+    public Optional<Category> findById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
-        return Optional.ofNullable(categoryConvert.toDTO(category));
+        return Optional.ofNullable(category);
     }
 
     @Override
-    public boolean existsByCategoryName(String categoryName) {
-        if(categoryRepository.findCategoriesByName(categoryName).isEmpty())
-            return false;
-        return true;
+    public Category findByCategoryName(String categoryName) {
+        return categoryRepository.findCategoryByName(categoryName).orElse(null);
     }
 
     @Override
     public boolean addCategory(CategoryRequest categoryRequest) {
         try {
-            if(this.existsByCategoryName(categoryRequest.getName())) {
+            if(this.findByCategoryName(categoryRequest.getName()) != null) {
                 return false;
             }
             Category category = categoryConvert.toEntity(categoryRequest);
@@ -61,10 +53,17 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public boolean updateCategory(CategoryRequest categoryRequest) {
+    public boolean updateCategory(CategoryRequest categoryRequest, Long id) {
         try {
-            Category category = categoryConvert.toEntity(categoryRequest);
-            categoryRepository.save(category);
+            Category category = this.findByCategoryName(categoryRequest.getName());
+            if(category != null && !category.getId().equals(id) ) {
+                return false;
+            }
+            Category category1 = categoryConvert.toEntity(categoryRequest);
+            category1.setId(id);
+            category1.setName(categoryRequest.getName());
+            category1.setDescription(categoryRequest.getDescription());
+            categoryRepository.save(category1);
             return true;
         }catch (Exception e) {
             e.printStackTrace();
