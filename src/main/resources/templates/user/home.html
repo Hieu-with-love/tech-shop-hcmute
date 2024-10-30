@@ -9,8 +9,235 @@
 <!--      ><i class="fal fa-arrow-up"></i-->
 <!--    ></a>-->
     <!-- Start Header -->
-    <div th:insert="~{user/fragments/header-home::header-home}"></div>
-    <main class="main-wrapper">
+<header class="header axil-header header-style-2">
+  <div class="header-top-campaign">
+    <div class="container position-relative">
+      <div class="campaign-content">
+        <div class="campaign-countdown"></div>
+        <p>
+          Open Doors To A World Of Fashion Get
+          <a href="#">Get Your Offer</a>
+        </p>
+      </div>
+    </div>
+    <button class="remove-campaign"><i class="fal fa-times"></i></button>
+  </div>
+  <!-- Start Header Top Area  -->
+  <div class="axil-header-top">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-2 col-sm-3 col-5">
+          <div class="header-brand">
+            <a th:href="@{/user/home}" class="logo logo-dark">
+              <img th:src="@{/user/assets/images/logo/logo.png}" alt="Site Logo" />
+            </a>
+            <a th:href="@{/user/home}" class="logo logo-light">
+              <img
+                      th:src="@{/user/assets/images/logo/logo-light.png}"
+                      alt="Site Logo"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-10 col-sm-9 col-7">
+          <div class="header-top-dropdown dropdown-box-style">
+            <div class="axil-search">
+              <button type="submit" class="icon wooc-btn-search">
+                <i class="far fa-search"></i>
+              </button>
+              <input
+                      type="search"
+                      class="placeholder product-search-input"
+                      name="search2"
+                      id="search2"
+                      value=""
+                      maxlength="128"
+                      placeholder="What are you looking for...."
+                      autocomplete="off"
+              />
+            </div>
+            <div class="dropdown">
+              <button
+                      class="dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+              >
+                USD
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">USD</a></li>
+                <li><a class="dropdown-item" href="#">AUD</a></li>
+                <li><a class="dropdown-item" href="#">EUR</a></li>
+              </ul>
+            </div>
+            <div class="dropdown">
+              <button
+                      class="dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+              >
+                EN
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">EN</a></li>
+                <li><a class="dropdown-item" href="#">ARB</a></li>
+                <li><a class="dropdown-item" href="#">SPN</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Header Top Area  -->
+
+  <!-- Start Mainmenu Area  -->
+  <div class="axil-mainmenu aside-category-menu">
+    <div class="container">
+      <div class="header-navbar">
+        <div class="header-nav-department">
+          <aside class="header-department">
+            <button class="header-department-text department-title">
+              <span class="icon"><i class="fal fa-bars"></i></span>
+              <span class="text">Categories</span>
+            </button>
+            <nav class="department-nav-menu">
+              <button class="sidebar-close">
+                <i class="fas fa-times"></i>
+              </button>
+              <ul class="nav-menu-list" th:each="category : ${categories}">
+                <li>
+                  <a class="nav-link has-megamenu me-3" th:href="@{/user/products/{name}(name=${category.name})}">
+                    <span class="menu-text" th:text="${category.name}"></span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="header-main-nav">
+          <!-- Start Mainmanu Nav -->
+          <nav class="mainmenu-nav">
+            <ul class="mainmenu">
+              <!--              Start home-->
+              <li class="menu-item-has-children">
+                <a th:href="@{/user/dashboard}">Home</a>
+              </li>
+              <!--              End home-->
+
+              <!--              Start shop-->
+              <li class="menu-item-has-children">
+                <a href="#">Shop</a>
+                <ul class="axil-submenu">
+                  <li><a href="shop-sidebar.html">Shop With Sidebar</a></li>
+                  <li><a href="shop.html">Shop no Sidebar</a></li>
+                </ul>
+              </li>
+              <!--              End home-->
+
+              <!--              Start page-->
+              <li class="menu-item-has-children">
+                <a href="#">Pages</a>
+                <ul class="axil-submenu">
+                  <li><a href="wishlist.html">Wishlist</a></li>
+                  <li><a href="cart.html">Cart</a></li>
+                </ul>
+              </li>
+              <!--              Start page-->
+
+              <!--              Start about-->
+              <li><a href="about-us.html">About</a></li>
+              <!--              Start home-->
+
+              <!--              Start blog-->
+              <li class="menu-item-has-children">
+                <a href="#">Blog</a>
+                <ul class="axil-submenu">
+                  <li><a href="blog.html">Blog List</a></li>
+                  <li><a href="blog-grid.html">Blog Grid</a></li>
+                  <li><a href="blog-details.html">Standard Post</a></li>
+                  <li><a href="blog-gallery.html">Gallery Post</a></li>
+                  <li><a href="blog-video.html">Video Post</a></li>
+                  <li><a href="blog-audio.html">Audio Post</a></li>
+                  <li><a href="blog-quote.html">Quote Post</a></li>
+                </ul>
+              </li>
+              <!--              Start blog-->
+
+              <!--              Start contact-->
+              <li><a href="contact.html">Contact</a></li>
+              <!--              Start contact-->
+
+            </ul>
+          </nav>
+          <!-- End Mainmanu Nav -->
+        </div>
+        <div class="header-action">
+          <ul class="action-list">
+            <li class="axil-search d-sm-none d-block">
+              <a
+                      href="javascript:void(0)"
+                      class="header-search-icon"
+                      title="Search"
+              >
+                <i class="flaticon-magnifying-glass"></i>
+              </a>
+            </li>
+            <li class="wishlist">
+              <a href="wishlist.html">
+                <i class="flaticon-heart"></i>
+              </a>
+            </li>
+            <li class="shopping-cart">
+              <a href="#" class="cart-dropdown-btn">
+                <span class="cart-count">3</span>
+                <i class="flaticon-shopping-cart"></i>
+              </a>
+            </li>
+            <li class="my-account">
+              <a href="javascript:void(0)">
+                <i class="flaticon-person"></i>
+              </a>
+              <div class="my-account-dropdown">
+                <span class="title">QUICKLINKS</span>
+                <ul>
+                  <li>
+                    <a href="my-account.html">My Account</a>
+                  </li>
+                  <li>
+                    <a href="#">Initiate return</a>
+                  </li>
+                  <li>
+                    <a href="#">Support</a>
+                  </li>
+                  <li>
+                    <a href="#">Language</a>
+                  </li>
+                </ul>
+                <div class="login-btn">
+                  <a id="auth-btn" class="axil-btn btn-bg-primary">Login</a>
+                </div>
+                <div class="reg-footer text-center">
+                  No account yet?
+                  <a href="sign-up.html" class="btn-link">REGISTER HERE.</a>
+                </div>
+              </div>
+            </li>
+            <li class="axil-mobile-toggle">
+              <button class="menu-btn mobile-nav-toggler">
+                <i class="flaticon-menu-2"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Mainmenu Area  -->
+</header>
+<main class="main-wrapper">
       <!-- Start Slider Area -->
       <div th:replace="~{user/fragments/slidebar::slidebar}"></div>
       <!-- End Slider Area -->
