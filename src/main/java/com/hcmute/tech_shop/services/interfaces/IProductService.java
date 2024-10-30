@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.services.interfaces;
 
-import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.dtos.requests.ProductImageReqeust;
+import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProductService {
-    boolean createProduct(ProductDTO productDTO) throws IOException;
+    boolean createProduct(ProductRequest productRequest) throws IOException;
 
-    Product updateProduct(Long productId, ProductDTO productDTO) throws IOException;
+    Product updateProduct(Long productId, ProductRequest productRequest) throws IOException;
 
     void deleteProduct(Long productId);
 
@@ -70,5 +71,5 @@ public interface IProductService {
 
     Page<Product> findAll(Pageable pageable);
 
-    List<ProductDTO> findByCategoryName(String categoryName);
+    List<Product> findByCategoryName(String categoryName);
 }

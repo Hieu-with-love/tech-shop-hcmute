@@ -1,6 +1,8 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
@@ -41,28 +43,28 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public boolean createProduct(ProductDTO productDTO) throws IOException {
+    public boolean createProduct(ProductRequest productRequest) throws IOException {
         try {
-            System.out.println(productDTO.getCategoryId());
-            Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
+            System.out.println(productRequest.getCategoryId());
+            Optional<Category> category = categoryRepository.findById(productRequest.getCategoryId());
             Category categoryExisting = category.get();
-            Brand brand = brandRepository.findById(productDTO.getBrandId()).get();
+            Brand brand = brandRepository.findById(productRequest.getBrandId()).get();
             Product product = Product.builder()
-                    .name(productDTO.getName())
-                    .description(productDTO.getDescription())
-                    .price(productDTO.getPrice())
-                    .cpu(productDTO.getCpu())
-                    .ram(productDTO.getRam())
-                    .os(productDTO.getOs())
-                    .monitor(productDTO.getMonitor())
-                    .battery(productDTO.getBattery())
-                    .graphicCard(productDTO.getGraphicCard())
-                    .port(productDTO.getPort())
-                    .rearCamera(productDTO.getRearCamera())
-                    .frontCamera(productDTO.getFrontCamera())
-                    .stockQuantity(productDTO.getStockQuantity())
-                    .warranty(productDTO.getWarranty())
-                    .weight(productDTO.getWeight())
+                    .name(productRequest.getName())
+                    .description(productRequest.getDescription())
+                    .price(productRequest.getPrice())
+                    .cpu(productRequest.getCpu())
+                    .ram(productRequest.getRam())
+                    .os(productRequest.getOs())
+                    .monitor(productRequest.getMonitor())
+                    .battery(productRequest.getBattery())
+                    .graphicCard(productRequest.getGraphicCard())
+                    .port(productRequest.getPort())
+                    .rearCamera(productRequest.getRearCamera())
+                    .frontCamera(productRequest.getFrontCamera())
+                    .stockQuantity(productRequest.getStockQuantity())
+                    .warranty(productRequest.getWarranty())
+                    .weight(productRequest.getWeight())
                     .category(categoryExisting)
                     .brand(brand)
                     .build();
@@ -75,32 +77,32 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId, ProductDTO productDTO) throws IOException {
+    public Product updateProduct(Long productId, ProductRequest productRequest) throws IOException {
         Category categoryExisting = categoryRepository
-                .findById(productDTO.getCategoryId())
+                .findById(productRequest.getCategoryId())
                 .get();
         Brand brandExisting = brandRepository
-                .findById(productDTO.getBrandId())
+                .findById(productRequest.getBrandId())
                 .get();
-//                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productDTO.getCategoryId()));
+//                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productRequest.getCategoryId()));
 
         // get product old by id
         Product existingProduct = productRepository.findById(productId).get();
-        existingProduct.setName(productDTO.getName());
-        existingProduct.setDescription(productDTO.getDescription());
-        existingProduct.setPrice(productDTO.getPrice());
-        existingProduct.setCpu(productDTO.getCpu());
-        existingProduct.setRam(productDTO.getRam());
-        existingProduct.setOs(productDTO.getOs());
-        existingProduct.setMonitor(productDTO.getMonitor());
-        existingProduct.setBattery(productDTO.getBattery());
-        existingProduct.setGraphicCard(productDTO.getGraphicCard());
-        existingProduct.setPort(productDTO.getPort());
-        existingProduct.setRearCamera(productDTO.getRearCamera());
-        existingProduct.setFrontCamera(productDTO.getFrontCamera());
-        existingProduct.setStockQuantity(productDTO.getStockQuantity());
-        existingProduct.setWarranty(productDTO.getWarranty());
-        existingProduct.setWeight(productDTO.getWeight());
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setDescription(productRequest.getDescription());
+        existingProduct.setPrice(productRequest.getPrice());
+        existingProduct.setCpu(productRequest.getCpu());
+        existingProduct.setRam(productRequest.getRam());
+        existingProduct.setOs(productRequest.getOs());
+        existingProduct.setMonitor(productRequest.getMonitor());
+        existingProduct.setBattery(productRequest.getBattery());
+        existingProduct.setGraphicCard(productRequest.getGraphicCard());
+        existingProduct.setPort(productRequest.getPort());
+        existingProduct.setRearCamera(productRequest.getRearCamera());
+        existingProduct.setFrontCamera(productRequest.getFrontCamera());
+        existingProduct.setStockQuantity(productRequest.getStockQuantity());
+        existingProduct.setWarranty(productRequest.getWarranty());
+        existingProduct.setWeight(productRequest.getWeight());
         existingProduct.setCategory(categoryExisting);
         existingProduct.setBrand(brandExisting);
         // create if chua ton tai, update if ton tai
@@ -237,8 +239,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> findByCategoryName(String categoryName) {
-        List<ProductDTO> productDTOList = new ArrayList<>();
+    public List<CategoryRequest> findByCategoryName(String categoryName) {
+        List<Category> productDTOList = new ArrayList<>();
         List<Product> products = productRepository.findByCategoryName(categoryName);
         for (Product product : products) {
             ProductDTO productDTO = new ProductDTO();
