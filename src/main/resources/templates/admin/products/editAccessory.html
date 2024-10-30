@@ -54,7 +54,7 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="accessory" role="tabpanel">
                                 <div class="table-responsive">
-                                    <form action="/admin/products/update" method="post" enctype="multipart/form-data"
+                                    <form th:action="@{/admin/products/update(id=${product.id})}" method="post" enctype="multipart/form-data"
                                           th:object="${product}">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">

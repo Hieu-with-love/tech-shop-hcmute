@@ -1,6 +1,5 @@
 package com.hcmute.tech_shop.services.interfaces;
 
-import com.hcmute.tech_shop.dtos.requests.ProductImageReqeust;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Product;
 import org.springframework.data.domain.Page;
@@ -71,5 +70,5 @@ public interface IProductService {
 
     Page<Product> findAll(Pageable pageable);
 
-    List<Product> findByCategoryName(String categoryName);
+    List<ProductRequest> findByCategoryName(String categoryName);
 }

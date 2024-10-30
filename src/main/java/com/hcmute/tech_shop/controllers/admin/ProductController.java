@@ -1,7 +1,7 @@
 package com.hcmute.tech_shop.controllers.admin;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
-import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
+import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.services.interfaces.IBrandService;
@@ -58,9 +58,9 @@ public class ProductController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        ProductDTO productDTO = new ProductDTO();
+        ProductRequest productDTO = new ProductRequest();
         productDTO.setIsEdit(false);
-        List<CategoryDTO> categories = categoryService.findAll();
+        List<CategoryRequest> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("product", productDTO);
@@ -71,7 +71,7 @@ public class ProductController {
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam Long id) {
         Product product = productService.findById(id).get();
-        List<CategoryDTO> categories = categoryService.findAll();
+        List<CategoryRequest> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("brands", brands);
@@ -90,7 +90,7 @@ public class ProductController {
 
     @PostMapping("/create")
     public String insert(Model model,
-                         @Valid @ModelAttribute("product") ProductDTO productDTO,
+                         @Valid @ModelAttribute("product") ProductRequest productDTO,
                          BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "admin/products/addproduct";
@@ -103,12 +103,13 @@ public class ProductController {
 
     @PostMapping("/update")
     public String update(Model model,
-                         @Valid @ModelAttribute("product") ProductDTO productDTO,
+                         @RequestParam Long id,
+                         @Valid @ModelAttribute("product") ProductRequest productDTO,
                          BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "admin/products/productlist";
         }
-        Product product = productService.updateProduct(productDTO.getId(), productDTO);
+        Product product = productService.updateProduct(id, productDTO);
         if (product == null) {
             // handle exception with alert, use js code
         }

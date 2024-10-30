@@ -1,7 +1,5 @@
 package com.hcmute.tech_shop.services.Impl;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
-import com.hcmute.tech_shop.dtos.requests.ProductDTO;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Category;
@@ -19,11 +17,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -239,11 +232,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<CategoryRequest> findByCategoryName(String categoryName) {
-        List<Category> productDTOList = new ArrayList<>();
+    public List<ProductRequest> findByCategoryName(String categoryName) {
+        List<ProductRequest> productDTOList = new ArrayList<>();
         List<Product> products = productRepository.findByCategoryName(categoryName);
         for (Product product : products) {
-            ProductDTO productDTO = new ProductDTO();
+            ProductRequest productDTO = new ProductRequest();
             BeanUtils.copyProperties(product, productDTO);
             productDTOList.add(productDTO);
         }
