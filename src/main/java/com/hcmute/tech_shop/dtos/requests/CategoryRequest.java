@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CategoryRequest {
-    private Long id;
-
     @NotNull(message = "Category name is required")
     private String name;
 

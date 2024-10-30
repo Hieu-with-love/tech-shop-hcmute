@@ -44,14 +44,14 @@
                 </div>
             </div>
 
-            <form th:action="@{/admin/categories/edit-category}" method="post" th:object="${category}">
+            <form th:action="@{/admin/categories/edit-category/{id}(id=${category.id})}" method="post" th:object="${category}">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>Category Name</label>
-                                    <input type="text" placeholder="Category name" name="name" required th:field="*{name}" readonly>
+                                    <input type="text" placeholder="Category name" name="name" required th:field="*{name}">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
@@ -65,38 +65,6 @@
                                     <textarea class="form-control" th:field="*{description}"></textarea>
                                 </div>
                             </div>
-<!--                            <div class="col-lg-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label> Product Image</label>-->
-<!--                                    <div class="image-upload">-->
-<!--                                        <input type="file">-->
-<!--                                        <div class="image-uploads">-->
-<!--                                            <img th:src="@{/admin/assets/img/icons/upload.svg" alt="img">-->
-<!--                                            <h4>Drag and drop a file to upload</h4>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="col-12">-->
-<!--                                <div class="product-list">-->
-<!--                                    <ul class="row">-->
-<!--                                        <li class="ps-0">-->
-<!--                                            <div class="productviews">-->
-<!--                                                <div class="productviewsimg">-->
-<!--                                                    <img th:src="@{/admin/assets/img/icons/macbook.svg" alt="img">-->
-<!--                                                </div>-->
-<!--                                                <div class="productviewscontent">-->
-<!--                                                    <div class="productviewsname">-->
-<!--                                                        <h2>macbookpro.jpg}</h2>-->
-<!--                                                        <h3>581kb</h3>-->
-<!--                                                    </div>-->
-<!--                                                    <a href="javascript:void(0);" class="hideset">x</a>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-submit me-2">Submit</button>
                                 <a th:href="@{/admin/categories}" class="btn btn-cancel">Cancel</a>
