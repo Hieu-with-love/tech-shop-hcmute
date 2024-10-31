@@ -11,7 +11,7 @@ public class EmailUtil {
     }
 
     public static String getVerificationUrl(String host, String token){
-        return host + "/api/users/verify?token=" + token;
+        return host + "/verify-account?token=" + token;
     }
 
     public static String generateRandomPassword(){

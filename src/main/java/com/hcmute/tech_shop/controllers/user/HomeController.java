@@ -1,6 +1,6 @@
 package com.hcmute.tech_shop.controllers.user;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
+import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String home(Model model) {
-        List<CategoryDTO> categoryDTOList = categoryService.findAll();
+        List<Category> categoryDTOList = categoryService.findAll();
         model.addAttribute("categories", categoryDTOList);
         return "/user/home";
     }

@@ -44,14 +44,14 @@ public class User extends TrackingDate{
 
     private String gender;
 
-    // This tells JPA to treat the roles field as a collection of basic values.
-    @ElementCollection(fetch = FetchType.EAGER)
-    Set<String> roles;
-
     @Column(name = "active",nullable = false)
     private boolean isActive;
 
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 }

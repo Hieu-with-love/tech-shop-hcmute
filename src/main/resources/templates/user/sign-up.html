@@ -34,47 +34,57 @@
                     <div class="axil-signin-form">
                         <h3 class="title">I'm New Here</h3>
                         <p class="b2 mb--55">Enter your detail below</p>
-                        <form id="registerForm" class="singin-form">
+                        <form class="singin-form"
+                              th:action="@{/register}"
+                              method="post"
+                              th:object="${userRegister}"
+                        >
                             <div class="form-group">
                                 <label>Username</label>
-                                <input type="text" class="form-control" id="username" name="username"
+                                <input type="text" class="form-control"
+                                       th:field="*{username}"
                                        placeholder="Enter username"
                                 >
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input type="email" class="form-control"
+                                       th:field="*{email}"
                                     placeholder="Enter email"
                                 >
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" class="form-control" id="password" name="password"
+                                <input type="password" class="form-control"
+                                       th:field="*{password}"
                                     placeholder="Enter password"
                                 >
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPassword"
-                                       name="confirmPassword"
+                                <input type="password" class="form-control"
+                                       th:field="*{confirmPassword}"
                                        placeholder="Enter confirm password"
                                 >
                             </div>
                             <div class="form-group">
                                 <label>Phone Number</label>
-                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                <input type="text" class="form-control"
+                                       th:field="*{phoneNumber}"
                                     placeholder="Enter phone number"
                                 >
                             </div>
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" class="form-control" id="firstname" name="firstname"
+                                <input type="text" class="form-control"
+                                       th:field="*{firstName}"
                                     placeholder="Enter first name"
                                 >
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                <input type="text" class="form-control"
+                                       th:field="*{lastName}"
                                     placeholder="Enter last name"
                                 >
                             </div>
@@ -84,7 +94,7 @@
                                     <div class="gender-option">
                                         <div class="gender">
                                             <input type="radio" id="check-male" name="gender" value="Nam" checked/>
-                                            <label for="check-male">male</label>
+                                            <label for="check-male">Male</label>
                                         </div>
                                         <div class="gender">
                                             <input type="radio" id="check-female" name="gender" value="Nữ"/>
@@ -95,7 +105,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Day of birth</label>
-                                <input type="date" class="form-control" id="dob" name="dob">
+                                <input type="date" class="form-control" id="dob" th:field="*{dob}">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">
@@ -110,49 +120,6 @@
     </div>
 
     <div th:insert="~{/user/fragments/script::script}"></div>
-    <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
-    <script>
-        $('#registerForm').on('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Validate if password and confirm password match
-            if ($('#password').val() !== $('#confirmPassword').val()) {
-                alert('Passwords do not match!');
-                return;
-            }
-
-            $.ajax({
-                url: '/api/users/register',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    username: $('#username').val(),
-                    email: $('#email').val(),
-                    password: $('#password').val(),
-                    confirm_password: $('#confirmPassword').val(), // Corrected key
-                    phone_number: $('#phoneNumber').val(), // Corrected key
-                    firstname: $('#firstname').val(), // Corrected key
-                    lastname: $('#lastname').val(), // Corrected key
-                    gender: $('input[name="gender"]:checked').val(), // Get selected gender
-                    dob: $('#dob').val()
-                }),
-                success: function(response) {
-                    // Handle successful registration
-                    alert('Registration successful!');
-                    window.location.href = '/login'; // Corrected navigation
-                },
-                error: function(xhr) {
-                    let errors = xhr.responseJSON; // Corrected response fetching
-                    let errorMessage = "Registration failed:\n";
-                    // Display each error
-                    for (let key in errors) {
-                        errorMessage += `${key}: ${errors[key]}\n`;
-                    }
-                    alert(errorMessage); // Display errors to user
-                }
-            });
-        });
-    </script>
 
 </body>
 </html>

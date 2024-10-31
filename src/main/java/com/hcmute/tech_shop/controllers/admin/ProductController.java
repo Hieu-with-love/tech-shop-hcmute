@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.controllers.admin;
 import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
+import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.services.interfaces.IBrandService;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
@@ -60,7 +61,7 @@ public class ProductController {
     public String add(Model model) {
         ProductRequest productDTO = new ProductRequest();
         productDTO.setIsEdit(false);
-        List<CategoryRequest> categories = categoryService.findAll();
+        List<Category> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("product", productDTO);
@@ -71,7 +72,7 @@ public class ProductController {
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam Long id) {
         Product product = productService.findById(id).get();
-        List<CategoryRequest> categories = categoryService.findAll();
+        List<Category> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("brands", brands);
