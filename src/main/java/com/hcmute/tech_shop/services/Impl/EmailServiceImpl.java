@@ -41,9 +41,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmailToReactivePassword(String email) {
-        String newPassword = EmailUtil.generateRandomPassword();
         User existingUser = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("User not found at send email get password"));
+        String newPassword = EmailUtil.generateRandomPassword();
         existingUser.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(existingUser);
         try{
@@ -56,7 +56,7 @@ public class EmailServiceImpl implements EmailService {
             message.setText(contentMail);
             mailSender.send(message);
         }catch (Exception e){
-            throw new RuntimeException("Has error occured while sending email to get password\n\n"
+            throw new RuntimeException("Has error occurred while sending email to get password\n\n"
                     + e.getMessage());
         }
     }
