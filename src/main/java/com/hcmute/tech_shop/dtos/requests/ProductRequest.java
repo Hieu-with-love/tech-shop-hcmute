@@ -33,7 +33,6 @@ public class ProductRequest implements Serializable {
 
     private String monitor = "";
 
-    @Min(value = 1, message = "Weight of product must be greater than 0")
     private Double weight = 0.0;
 
     private String battery = "";
@@ -56,8 +55,6 @@ public class ProductRequest implements Serializable {
 
 //    @NotEmpty(message = "Product brand's name must not be empty")
     private Long brandId;
-
-    private Boolean isEdit = false;
 
     private MultipartFile thumbnail;
 }

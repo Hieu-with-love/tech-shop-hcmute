@@ -34,10 +34,10 @@ public class SecurityConfig {
     LogoutSuccessHandler logoutSuccessHandler;
     AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/log-in", "/api/users/**"
+    private final String[] PUBLIC_POST_ENDPOINTS = {"/api/auth/log-in", "/api/users/**"
     };
     private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home",
-        "/log-out", "/forgot-password", "/api/users/**"
+            "/log-out", "/forgot-password", "/api/users/**"
     };
 
     @Value("${jwt.signedKey}")
@@ -46,37 +46,41 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(request ->
-            request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
-                    .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
-                    .requestMatchers("/user/assets/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority("ROLE_ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
-                    .anyRequest().authenticated()
-            )
-                .formLogin(form ->
-                    form.loginPage("/login")
-                            .permitAll()
-                )
-                .logout(logout ->
-                    logout.logoutUrl("/log-out")
-                            .logoutSuccessHandler(logoutSuccessHandler)
-                            .permitAll()
-                );
-        // you can custom SCOPE_ADMIN -> ROLE_ADMIN
-        http.oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                )
-        );
+//        http.authorizeHttpRequests(request ->
+//            request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+//                    .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
+//                    .requestMatchers("/user/assets/**").permitAll()
+//                    .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority("ROLE_ADMIN")
+//                    .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
+//                    .anyRequest().authenticated()
+//            )
+//                .formLogin(form ->
+//                    form.loginPage("/login")
+//                            .permitAll()
+//                )
+//                .logout(logout ->
+//                    logout.logoutUrl("/log-out")
+//                            .logoutSuccessHandler(logoutSuccessHandler)
+//                            .permitAll()
+//                );
+//        // you can custom SCOPE_ADMIN -> ROLE_ADMIN
+//        http.oauth2ResourceServer(oauth2 ->
+//                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+//                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
+//                )
+//        );
+//
+//        http.csrf(AbstractHttpConfigurer::disable);
 
-        http.csrf(AbstractHttpConfigurer::disable);
+        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
+                        .permitAll())
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
 
     @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter(){
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
@@ -95,7 +99,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

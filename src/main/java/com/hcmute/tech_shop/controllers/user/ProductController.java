@@ -1,7 +1,9 @@
 package com.hcmute.tech_shop.controllers.user;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryDTO;
-import com.hcmute.tech_shop.dtos.requests.ProductDTO;
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
+import com.hcmute.tech_shop.dtos.requests.ProductRequest;
+import com.hcmute.tech_shop.entities.Category;
+import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,8 @@ public class ProductController {
 
     @GetMapping("/{name}")
     public String getProductsByCategoryName(Model model, @PathVariable String name) {
-        List<CategoryDTO> categoryDTOList = categoryService.findAll();
-        List<ProductDTO> productDTOList = productService.findByCategoryName(name);
+        List<Category> categoryDTOList = categoryService.findAll();
+        List<ProductRequest> productDTOList = productService.findByCategoryName(name);
         model.addAttribute("categories", categoryDTOList);
         model.addAttribute("categoryName", name);
         model.addAttribute("products", productDTOList);
