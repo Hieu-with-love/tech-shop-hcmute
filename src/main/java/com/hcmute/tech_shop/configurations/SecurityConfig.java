@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 public class SecurityConfig {
     LogoutSuccessHandler logoutSuccessHandler;
     AuthenticationSuccessHandler authenticationSuccessHandler;
-
 //    private final String[] PUBLIC_POST_ENDPOINTS = { "/api/auth/log-in", "/api/users/**"
 //    };
 //    private final String[] PUBLIC_GET_ENDPOINTS = {"/api/auth/user/details", "/login", "/register", "/user/home",
@@ -42,6 +41,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
+                        .permitAll())
+                .csrf(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                     .requestMatchers("/user/assets/**").permitAll()
@@ -60,7 +62,6 @@ public class SecurityConfig {
                             .logoutSuccessHandler(logoutSuccessHandler)
                             .permitAll()
                 );
-
         return http.build();
     }
 
@@ -73,7 +74,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

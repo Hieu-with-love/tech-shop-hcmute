@@ -8,6 +8,7 @@ import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,11 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.*;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -30,18 +32,78 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     BrandRepository brandRepository;
 
+    private final Path root = Paths.get("./uploads");
+
+    @Override
+    public void init() {
+        try {
+            Files.createDirectories(root);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize folder for upload!");
+        }
+    }
+
+    public String saveImage(MultipartFile file) {
+        try {
+            // get file name
+            String fileName = file.getOriginalFilename();
+            // generate code random base on UUID
+            String uniqueFileName = UUID.randomUUID().toString() + "_" + LocalDate.now() + "_" + fileName;
+            Files.copy(file.getInputStream(), this.root.resolve(uniqueFileName), StandardCopyOption.REPLACE_EXISTING);
+            return uniqueFileName;
+        } catch (Exception e) {
+            if (e instanceof FileAlreadyExistsException) {
+                throw new RuntimeException("Filename already exists.");
+            }
+
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public String updateImage(MultipartFile file, String filename) {
+        try {
+            if (deleteImage(filename)) {
+                return saveImage(file);
+            }
+        } catch (Exception e) {
+            if (e instanceof FileAlreadyExistsException) {
+                throw new RuntimeException("Filename already exists.");
+            }
+            throw new RuntimeException(e.getMessage());
+        }
+        return saveImage(file);
+    }
+
+    @Override
+    public boolean deleteImage(String filename) {
+        try {
+            Path file = root.resolve(filename);
+            return Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public boolean createProduct(ProductRequest productRequest) throws IOException {
+    public boolean createProduct(ProductRequest productRequest, MultipartFile file) throws IOException {
+        Category categoryExisting = categoryRepository.findById(productRequest.getCategoryId()).get();
+        Brand brand = brandRepository.findById(productRequest.getBrandId()).get();
         try {
-            System.out.println(productRequest.getCategoryId());
-            Optional<Category> category = categoryRepository.findById(productRequest.getCategoryId());
-            Category categoryExisting = category.get();
-            Brand brand = brandRepository.findById(productRequest.getBrandId()).get();
+            String thumbnail = "";
+            if (file == null) {
+                thumbnail = "/uploads/default-product.jpg";
+            } else {
+                if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                    throw new BadRequestException("Image is not valid");
+                }
+                thumbnail = saveImage(file);
+            }
+            assert file != null;
             Product product = Product.builder()
                     .name(productRequest.getName())
                     .description(productRequest.getDescription())
@@ -58,27 +120,37 @@ public class ProductServiceImpl implements IProductService {
                     .stockQuantity(productRequest.getStockQuantity())
                     .warranty(productRequest.getWarranty())
                     .weight(productRequest.getWeight())
+                    .thumbnail(thumbnail)
                     .category(categoryExisting)
                     .brand(brand)
                     .build();
             productRepository.save(product);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException ioe) {
+            throw new IOException("Cannot create product" + ioe.getMessage());
         }
-        return false;
+    }
+
+    private boolean isValidSuffixImage(String img) {
+        return img.endsWith(".jpg") || img.endsWith(".jpeg") ||
+                img.endsWith(".png") || img.endsWith(".gif") ||
+                img.endsWith(".bmp");
     }
 
     @Override
-    public Product updateProduct(Long productId, ProductRequest productRequest) throws IOException {
-        Category categoryExisting = categoryRepository
-                .findById(productRequest.getCategoryId())
-                .get();
-        Brand brandExisting = brandRepository
-                .findById(productRequest.getBrandId())
-                .get();
-//                .orElseThrow(() -> new NotFoundException("Cannot found category with id = " + productRequest.getCategoryId()));
+    public Product updateProduct(Long productId, ProductRequest productRequest, String oldThumbnail, MultipartFile file) throws IOException {
+        Category categoryExisting = categoryRepository.findById(productRequest.getCategoryId()).get();
+        Brand brandExisting = brandRepository.findById(productRequest.getBrandId()).get();
 
+        String thumbnail = "";
+        if (file == null) {
+            thumbnail = "/uploads/default-product.jpg";
+        } else {
+            if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                throw new BadRequestException("Image is not valid");
+            }
+            thumbnail = updateImage(file, oldThumbnail);
+        }
         // get product old by id
         Product existingProduct = productRepository.findById(productId).get();
         existingProduct.setName(productRequest.getName());
@@ -96,6 +168,7 @@ public class ProductServiceImpl implements IProductService {
         existingProduct.setStockQuantity(productRequest.getStockQuantity());
         existingProduct.setWarranty(productRequest.getWarranty());
         existingProduct.setWeight(productRequest.getWeight());
+        existingProduct.setThumbnail(thumbnail);
         existingProduct.setCategory(categoryExisting);
         existingProduct.setBrand(brandExisting);
         // create if chua ton tai, update if ton tai
@@ -116,6 +189,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void deleteProduct(Long productId) {
         Product product = findById(productId).get();
+        deleteImage(product.getThumbnail());
         productRepository.delete(product);
     }
 

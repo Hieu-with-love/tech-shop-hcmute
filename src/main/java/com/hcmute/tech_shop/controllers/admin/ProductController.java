@@ -14,10 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -92,11 +92,13 @@ public class ProductController {
     @PostMapping("/create")
     public String insert(Model model,
                          @Valid @ModelAttribute("product") ProductRequest productDTO,
+                         @RequestParam("files") MultipartFile file,
                          BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "admin/products/addproduct";
         }
-        if (productService.createProduct(productDTO)) {
+
+        if (productService.createProduct(productDTO, file)) {
             return "redirect:/admin/products";
         }
         return "admin/products/addproduct";
@@ -106,11 +108,14 @@ public class ProductController {
     public String update(Model model,
                          @RequestParam Long id,
                          @Valid @ModelAttribute("product") ProductRequest productDTO,
+                         @RequestParam("oldThumbnail") String oldThumbnail,
+                         @RequestParam("files") MultipartFile file,
                          BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "admin/products/productlist";
         }
-        Product product = productService.updateProduct(id, productDTO);
+
+        Product product = productService.updateProduct(id, productDTO, oldThumbnail, file);
         if (product == null) {
             // handle exception with alert, use js code
         }
@@ -121,5 +126,12 @@ public class ProductController {
     public String deleteProduct(@RequestParam Long id) {
         productService.deleteProduct(id);
         return "redirect:/admin/products";
+    }
+
+    @GetMapping("/images")
+    public String images(Model model, @RequestParam Long id) {
+        Product product = productService.findById(id).get();
+        model.addAttribute("product", product);
+        return "admin/products/images";
     }
 }

@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.controllers.user;
 
+import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
