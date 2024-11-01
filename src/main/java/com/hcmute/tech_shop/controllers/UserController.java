@@ -2,6 +2,7 @@ package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.services.Impl.EmailServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
     UserService userService;
+    EmailServiceImpl emailService;
 
     @GetMapping("/login")
     public String login() {
         return "user/sign-in";
     }
+
+
 
     @GetMapping("/logout")
     public String logout(){
@@ -79,7 +83,23 @@ public class UserController {
     }
 
     @GetMapping("/forgot-password")
-    public String forgotPassword(Model model) {
+    public String getPageForgotPassword(Model model) {
         return "user/forgot-password";
     }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(Model model,
+                                 @RequestParam("email") String email,
+                                 BindingResult result) {
+        try{
+            emailService.sendEmailToReactivePassword(email);
+        }catch (Exception ex){
+            result.addError(new FieldError("user-forgot", "eamil",
+                    "Email " + email + " not exists"));
+            return "user/forgot-password";
+        }
+        return "redirect:/login?success";
+    }
+
+
 }
