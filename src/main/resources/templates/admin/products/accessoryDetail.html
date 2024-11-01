@@ -113,15 +113,9 @@
                         <div class="card-body">
                             <div class="slider-product-details">
                                 <div class="owl-carousel owl-theme product-slide">
-                                    <div class="slider-product">
-                                        <img th:src="@{/admin/assets/img/product/product69.jpg}" alt="img">
-                                        <h4>macbookpro.jpg</h4>
-                                        <h6>581kb</h6>
-                                    </div>
-                                    <div class="slider-product">
-                                        <img th:src="@{/admin/assets/img/product/product69.jpg}" alt="img">
-                                        <h4>macbookpro.jpg</h4>
-                                        <h6>581kb</h6>
+                                    <div class="slider-product" th:each="image : ${productImages}">
+                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
+                                        <h4 th:text="${image.getUrl()}"></h4>
                                     </div>
                                 </div>
                             </div>
