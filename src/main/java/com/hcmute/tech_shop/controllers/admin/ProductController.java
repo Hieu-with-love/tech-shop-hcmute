@@ -60,6 +60,7 @@ public class ProductController {
     @GetMapping("/add")
     public String add(Model model) {
         ProductRequest productDTO = new ProductRequest();
+        productDTO.setIsEdit(false);
         List<Category> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);

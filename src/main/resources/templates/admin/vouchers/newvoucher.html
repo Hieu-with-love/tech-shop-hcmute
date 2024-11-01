@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <meta name="description" content="POS - Bootstrap Admin Template">
     <meta name="keywords"
-        content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
+          content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
     <title>Dreams Pos admin template</title>
@@ -28,83 +28,90 @@
 </head>
 
 <body>
-    <div id="global-loader">
-        <div class="whirly-loader"> </div>
-    </div>
+<div id="global-loader">
+    <div class="whirly-loader"> </div>
+</div>
 
-    <div class="main-wrapper">
+<div class="main-wrapper">
 
-        <div th:replace="~{admin/fragments/header::admin-header}"></div>
+    <div th:replace="~{admin/fragments/header::admin-header}"></div>
 
+    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
 
-        <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
-
-        <div class="page-wrapper">
-            <div class="content">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h4>Voucher Add</h4>
-                        <h6>Create new Voucher</h6>
-                    </div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Voucher Add</h4>
+                    <h6>Create new Voucher</h6>
                 </div>
-            
-                <div class="card">
-                    <div class="card-body">
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/vouchers/savevoucher}" th:object="${voucher}" th:method="post">
+                        <input type="hidden" th:field="*{id}">
                         <div class="row">
                             <div class="col-lg-6 col-sm-12">
                                 <div class="form-group">
                                     <label>Voucher Code</label>
-                                    <input type="text" class="form-control" placeholder="Enter voucher code">
+                                    <input type="text" th:field="*{name}" class="form-control" placeholder="Enter voucher code">
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"> </div>
+                                    <div th:if="${error}" style="color: red; font-weight: bold; margin-bottom: 5px;">
+                                        <p th:text="${error}"></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">
                                 <div class="form-group">
                                     <label>Value</label>
-                                    <input type="number" class="form-control" placeholder="Enter value">
+                                    <input type="number" th:field="*{value}" class="form-control" placeholder="Enter value">
+                                    <div th:if="${#fields.hasErrors('value')}" th:errors="*{value}" style="color: red;"> </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">
                                 <div class="form-group">
                                     <label>Quantity</label>
-                                    <input type="number" class="form-control" placeholder="Enter quantity">
+                                    <input type="number" th:field="*{quantity}" class="form-control" placeholder="Enter quantity">
+                                    <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red;"> </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">
                                 <div class="form-group">
                                     <label>Expiration Date</label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" th:field="*{expiredDate}" th:value="${voucher.expiredDate}" class="form-control">
+                                    <div th:if="${#fields.hasErrors('expiredDate')}" th:errors="*{expiredDate}" style="color: red;"> </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <a href="javascript:void(0);" class="btn btn-submit me-2">Submit</a>
-                                <a href="voucherlist.html" class="btn btn-cancel">Cancel</a>
+                                <button type="submit" class="btn btn-submit me-2">Submit</button>
+                                <a th:href="@{/admin/vouchers}" class="btn btn-cancel">Cancel</a>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
-                 
         </div>
     </div>
+</div>
 
 
-    <script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/feather.min.js}"></script>
+<script th:src="@{/admin/assets/js/feather.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
 
-    <script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
 
-    <script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
-    <script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/script.js}"></script>
+<script th:src="@{/admin/assets/js/script.js}"></script>
 </body>
 
 </html>

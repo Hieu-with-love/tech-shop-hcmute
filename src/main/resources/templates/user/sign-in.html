@@ -32,10 +32,12 @@
             <div class="col-lg-6 offset-xl-2">
                 <div class="axil-signin-form-wrap">
                     <div class="axil-signin-form">
-                        <span id="message" class="error-msg"></span>
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger"> Has error + <p th:text="${param.error}"></p> </div>
+                        </div>
                         <h3 class="title">Sign in to Tech Shop.</h3>
                         <p class="b2 mb--55">Enter your detail below</p>
-                        <form id="loginForm" class="singin-form">
+                        <form th:action="@{/login}" method="post" class="singin-form">
                             <div class="form-group">
                                 <label>Username</label>
                                 <input type="text" class="form-control" id="username" name="username"
@@ -58,32 +60,5 @@
     </div>
 
     <div th:replace="~{/user/fragments/script::script}"></div>
-<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
-    <script>
-        $('#loginForm').on('submit', function(event) {
-            event.preventDefault(); // Ngăn form submit mặc định
-
-            $.ajax({
-                url: '/api/auth/log-in',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    username: $('#username').val(),
-                    password: $('#password').val()
-                }),
-                success: function(response) {
-                    // Lưu token vào local storage hoặc session storage
-                    localStorage.setItem('authToken', response.token);
-                    window.location.href = "/user/home"
-                    //$('#message').text('Đăng nhập thành công! ' + localStorage.getItem('authToken'));
-                    // Chuyển hướng hoặc tiếp tục sử dụng token cho các yêu cầu tiếp theo
-                },
-                error: function() {
-                    $('#message').text('Đăng nhập thất bại. Vui lòng thử lại!');
-                }
-            });
-        });
-    </script>
-
 </body>
 </html>

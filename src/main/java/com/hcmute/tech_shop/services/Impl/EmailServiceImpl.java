@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
             message.setText(EmailUtil.getEmailMessage(name, host, token));
             mailSender.send(message);
         }catch (Exception e){
-            throw new RuntimeException("Has error occured while sending email to verify account\n\n"
+            throw new RuntimeException("Has error occurred while sending email to verify account\n\n"
                     + e.getMessage());
         }
     }

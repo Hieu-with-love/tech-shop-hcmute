@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:time="http://www.thymeleaf.org/extras/java8time">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <meta name="description" content="POS - Bootstrap Admin Template">
     <meta name="keywords"
-        content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
+          content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
     <title>Dreams Pos admin template</title>
@@ -28,130 +28,111 @@
 </head>
 
 <body>
-    <div id="global-loader">
-        <div class="whirly-loader"> </div>
-    </div>
+<div id="global-loader">
+    <div class="whirly-loader"> </div>
+</div>
 
-    <div class="main-wrapper">
+<div class="main-wrapper">
 
-        <div th:replace="~{admin/fragments/header::admin-header}"></div>
+    <div th:replace="~{admin/fragments/header::admin-header}"></div>
 
 
-        <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
 
-        <div class="page-wrapper">
-            <div class="content">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h4>Voucher list</h4>
-                        <h6>View/Search Voucher</h6>
-                    </div>
-                    <div class="page-btn">
-                        <a href="addcategory.html" class="btn btn-added">
-                            <img th:src="@{/admin/assets/img/icons/plus.svg}" class="me-1" alt="img">Add Voucher
-                        </a>
-                    </div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Voucher list</h4>
+                    <h6>View/Search Voucher</h6>
                 </div>
+                <div class="page-btn">
+                    <a th:href="@{/admin/vouchers/save}" th:class="'btn btn-added'">
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" class="me-1" alt="img">Add Voucher
+                    </a>
+                </div>
+            </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-top">
-                            <div class="search-set">
-                                <div class="search-input">
-                                    <a class="btn btn-searchset"><img th:src="@{/admin/assets/img/icons/search-white.svg}"
-                                            alt="img"></a>
-                                </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-top">
+                        <div class="search-set">
+                            <div class="search-input">
+                                <a class="btn btn-searchset"><img th:src="@{/admin/assets/img/icons/search-white.svg}"
+                                                                  alt="img"></a>
                             </div>
                         </div>
-
-                        <div class="table-responsive">
-                            <table class="table datanew">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <label class="checkboxs">
-                                                <input type="checkbox" id="select-all">
-                                                <span class="checkmarks"></span>
-                                            </label>
-                                        </th>
-                                        <th>Voucher Code</th>
-                                        <th>Value</th>
-                                        <th>Quantity</th>
-                                        <th>Expiration Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <label class="checkboxs">
-                                                <input type="checkbox">
-                                                <span class="checkmarks"></span>
-                                            </label>
-                                        </td>
-                                        <td>1JACK</td>
-                                        <td>5000000</td>
-                                        <td>100</td>
-                                        <td>12/31/2024</td>
-                                        <td>
-                                            <a class="me-3" href="editvoucher.html">
-                                                <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
-                                            </a>
-                                            <a class="me-3 confirm-text" href="javascript:void(0);">
-                                                <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="checkboxs">
-                                                <input type="checkbox">
-                                                <span class="checkmarks"></span>
-                                            </label>
-                                        </td>
-                                        <td>KM50K</td>
-                                        <td>50000</td>
-                                        <td>50</td>
-                                        <td>11/30/2024</td>
-                                        <td>
-                                            <a class="me-3" href="editvoucher.html">
-                                                <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
-                                            </a>
-                                            <a class="me-3 confirm-text" href="javascript:void(0);">
-                                                <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        
                     </div>
-                </div>
 
+                    <div class="table-responsive">
+                        <table class="table datanew">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label class="checkboxs">
+                                        <input type="checkbox" id="select-all">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </th>
+                                <th>Voucher Code</th>
+                                <th>Value</th>
+                                <th>Quantity</th>
+                                <th>Expiration Date</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="voucher : ${vouchers}">
+                                <td>
+                                    <label class="checkboxs">
+                                        <input type="checkbox">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </td>
+                                <td th:text="${voucher.name}">Voucher Code</td>
+                                <td th:text="${#numbers.formatDecimal(voucher.value, 1, 'POINT', 2, 'COMMA')}">Value</td>
+                                <td th:text="${voucher.quantity}">Quantity</td>
+                                <td th:text="${voucher.expiredDate}">Expiration Date</td>
+                                <td>
+                                    <a class="me-3" th:href="@{'/admin/vouchers/save/' + ${voucher.id}}">
+                                        <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
+                                    </a>
+                                    <a class="me-3 confirm-text" th:href="@{'/admin/vouchers/delete/' + ${voucher.id}}">
+                                        <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
             </div>
+
         </div>
     </div>
+</div>
 
 
-    <script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/feather.min.js}"></script>
+<script th:src="@{/admin/assets/js/feather.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
 
-    <script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
 
-    <script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
-    <script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
 
-    <script th:src="@{/admin/assets/js/script.js}"></script>
+<script th:src="@{/admin/assets/js/script.js}"></script>
 </body>
 
 </html>

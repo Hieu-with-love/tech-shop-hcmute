@@ -2,12 +2,13 @@ package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Confirmation;
+import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
-import com.hcmute.tech_shop.enums.Role;
 import com.hcmute.tech_shop.repositories.ConfirmationRepository;
 import com.hcmute.tech_shop.repositories.UserRepository;
 import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.EmailService;
+import com.hcmute.tech_shop.services.interfaces.RoleService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
     CartService cartService;
+    RoleService roleService;
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserRequest userRequest) {
+        Role role = roleService.getRoleByName("user");
         User user = User.builder()
                 .username(userRequest.getUsername())
                 .email(userRequest.getEmail())
@@ -41,12 +44,10 @@ public class UserServiceImpl implements UserService {
                 .lastName(userRequest.getLastName())
                 .gender(userRequest.getGender())
                 .dateOfBirth(userRequest.getDob())
+                .role(role)
                 .isActive(false)
                 .build();
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
-        user.setRoles(roles);
         userRepository.save(user);
 
         Confirmation confirm = Confirmation.builder()

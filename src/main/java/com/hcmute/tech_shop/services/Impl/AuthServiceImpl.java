@@ -69,14 +69,14 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    private String buildScope(User user){
-        // roles spare by space
-        StringJoiner stringJoiner = new StringJoiner(" ");
-        if (!CollectionUtils.isEmpty(user.getRoles())){
-            user.getRoles().forEach(stringJoiner::add);
-        }
-        return stringJoiner.toString();
-    }
+//    private String buildScope(User user){
+//        // roles spare by space
+//        StringJoiner stringJoiner = new StringJoiner(" ");
+//        if (!CollectionUtils.isEmpty(user.getRoles())){
+//            user.getRoles().forEach(stringJoiner::add);
+//        }
+//        return stringJoiner.toString();
+//    }
 
     private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
@@ -88,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
-                .claim("scope", buildScope(user))
+                //.claim("scope", buildScope(user))
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 

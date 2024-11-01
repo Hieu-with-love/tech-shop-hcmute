@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hcmute.tech_shop.entities.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -44,7 +45,6 @@ public class UserRequest {
 
     boolean active;
 
-    @JsonProperty("role_id")
-    Set<String> roles;
+    Long roleId;
 
 }
