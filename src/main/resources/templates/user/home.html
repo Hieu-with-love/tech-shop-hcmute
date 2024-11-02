@@ -262,7 +262,7 @@
               <div class="slick-single-layout">
                 <div class="axil-product product-style-four">
                   <div class="thumbnail">
-                    <a href="single-product.html">
+                    <a th:href="@{/detail-product}">
                       <img
                               data-sal="fade"
                               data-sal-delay="100"
@@ -287,7 +287,7 @@
                           ></a>
                         </li>
                         <li class="select-option">
-                          <a href="cart.html">Add to Cart</a>
+                          <a th:href="@{/add-to-card}">Add to Cart</a>
                         </li>
                         <li class="quickview">
                           <a
@@ -303,7 +303,7 @@
                   <div class="product-content">
                     <div class="inner">
                       <h5 class="title">
-                        <a href="single-product.html">Top Handle Handbag</a>
+                        <a th:href="@{/detail-product}">Top Handle Handbag</a>
                       </h5>
                       <div class="product-price-variant">
                         <span class="price old-price">$80</span>
@@ -318,7 +318,7 @@
               <div class="slick-single-layout">
                 <div class="axil-product product-style-four">
                   <div class="thumbnail">
-                    <a href="single-product.html">
+                    <a th:href="@{/detail-product}">
                       <img
                               data-sal="fade"
                               data-sal-delay="100"
@@ -1177,77 +1177,6 @@
 ============================================ -->
     <div th:insert="~{user/fragments/script::script}"></div>
 
-<script>
-  $(document).ready(function() {
-    $.ajax({
-      url: '/api/auth/user/details',
-      type: 'GET',
-      headers: { "Authorization": "Bearer " + localStorage.getItem('authToken') },
-      success: function(user) {
-        // Hiển thị thông tin người dùng trong form
-        $('#username').text(user.email);
-        $('#password').text(user.firstName);
-      },
-      error: function() {
-        $('#message').text('Không thể tải thông tin người dùng.');
-      }
-    });
-  });
-
-  document.addEventListener("DOMContentLoaded", function() {
-    // Kiểm tra xem token có trong localStorage hay không
-    const token = localStorage.getItem('authToken');
-
-    const authBtn = document.getElementById('auth-btn');
-
-    if (token) {
-      // Nếu token tồn tại, hiển thị Logout
-      authBtn.id = "logoutId"
-      authBtn.href = '/log-out';  // Đường dẫn đăng xuất
-      authBtn.innerText = 'Logout';
-    } else {
-      // Nếu token không tồn tại, hiển thị Login
-      authBtn.id="loginId"
-      authBtn.href = '/login';  // Đường dẫn đăng nhập
-      authBtn.innerText = 'Login';
-    }
-  });
-
-  function logout() {
-    $.ajax({
-      url: '/log-out',
-      type: 'GET',
-      success: function(response) {
-        // Xoá token khỏi localStorage
-        localStorage.removeItem('authToken');
-        alert(response); // Hiển thị thông báo từ server
-        window.location.href = "/login"; // Chuyển hướng đến trang đăng nhập nếu cần
-      },
-      error: function(error) {
-        console.error('Logout error:', error);
-        alert("Logout failed!");
-      }
-    });
-  }
-
-
-  $('#logoutId').on('click', function (event){
-    event.preventDefault();
-    $.ajax({
-      url: '/log-out',
-      headers: {'Authorization':'Bearer ' + localStorage.getItem('authToken')},
-      type: 'GET',
-      success: function (message){
-        localStorage.removeItem('authToken')
-        alert(message);
-      },
-      error: function (){
-        alert('Loi khong the dang xuat');
-      }
-    })
-  })
-
-</script>
   </body>
 
 </html>

@@ -44,10 +44,10 @@
         <div class="container">
             <div class="header-navbar">
                 <div class="header-brand">
-                    <a href="index.html" class="logo logo-dark">
+                    <a th:href="@{/user/home}" class="logo logo-dark">
                         <img th:src="@{/user/assets/images/logo/logo.png}" alt="Site Logo">
                     </a>
-                    <a href="index.html" class="logo logo-light">
+                    <a th:href="@{/user/home}" class="logo logo-light">
                         <img th:src="@{/user/assets/images/logo/logo-light.png}" alt="Site Logo">
                     </a>
                 </div>
@@ -62,16 +62,7 @@
                         </div>
                         <ul class="mainmenu">
                             <li class="menu-item-has-children">
-                                <a href="#">Home</a>
-                                <ul class="axil-submenu">
-                                    <li><a href="index-1.html">Home - Electronics</a></li>
-                                    <li><a href="index-2.html">Home - NFT</a></li>
-                                    <li><a href="index-3.html">Home - Fashion</a></li>
-                                    <li><a href="index-4.html">Home - Jewellery</a></li>
-                                    <li><a href="index-5.html">Home - Furniture</a></li>
-                                    <li><a href="index-7.html">Home - Multipurpose</a></li>
-                                    <li><a href="https://new.axilthemes.com/demo/template/etrade-rtl/">RTL Version</a></li>
-                                </ul>
+                                <a th:href="@{/user/home}">Home</a>
                             </li>
                             <li class="menu-item-has-children">
                                 <a href="#">Shop</a>
@@ -107,18 +98,9 @@
                             </li>
                             <li><a href="about-us.html">About</a></li>
                             <li class="menu-item-has-children">
-                                <a href="#">Blog</a>
-                                <ul class="axil-submenu">
-                                    <li><a href="blog.html">Blog List</a></li>
-                                    <li><a href="blog-grid.html">Blog Grid</a></li>
-                                    <li><a href="blog-details.html">Standard Post</a></li>
-                                    <li><a href="blog-gallery.html">Gallery Post</a></li>
-                                    <li><a href="blog-video.html">Video Post</a></li>
-                                    <li><a href="blog-audio.html">Audio Post</a></li>
-                                    <li><a href="blog-quote.html">Quote Post</a></li>
-                                </ul>
+                                <a th:href="@{/not-found}">Blog</a>
                             </li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a th:href="@{/contact}">Contact</a></li>
                         </ul>
                     </nav>
                     <!-- End Mainmanu Nav -->
@@ -155,7 +137,7 @@
                                 <span class="title">QUICKLINKS</span>
                                 <ul>
                                     <li>
-                                        <a href="my-account.html">My Account</a>
+                                        <a th:href="@{/user/my-account}">My Account</a>
                                     </li>
                                     <li>
                                         <a href="#">Initiate return</a>
@@ -170,7 +152,7 @@
                                 <a th:href="@{/login}" class="axil-btn btn-bg-primary"
                                     onclick="logout()"
                                 >Login</a>
-                                <div class="reg-footer text-center">No account yet? <a href="sign-up.html" class="btn-link">REGISTER HERE.</a></div>
+                                <div class="reg-footer text-center">No account yet? <a th:href="@{/register}" class="btn-link">REGISTER HERE.</a></div>
                             </div>
                         </li>
                         <li class="axil-mobile-toggle">

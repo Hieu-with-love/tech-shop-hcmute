@@ -10,13 +10,16 @@
         <!-- Start Header -->
         <div class="signin-header">
             <div class="row align-items-center">
-                <div class="col-md-6">
+                <div class="col-xl-4 col-sm-6">
                     <a th:href="@{/login}" class="site-logo"><img th:src="@{/user/assets/images/logo/logo.png}" alt="logo"></a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2 d-lg-block d-none">
+                    <a th:href="@{/login}" class="back-btn"><i class="far fa-angle-left"></i></a>
+                </div>
+                <div class="col-xl-6 col-lg-4 col-sm-6">
                     <div class="singin-header-btn">
                         <p>Already a member?</p>
-                        <a th:href="@{/login}" class="axil-btn btn-bg-secondary sign-up-btn">Sign In</a>
+                        <a th:href="@{/login}" class="sign-up-btn axil-btn btn-bg-secondary">Sign In</a>
                     </div>
                 </div>
             </div>
