@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.Impl.EmailServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.UserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,29 +45,15 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(Model model,
-                           @ModelAttribute("registerUser") UserRequest userRequest,
+                           @Valid @ModelAttribute("userRegister") UserRequest userRequest,
                            BindingResult result
                            ){
-        // Kiem tra username da ton tai chua?
-        if (userService.existsUsername(userRequest.getUsername())) {
-            result.addError(new FieldError("userRegister", "username",
-                    "Username da ton tai. Vui long nhap username khac"));
-        }
-        if (userService.existsEmail(userRequest.getEmail())) {
-            result.addError(new FieldError("registerUser", "email",
-                    "Email da ton tai. Vui long nhap Email khac"));
-        }
-        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-            result.addError(new FieldError("registerUser", "password",
-                    "Mat khau khong khop"));
-        }
+        boolean is = userService.createUser(userRequest, result);
 
         if (result.hasErrors()) {
             return "user/sign-up";
         }
 
-        User user = userService.createUser(userRequest);
-        model.addAttribute("user", user);
         return "redirect:/login?success";
     }
 
