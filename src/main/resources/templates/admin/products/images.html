@@ -53,16 +53,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="productdetails">
-                                <form action="/admin/products/create" method="post"
-                                      enctype="multipart/form-data"
-                                      th:object="${product}">
+                                <form action="/admin/products/images/create" method="post"
+                                      enctype="multipart/form-data">
                                     <div class="form-group col-lg-12">
                                         <label> Product Images</label>
+                                        <input name="id" th:value="${id}" hidden="hidden">
                                         <div class="image-upload">
-                                            <input type="file" multiple name="files">
+                                            <input type="file" multiple name="files" accept="image/*">
                                             <div class="image-uploads">
-                                                <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
-                                                     th:field="*{thumbnail}">
                                                 <h4>Drag and drop a file to upload</h4>
                                             </div>
                                         </div>
@@ -81,15 +79,12 @@
                         <div class="card-body">
                             <div class="slider-product-details">
                                 <div class="owl-carousel owl-theme product-slide">
-                                    <div class="slider-product">
-                                        <img th:src="@{/admin/assets/img/product/product69.jpg}" alt="img">
-                                        <h4>macbookpro.jpg</h4>
-                                        <h6>581kb</h6>
-                                    </div>
-                                    <div class="slider-product">
-                                        <img th:src="@{/admin/assets/img/product/product69.jpg}" alt="img">
-                                        <h4>macbookpro.jpg</h4>
-                                        <h6>581kb</h6>
+                                    <div class="slider-product" th:each="image : ${productImages}">
+                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
+                                        <h4 th:text="${image.getUrl()}"></h4>
+                                        <a th:href="@{/admin/products/images/delete(image_id=${image.getId()})}"
+                                           class="hideset"><i class="fa fa-trash-alt"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
