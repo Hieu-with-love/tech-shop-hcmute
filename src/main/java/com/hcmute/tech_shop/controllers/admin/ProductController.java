@@ -1,12 +1,13 @@
 package com.hcmute.tech_shop.controllers.admin;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
+import com.hcmute.tech_shop.entities.ProductImage;
 import com.hcmute.tech_shop.services.interfaces.IBrandService;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
+import com.hcmute.tech_shop.services.interfaces.IProductImageService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class ProductController {
     IBrandService brandService;
     @Autowired
     ICategoryService categoryService;
+    @Autowired
+    IProductImageService productImageService;
 
     @GetMapping("") // localhost:8080/admin/products
     public String index(Model model) {
@@ -39,28 +42,33 @@ public class ProductController {
     @GetMapping("/computerDetail")
     public String computerDetail(Model model, @RequestParam Long id) {
         Optional<Product> product = productService.findById(id);
+        List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
+        model.addAttribute("productImages", images);
         return "admin/products/computerDetail";
     }
 
     @GetMapping("/phoneDetail")
     public String phoneDetail(Model model, @RequestParam Long id) {
         Optional<Product> product = productService.findById(id);
+        List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
+        model.addAttribute("productImages", images);
         return "admin/products/phoneDetail";
     }
 
     @GetMapping("/accessoryDetail")
     public String accessoryDetail(Model model, @RequestParam Long id) {
         Optional<Product> product = productService.findById(id);
+        List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
+        model.addAttribute("productImages", images);
         return "admin/products/accessoryDetail";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        productDTO.setIsEdit(false);
         List<Category> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);
@@ -87,6 +95,26 @@ public class ProductController {
             return "admin/products/editAccessory";
         }
         return "admin/products";
+    }
+
+    @GetMapping("/delete")
+    public String deleteProduct(@RequestParam Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/images")
+    public String images(Model model, @RequestParam Long id) {
+        List<ProductImage> images = productImageService.findByProductId(id);
+        model.addAttribute("id", id);
+        model.addAttribute("productImages", images);
+        return "admin/products/images";
+    }
+
+    @GetMapping("/images/delete")
+    public String deleteImage(@RequestParam("image_id") Integer imageId) {
+        productImageService.deleteById(imageId);
+        return "redirect:/admin/products";
     }
 
     @PostMapping("/create")
@@ -122,16 +150,18 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
-    @GetMapping("/delete")
-    public String deleteProduct(@RequestParam Long id) {
-        productService.deleteProduct(id);
+    @PostMapping("/images/create")
+    public String insertImage(Model model,
+                              @RequestParam("id") Long productid,
+                              @RequestParam("files") MultipartFile[] files) throws IOException {
+        Arrays.asList(files).stream().forEach(file -> {
+            try {
+                productImageService.createProductImages(productid, file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+//        productService.createImage(id, files);
         return "redirect:/admin/products";
-    }
-
-    @GetMapping("/images")
-    public String images(Model model, @RequestParam Long id) {
-        Product product = productService.findById(id).get();
-        model.addAttribute("product", product);
-        return "admin/products/images";
     }
 }

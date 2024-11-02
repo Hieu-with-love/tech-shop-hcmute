@@ -161,7 +161,7 @@
                                             <img th:src="@{|/${product.getThumbnail()}|}" alt="Ảnh sản phẩm"
                                                  width="500px;">
                                             <div class="image-upload">
-                                                <input type="file" name="files" required>
+                                                <input type="file" name="files" accept="image/*">
                                                 <div class="image-uploads">
                                                     <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
                                                          th:field="*{thumbnail}">
