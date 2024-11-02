@@ -10,13 +10,16 @@
         <!-- Start Header -->
         <div class="signin-header">
             <div class="row align-items-center">
-                <div class="col-md-6">
+                <div class="col-xl-4 col-sm-6">
                     <a th:href="@{/login}" class="site-logo"><img th:src="@{/user/assets/images/logo/logo.png}" alt="logo"></a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2 d-lg-block d-none">
+                    <a th:href="@{/login}" class="back-btn"><i class="far fa-angle-left"></i></a>
+                </div>
+                <div class="col-xl-6 col-lg-4 col-sm-6">
                     <div class="singin-header-btn">
                         <p>Already a member?</p>
-                        <a th:href="@{/login}" class="axil-btn btn-bg-secondary sign-up-btn">Sign In</a>
+                        <a th:href="@{/login}" class="sign-up-btn axil-btn btn-bg-secondary">Sign In</a>
                     </div>
                 </div>
             </div>
@@ -45,6 +48,7 @@
                                        th:field="*{username}"
                                        placeholder="Enter username"
                                 >
+                                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
@@ -52,6 +56,7 @@
                                        th:field="*{email}"
                                     placeholder="Enter email"
                                 >
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
@@ -66,6 +71,7 @@
                                        th:field="*{confirmPassword}"
                                        placeholder="Enter confirm password"
                                 >
+                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <label>Phone Number</label>
@@ -78,14 +84,16 @@
                                 <label>First Name</label>
                                 <input type="text" class="form-control"
                                        th:field="*{firstName}"
-                                    placeholder="Enter first name"
+                                       placeholder="Enter first name"
+                                       required
                                 >
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
                                 <input type="text" class="form-control"
                                        th:field="*{lastName}"
-                                    placeholder="Enter last name"
+                                       placeholder="Enter last name"
+                                       required
                                 >
                             </div>
                             <div class="form-group">
@@ -106,6 +114,7 @@
                             <div class="form-group">
                                 <label>Day of birth</label>
                                 <input type="date" class="form-control" id="dob" th:field="*{dob}">
+                                <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">

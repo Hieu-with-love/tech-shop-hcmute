@@ -41,13 +41,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
-                        .permitAll())
-                .csrf(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                     .requestMatchers("/user/assets/**").permitAll()
                     .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                    .requestMatchers("/login").permitAll()
                     .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
@@ -55,6 +53,7 @@ public class SecurityConfig {
                 .formLogin(form ->
                     form.loginPage("/login")
                             .successHandler(new CustomizeSuccessHandler())
+                            .failureHandler(new CustomAuthFailureHandler())
                             .permitAll()
                 )
                 .logout(logout ->
@@ -77,8 +76,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
 //    @Bean
 //    JwtAuthenticationConverter jwtAuthenticationConverter(){
