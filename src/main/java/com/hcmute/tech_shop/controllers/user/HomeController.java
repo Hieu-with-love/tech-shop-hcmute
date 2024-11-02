@@ -24,8 +24,8 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String home(Model model) {
-        List<Category> categoryDTOList = categoryService.findAll();
-        model.addAttribute("categories", categoryDTOList);
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
         return "/user/home";
     }
 }
