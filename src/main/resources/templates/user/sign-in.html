@@ -32,9 +32,6 @@
             <div class="col-lg-6 offset-xl-2">
                 <div class="axil-signin-form-wrap">
                     <div class="axil-signin-form">
-                        <div th:if="${param.error}">
-                            <div class="alert alert-danger"> Has error + <p th:text="${param.error}"></p> </div>
-                        </div>
                         <h3 class="title">Sign in to Tech Shop.</h3>
                         <p class="b2 mb--55">Enter your detail below</p>
                         <form th:action="@{/login}" method="post" class="singin-form">
@@ -47,6 +44,9 @@
                                 <label>Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
                                        placeholder="Enter password">
+                            </div>
+                            <div th:if="${param.error}">
+                                <div class="alert alert-danger"> Invalid username or password. Please try again. </div>
                             </div>
                             <div class="form-group d-flex align-items-center justify-content-between">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">Sign In</button>

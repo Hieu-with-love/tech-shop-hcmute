@@ -6,6 +6,8 @@ import com.hcmute.tech_shop.repositories.RoleRepository;
 import com.hcmute.tech_shop.services.interfaces.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.util.List;
 
@@ -22,12 +24,13 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRoleByName(String name) {
-        return roleRepository.findByName(name);
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Role not found by name = " + name));
     }
 
     @Override
     public List<Role> getAllRoles() {
-        return List.of();
+        return roleRepository.findAll();
     }
 
     @Override
@@ -50,5 +53,10 @@ public class RoleServiceImpl implements RoleService {
                 .orElseThrow(() -> new RuntimeException("Role not found by id = " + id));
         role.setActive(false);
         roleRepository.save(role);
+    }
+
+    @Override
+    public boolean existsRole(String name) {
+        return roleRepository.findByName(name).isPresent();
     }
 }
