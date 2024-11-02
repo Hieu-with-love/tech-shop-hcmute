@@ -63,3 +63,7 @@ INSERT INTO tech_shop.products (brand_id, category_id, description, price, produ
 (2, 3, 'USB-C hub', '25', 'HP Travel Hub', '100', '1 year'),
 (25, 3, 'Laptop stand', '60', 'Belkin Stand', '80', '1 year');
 
+INSERT INTO tech_shop.categories(id, description, name) VALUES
+(1, 'An electronic machine that is used for storing, organizing, and finding words, numbers,...', 'Computer'),
+(2, 'a mobile phone that performs many of the functions of a computer, typically having a touchscreen interface, internet access, and an operating system capable of running downloaded applications', 'Smartphone');
+
