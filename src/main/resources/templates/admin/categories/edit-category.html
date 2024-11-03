@@ -43,7 +43,11 @@
                     <h6>Edit a product Category</h6>
                 </div>
             </div>
-
+            <div class="page-header" th:if="${error != null}">
+                <div class="page-title">
+                    <h4 th:text="${error}" style="color: red"></h4>
+                </div>
+            </div>
             <form th:action="@{/admin/categories/edit-category/{id}(id=${category.id})}" method="post" th:object="${category}">
                 <div class="card">
                     <div class="card-body">

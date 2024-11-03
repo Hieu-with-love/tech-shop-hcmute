@@ -117,7 +117,7 @@
                                 <!-- End sub brand-->
                                 <!-- Start search filter-->
                                 <div class="col-lg-1 col-sm-6 col-12 ms-auto">
-                                    <div class="form-group">
+                                    <div class="form-group" >
                                         <a class="btn btn-filters ms-auto"><img th:src="@{/admin/assets/img/icons/search-whites.svg}" alt="img"></a>
                                     </div>
                                 </div>
@@ -142,8 +142,8 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody th:each="category : ${categories}">
-                            <tr>
+                            <tbody>
+                            <tr  th:each="category : ${categories}">
                                 <td>
                                     <label class="checkboxs">
                                         <input type="checkbox">
