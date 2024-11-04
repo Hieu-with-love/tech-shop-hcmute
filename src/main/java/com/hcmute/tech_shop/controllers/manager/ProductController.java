@@ -66,14 +66,39 @@ public class ProductController {
         return "admin/products/accessoryDetail";
     }
 
-    @GetMapping("/add")
-    public String add(Model model) {
+    @GetMapping("/add/computer")
+    public String addComputer(Model model) {
         ProductRequest productDTO = new ProductRequest();
         List<Category> categories = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("product", productDTO);
         model.addAttribute("brands", brands);
+        model.addAttribute("categoryChoice", "computer");
+        return "admin/products/addproduct";
+    }
+
+    @GetMapping("/add/phone")
+    public String addPhone(Model model) {
+        ProductRequest productDTO = new ProductRequest();
+        List<Category> categories = categoryService.findAll();
+        List<Brand> brands = brandService.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("product", productDTO);
+        model.addAttribute("brands", brands);
+        model.addAttribute("categoryChoice", "phone");
+        return "admin/products/addproduct";
+    }
+
+    @GetMapping("/add/accessory")
+    public String addAccessory(Model model) {
+        ProductRequest productDTO = new ProductRequest();
+        List<Category> categories = categoryService.findAll();
+        List<Brand> brands = brandService.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("product", productDTO);
+        model.addAttribute("brands", brands);
+        model.addAttribute("categoryChoice", "accessory");
         return "admin/products/addproduct";
     }
 
@@ -161,7 +186,6 @@ public class ProductController {
                 e.printStackTrace();
             }
         });
-//        productService.createImage(id, files);
         return "redirect:/manager/products";
     }
 }
