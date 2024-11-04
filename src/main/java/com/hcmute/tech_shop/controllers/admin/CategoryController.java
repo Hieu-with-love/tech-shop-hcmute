@@ -78,7 +78,15 @@ public class CategoryController {
         if(!categoryRequest.getName().matches("^[a-zA-Z\\s]+$")){
             msg = "Category Name cannot contain numbers or special characters";
             model.addAttribute("error", msg);
-            return "redirect:/admin/edit-category/"+ id;
+            return "admin/categories/edit-category";
+        }
+        Category category = categoryService.findByCategoryName(categoryRequest.getName());
+        Category categoryOld = categoryService.findById(id).get();
+        if(category != null && !category.getId().equals(id) ) {
+            msg = "Category already exists";
+            model.addAttribute("error", msg);
+            model.addAttribute("category", categoryOld);
+            return "admin/categories/edit-category";
         }
         if (categoryService.updateCategory(categoryRequest,id)) {
             return "redirect:/admin/categories";
@@ -86,8 +94,8 @@ public class CategoryController {
         else {
             msg = "Category already exists";
             model.addAttribute("error", msg);
-            model.addAttribute("category", categoryRequest);
-            return "redirect:/admin/edit-category/"+ id;
+            model.addAttribute("category", categoryOld);
+            return "admin/categories/edit-category";
         }
     }
 

@@ -55,11 +55,7 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public boolean updateCategory(CategoryRequest categoryRequest, Long id) {
         try {
-            Category category = this.findByCategoryName(categoryRequest.getName());
-            if(category != null && !category.getId().equals(id) ) {
-                return false;
-            }
-            Category category1 = categoryConvert.toEntity(categoryRequest);
+            Category category1 = new Category();
             category1.setId(id);
             category1.setName(categoryRequest.getName());
             category1.setDescription(categoryRequest.getDescription());

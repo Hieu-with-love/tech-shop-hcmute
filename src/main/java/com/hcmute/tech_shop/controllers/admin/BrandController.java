@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.controllers.admin;
 import com.hcmute.tech_shop.dtos.requests.BrandRequest;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
+import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.services.interfaces.IBrandService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,7 @@ public class BrandController {
     @PostMapping("/edit-brand/{id}")
     public String editBrand(@Valid @ModelAttribute("brand") BrandRequest brandRequest, Model model, @PathVariable("id") Long id, @RequestParam("oldImg") String oldImg, @RequestParam("files") MultipartFile file, BindingResult bindingResult) {
         String msg = "";
+
         if (bindingResult.hasErrors()) {
             msg = bindingResult.getFieldError().getDefaultMessage();
             model.addAttribute("msg", msg);
@@ -101,14 +103,22 @@ public class BrandController {
             model.addAttribute("msg", msg);
             return "admin/brands/add-brand";
         }
+        Brand brand = brandService.findByName(brandRequest.getName());
+        Brand brandOld = brandService.findById(id).get();
+        if(brand != null && !brand.getId().equals(id) ) {
+            msg = "Brand already exists";
+            model.addAttribute("error", msg);
+            model.addAttribute("category", brandOld);
+            return "admin/brands/edit-brand";
+        }
         if(brandService.updateBrand(brandRequest,id,oldImg, file)){
             return "redirect:/admin/brands";
         }
         else {
             msg = "Something went wrong";
             model.addAttribute("msg", msg);
-            model.addAttribute("brand", brandRequest);
-            return "redirect:/admin/brands/edit-brand/"+id;
+            model.addAttribute("category", brandOld);
+            return "admin/brands/edit-brand";
         }
     }
 
