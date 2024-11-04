@@ -42,8 +42,8 @@
         <div class="content">
             <div class="page-header">
                 <div class="page-title">
-                    <h4>Voucher Add</h4>
-                    <h6>Create new Voucher</h6>
+                    <h4 th:text="${voucher.id != null ? 'Voucher Edit' : 'Voucher Add'}"></h4>
+                    <h6 th:text="${voucher.id != null ? 'Edit Voucher' : 'Create new Voucher'}"></h6>
                 </div>
             </div>
             <div class="card">
@@ -78,7 +78,7 @@
                             <div class="col-lg-6 col-sm-12">
                                 <div class="form-group">
                                     <label>Expiration Date</label>
-                                    <input type="date" th:field="*{expiredDate}" th:value="${voucher.expiredDate}" class="form-control">
+                                    <input type="date" name="expiredDate" th:value="${voucher.expiredDate}" class="form-control">
                                     <div th:if="${#fields.hasErrors('expiredDate')}" th:errors="*{expiredDate}" style="color: red;"> </div>
                                 </div>
                             </div>
