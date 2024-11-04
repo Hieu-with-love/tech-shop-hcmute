@@ -33,4 +33,9 @@ public class ProductController {
         model.addAttribute("products", productDTOList);
         return "user/shop-sidebar";
     }
+
+    @GetMapping("/single-product")
+    public String singleProduct() {
+        return "user/single-product-5";
+    }
 }

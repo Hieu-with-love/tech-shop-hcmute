@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.cglib.core.Local;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     CartService cartService;
     RoleService roleService;
     UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
+//    PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
                     .role(role)
                     .isActive(false)
                     .build();
-            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+//            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
 
             Confirmation confirm = Confirmation.builder()

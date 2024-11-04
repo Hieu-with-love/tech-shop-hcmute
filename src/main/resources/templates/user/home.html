@@ -1163,11 +1163,61 @@
     <div th:insert="~{user/fragments/quickview::quick-view}"></div>
     <!-- Product Quick View Modal End -->
 
-    <!-- Header Search Modal End -->
+    <!-- Header Search Modal Start -->
     <div th:insert="~{user/fragments/header-search::header-search}"></div>
     <!-- Header Search Modal End -->
 
-    <div th:insert="~{user/fragments/cart-dropdown::cart-dropdown}"></div>
+    <!-- Cart dropdown Start -->
+    <div class="cart-dropdown" id="cart-dropdown">
+      <div class="cart-content-wrap">
+        <div class="cart-header">
+          <h2 class="header-title">Cart review</h2>
+          <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-body">
+          <ul class="cart-item-list" th:each="product : ${session.cart}">
+            <li class="cart-item">
+              <!-- Start Single product cua Tuan-->
+              <div class="item-img">
+                <a href="single-product.html">
+                  <img src="assets/images/product/electric/product-01.png" alt="Commodo Blown Lamp"></a>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+              </div>
+              <!-- End Single product cua Tuan-->
+              <div class="item-content">
+                <div class="product-rating">
+                                    <span class="icon">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </span>
+                  <span class="rating-number">(64)</span>
+                </div>
+                <h3 class="item-title"><a href="single-product-3.html" th:text="@{product.name}"></a></h3>
+                <div class="item-price"><span class="currency-symbol">$</span>155.00</div>
+                <div class="pro-qty item-quantity">
+                  <input type="number" class="quantity-input" value="15">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="cart-footer">
+          <h3 class="cart-subtotal">
+            <span class="subtotal-title">Subtotal:</span>
+            <span class="subtotal-amount">$610.00</span>
+          </h3>
+          <div class="group-btn">
+            <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+            <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Cart dropdown End -->
+
 
     <!-- JS
 ============================================ -->
