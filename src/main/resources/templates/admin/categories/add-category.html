@@ -43,6 +43,11 @@
                     <h6>Create new product Category</h6>
                 </div>
             </div>
+            <div class="page-header" th:if="${error != null}">
+                <div class="page-title">
+                    <h4 th:text="${error}" style="color: red"></h4>
+                </div>
+            </div>
 
             <form action="/admin/categories/insert" method="post" th:object="${category}">
                 <div class="card">

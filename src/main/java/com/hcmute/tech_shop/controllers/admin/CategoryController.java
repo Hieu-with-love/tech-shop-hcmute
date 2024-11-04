@@ -38,9 +38,22 @@ public class CategoryController {
     }
 
     @PostMapping("/insert")
-    public String addCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest, BindingResult bindingResult) {
+    public String addCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest, BindingResult bindingResult, Model model) {
+        String msg = "";
         if (bindingResult.hasErrors()) {
+            msg = bindingResult.getFieldError().getDefaultMessage();
+            model.addAttribute("error", msg);
             return "admin/categories/list-category";
+        }
+        if(!categoryRequest.getName().matches("^[a-zA-Z\\s]+$")){
+            msg = "Category Name cannot contain numbers or special characters";
+            model.addAttribute("error", msg);
+            return "admin/categories/add-category";
+        }
+        if(categoryService.findByCategoryName(categoryRequest.getName()) != null){
+            msg = "Category already exists";
+            model.addAttribute("error", msg);
+            return "admin/categories/add-category";
         }
         if(categoryService.addCategory(categoryRequest)) {
             return "redirect:/admin/categories";
@@ -56,16 +69,23 @@ public class CategoryController {
     }
 
     @PostMapping("/edit-category/{id}")
-    public String editCategory(Model model, @ModelAttribute("category") CategoryRequest categoryRequest, @PathVariable(value = "id") Long id) {
+    public String editCategory(Model model, @ModelAttribute("category") CategoryRequest categoryRequest, @PathVariable(value = "id") Long id, Model model1) {
+        String msg = "";
+        if(!categoryRequest.getName().matches("^[a-zA-Z\\s]+$")){
+            msg = "Category Name cannot contain numbers or special characters";
+            model.addAttribute("error", msg);
+            return "redirect:/admin/edit-category/"+ id;
+        }
         if (categoryService.updateCategory(categoryRequest,id)) {
             return "redirect:/admin/categories";
         }
         else {
+            msg = "Category already exists";
+            model.addAttribute("error", msg);
             model.addAttribute("category", categoryRequest);
             return "redirect:/admin/edit-category/"+ id;
         }
     }
-
 
     @GetMapping("/delete-category/{id}")
     public ResponseEntity<Map<String, String>> deleteCategory(@PathVariable(value = "id") Long id) {
