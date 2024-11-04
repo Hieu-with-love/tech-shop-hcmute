@@ -1,4 +1,4 @@
-package com.hcmute.tech_shop.controllers.admin;
+package com.hcmute.tech_shop.controllers.manager;
 
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.Brand;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
-@RequestMapping("/admin/products")
+@RequestMapping("/manager/products")
 public class ProductController {
     @Autowired
     IProductService productService;
@@ -94,13 +94,13 @@ public class ProductController {
         if (product.getCategory().getName().equals("Accessory")) {
             return "admin/products/editAccessory";
         }
-        return "admin/products";
+        return "redirect:manager/products";
     }
 
     @GetMapping("/delete")
     public String deleteProduct(@RequestParam Long id) {
         productService.deleteProduct(id);
-        return "redirect:/admin/products";
+        return "redirect:/manager/products";
     }
 
     @GetMapping("/images")
@@ -114,7 +114,7 @@ public class ProductController {
     @GetMapping("/images/delete")
     public String deleteImage(@RequestParam("image_id") Integer imageId) {
         productImageService.deleteById(imageId);
-        return "redirect:/admin/products";
+        return "redirect:/manager/products";
     }
 
     @PostMapping("/create")
@@ -127,7 +127,7 @@ public class ProductController {
         }
 
         if (productService.createProduct(productDTO, file)) {
-            return "redirect:/admin/products";
+            return "redirect:/manager/products";
         }
         return "admin/products/addproduct";
     }
@@ -147,7 +147,7 @@ public class ProductController {
         if (product == null) {
             // handle exception with alert, use js code
         }
-        return "redirect:/admin/products";
+        return "redirect:/manager/products";
     }
 
     @PostMapping("/images/create")
@@ -162,6 +162,6 @@ public class ProductController {
             }
         });
 //        productService.createImage(id, files);
-        return "redirect:/admin/products";
+        return "redirect:/manager/products";
     }
 }

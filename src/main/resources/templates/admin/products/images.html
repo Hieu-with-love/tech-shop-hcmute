@@ -30,7 +30,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="productdetails">
-                                <form action="/admin/products/images/create" method="post"
+                                <form action="/manager/products/images/create" method="post"
                                       enctype="multipart/form-data">
                                     <div class="form-group col-lg-12">
                                         <label> Product Images</label>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <input class="btn btn-submit me-2" type="submit" th:value="Add">
-                                        <a href="/admin/products" class="btn btn-cancel">Cancel</a>
+                                        <a href="/manager/products" class="btn btn-cancel">Cancel</a>
                                     </div>
                                 </form>
                             </div>
@@ -59,7 +59,7 @@
                                     <div class="slider-product" th:each="image : ${productImages}">
                                         <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
                                         <h4 th:text="${image.getUrl()}"></h4>
-                                        <a th:href="@{/admin/products/images/delete(image_id=${image.getId()})}"
+                                        <a th:href="@{/manager/products/images/delete(image_id=${image.getId()})}"
                                            class="hideset"><i class="fa fa-trash-alt"></i>
                                         </a>
                                     </div>

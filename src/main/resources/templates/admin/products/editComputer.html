@@ -32,8 +32,8 @@
                             <div class="tab-pane fade show active" id="computer" role="tabpanel"
                                  aria-labelledby="computer-tab">
                                 <div class="table-responsive">
-                                    <form th:action="@{/admin/products/update(id=${product.id})}" method="post" enctype="multipart/form-data"
-                                          th:object="${product}">
+                                    <form th:action="@{/manager/products/update(id=${product.id})}" method="post"
+                                          enctype="multipart/form-data" th:object="${product}">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <input type="text" th:field="*{id}" hidden="hidden">
@@ -141,7 +141,8 @@
                                         </div>
                                         <div class="form-group col-lg-12">
                                             <label> Product Image</label>
-                                            <input type="text" name="oldThumbnail" th:value="${product.getThumbnail()}" hidden="hidden">
+                                            <input type="text" name="oldThumbnail"
+                                                   th:value="${product.getThumbnail()}" hidden="hidden">
                                             <img th:src="@{|/${product.getThumbnail()}|}" alt="Ảnh sản phẩm"
                                                  width="500px;">
                                             <div class="image-upload">
@@ -155,7 +156,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <input class="btn btn-submit me-2" type="submit" th:value="Update">
-                                            <a href="/admin/products" class="btn btn-cancel">Cancel</a>
+                                            <a href="/manager/products" class="btn btn-cancel">Cancel</a>
                                         </div>
                                     </form>
                                 </div>
