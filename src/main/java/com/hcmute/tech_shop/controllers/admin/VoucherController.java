@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,11 +37,17 @@ public class VoucherController {
 
     @GetMapping("/save/{id}")
     public String showEditVoucherForm(@PathVariable("id") Long id, Model model) {
-         if(id != null) {
-             Optional<Voucher> voucher = voucherService.findById(id);
-             model.addAttribute("voucher", voucher.get());
-         }
-         return "admin/vouchers/newvoucher";
+        if (id != null) {
+            Optional<Voucher> voucher = voucherService.findById(id);
+            if (voucher.isPresent()) {
+                Voucher foundVoucher = voucher.get();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String formattedDate = foundVoucher.getExpiredDate().format(formatter);
+                model.addAttribute("voucher", foundVoucher);
+                model.addAttribute("expiredDateFormatted", formattedDate);
+            }
+        }
+        return "admin/vouchers/newvoucher";
     }
 
     @PostMapping("/savevoucher")
@@ -54,10 +60,13 @@ public class VoucherController {
             return "admin/vouchers/newvoucher";
         }
 
-        if(voucherService.findByName(voucherRequest.getName()).isPresent()) {
-            model.addAttribute("error", "The voucher code already exists!");
-            return "admin/vouchers/newvoucher";
-
+        Optional<Voucher> existingVoucher = voucherService.findByName(voucherRequest.getName());
+        if (existingVoucher.isPresent()) {
+            // Neu doi ten # hoac them moi thi check
+            if (voucherRequest.getId() == null || !existingVoucher.get().getId().equals(voucherRequest.getId())) {
+                model.addAttribute("error", "The voucher code already exists!");
+                return "admin/vouchers/newvoucher";
+            }
         }
         voucherService.save(voucherRequest);
         return "redirect:/admin/vouchers";
