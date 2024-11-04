@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="POS - Bootstrap Admin Template">
+    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
+    <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dreams Pos admin template</title>
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/admin/assets/img/favicon.jpg}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/animate.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/select2/css/select2.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/dataTables.bootstrap4.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/fontawesome.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/all.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
+</head>
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"> </div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{admin/fragments/header::admin-header}"></div>
+
+    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Product Add Brand</h4>
+                    <h6>Create new product brand</h6>
+                </div>
+            </div>
+            <div class="page-header" th:if="${error != null}">
+                <div class="page-title">
+                    <h4 th:text="${error}" style="color: red"></h4>
+                </div>
+            </div>
+
+            <form action="/admin/brands/insert" method="post" enctype="multipart/form-data" th:object="${brand}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Brand Name</label>
+                                    <input type="text" placeholder="Brand name" name="name" required th:field="*{name}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label> Brand Image</label>
+                                    <div class="image-upload">
+                                        <input type="file" name="files" accept="image/*">
+                                        <div class="image-uploads">
+                                            <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img" th:field="*{brandImg}">
+                                            <h4>Drag and drop a file to upload</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">Submit</button>
+                                <a th:href="@{/admin/brands}" class="btn btn-cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/feather.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
+
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
+<script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
+
+<script th:src="@{/admin/assets/js/script.js}"></script>
+</body>
+</html>

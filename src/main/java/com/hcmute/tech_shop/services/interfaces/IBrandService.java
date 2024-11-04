@@ -1,10 +1,13 @@
 package com.hcmute.tech_shop.services.interfaces;
 
+import com.hcmute.tech_shop.dtos.requests.BrandRequest;
 import com.hcmute.tech_shop.entities.Brand;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +18,8 @@ public interface IBrandService {
     <S extends Brand> List<S> findAll(Example<S> example);
 
     <S extends Brand> List<S> findAll(Example<S> example, Sort sort);
+
+    void init();
 
     List<Brand> findAll();
 
@@ -28,9 +33,15 @@ public interface IBrandService {
 
     void deleteById(Long aLong);
 
-    void delete(Brand entity);
 
-    void deleteAll();
 
     List<Brand> findAll(Sort sort);
+
+    boolean deleteImage(String filename);
+
+    boolean addBrand(BrandRequest brandRequest, MultipartFile file) throws IOException;
+
+    boolean updateBrand(BrandRequest brandRequest, Long id, String oldImg, MultipartFile file);
+
+    boolean deleteBrand(Long brandId);
 }

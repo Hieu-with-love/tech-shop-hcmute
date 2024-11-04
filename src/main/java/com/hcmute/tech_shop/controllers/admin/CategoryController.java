@@ -58,6 +58,10 @@ public class CategoryController {
         if(categoryService.addCategory(categoryRequest)) {
             return "redirect:/admin/categories";
         }
+        else {
+            msg = "Category not added";
+            model.addAttribute("error", msg);
+        }
         return "admin/categories/add-category";
     }
 
