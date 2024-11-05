@@ -28,329 +28,143 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tabs-set">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="computer-tab" data-bs-toggle="tab"
-                                        data-bs-target="#computer" type="button" role="tab" aria-controls="computer"
-                                        aria-selected="true">Computer
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="phone-tab" data-bs-toggle="tab"
-                                        data-bs-target="#phone" type="button" role="tab" aria-controls="phone"
-                                        aria-selected="false">Phone
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="accessory-tab" data-bs-toggle="tab"
-                                        data-bs-target="#accessory" type="button" role="tab"
-                                        aria-controls="accessory"
-                                        aria-selected="false">Accessory
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="computer" role="tabpanel"
-                                 aria-labelledby="computer-tab">
-                                <div class="table-responsive">
-                                    <form action="/manager/products/create" method="post" enctype="multipart/form-data"
-                                          th:object="${product}">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Product Name</label>
-                                                <input type="text" th:field="*{name}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Category</label>
-                                                <select class="select" name="categoryId">
-                                                    <option th:each="category : ${categories}"
-                                                            th:value="${category.getId()}"
-                                                            th:text="${category.getName()}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Brand</label>
-                                                <select class="select" name="brandId">
-                                                    <option th:each="brand : ${brands}"
-                                                            th:value="${brand.getId()}"
-                                                            th:text="${brand.name}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Stock Quantity</label>
-                                                <p th:if="${#fields.hasErrors('stockQuantity')}"
-                                                   th:errors="*{stockQuantity}">Stock Quantity Error</p>
-                                                <input type="text" th:field="*{stockQuantity}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Price</label>
-                                                <input type="text" th:field="*{price}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>CPU</label>
-                                                <input type="text" th:field="*{cpu}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>RAM</label>
-                                                <input type="text" th:field="*{ram}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>OS</label>
-                                                <input type="text" th:field="*{os}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Monitor</label>
-                                                <input type="text" th:field="*{monitor}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Weight</label>
-                                                <input type="text" th:field="*{weight}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Battery</label>
-                                                <input type="text" th:field="*{battery}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Graphic Card</label>
-                                                <input type="text" th:field="*{graphicCard}" required>
-                                            </div>
-                                            <div class="form-group col-lg-3 col-sm-6 col-12">
-                                                <label>Port</label>
-                                                <input type="text" th:field="*{port}" required>
-                                            </div>
-                                            <div class="form-group col-lg-12">
-                                                <label>Warranty</label>
-                                                <textarea class="form-control" th:field="*{warranty}"
-                                                          required></textarea>
-                                            </div>
-                                            <div class="form-group col-lg-12">
-                                                <label>Description</label>
-                                                <textarea class="form-control" th:field="*{description}"
-                                                          required></textarea>
-                                            </div>
-                                            <div class="form-group col-lg-12">
-                                                <label> Product Image</label>
-                                                <div class="image-upload">
-                                                    <input type="file" name="files" accept="image/*">
-                                                    <div class="image-uploads">
-                                                        <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
-                                                             th:field="*{thumbnail}">
-                                                        <h4>Drag and drop a file to upload</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <input class="btn btn-submit me-2" type="submit" th:value="Add">
-                                                <a href="/manager/products" class="btn btn-cancel">Cancel</a>
-                                            </div>
+                        <form action="/manager/products/create" method="post" enctype="multipart/form-data"
+                              th:object="${product}">
+                            <div class="form-row">
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label>Product Name</label>
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                         style="color: red;"></div>
+                                    <input type="text" th:field="*{name}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label>Category</label>
+                                    <select class="select" name="categoryId">
+                                        <option th:each="category : ${categories}"
+                                                th:value="${category.getId()}"
+                                                th:text="${category.getName()}"
+                                                th:attr="selected=${(categoryChoice == 'computer' && category.getName() == 'Computer') ||
+                                                 (categoryChoice == 'phone' && category.getName() == 'Phone') ||
+                                                 (categoryChoice == 'accessory' && category.getName() == 'Accessory') ? 'selected' : null}"
+                                        disabled>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label>Brand</label>
+                                    <select class="select" name="brandId">
+                                        <option th:each="brand : ${brands}"
+                                                th:value="${brand.getId()}"
+                                                th:text="${brand.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label>Stock Quantity</label>
+                                    <div th:if="${#fields.hasErrors('stockQuantity')}"
+                                         th:errors="*{stockQuantity}"
+                                         style="color: red;"></div>
+                                    <input type="text" th:field="*{stockQuantity}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label>Price</label>
+                                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+                                         style="color: red;"></div>
+                                    <input type="text" th:field="*{price}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">CPU</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
+                                           type="text" th:field="*{cpu}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">RAM</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
+                                           type="text" th:field="*{ram}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">OS</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
+                                           type="text" th:field="*{os}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">Monitor</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
+                                           type="text" th:field="*{monitor}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
+                                        Weight</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
+                                           type="text" th:field="*{weight}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">Battery</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
+                                           type="text" th:field="*{battery}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
+                                        Graphic Card</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
+                                           type="text" th:field="*{graphicCard}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
+                                        Port</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
+                                           type="text" th:field="*{port}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}">
+                                        Rear Camera</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}"
+                                           type="text" th:field="*{rearCamera}" required>
+                                </div>
+                                <div class="form-group col-lg-3 col-sm-6 col-12">
+                                    <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}">
+                                        Front Camera</label>
+                                    <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}"
+                                           type="text" th:field="*{frontCamera}" required>
+                                </div>
+                                <div class="form-group col-lg-12">
+                                    <label>Warranty</label>
+                                    <div th:if="${#fields.hasErrors('warranty')}" th:errors="*{warranty}"
+                                         style="color: red;"></div>
+                                    <textarea class="form-control" th:field="*{warranty}"
+                                              required></textarea>
+                                </div>
+                                <div class="form-group col-lg-12">
+                                    <label>Description</label>
+                                    <div th:if="${#fields.hasErrors('description')}"
+                                         th:errors="*{description}"
+                                         style="color: red;"></div>
+                                    <textarea class="form-control" th:field="*{description}"
+                                              required></textarea>
+                                </div>
+                                <div class="form-group col-lg-12">
+                                    <label> Product Image</label>
+                                    <div class="image-upload">
+                                        <input type="file" name="files" accept="image/*" required>
+                                        <div class="image-uploads">
+                                            <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
+                                                 th:field="*{thumbnail}">
+                                            <h4>Drag and drop a file to upload</h4>
                                         </div>
-                                    </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <input class="btn btn-submit me-2" type="submit" th:value="Add">
+                                    <a href="/manager/products" class="btn btn-cancel">Cancel</a>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="phone" role="tabpanel">
-                                <div class="table-responsive">
-                                    <form action="/manager/products/create" method="post"
-                                          enctype="multipart/form-data"
-                                          th:object="${product}">
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Product Name</label>
-                                                <input type="text" th:field="*{name}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Category</label>
-                                                <select class="select" name="categoryId">
-                                                    <option th:each="category : ${categories}"
-                                                            th:value="${category.getId()}"
-                                                            th:text="${category.getName()}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Brand</label>
-                                                <select class="select" name="brandId">
-                                                    <option th:each="brand : ${brands}"
-                                                            th:value="${brand.getId()}"
-                                                            th:text="${brand.name}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Stock Quantity</label>
-                                                <input type="text" th:field="*{stockQuantity}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Price</label>
-                                                <input type="text" th:field="*{price}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>CPU</label>
-                                                <input type="text" th:field="*{cpu}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>RAM</label>
-                                                <input type="text" th:field="*{ram}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>OS</label>
-                                                <input type="text" th:field="*{os}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Monitor</label>
-                                                <input type="text" th:field="*{monitor}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Battery</label>
-                                                <input type="text" th:field="*{battery}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Front Camera</label>
-                                                <input type="text" th:field="*{frontCamera}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Rear Camera</label>
-                                                <input type="text" th:field="*{rearCamera}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Warranty</label>
-                                                <textarea class="form-control" th:field="*{warranty}"
-                                                          required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Description</label>
-                                                <textarea class="form-control" th:field="*{description}"
-                                                          required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-lg-12">
-                                            <label> Product Image</label>
-                                            <div class="image-upload">
-                                                <input type="file" name="files" accept="image/*">
-                                                <div class="image-uploads">
-                                                    <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
-                                                         th:field="*{thumbnail}">
-                                                    <h4>Drag and drop a file to upload</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <input class="btn btn-submit me-2" type="submit" th:value="Add">
-                                            <a href="/manager/products" class="btn btn-cancel">Cancel</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="accessory" role="tabpanel">
-                                <div class="table-responsive">
-                                    <form action="/manager/products/create" method="post"
-                                          enctype="multipart/form-data"
-                                          th:object="${product}">
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Product Name</label>
-                                                <input type="text" th:field="*{name}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Category</label>
-                                                <select class="select" name="categoryId">
-                                                    <option th:each="category : ${categories}"
-                                                            th:value="${category.getId()}"
-                                                            th:text="${category.getName()}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Brand</label>
-                                                <select class="select" name="brandId">
-                                                    <option th:each="brand : ${brands}"
-                                                            th:value="${brand.getId()}"
-                                                            th:text="${brand.name}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Stock Quantity</label>
-                                                <input type="text" th:field="*{stockQuantity}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label>Price</label>
-                                                <input type="text" th:field="*{price}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Warranty</label>
-                                                <textarea class="form-control" th:field="*{warranty}"
-                                                          required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Description</label>
-                                                <textarea class="form-control" th:field="*{description}"
-                                                          required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-lg-12">
-                                            <label> Product Image</label>
-                                            <div class="image-upload">
-                                                <input type="file" name="files" accept="image/*">
-                                                <div class="image-uploads">
-                                                    <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
-                                                         th:field="*{thumbnail}">
-                                                    <h4>Drag and drop a file to upload</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <input class="btn btn-submit me-2" type="submit" th:value="Add">
-                                            <a href="/manager/products" class="btn btn-cancel">Cancel</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <div th:insert="~{/admin/fragments/script::script}"></div>

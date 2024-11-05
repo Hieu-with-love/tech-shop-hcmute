@@ -1,7 +1,6 @@
 package com.hcmute.tech_shop.dtos.requests;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,13 +15,15 @@ import java.math.BigDecimal;
 public class ProductRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @NotEmpty(message = "Product name must not be empty")
+    @NotBlank(message = "Product's name must not be empty")
     private String name;
 
-    @NotEmpty(message = "Product description must not be empty")
+    @NotBlank(message = "Product's description must not be empty")
     private String description;
 
-    @Min(value = 1, message = "Price of product must be greater than 0")
+    @NotNull(message = "Product's price must not be empty")
+    @Min(value = 1000, message = "Product's price must be greater than 1000")
+    @Digits(integer = 10, fraction = 2, message = "Giá trị phải có tối đa 10 chữ số nguyên và 2 chữ số thập phân")
     private BigDecimal price;
 
     private String cpu = "";
@@ -45,15 +46,15 @@ public class ProductRequest implements Serializable {
 
     private String frontCamera = "";
 
-    @Min(value = 1, message = "Stock quantity of product must be greater than 0")
+    @NotNull(message = "Product's stock quantity must not be empty")
+    @Min(value = 1, message = "Product's stock quantity must be greater than 0")
     private int stockQuantity;
 
-    @NotEmpty(message = "Product warranty must not be empty")
+    @NotBlank(message = "Product's warranty must not be empty")
     private String warranty;
 
     private Long categoryId;
 
-//    @NotEmpty(message = "Product brand's name must not be empty")
     private Long brandId;
 
     private MultipartFile thumbnail;

@@ -24,8 +24,14 @@
                     <h6>Manage your products</h6>
                 </div>
                 <div class="page-btn">
-                    <a href="/manager/products/add" class="btn btn-added">
-                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Product
+                    <a href="/manager/products/add/computer" class="btn btn-added">
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Computer
+                    </a>
+                    <a href="/manager/products/add/phone" class="btn btn-added">
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Phone
+                    </a>
+                    <a href="/manager/products/add/accessory" class="btn btn-added">
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Accessory
                     </a>
                 </div>
             </div>
@@ -163,7 +169,8 @@
                                 <td th:text="${product.getStockQuantity()}"></td>
                                 <td>
                                     <a th:attr="hidden=${product.getCategory().getName() == 'Computer' ? null : 'hidden'}"
-                                       class="me-3" th:href="@{/manager/products/computerDetail(id=${product.getId()})}">
+                                       class="me-3"
+                                       th:href="@{/manager/products/computerDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
                                     <a th:attr="hidden=${product.getCategory().getName() == 'Phone' ? null : 'hidden'}"
@@ -171,7 +178,8 @@
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
                                     <a th:attr="hidden=${product.getCategory().getName() == 'Accessory' ? null : 'hidden'}"
-                                       class="me-3" th:href="@{/manager/products/accessoryDetail(id=${product.getId()})}">
+                                       class="me-3"
+                                       th:href="@{/manager/products/accessoryDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
                                     <a class="me-3" th:href="@{/manager/products/images(id=${product.getId()})}">
@@ -180,7 +188,8 @@
                                     <a class="me-3" th:href="@{/manager/products/edit(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
-                                    <a class="confirm-text" th:href="@{/manager/products/delete(id=${product.getId()})}">
+                                    <a class="confirm-text"
+                                       th:href="@{/manager/products/delete(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>
