@@ -12,9 +12,9 @@
 
 <div class="main-wrapper">
 
-    <div th:replace="~{admin/fragments/header::admin-header}"></div>
+    <div th:replace="~{manager/fragments/header-manager::admin-header}"></div>
 
-    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+    <div th:replace="~{manager/fragments/sidebar-manager::admin-sidebar}"></div>
 
     <div class="page-wrapper">
         <div class="content">
@@ -28,27 +28,18 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tabs-set">
-                        <form action="/manager/products/create" method="post" enctype="multipart/form-data"
+                        <form th:action="@{/manager/products/create}" th:method="post" enctype="multipart/form-data"
                               th:object="${product}">
                             <div class="form-row">
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label>Product Name</label>
+                                    <input type="text" th:field="*{name}" placeholder="Enter product name" required>
                                     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
                                          style="color: red;"></div>
-                                    <input type="text" th:field="*{name}" required>
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
-                                    <label>Category</label>
-                                    <select class="select" name="categoryId">
-                                        <option th:each="category : ${categories}"
-                                                th:value="${category.getId()}"
-                                                th:text="${category.getName()}"
-                                                th:attr="selected=${(categoryChoice == 'computer' && category.getName() == 'Computer') ||
-                                                 (categoryChoice == 'phone' && category.getName() == 'Phone') ||
-                                                 (categoryChoice == 'accessory' && category.getName() == 'Accessory') ? 'selected' : null}"
-                                        disabled>
-                                        </option>
-                                    </select>
+                                    <input name="categoryId" th:value="${categoryId}" hidden="hidden">
+                                    <input name="categoryChoice" th:value="${categoryChoice}" hidden="hidden">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label>Brand</label>
@@ -61,94 +52,91 @@
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label>Stock Quantity</label>
-                                    <div th:if="${#fields.hasErrors('stockQuantity')}"
-                                         th:errors="*{stockQuantity}"
-                                         style="color: red;"></div>
                                     <input type="text" th:field="*{stockQuantity}" required>
+                                    <span th:if="${#fields.hasErrors('stockQuantity')}"
+                                         th:errors="*{stockQuantity}"
+                                         style="color: red;"></span>
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label>Price</label>
-                                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
-                                         style="color: red;"></div>
                                     <input type="text" th:field="*{price}" required>
+                                    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+                                         style="color: red;"></span>
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">CPU</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                           type="text" th:field="*{cpu}" required>
+                                           type="text" th:field="*{cpu}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">RAM</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                           type="text" th:field="*{ram}" required>
+                                           type="text" th:field="*{ram}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">OS</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                           type="text" th:field="*{os}" required>
+                                           type="text" th:field="*{os}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">Monitor</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                           type="text" th:field="*{monitor}" required>
+                                           type="text" th:field="*{monitor}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
                                         Weight</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
-                                           type="text" th:field="*{weight}" required>
+                                           type="text" th:field="*{weight}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">Battery</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                           type="text" th:field="*{battery}" required>
+                                           type="text" th:field="*{battery}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
                                         Graphic Card</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
-                                           type="text" th:field="*{graphicCard}" required>
+                                           type="text" th:field="*{graphicCard}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
                                         Port</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
-                                           type="text" th:field="*{port}" required>
+                                           type="text" th:field="*{port}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}">
                                         Rear Camera</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}"
-                                           type="text" th:field="*{rearCamera}" required>
+                                           type="text" th:field="*{rearCamera}">
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}">
                                         Front Camera</label>
                                     <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}"
-                                           type="text" th:field="*{frontCamera}" required>
+                                           type="text" th:field="*{frontCamera}">
                                 </div>
                                 <div class="form-group col-lg-12">
                                     <label>Warranty</label>
-                                    <div th:if="${#fields.hasErrors('warranty')}" th:errors="*{warranty}"
-                                         style="color: red;"></div>
-                                    <textarea class="form-control" th:field="*{warranty}"
-                                              required></textarea>
+                                    <textarea class="form-control" th:field="*{warranty}" required></textarea>
+                                    <span th:if="${#fields.hasErrors('warranty')}" th:errors="*{warranty}"
+                                         style="color: red;"></span>
                                 </div>
                                 <div class="form-group col-lg-12">
                                     <label>Description</label>
-                                    <div th:if="${#fields.hasErrors('description')}"
+                                    <textarea class="form-control" th:field="*{description}" required></textarea>
+                                    <span th:if="${#fields.hasErrors('description')}"
                                          th:errors="*{description}"
-                                         style="color: red;"></div>
-                                    <textarea class="form-control" th:field="*{description}"
-                                              required></textarea>
+                                         style="color: red;"></span>
                                 </div>
                                 <div class="form-group col-lg-12">
                                     <label> Product Image</label>
                                     <div class="image-upload">
                                         <input type="file" name="files" accept="image/*" required>
                                         <div class="image-uploads">
-                                            <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
-                                                 th:field="*{thumbnail}">
+                                            <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img">
                                             <h4>Drag and drop a file to upload</h4>
                                         </div>
                                     </div>

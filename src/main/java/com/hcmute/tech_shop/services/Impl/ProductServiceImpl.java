@@ -60,20 +60,6 @@ public class ProductServiceImpl implements IProductService {
         }
     }
 
-    public String updateImage(MultipartFile file, String filename) {
-        try {
-            if (deleteImage(filename)) {
-                return saveImage(file);
-            }
-        } catch (Exception e) {
-            if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException("Filename already exists.");
-            }
-            throw new RuntimeException(e.getMessage());
-        }
-        return saveImage(file);
-    }
-
     @Override
     public boolean deleteImage(String filename) {
         try {
@@ -138,19 +124,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId, ProductRequest productRequest, String oldThumbnail, MultipartFile file) throws IOException {
-        Category categoryExisting = categoryRepository.findById(productRequest.getCategoryId()).get();
+    public Product updateProduct(Long productId, ProductRequest productRequest) throws IOException {
         Brand brandExisting = brandRepository.findById(productRequest.getBrandId()).get();
-
-        String thumbnail = "";
-        if (file == null) {
-            thumbnail = "/uploads/default-product.jpg";
-        } else {
-            if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
-                throw new BadRequestException("Image is not valid");
-            }
-            thumbnail = updateImage(file, oldThumbnail);
-        }
         // get product old by id
         Product existingProduct = productRepository.findById(productId).get();
         existingProduct.setName(productRequest.getName());
@@ -168,23 +143,47 @@ public class ProductServiceImpl implements IProductService {
         existingProduct.setStockQuantity(productRequest.getStockQuantity());
         existingProduct.setWarranty(productRequest.getWarranty());
         existingProduct.setWeight(productRequest.getWeight());
-        existingProduct.setThumbnail(thumbnail);
-        existingProduct.setCategory(categoryExisting);
         existingProduct.setBrand(brandExisting);
         // create if chua ton tai, update if ton tai
         return productRepository.save(existingProduct);
     }
 
-//    public void createProductImage(Long productId, ProductImageDTO productImageDTO) {
-//        Product existingProduct = getProductById(productId);
-//
-//        ProductImage newProductImage = ProductImage.builder()
-//                .product(existingProduct)
-//                .imageUrl(productImageDTO.getImageUrl())
-//                .build();
-//
-//        productImageRepository.save(newProductImage);
-//    }
+    @Override
+    public Product updateProduct(Long productId, ProductRequest productRequest, MultipartFile file) throws IOException {
+        Brand brandExisting = brandRepository.findById(productRequest.getBrandId()).get();
+        Product existingProduct = productRepository.findById(productId).get();
+
+        String thumbnail = "";
+        if (file == null) {
+            thumbnail = "/uploads/default-product.jpg";
+        } else {
+            if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                throw new BadRequestException("Image is not valid");
+            }
+            deleteImage(existingProduct.getThumbnail());
+            thumbnail = saveImage(file);
+        }
+        // get product old by id
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setDescription(productRequest.getDescription());
+        existingProduct.setPrice(productRequest.getPrice());
+        existingProduct.setCpu(productRequest.getCpu());
+        existingProduct.setRam(productRequest.getRam());
+        existingProduct.setOs(productRequest.getOs());
+        existingProduct.setMonitor(productRequest.getMonitor());
+        existingProduct.setBattery(productRequest.getBattery());
+        existingProduct.setGraphicCard(productRequest.getGraphicCard());
+        existingProduct.setPort(productRequest.getPort());
+        existingProduct.setRearCamera(productRequest.getRearCamera());
+        existingProduct.setFrontCamera(productRequest.getFrontCamera());
+        existingProduct.setStockQuantity(productRequest.getStockQuantity());
+        existingProduct.setWarranty(productRequest.getWarranty());
+        existingProduct.setWeight(productRequest.getWeight());
+        existingProduct.setThumbnail(thumbnail);
+        existingProduct.setBrand(brandExisting);
+        // create if chua ton tai, update if ton tai
+        return productRepository.save(existingProduct);
+    }
 
     @Override
     public void deleteProduct(Long productId) {
