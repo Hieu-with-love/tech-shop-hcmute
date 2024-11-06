@@ -46,7 +46,6 @@ public class ProductRequest implements Serializable {
 
     private String frontCamera = "";
 
-    @NotNull(message = "Product's stock quantity must not be empty")
     @Min(value = 1, message = "Product's stock quantity must be greater than 0")
     private int stockQuantity;
 

@@ -32,11 +32,11 @@ public class ProductController {
     @Autowired
     IProductImageService productImageService;
 
-    @GetMapping("") // localhost:8080/admin/products
+    @GetMapping("") // localhost:8080/manager/products
     public String index(Model model) {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-        return "admin/products/productlist";
+        return "manager/products/productlist";
     }
 
     @GetMapping("/computerDetail")
@@ -45,7 +45,7 @@ public class ProductController {
         List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
         model.addAttribute("productImages", images);
-        return "admin/products/computerDetail";
+        return "manager/products/computerDetail";
     }
 
     @GetMapping("/phoneDetail")
@@ -54,7 +54,7 @@ public class ProductController {
         List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
         model.addAttribute("productImages", images);
-        return "admin/products/phoneDetail";
+        return "manager/products/phoneDetail";
     }
 
     @GetMapping("/accessoryDetail")
@@ -63,43 +63,37 @@ public class ProductController {
         List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
         model.addAttribute("productImages", images);
-        return "admin/products/accessoryDetail";
+        return "manager/products/accessoryDetail";
     }
 
     @GetMapping("/add/computer")
     public String addComputer(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        List<Category> categories = categoryService.findAll();
-        List<Brand> brands = brandService.findAll();
-        model.addAttribute("categories", categories);
         model.addAttribute("product", productDTO);
-        model.addAttribute("brands", brands);
+        model.addAttribute("brands", brandService.findAll());
+        model.addAttribute("categoryId", 1);
         model.addAttribute("categoryChoice", "computer");
-        return "admin/products/addproduct";
+        return "manager/products/addproduct";
     }
 
     @GetMapping("/add/phone")
     public String addPhone(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        List<Category> categories = categoryService.findAll();
-        List<Brand> brands = brandService.findAll();
-        model.addAttribute("categories", categories);
         model.addAttribute("product", productDTO);
-        model.addAttribute("brands", brands);
+        model.addAttribute("brands", brandService.findAll());
+        model.addAttribute("categoryId", 2);
         model.addAttribute("categoryChoice", "phone");
-        return "admin/products/addproduct";
+        return "manager/products/addproduct";
     }
 
     @GetMapping("/add/accessory")
     public String addAccessory(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        List<Category> categories = categoryService.findAll();
-        List<Brand> brands = brandService.findAll();
-        model.addAttribute("categories", categories);
         model.addAttribute("product", productDTO);
-        model.addAttribute("brands", brands);
+        model.addAttribute("brands", brandService.findAll());
+        model.addAttribute("categoryId", 3);
         model.addAttribute("categoryChoice", "accessory");
-        return "admin/products/addproduct";
+        return "manager/products/addproduct";
     }
 
     @GetMapping("/edit")
@@ -111,13 +105,13 @@ public class ProductController {
         model.addAttribute("brands", brands);
         model.addAttribute("product", product);
         if (product.getCategory().getName().equals("Computer")) {
-            return "admin/products/editComputer";
+            return "manager/products/editComputer";
         }
         if (product.getCategory().getName().equals("Phone")) {
-            return "admin/products/editPhone";
+            return "manager/products/editPhone";
         }
         if (product.getCategory().getName().equals("Accessory")) {
-            return "admin/products/editAccessory";
+            return "manager/products/editAccessory";
         }
         return "redirect:manager/products";
     }
@@ -133,7 +127,7 @@ public class ProductController {
         List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("id", id);
         model.addAttribute("productImages", images);
-        return "admin/products/images";
+        return "manager/products/images";
     }
 
     @GetMapping("/images/delete")
@@ -143,32 +137,44 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String insert(Model model,
-                         @Valid @ModelAttribute("product") ProductRequest productDTO,
+    public String insert(@Valid @ModelAttribute("product") ProductRequest productDTO,
                          @RequestParam("files") MultipartFile file,
+                         @RequestParam("categoryId") Long categoryId,
+                         @RequestParam("categoryChoice") String categoryChoice,
+                         Model model,
                          BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "admin/products/addproduct";
+            model.addAttribute("product", productDTO);
+            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("brands", brandService.findAll());
+            model.addAttribute("categoryChoice", categoryChoice);
+            return "manager/products/addproduct";
         }
-
+        productDTO.setCategoryId(categoryId);
         if (productService.createProduct(productDTO, file)) {
             return "redirect:/manager/products";
         }
-        return "admin/products/addproduct";
+        return "manager/products/addproduct";
     }
 
     @PostMapping("/update")
     public String update(Model model,
                          @RequestParam Long id,
                          @Valid @ModelAttribute("product") ProductRequest productDTO,
-                         @RequestParam("oldThumbnail") String oldThumbnail,
                          @RequestParam("files") MultipartFile file,
                          BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "admin/products/productlist";
+            return "manager/products/productlist";
+        }
+        if (file == null || file.isEmpty()) {
+            Product product = productService.updateProduct(id, productDTO);
+            if (product == null) {
+                // handle exception with alert, use js code
+            }
+            return "redirect:/manager/products";
         }
 
-        Product product = productService.updateProduct(id, productDTO, oldThumbnail, file);
+        Product product = productService.updateProduct(id, productDTO, file);
         if (product == null) {
             // handle exception with alert, use js code
         }

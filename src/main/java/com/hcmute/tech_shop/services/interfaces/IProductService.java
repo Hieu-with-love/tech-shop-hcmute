@@ -20,7 +20,9 @@ public interface IProductService {
 
     boolean createProduct(ProductRequest productRequest, MultipartFile file) throws IOException;
 
-    Product updateProduct(Long productId, ProductRequest productRequest, String oldThumbnail, MultipartFile file) throws IOException;
+    Product updateProduct(Long productId, ProductRequest productRequest) throws IOException;
+
+    Product updateProduct(Long productId, ProductRequest productRequest, MultipartFile file) throws IOException;
 
     void deleteProduct(Long productId);
 
