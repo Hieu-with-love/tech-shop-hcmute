@@ -47,17 +47,6 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Category</label>
-                                                <select class="select" name="categoryId">
-                                                    <option th:each="category : ${categories}"
-                                                            th:value="${category.getId()}"
-                                                            th:text="${category.getName()}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="form-group">
                                                 <label>Brand</label>
                                                 <select class="select" name="brandId">
                                                     <option th:each="brand : ${brands}"
