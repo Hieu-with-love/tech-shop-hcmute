@@ -45,8 +45,14 @@ public class UserController {
                            @Valid @ModelAttribute("userRegister") UserRequest userRequest,
                            BindingResult result
                            ){
+        // Catch null value exception
+        if (result.hasErrors()) {
+            return "user/sign-up";
+        }
+
         boolean is = userService.createUser(userRequest, result);
 
+        // Catch logic by system exception
         if (result.hasErrors()) {
             return "user/sign-up";
         }
@@ -73,13 +79,16 @@ public class UserController {
 
     @PostMapping("/forgot-password")
     public String forgotPassword(Model model,
-                                 @RequestParam("email") String email,
+                                 @Valid @RequestParam("email") String email,
                                  BindingResult result) {
+        if (email == null) {
+            model.addAttribute("emailError", "Email bị null, moi nhập");
+            return "user/forgot-password";
+        }
         try{
             emailService.sendEmailToReactivePassword(email);
         }catch (Exception ex){
-            result.addError(new FieldError("user-forgot", "eamil",
-                    "Email " + email + " not exists"));
+            model.addAttribute("emailError", "Email " + email + "không tồn tại!");
             return "user/forgot-password";
         }
         return "redirect:/login?success";

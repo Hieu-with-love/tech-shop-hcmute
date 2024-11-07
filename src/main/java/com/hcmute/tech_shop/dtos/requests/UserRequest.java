@@ -17,32 +17,33 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
-    @NotNull(message = "Username is required")
+    @NotNull(message = "Username là bắt buộc!")
     String username;
 
-    @NotBlank(message = "email is required")
-    @Email(message = "Email should contains character @.\n Ex: name@gmail.com")
+    @NotBlank(message = "Email là bắt buộc!")
+    @Email(message = "Email nên chứa kí tự @.\n Ex: name@gmail.com")
     String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "Nhập mật khẩu")
     String password;
 
-    @NotNull(message = "Password is required")
+    @NotNull(message = "Nhập mật khẩu xác nhận!")
     @JsonProperty("confirm_password")
     String confirmPassword;
 
     @JsonProperty("phone_number")
     String phoneNumber;
 
-    @NotBlank(message = "Firstname is required")
+    @NotBlank(message = "Nhập tên của bạn và tên lót nếu có!")
     @JsonProperty("firstname")
     String firstName;
 
-    @NotBlank(message = "Lastname is required")
+    @NotBlank(message = "Nhập họ của bạn!")
     String lastName;
 
     String gender;
 
+    @NotNull(message = "Nhập ngày tháng năm sinh!")
     LocalDate dob;
 
     boolean active;

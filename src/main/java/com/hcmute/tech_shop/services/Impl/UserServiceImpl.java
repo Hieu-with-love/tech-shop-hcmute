@@ -13,15 +13,13 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.cglib.core.Local;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +30,7 @@ public class UserServiceImpl implements UserService {
     CartService cartService;
     RoleService roleService;
     UserRepository userRepository;
-//    PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
 
@@ -45,6 +43,11 @@ public class UserServiceImpl implements UserService {
         if (this.existsEmail(userRequest.getEmail())) {
             result.addError(new FieldError("userRegister", "email",
                     "Email da ton tai. Vui long nhap Email khac"));
+        }
+
+        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+            result.addError(new FieldError("registerUser", "password",
+                    "Mat khau khong khop"));
         }
 
         // Lấy day/month/year hiện tại, 11/2/2024 -> tru 15 năm -> 11/2/2009
@@ -62,11 +65,6 @@ public class UserServiceImpl implements UserService {
 
         validation(userRequest, result);
 
-        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-            result.addError(new FieldError("registerUser", "password",
-                    "Mat khau khong khop"));
-        }
-
         if (!result.hasErrors()) {
             User user = User.builder()
                     .username(userRequest.getUsername())
@@ -79,7 +77,7 @@ public class UserServiceImpl implements UserService {
                     .role(role)
                     .isActive(false)
                     .build();
-//            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
 
             Confirmation confirm = Confirmation.builder()
@@ -97,7 +95,6 @@ public class UserServiceImpl implements UserService {
             }catch (Exception e){
                 throw new RuntimeException("Send email failed\n\n" + e.getMessage());
             }
-            userRepository.save(user);
             return true;
         }
         return false;
@@ -115,14 +112,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean verifyToken(String token) {
-        Confirmation confirm = confirmationRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Confirmation token not found at verify token"));
-        User user = userRepository.findByUsernameIgnoreCase(confirm.getUser().getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found at verify token"));
-        user.setActive(true);
-        userRepository.save(user);
-
-        return true;
+        try{
+            Confirmation confirm = confirmationRepository.findByToken(token)
+                    .orElseThrow(() -> new RuntimeException("Confirmation token not found at verify token"));
+            User user = userRepository.findByUsernameIgnoreCase(confirm.getUser().getUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found at verify token"));
+            user.setActive(true);
+            userRepository.save(user);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
