@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
     private final JavaMailSender mailSender;
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void sendEmailToVerifyAccount(String name, String to, String token) {
@@ -41,12 +41,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmailToReactivePassword(String email) {
-        User existingUser = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new RuntimeException("User not found at send email get password"));
-        String newPassword = EmailUtil.generateRandomPassword();
-//        existingUser.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(existingUser);
         try{
+            User existingUser = userRepository.findByEmailIgnoreCase(email)
+                    .orElseThrow(() -> new RuntimeException("User not found at send email get password"));
+            String newPassword = EmailUtil.generateRandomPassword();
             String contentMail = "New your password is: " + newPassword
                                 + "\n\nThe support by [4 con ong team]";
             SimpleMailMessage message = new SimpleMailMessage();
@@ -55,6 +53,9 @@ public class EmailServiceImpl implements EmailService {
             message.setTo(existingUser.getEmail());
             message.setText(contentMail);
             mailSender.send(message);
+
+            existingUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(existingUser);
         }catch (Exception e){
             throw new RuntimeException("Has error occurred while sending email to get password\n\n"
                     + e.getMessage());

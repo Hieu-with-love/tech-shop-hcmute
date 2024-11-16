@@ -64,6 +64,7 @@
                                        th:field="*{password}"
                                     placeholder="Enter password"
                                 >
+                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
@@ -71,7 +72,7 @@
                                        th:field="*{confirmPassword}"
                                        placeholder="Enter confirm password"
                                 >
-                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
+                                <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <label>Phone Number</label>
@@ -85,16 +86,16 @@
                                 <input type="text" class="form-control"
                                        th:field="*{firstName}"
                                        placeholder="Enter first name"
-                                       required
                                 >
+                                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
                                 <input type="text" class="form-control"
                                        th:field="*{lastName}"
                                        placeholder="Enter last name"
-                                       required
                                 >
+                                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <div class="gender-box">
