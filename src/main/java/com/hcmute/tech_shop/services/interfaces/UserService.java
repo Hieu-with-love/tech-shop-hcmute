@@ -18,4 +18,6 @@ public interface UserService {
     boolean existsEmail(String email);
     boolean existsUsername(String username);
     boolean verifyToken(String token);
+    UserRequest convertToDto(User user);
+    User convertToUser(UserRequest userRequest);
 }

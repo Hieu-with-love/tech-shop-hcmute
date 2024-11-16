@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {"/register", "/forgot-password"};
+    private final String[] PUBLIC_ENDPOINTS = {"/register", "/user/home", "/forgot-password"};
 
     CustomUserDetailsServiceImpl customUserDetailsService;
 
@@ -35,8 +35,9 @@ public class SecurityConfig {
                     .requestMatchers("/user/assets/**").permitAll()
                     .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                     .requestMatchers("/login").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER", "MANAGER")
+                    .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
                 .formLogin(form ->
@@ -45,9 +46,12 @@ public class SecurityConfig {
                             .failureHandler(new CustomAuthFailureHandler())
                             .permitAll()
                 )
-                .logout(logout ->
-                    logout.logoutUrl("/log-out")
-                            .permitAll()
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .permitAll()
                 );
         return http.build();
     }

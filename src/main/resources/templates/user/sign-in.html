@@ -55,6 +55,13 @@
                 </div>
             </div>
         </div>
+
+        <div th:if="${param.logout}">
+            <script type="text/javascript">
+                alert('Dang xuat va xoa session thanh cong!')
+            </script>
+        </div>
+
     </div>
 </div>
     <div id="content"></div>

@@ -13,6 +13,7 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
+    private final ModelMapper modelMapper;
 
     private void validation(UserRequest userRequest, BindingResult result){
         // Kiem tra username da ton tai chua?
@@ -123,6 +125,16 @@ public class UserServiceImpl implements UserService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public UserRequest convertToDto(User user) {
+        return modelMapper.map(user, UserRequest.class);
+    }
+
+    @Override
+    public User convertToUser(UserRequest userRequest) {
+        return modelMapper.map(userRequest, User.class);
     }
 
     @Override
