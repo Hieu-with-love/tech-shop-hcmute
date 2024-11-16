@@ -23,6 +23,11 @@ public class UserController {
     UserService userService;
     EmailServiceImpl emailService;
 
+    @GetMapping("/cart")
+    public String showCart() {
+        return "user/cart";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "user/sign-in";
