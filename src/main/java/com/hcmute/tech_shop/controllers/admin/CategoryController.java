@@ -75,13 +75,14 @@ public class CategoryController {
     @PostMapping("/edit-category/{id}")
     public String editCategory(Model model, @ModelAttribute("category") CategoryRequest categoryRequest, @PathVariable(value = "id") Long id, Model model1) {
         String msg = "";
+        Category categoryOld = categoryService.findById(id).get();
         if(!categoryRequest.getName().matches("^[a-zA-Z\\s]+$")){
             msg = "Category Name cannot contain numbers or special characters";
             model.addAttribute("error", msg);
+            model.addAttribute("category", categoryOld);
             return "admin/categories/edit-category";
         }
         Category category = categoryService.findByCategoryName(categoryRequest.getName());
-        Category categoryOld = categoryService.findById(id).get();
         if(category != null && !category.getId().equals(id) ) {
             msg = "Category already exists";
             model.addAttribute("error", msg);

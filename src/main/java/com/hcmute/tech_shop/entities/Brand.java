@@ -1,10 +1,7 @@
 package com.hcmute.tech_shop.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "brands")
+@ToString(exclude = "products") // Không bao gồm products trong toString()
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +22,9 @@ public class Brand {
 
     @Column(name="brand_img", length = 500)
     private String brandImg;
+
+    @Column(name = "active",nullable = false)
+    private boolean isActive;
 
     @OneToMany(mappedBy = "brand")
     private List<Product> products;

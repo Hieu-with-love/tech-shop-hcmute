@@ -19,4 +19,6 @@ public class BrandRequest {
 
     @Column(name="brand_img", length = 500)
     private String brandImg;
+
+    private boolean active;
 }

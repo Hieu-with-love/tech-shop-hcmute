@@ -32,21 +32,38 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Category Name</label>
                                     <input type="text" placeholder="Category name" name="name" required th:field="*{name}">
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="ccol-lg-12">
                                 <div class="form-group">
-                                    <input type="hidden" th:field="*{id}">
+                                    <label>Active</label>
+                                    <div class="radio-group">
+                                        <div>
+                                            <input type="radio" id="active" name="active" value="true"
+                                                   th:checked="${category.active} == true" /> Active
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="inactive" name="active" value="false"
+                                                   th:checked="${category.active} == false" />Inactive
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Description</label>
                                     <textarea class="form-control" th:field="*{description}"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <input type="hidden" th:field="*{id}">
                                 </div>
                             </div>
                             <div class="col-lg-12">

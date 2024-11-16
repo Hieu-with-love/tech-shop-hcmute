@@ -1,29 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="POS - Bootstrap Admin Template">
-    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
-    <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Dreams Pos admin template</title>
-
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/admin/assets/img/favicon.jpg}">
-
-    <link rel="stylesheet" th:href="@{/admin/assets/css/bootstrap.min.css}">
-
-    <link rel="stylesheet" th:href="@{/admin/assets/css/animate.css}">
-
-    <link rel="stylesheet" th:href="@{/admin/assets/plugins/select2/css/select2.min.css}">
-
-    <link rel="stylesheet" th:href="@{/admin/assets/css/dataTables.bootstrap4.min.css}">
-
-    <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/fontawesome.min.css}">
-    <link rel="stylesheet" th:href="@{/admin/assets/plugins/fontawesome/css/all.min.css}">
-
-    <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
-</head>
+<div th:insert="~{admin/fragments/head::head}"></div>
 <body>
 <div id="global-loader">
     <div class="whirly-loader"> </div>
@@ -84,23 +61,7 @@
     </div>
 </div>
 
+<div th:insert="~{admin/fragments/script::script}"></div>
 
-<script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
-
-<script th:src="@{/admin/assets/js/feather.min.js}"></script>
-
-<script th:src="@{/admin/assets/js/jquery.slimscroll.min.js}"></script>
-
-<script th:src="@{/admin/assets/js/jquery.dataTables.min.js}"></script>
-<script th:src="@{/admin/assets/js/dataTables.bootstrap4.min.js}"></script>
-
-<script th:src="@{/admin/assets/js/bootstrap.bundle.min.js}"></script>
-
-<script th:src="@{/admin/assets/plugins/select2/js/select2.min.js}"></script>
-
-<script th:src="@{/admin/assets/plugins/sweetalert/sweetalert2.all.min.js}"></script>
-<script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
-
-<script th:src="@{/admin/assets/js/script.js}"></script>
 </body>
 </html>
