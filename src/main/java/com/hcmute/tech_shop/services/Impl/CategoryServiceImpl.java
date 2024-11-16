@@ -2,8 +2,10 @@ package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.convert.CategoryConvert;
 import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
+import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
+import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Autowired
     CategoryConvert categoryConvert;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Override
     public List<Category> findAll() {
@@ -42,6 +47,7 @@ public class CategoryServiceImpl implements ICategoryService {
             if(this.findByCategoryName(categoryRequest.getName()) != null) {
                 return false;
             }
+            categoryRequest.setActive(true);
             Category category = categoryConvert.toEntity(categoryRequest);
             categoryRepository.save(category);
             return true;
@@ -59,6 +65,7 @@ public class CategoryServiceImpl implements ICategoryService {
             category1.setId(id);
             category1.setName(categoryRequest.getName());
             category1.setDescription(categoryRequest.getDescription());
+            category1.setActive(categoryRequest.isActive());
             categoryRepository.save(category1);
             return true;
         }catch (Exception e) {
@@ -70,7 +77,14 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public boolean deleteCategory(Long id) {
         try {
-            categoryRepository.deleteById(id);
+            Category category = categoryRepository.findById(id).get();
+            if(!productRepository.findByCategoryName(category.getName()).isEmpty()){
+                category.setActive(false);
+                categoryRepository.save(category);
+            }
+            else{
+                categoryRepository.deleteById(id);
+            }
             return true;
         }catch (Exception e) {
             e.printStackTrace();

@@ -58,12 +58,12 @@ public class BrandController {
         }
         if (!brandRequest.getName().matches("^[a-zA-Z0-9\\s]+$")){
             msg = "Name is not valid";
-            model.addAttribute("msg", msg);
+            model.addAttribute("error", msg);
             return "admin/brands/add-brand";
         }
         if(brandService.findByName(brandRequest.getName()) != null){
             msg = "Name already exists";
-            model.addAttribute("msg", msg);
+            model.addAttribute("error", msg);
             return "admin/brands/add-brand";
         }
         if (brandService.addBrand(brandRequest,file)){
@@ -71,7 +71,7 @@ public class BrandController {
         }
         else {
             msg = "Something went wrong";
-            model.addAttribute("msg", msg);
+            model.addAttribute("error", msg);
         }
         return "admin/brands/add-brand";
     }
@@ -84,7 +84,11 @@ public class BrandController {
     }
 
     @PostMapping("/edit-brand/{id}")
-    public String editBrand(@Valid @ModelAttribute("brand") BrandRequest brandRequest, Model model, @PathVariable("id") Long id, @RequestParam("oldImg") String oldImg, @RequestParam("files") MultipartFile file, BindingResult bindingResult) {
+    public String editBrand(@Valid @ModelAttribute("brand") BrandRequest brandRequest,
+                            Model model, @PathVariable("id") Long id,
+                            @RequestParam("oldImg") String oldImg,
+                            @RequestParam("files") MultipartFile file,
+                            BindingResult bindingResult) {
         String msg = "";
 
         if (bindingResult.hasErrors()) {
@@ -111,15 +115,22 @@ public class BrandController {
             model.addAttribute("category", brandOld);
             return "admin/brands/edit-brand";
         }
-        if(brandService.updateBrand(brandRequest,id,oldImg, file)){
-            return "redirect:/admin/brands";
+        if (file == null || file.isEmpty()) {
+            if(brandService.updateBrand(brandRequest,id,oldImg)){
+                return "redirect:/admin/brands";
+            }
+        }
+        else if(file != null && !file.isEmpty()) {
+            if(brandService.updateBrand(brandRequest,id,oldImg, file)) {
+                return "redirect:/admin/brands";
+            }
         }
         else {
             msg = "Something went wrong";
             model.addAttribute("msg", msg);
             model.addAttribute("category", brandOld);
-            return "admin/brands/edit-brand";
         }
+        return "admin/brands/edit-brand";
     }
 
     @GetMapping("/delete-brand/{id}")

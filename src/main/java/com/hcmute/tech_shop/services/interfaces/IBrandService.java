@@ -41,6 +41,8 @@ public interface IBrandService {
 
     boolean addBrand(BrandRequest brandRequest, MultipartFile file) throws IOException;
 
+    boolean updateBrand(BrandRequest brandRequest, Long id, String oldImg);
+
     boolean updateBrand(BrandRequest brandRequest, Long id, String oldImg, MultipartFile file);
 
     boolean deleteBrand(Long brandId);

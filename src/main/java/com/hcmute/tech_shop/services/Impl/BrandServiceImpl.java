@@ -3,7 +3,9 @@ package com.hcmute.tech_shop.services.Impl;
 import com.hcmute.tech_shop.dtos.requests.BrandRequest;
 import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.repositories.BrandRepository;
+import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.IBrandService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -23,6 +25,9 @@ import java.util.UUID;
 public class BrandServiceImpl implements IBrandService {
     @Autowired
     BrandRepository brandRepository;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Override
     public Brand findByName(String name) {
@@ -141,13 +146,28 @@ public class BrandServiceImpl implements IBrandService {
                 }
                 img = saveImage(file);
             }
-            assert file != null;
-            brandRequest.setBrandImg(img);
             Brand brand = new Brand();
-            BeanUtils.copyProperties(brandRequest, brand);
+            brand.setBrandImg(img);
+            brand.setActive(true);
+            brand.setName(brandRequest.getName());
             brandRepository.save(brand);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateBrand(BrandRequest brandRequest, Long id, String oldImg){
+        try {
+            Brand brand = brandRepository.findById(id).get();
+            brand.setName(brandRequest.getName());
+            brand.setBrandImg(oldImg);
+            brand.setActive(brandRequest.isActive());
+            brandRepository.save(brand);
+            return true;
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -162,11 +182,11 @@ public class BrandServiceImpl implements IBrandService {
             }
             else {
                 if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
-                    return false;
+                    throw new BadRequestException("Image is not valid");
                 }
-                img = updateImage(file,oldImg);
-                Brand brand = new Brand();
-                brand.setId(id);
+                deleteImage(oldImg);
+                img = saveImage(file);
+                Brand brand = brandRepository.findById(id).get();
                 brand.setName(brandRequest.getName());
                 brand.setBrandImg(img);
                 brandRepository.save(brand);
@@ -182,8 +202,14 @@ public class BrandServiceImpl implements IBrandService {
     public boolean deleteBrand(Long brandId){
         try {
             Brand brand = brandRepository.findById(brandId).get();
-            deleteImage(brand.getBrandImg());
-            brandRepository.delete(brand);
+            if(!productRepository.findByBrandName(brand.getName()).isEmpty()){
+                brand.setActive(false);
+                brandRepository.save(brand);
+            }
+            else {
+                deleteImage(brand.getBrandImg());
+                brandRepository.delete(brand);
+            }
             return true;
         }catch (Exception e) {
             e.printStackTrace();

@@ -59,7 +59,7 @@ public class Product extends TrackingDate{
     private String thumbnail;
 
     // a product must have category_id, and load Category once called, and obligated foreign key
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
