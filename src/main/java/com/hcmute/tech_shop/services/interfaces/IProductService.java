@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.services.interfaces;
 
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
+import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Product;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 public interface IProductService {
     void init();
+    List<ProductResponse> getAllProducts();
 
     boolean deleteImage(String filename);
 

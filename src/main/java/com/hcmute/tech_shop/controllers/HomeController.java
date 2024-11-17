@@ -1,25 +1,36 @@
 package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.ProductResponse;
+import com.hcmute.tech_shop.entities.Product;
+import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class HomeController {
     private final UserService userService;
+    private final IProductService productService;
 
     @GetMapping("/home")
-    public String home(Model model) {
-
+    public String home(Model model, HttpSession session) {
+        List<ProductResponse> products = productService.getAllProducts();
+        session.setAttribute("cartId", 1);
+        model.addAttribute("products", products);
         return "user/home";
     }
     @GetMapping("/test")
@@ -33,12 +44,34 @@ public class HomeController {
     }
 
     @GetMapping("/my-account")
-    public String showPageMyAccount(Model model) {
+    public String showProfile(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         com.hcmute.tech_shop.entities.User user = userService.getUserByUsername(username);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        UserRequest userRequest = userService.convertToDto(user);
+        UserRequest userRequest = UserRequest.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .gender(user.getGender())
+                .dob(user.getDateOfBirth())
+                .active(user.isActive())
+                .image(user.getImage())
+                .build();
         model.addAttribute("userDto", userRequest);
+        return "user/my-account";
+    }
+
+    @PostMapping("/my-account")
+    public String updateProfile(Model model,
+                                @Valid @ModelAttribute UserRequest userDto,
+                                BindingResult result) {
+        if (result.hasErrors()){
+            model.addAttribute("error", result.getAllErrors());
+        }
+
+        userService.updateProfile(userDto.getId(), userDto, result);
+
         return "user/my-account";
     }
 

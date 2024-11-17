@@ -21,7 +21,12 @@ public class CustomizeSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/admin/dashboard");
         } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user/home");
-        } else {
+        } else if (roles.contains("ROLE_MANAGER")){
+            response.sendRedirect("/manager/home");
+        } else if (roles.contains("ROLE_GUEST")){
+            response.sendRedirect("/user/home");
+        }
+        else {
             response.sendRedirect("/login?error");
         }
     }

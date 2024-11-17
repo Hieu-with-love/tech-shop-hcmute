@@ -104,12 +104,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(Long id, UserRequest userRequest, BindingResult result) {
-        // logic update user
-        validation(userRequest, result);
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         return false;
+    }
+
+    @Override
+    public boolean updateProfile(Long id, UserRequest userRequest, BindingResult result) {
+        // logic update user
+        validation(userRequest, result);
+        try{
+            User existingUser = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            existingUser.setFirstName(userRequest.getFirstName());
+            existingUser.setLastName(userRequest.getLastName());
+            existingUser.setGender(userRequest.getGender());
+            existingUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+            existingUser.setEmail(userRequest.getEmail());
+            existingUser.setPhoneNumber(userRequest.getPhoneNumber());
+            existingUser.setGender(userRequest.getGender());
+            existingUser.setDateOfBirth(userRequest.getDob());
+            existingUser.setImage(existingUser.getImage());
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
