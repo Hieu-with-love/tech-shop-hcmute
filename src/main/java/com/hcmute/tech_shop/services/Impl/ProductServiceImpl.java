@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
+import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Brand;
 import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
@@ -8,6 +9,7 @@ import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
+import com.hcmute.tech_shop.utils.Constant;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -41,6 +44,21 @@ public class ProductServiceImpl implements IProductService {
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
+    }
+
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = this.findAll();
+        return products.stream().map(p -> {
+            String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
+            return ProductResponse.builder()
+                    .id(p.getId())
+                    .name(p.getName())
+                    .price(Constant.formatter.format(p.getPrice()))
+                    .oldPrice(oldPrice)
+                    .thumbnail(p.getThumbnail())
+                    .build();
+        }).toList();
     }
 
     public String saveImage(MultipartFile file) {

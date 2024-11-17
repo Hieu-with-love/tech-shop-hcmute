@@ -1,0 +1,42 @@
+.cart-action li.select-option .add-to-cart-btn {
+    position: relative;
+    height: 40px;
+    line-height: 39px;
+    padding: 0 18px;
+    display: block;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--color-white);
+    background-color: var(--color-secondary);
+    transition: .3s;
+    box-shadow: 0 16px 32px 0 rgba(0, 0, 0, .06);
+    position: relative;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+}
+
+.axil-product .cart-action li.select-option .add-to-cart-btn:before {
+    content: "";
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-secondary);
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    transition: transform .5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.axil-product .cart-action li.select-option .add-to-cart-btn:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.axil-product .cart-action li.select-option .add-to-cart-btn:hover:before {
+    transform: scale(1.1);
+}

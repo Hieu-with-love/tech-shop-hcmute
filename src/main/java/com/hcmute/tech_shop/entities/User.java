@@ -47,6 +47,9 @@ public class User extends TrackingDate{
     @Column(name = "active",nullable = false)
     private boolean isActive;
 
+    @Column(name = "image")
+    private String image;
+
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 

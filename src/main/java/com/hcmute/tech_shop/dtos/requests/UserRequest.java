@@ -3,10 +3,12 @@ package com.hcmute.tech_shop.dtos.requests;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hcmute.tech_shop.entities.Role;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -17,6 +19,8 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
+    Long id;
+
     @NotNull(message = "Username là bắt buộc!")
     String username;
 
@@ -24,7 +28,7 @@ public class UserRequest {
     @Email(message = "Email nên chứa kí tự @.\n Ex: name@gmail.com")
     String email;
 
-    @NotBlank(message = "Nhập mật khẩu")
+    @NotBlank(message = "Nhập mật khẩu!")
     String password;
 
     @NotNull(message = "Nhập mật khẩu xác nhận!")
@@ -44,9 +48,13 @@ public class UserRequest {
     String gender;
 
     @NotNull(message = "Nhập ngày tháng năm sinh!")
+    @Future(message = "Ngay sinh khong the o tuong lai")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate dob;
 
     boolean active;
+
+    String image;
 
     Long roleId;
 

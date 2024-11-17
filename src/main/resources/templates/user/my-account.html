@@ -2,7 +2,28 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
-<div th:replace="~{user/fragments/head::head}"></div>
+<head>
+    <title>TechShop || Profile</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+
+    <style>
+        .status-box {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .status h4 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .text-success {
+            color: green;
+        }
+        .text-danger {
+            color: red;
+        }
+    </style>
+
+</head>
 
 <body class="sticky-header">
     <!-- Start Header -->
@@ -43,11 +64,11 @@
                     <div class="axil-dashboard-author">
                         <div class="media">
                             <div class="thumbnail">
-                                <img th:src="@{/user/assets/images/product/author1.png}" alt="Hello Annie">
+                                <img th:src="@{'/uploads/user/' + ${userDto.image}}" alt="Hello Annie">
                             </div>
                             <div class="media-body">
                                 <h5 class="title mb-0" th:text="'Hello' + ' ' + ${userDto.firstName} + ' ' + ${userDto.lastName}"></h5>
-                                <span class="joining-date">LaptopShop Member Since Sep 2024</span>
+                                <span class="joining-date">LaptopShop's Member Since Sep 2024</span>
                             </div>
                         </div>
                     </div>
@@ -69,8 +90,12 @@
                                 <div class="tab-pane fade show active" id="nav-account" role="tabpanel">
                                     <div class="col-lg-9">
                                         <div class="axil-dashboard-account">
-                                            <form class="account-details-form" th:action="@{/user/my-account}">
-                                                <div class="row" th:object="${userDto}">
+                                            <form class="account-details-form"
+                                                  th:action="@{/user/my-account}"
+                                                  method="post"
+                                                  th:object="${userDto}"
+                                            >
+                                                <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label>First Name</label>
@@ -119,29 +144,17 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-lg-6 col-sm-3">
-                                                        <div class="gender-box">
-                                                            <h3>Active</h3>
-                                                            <div class="gender-option">
-                                                                <div class="gender">
-                                                                    <input type="radio" id="check-active" name="active" value="1"
-                                                                           th:checked="${userDto.active}" />
-                                                                    <label for="check-male">Active</label>
-                                                                </div>
-                                                                <div class="gender">
-                                                                    <input type="radio" id="check-inactive" name="active" value="0"
-                                                                           th:checked="${!userDto.active}" />
-                                                                    <label for="check-female">Inactive</label>
-                                                                </div>
+                                                        <div class="status-box">
+                                                            <h3>Status</h3>
+                                                            <div class="status">
+                                                                <h4 th:if="${userDto.active}" class="text-success">Hoạt động</h4>
+                                                                <h4 th:unless="${userDto.active}" class="text-danger">Ngừng hoạt động</h4>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-12">
                                                         <h5 class="title">Password Change</h5>
-                                                        <div class="form-group">
-                                                            <label>Password</label>
-                                                            <input type="password" class="form-control" th:field="*{password}">
-                                                        </div>
                                                         <div class="form-group">
                                                             <label>New Password</label>
                                                             <input type="password" class="form-control" th:field="*{password}">
