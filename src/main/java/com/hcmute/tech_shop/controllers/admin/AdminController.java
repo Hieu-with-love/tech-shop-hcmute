@@ -4,8 +4,6 @@ import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.core.ApplicationContext;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,15 +23,4 @@ public class AdminController {
         session.setAttribute("user", user);
         return "admin/index";
     }
-
-    @GetMapping(value = "/userlist")
-    public String userlist() {
-        return "admin/userlists";
-    }
-
-    @GetMapping(value = "/add-user")
-    public String addUser() {
-        return "admin/newuser";
-    }
-
 }

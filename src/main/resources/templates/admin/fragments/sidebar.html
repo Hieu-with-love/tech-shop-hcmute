@@ -28,8 +28,8 @@
                         <li><a href="addcustomer.html">Add Customer </a></li>
                         <li><a href="supplierlist.html">Supplier List</a></li>
                         <li><a href="addsupplier.html">Add Supplier </a></li>
-                        <li><a th:href="@{/userlist}">New User>User List</a></li>
-                        <li><a th:href="@{/add-user}">New User>Add User</a></li>
+                        <li><a th:href="@{/admin/users}">Users List</a></li>
+                        <li><a th:href="@{/admin/users/add-user}">New User</a></li>
                         <li><a href="storelist.html">Store List</a></li>
                         <li><a href="addstore.html">Add Store</a></li>
                     </ul>
@@ -50,8 +50,8 @@
                     <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
                                     Users</span> <span class="menu-arrow"></span></a>
                     <ul>
-                        <li><a th:href="@{/admin/userlist}">Users List</a></li>
-                        <li><a th:href="@{/admin/add-user}">New User</a></li>
+                        <li><a th:href="@{/admin/users}">Users List</a></li>
+                        <li><a th:href="@{/admin/users/add-user}">New User</a></li>
                         <li><a th:href="@{/admin/rolelist}">Role List</a></li>
                         <li><a th:href="@{/admin/add-role}">New Role</a></li>
 
