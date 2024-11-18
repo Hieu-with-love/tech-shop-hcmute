@@ -3,7 +3,7 @@
 
 <head>
     <title>Dashboard || Edit Accessory</title>
-    <div th:insert="~{admin/fragments/head::head}"></div>
+    <div th:insert="~{manager/fragments/head::head}"></div>
 </head>
 <body>
 <div id="global-loader">
@@ -12,9 +12,9 @@
 
 <div class="main-wrapper">
 
-    <div th:replace="~{admin/fragments/header::admin-header}"></div>
+    <div th:replace="~{manager/fragments/header::header}"></div>
 
-    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+    <div th:replace="~{manager/fragments/sidebar::sidebar}"></div>
 
     <div class="page-wrapper">
         <div class="content">
@@ -110,7 +110,7 @@
     </div>
 </div>
 
-<div th:insert="~{admin/fragments/script::script}"></div>
+<div th:insert="~{manager/fragments/script::script}"></div>
 
 </body>
 </html>

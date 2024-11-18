@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <title>Dashboard || Detail Computer</title>
+    <title>Dashboard || Detail Order</title>
     <div th:insert="~{manager/fragments/head::head}"></div>
 </head>
 <body>
@@ -20,8 +20,8 @@
         <div class="content">
             <div class="page-header">
                 <div class="page-title">
-                    <h4>Product Details</h4>
-                    <h6>Full details of a product</h6>
+                    <h4>Order Detail</h4>
+                    <h6>Full detail of an Order</h6>
                 </div>
             </div>
 
@@ -38,35 +38,42 @@
                             <div class="productdetails">
                                 <ul class="product-bar">
                                     <li>
-                                        <h4>Product</h4>
-                                        <h6><span th:text="${product.get().getName()}"></span></h6>
+                                        <h4>Order</h4>
+                                        <h6><span th:text="${product.get().getId()}"></span></h6>
                                     </li>
                                     <li>
-                                        <h4>Category</h4>
-                                        <h6><span th:text="${product.get().getCategory().getName()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Brand</h4>
-                                        <h6><span th:text="${product.get().getBrand().getName()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Stock Quantity</h4>
-                                        <h6><span th:text="${product.get().getStockQuantity()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Price</h4>
+                                        <h4>Total Price</h4>
                                         <h6><span th:text="${product.get().getPrice()}"></span></h6>
                                     </li>
                                     <li>
-                                        <h4>CPU</h4>
-                                        <h6><span th:text="${product.get().getCpu()}"></span></h6>
+                                        <h4>Status</h4>
+                                        <h6>
+                                            <span class="badges bg-lightgreen"
+                                                  th:if="${product.get().getId() % 2 == 0}">Active
+                                            </span>
+                                            <span class="badges bg-lightred"
+                                                  th:if="${product.get().getId() % 2 != 0}">Inactive
+                                            </span>
+                                        </h6>
                                     </li>
                                     <li>
-                                        <h4>RAM</h4>
+                                        <h4>Voucher</h4>
+                                        <h6><span th:text="${product.get().getStockQuantity()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Payment</h4>
+                                        <h6><span th:text="${product.get().getPrice()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Buyer's Name</h4>
+                                        <h6><span th:text="${product.get().getName()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Buyer's Phone number</h4>
                                         <h6><span th:text="${product.get().getRam()}"></span></h6>
                                     </li>
                                     <li>
-                                        <h4>OS</h4>
+                                        <h4>Buyer's Address</h4>
                                         <h6><span th:text="${product.get().getOs()}"></span></h6>
                                     </li>
                                     <li>
@@ -75,7 +82,7 @@
                                     </li>
                                     <li>
                                         <h4>Weight</h4>
-                                        <h6><span th:text="${product.get().getWeight()}"></span></h6>                                    </li>
+                                        <h6><span th:text="${product.get().getWeight()}"></span></h6></li>
                                     <li>
                                         <h4>Battery</h4>
                                         <h6><span th:text="${product.get().getBattery()}"></span></h6>
