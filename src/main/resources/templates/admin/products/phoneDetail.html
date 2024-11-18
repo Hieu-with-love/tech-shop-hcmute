@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Dashboard || Detail Phone</title>
+    <div th:insert="~{admin/fragments/head::head}"></div>
+</head>
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"></div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{admin/fragments/header::admin-header}"></div>
+
+    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Product Details</h4>
+                    <h6>Full details of a product</h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="bar-code-view">
+                                <img th:src="@{/admin/assets/img/barcode1.png}" alt="barcode">
+                                <a class="printimg">
+                                    <img th:src="@{/admin/assets/img/icons/printer.svg}" alt="print">
+                                </a>
+                            </div>
+                            <div class="productdetails">
+                                <ul class="product-bar">
+                                    <li>
+                                        <h4>Product</h4>
+                                        <h6><span th:text="${product.get().getName()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Category</h4>
+                                        <h6><span th:text="${product.get().getCategory().getName()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Brand</h4>
+                                        <h6><span th:text="${product.get().getBrand().getName()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Stock Quantity</h4>
+                                        <h6><span th:text="${product.get().getStockQuantity()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Price</h4>
+                                        <h6><span th:text="${product.get().getPrice()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>CPU</h4>
+                                        <h6><span th:text="${product.get().getCpu()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>RAM</h4>
+                                        <h6><span th:text="${product.get().getRam()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>OS</h4>
+                                        <h6><span th:text="${product.get().getOs()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Monitor</h4>
+                                        <h6><span th:text="${product.get().getMonitor()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Battery</h4>
+                                        <h6><span th:text="${product.get().getBattery()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Font Camera</h4>
+                                        <h6><span th:text="${product.get().getFrontCamera()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Rear Camera</h4>
+                                        <h6><span th:text="${product.get().getRearCamera()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Warranty</h4>
+                                        <h6><span th:text="${product.get().getWarranty()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Description</h4>
+                                        <h6><span th:text="${product.get().getDescription()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Created At</h4>
+                                        <h6><span th:text="${product.get().getCreatedAt()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Updated At</h4>
+                                        <h6><span th:text="${product.get().getUpdatedAt()}"></span></h6>
+                                    </li>
+                                    <li>
+                                        <h4>Thumbnail</h4>
+                                        <h6>
+                                            <img th:src="@{|/${product.get().getThumbnail()}|}" alt="Ảnh sản phẩm"
+                                                 width="500px">
+                                        </h6>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="slider-product-details">
+                                <div class="owl-carousel owl-theme product-slide">
+                                    <div class="slider-product" th:each="image : ${productImages}">
+                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
+                                        <h4 th:text="${image.getUrl()}"></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{admin/fragments/script::script}"></div>
+</body>
+</html>

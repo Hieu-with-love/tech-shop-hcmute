@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Dashboard || Image</title>
+    <div th:insert="~{admin/fragments/head::head}"></div>
+</head>
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"></div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{admin/fragments/header::admin-header}"></div>
+
+    <div th:replace="~{admin/fragments/sidebar::admin-sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Product's Images</h4>
+                    <h6>Full images of a product</h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="productdetails">
+                                <form action="/admin/products/images/create" method="post"
+                                      enctype="multipart/form-data">
+                                    <div class="form-group col-lg-12">
+                                        <label> Product Images</label>
+                                        <input name="id" th:value="${id}" hidden="hidden">
+                                        <div class="image-upload">
+                                            <input type="file" multiple name="files" accept="image/*">
+                                            <div class="image-uploads">
+                                                <h4>Drag and drop a file to upload</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <input class="btn btn-submit me-2" type="submit" th:value="Add">
+                                        <a href="/admin/products" class="btn btn-cancel">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="slider-product-details">
+                                <div class="owl-carousel owl-theme product-slide">
+                                    <div class="slider-product" th:each="image : ${productImages}">
+                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
+                                        <h4 th:text="${image.getUrl()}"></h4>
+                                        <a th:href="@{/admin/products/images/delete(image_id=${image.getId()})}"
+                                           class="hideset"><i class="fa fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{admin/fragments/script::script}"></div>
+</body>
+</html>
