@@ -2,19 +2,21 @@ package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
-import com.hcmute.tech_shop.entities.Product;
-import com.hcmute.tech_shop.services.interfaces.IProductService;
-import com.hcmute.tech_shop.services.interfaces.UserService;
+import com.hcmute.tech_shop.entities.*;
+import com.hcmute.tech_shop.services.interfaces.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -26,10 +28,59 @@ public class HomeController {
     private final UserService userService;
     private final IProductService productService;
 
+    @Autowired
+    private ICategoryService categoryService;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private ICartDetailService cartDetailServiceImpl;
+
+    public UserRequest getUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getUserByUsername(username);
+        UserRequest userRequest = UserRequest.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .gender(user.getGender())
+                .dob(user.getDateOfBirth())
+                .active(user.isActive())
+                .image(user.getImage())
+                .build();
+        return userRequest;
+    }
+
     @GetMapping("/home")
     public String home(Model model, HttpSession session) {
+        List<Category> categories = categoryService.findAll();
+
+        UserRequest userRequest = getUser();
+        List<CartDetail> cartDetailList = new ArrayList<>();
+        List<CartDetail> cartDetailListFull = new ArrayList<>();
+        Cart cart = new Cart();
+        if(userRequest != null) {
+            cart = cartService.findByCustomerId(userRequest.getId());
+            if(cart == null) {
+                cart = new Cart();
+                cart.setUserId(userRequest.getId());
+                cart.setTotalPrice(BigDecimal.ZERO);
+                cart = cartService.createCart(cart);
+            }
+            cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
+            if(cartDetailList.size() > 3) {
+                cartDetailList = cartDetailList.subList(0, 3);
+            }
+        }
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("cart", cart);
+        model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("cartDetailListFull", cartDetailListFull);
         List<ProductResponse> products = productService.getAllProducts();
-        session.setAttribute("cartId", 1);
         model.addAttribute("products", products);
         return "user/home";
     }
