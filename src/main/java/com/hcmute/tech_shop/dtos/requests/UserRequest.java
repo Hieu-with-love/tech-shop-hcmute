@@ -48,7 +48,6 @@ public class UserRequest {
     String gender;
 
     @NotNull(message = "Nhập ngày tháng năm sinh!")
-    @Future(message = "Ngay sinh khong the o tuong lai")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate dob;
 
