@@ -189,7 +189,9 @@
                         </li>
                         <li class="my-account">
                             <a href="javascript:void(0)">
-                                <i class="flaticon-person"></i>
+                                <i class="flaticon-person"></i><p class="sub-title"
+                                                                  th:if="${#authentication.principal != null && #authentication.principal != 'anonymousUser'}"
+                                                                  th:text="${session.user.lastName}"></p>
                             </a>
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
