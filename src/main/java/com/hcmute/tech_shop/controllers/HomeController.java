@@ -86,7 +86,10 @@ public class HomeController {
         User user = userService.getUserByUsername(username);
         session.setAttribute("user", user);
         session.setAttribute("cartId", 1);
-        model.addAttribute("products", products);
+        session.setAttribute("cart", cart);
+        session.setAttribute("cartDetailList", cartDetailList);
+        session.setAttribute("cartDetailListFull", cartDetailListFull);
+        session.setAttribute("products", products);
         return "user/home";
     }
 
@@ -116,14 +119,13 @@ public class HomeController {
 
     @PostMapping("/my-account")
     public String updateProfile(Model model,
-                                @Valid @ModelAttribute UserRequest userDto,
+                                @Valid @ModelAttribute("userDto") UserRequest userDto,
                                 BindingResult result) {
         if (result.hasErrors()){
             model.addAttribute("error", result.getAllErrors());
         }
 
         userService.updateProfile(userDto.getId(), userDto, result);
-
         return "user/my-account";
     }
 

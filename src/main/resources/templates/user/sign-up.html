@@ -113,6 +113,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label>Your image</label>
+                                <input type="file" class="form-control"
+                                       th:field="*{image}">
+                                <p th:if="${#fields.hasErrors('image')}" th:errors="*{image}" style="color: red;"></p>
+                            </div>
+                            <div class="form-group">
                                 <label>Day of birth</label>
                                 <input type="date" class="form-control" id="dob" th:field="*{dob}">
                                 <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" style="color: red;"></p>

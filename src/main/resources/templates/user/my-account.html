@@ -64,7 +64,8 @@
                     <div class="axil-dashboard-author">
                         <div class="media">
                             <div class="thumbnail">
-                                <img th:src="@{'/uploads/user/' + ${userDto.image}}" alt="Hello Annie">
+                                <img th:if="${userDto.image != null}" th:src="@{'/uploads/user/' + ${userDto.image}}" alt="Hello Annie">
+                                <img th:if="${userDto.image == null}" alt="Welcome to LaptopShop" th:src="@{/user/assets/images/product/author1.png}">
                             </div>
                             <div class="media-body">
                                 <h5 class="title mb-0" th:text="'Hello' + ' ' + ${userDto.firstName} + ' ' + ${userDto.lastName}"></h5>
@@ -101,12 +102,14 @@
                                                             <label>First Name</label>
                                                             <input type="text" class="form-control" th:field="*{firstName}">
                                                         </div>
+                                                        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red;"></p>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label>Last Name</label>
                                                             <input type="text" class="form-control" th:field="*{lastName}">
                                                         </div>
+                                                        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red;"></p>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
@@ -119,12 +122,14 @@
                                                             <label>Phone Number</label>
                                                             <input type="text" class="form-control" th:field="*{phoneNumber}">
                                                         </div>
+                                                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red;"></p>
                                                     </div>
                                                     <div class="col-lg-12 col-sm-6">
                                                         <div class="form-group">
                                                             <label>Day of birth</label>
                                                             <input type="date" class="form-control" th:field="*{dob}">
                                                         </div>
+                                                        <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" style="color: red;"></p>
                                                     </div>
                                                     <div class="form-group col-lg-6 col-sm-3">
                                                         <div class="gender-box">
@@ -158,13 +163,15 @@
                                                         <div class="form-group">
                                                             <label>New Password</label>
                                                             <input type="password" class="form-control" th:field="*{password}">
+                                                            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Confirm New Password</label>
                                                             <input type="password" class="form-control" th:field="*{confirmPassword}">
+                                                            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
                                                         </div>
                                                         <div class="form-group mb--0">
-                                                            <input type="submit" class="axil-btn" value="Save Changes">
+                                                            <button type="submit" class="axil-btn">Save changes</button>
                                                         </div>
                                                     </div>
                                                 </div>
