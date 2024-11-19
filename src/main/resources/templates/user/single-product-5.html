@@ -2,12 +2,12 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
-<div th:replace="~{user/fragments/head::head}"></div>
+<div th:insert="~{user/fragments/head::head}"></div>
 
 
 <body class="sticky-header">
     <!-- Start Header -->
-    <div th:replace="~{user/fragments/header::header}"></div>
+    <div th:insert="~{user/fragments/header::header}"></div>
     <!-- End Header -->
 
     <main class="main-wrapper">
@@ -712,29 +712,29 @@
         </div>
         <!-- End Recently Viewed Product Area  -->
         <!-- Start Axil Newsletter Area  -->
-        <div th:replace="/user/fragments/newsletter::newsletter"></div>
+        <div th:insert="/user/fragments/newsletter::newsletter"></div>
         <!-- End Axil Newsletter Area  -->
     </main>
 
-    <div th:replace="/user/fragments/service-area-footer::service-area-footer"></div>
+    <div th:insert="/user/fragments/service-area-footer::service-area-footer"></div>
     <!-- Start Footer Area  -->
-    <div th:replace="/user/fragments/footer::footer"></div>
+    <div th:insert="/user/fragments/footer::footer"></div>
     <!-- End Footer Area  -->
 
     <!-- Product Quick View Modal Start -->
-    <div th:replace="/user/fragments/quickview::quick-view"></div>
+    <div th:insert="/user/fragments/quickview::quick-view"></div>
     <!-- Product Quick View Modal End -->
 
     <!-- Header Search Modal End -->
-    <div th:replace="/user/fragments/header-search::header-search"></div>
+    <div th:insert="/user/fragments/header-search::header-search"></div>
     <!-- Header Search Modal End -->
 
-    <div th:replace="/user/fragments/cart-dropdown::cart-dropdown"></div>
+    <div th:insert="/user/fragments/cart-dropdown::cart-dropdown"></div>
 
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->
-    <div th:replace="/user/fragments/script::script"></div>
+    <div th:insert="/user/fragments/script::script"></div>
 
 </body>
 
