@@ -170,8 +170,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
+        if ("anonymousUser".equals(username)){
+            return null;
+        }
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Not found User with username " + username));
+                .orElse(null);
     }
 
     @Override

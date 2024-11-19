@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.controllers;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Product;
+import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -28,8 +29,12 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model, HttpSession session) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getUserByUsername(username);
         List<ProductResponse> products = productService.getAllProducts();
+        session.setAttribute("user", user);
         session.setAttribute("cartId", 1);
+
         model.addAttribute("products", products);
         return "user/home";
     }
