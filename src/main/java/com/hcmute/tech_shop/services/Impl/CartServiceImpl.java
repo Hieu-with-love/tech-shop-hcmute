@@ -19,8 +19,23 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart createCart(Cart cart) {
-        return cartRepository.save(cart);
+        try {
+            cartRepository.save(cart);
+            return cart;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Cart creation failed");
+        }
     }
 
+    @Override
+    public Cart findByCustomerId(Long customerId) {
+        return cartRepository.findByUserId(customerId).orElse(null);
+    }
+
+    @Override
+    public Cart findById(Long cartId){
+        return cartRepository.findById(cartId).orElse(null);
+    }
 
 }

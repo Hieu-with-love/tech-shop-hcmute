@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "products")
+@ToString(exclude = {"cartDetails", "images", "ratings", "orderDetails"})
 public class Product extends TrackingDate{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
