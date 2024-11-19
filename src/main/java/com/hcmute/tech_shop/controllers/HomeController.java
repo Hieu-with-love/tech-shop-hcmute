@@ -2,15 +2,11 @@ package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
-<<<<<<< HEAD
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
-=======
-import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
->>>>>>> myaccount
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -63,7 +56,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model, HttpSession session) {
-<<<<<<< HEAD
+
         List<Category> categories = categoryService.findAll();
 
         UserRequest userRequest = getUser();
@@ -89,20 +82,12 @@ public class HomeController {
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("cartDetailListFull", cartDetailListFull);
         List<ProductResponse> products = productService.getAllProducts();
-=======
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
-        List<ProductResponse> products = productService.getAllProducts();
         session.setAttribute("user", user);
         session.setAttribute("cartId", 1);
-
->>>>>>> myaccount
         model.addAttribute("products", products);
         return "user/home";
-    }
-    @GetMapping("/test")
-    public String test(Model model) {
-        return "user/single-product-5";
     }
 
     @GetMapping("/not-found")
