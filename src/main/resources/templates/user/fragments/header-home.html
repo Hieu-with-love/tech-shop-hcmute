@@ -538,7 +538,9 @@
                         </li>
                         <li class="shopping-cart">
                             <a href="#" class="cart-dropdown-btn">
-                                <span class="cart-count" th:text="@{cartDetailList.size()}"></span>
+                                <span class="cart-count"
+                                      th:if="${cartDetailListFull.size() > 0}"
+                                      th:text="${cartDetailListFull.size()}"></span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>

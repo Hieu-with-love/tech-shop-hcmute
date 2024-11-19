@@ -57,6 +57,7 @@ public class CartController {
     public String cart(Model model ) {
         UserRequest userRequest = getUser();
         List<CartDetail> cartDetailList = new ArrayList<>();
+        List<CartDetail> cartDetailListFull = new ArrayList<>();
         if(userRequest != null) {
             Cart cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
@@ -66,9 +67,13 @@ public class CartController {
                 cart = cartService.createCart(cart);
             }
             cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
+            if(cartDetailList.size() > 3) {
+                cartDetailList = cartDetailList.subList(0, 3);
+            }
+
             model.addAttribute("cart",cart);
         }
-
+        model.addAttribute("cartDetailListFull", cartDetailListFull);
         model.addAttribute("cartDetailList", cartDetailList);
         return "user/cart";
     }

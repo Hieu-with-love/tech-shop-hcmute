@@ -7,7 +7,6 @@
         <div class="cart-body">
             <ul class="cart-item-list" th:each="cartDetail : ${cartDetailList}">
                 <li class="cart-item">
-                    <!-- Start Single product cua Tuan-->
                     <div class="item-img">
                         <a href="single-product.html">
                             <img th:src="@{|/${cartDetail.product.monitor}|}" alt="Product Image"></a>
@@ -37,7 +36,8 @@
         <div class="cart-footer">
             <h3 class="cart-subtotal">
                 <span class="subtotal-title">Subtotal:</span>
-                <span class="subtotal-amount" th:text="${cart.totalPrice}"></span>
+                <span class="subtotal-amount" th:if="${cart != null}"
+                      th:text="${cart.totalPrice}"></span>
             </h3>
             <div class="group-btn">
                 <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
