@@ -67,6 +67,7 @@ public class CartController {
                 cart = cartService.createCart(cart);
             }
             cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
+            cartDetailListFull = cartDetailList;
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
