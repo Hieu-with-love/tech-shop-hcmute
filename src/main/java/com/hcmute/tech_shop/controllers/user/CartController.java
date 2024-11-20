@@ -54,26 +54,29 @@ public class CartController {
     }
 
     @GetMapping("")
-    public String cart(Model model ) {
-        UserRequest userRequest = getUser();
+    public String cart(Model model, HttpSession session) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         List<CartDetail> cartDetailList = new ArrayList<>();
         List<CartDetail> cartDetailListFull = new ArrayList<>();
-        if(userRequest != null) {
-            Cart cart = cartService.findByCustomerId(userRequest.getId());
+
+        Cart cart = new Cart();
+        if(!username.equals("anonymousUser")) {
+            UserRequest userRequest = getUser();
+            cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
-                cart = new Cart();
-                cart.setUserId(userRequest.getId());
-                cart.setTotalPrice(BigDecimal.ZERO);
-                cart = cartService.createCart(cart);
+                cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,userRequest.getId(),null));
             }
             cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
             cartDetailListFull = cartDetailList;
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
-
-            model.addAttribute("cart",cart);
         }
+
+        User user = userService.getUserByUsername(username);
+        session.setAttribute("user", user);
+        model.addAttribute("cart",cart);
         model.addAttribute("cartDetailListFull", cartDetailListFull);
         model.addAttribute("cartDetailList", cartDetailList);
         return "user/cart";
@@ -81,40 +84,34 @@ public class CartController {
 
     @PostMapping("/cart-add")
     public String addToCart(Model model, @Valid @RequestParam("productId") Long productId,@RequestParam("quantity") int quantity) {
+        Cart cart;
         UserRequest userRequest = getUser();
+        cart = cartService.findByCustomerId(userRequest.getId());
+        if(cart == null) {
+            cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,userRequest.getId(),null));
+        }
 
-        if(userRequest != null) {
-            Cart cart = cartService.findByCustomerId(userRequest.getId());
-            if(cart == null) {
-                cart = new Cart();
-                cart.setUserId(userRequest.getId());
-                cart.setTotalPrice(BigDecimal.ZERO);
-                cart = cartService.createCart(cart);
+        Product product = productServiceImpl.findById(productId).orElse(null);
+        CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
+        CartDetailRequest cartDetailRequest = new CartDetailRequest();
+        BigDecimal price;
+
+        if(cartDetail != null) {
+            price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+quantity));
+            cartDetailRequest = new CartDetailRequest(quantity + cartDetail.getQuantity(), price, cart, product);
+            if (!cartDetailServiceImpl.update(cartDetailRequest)) {
+                String error = "Could not update cart detail";
+                model.addAttribute("error", error);
             }
-            Product product = productServiceImpl.findById(productId).orElse(null);
-            CartDetailRequest cartDetailRequest = new CartDetailRequest();
-            CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
-            if(cartDetail != null) {
-                cartDetailRequest.setCart(cart);
-                cartDetailRequest.setProduct(product);
-                cartDetailRequest.setQuantity(quantity+cartDetail.getQuantity());
-                cartDetailRequest.setTotalPrice(product.getPrice().multiply( new BigDecimal(cartDetailRequest.getQuantity())));
-                if (!cartDetailServiceImpl.update(cartDetailRequest)) {
-                    String error = "Could not update cart detail";
-                    model.addAttribute("error", error);
-                }
-            }
-            else {
-                cartDetailRequest.setCart(cart);
-                cartDetailRequest.setProduct(product);
-                cartDetailRequest.setQuantity(quantity);
-                cartDetailRequest.setTotalPrice(product.getPrice().multiply(new BigDecimal(quantity)));
+        }
+        else
+        {
+            price = product.getPrice().multiply(new BigDecimal(quantity));
+            cartDetailRequest = new CartDetailRequest(quantity,price, cart, product);
                 if (!cartDetailServiceImpl.create(cartDetailRequest)) {
                     String error = "Could not create cart detail";
                     model.addAttribute("error", error);
                 }
-            }
-            model.addAttribute("cart",cart);
         }
         return "redirect:/user/home";
     }
@@ -122,21 +119,20 @@ public class CartController {
     @PostMapping("/inc-cart")
     public String incrementCart(Model model, @Valid @RequestParam("productId") Long productId) {
         UserRequest userRequest = getUser();
+        Cart cart = cartService.findByCustomerId(userRequest.getId());
 
-        if(userRequest != null) {
-            Cart cart = cartService.findByCustomerId(userRequest.getId());
-            Product product = productServiceImpl.findById(productId).orElse(null);
-            CartDetailRequest cartDetailRequest = new CartDetailRequest();
-            CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
-            cartDetailRequest.setCart(cart);
-            cartDetailRequest.setQuantity(cartDetail.getQuantity()+1);
-            cartDetailRequest.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(cartDetailRequest.getQuantity())));
-            cartDetailRequest.setProduct(product);
+        Product product = productServiceImpl.findById(productId).orElse(null);
+        CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
+        CartDetailRequest cartDetailRequest = new CartDetailRequest();
+        BigDecimal price;
+
+        if(cartDetail != null) {
+            price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+1));
+            cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() + 1, price, cart, product);
             if (!cartDetailServiceImpl.update(cartDetailRequest)) {
-                String error = "Could not create cart detail";
+                String error = "Could not update cart detail";
                 model.addAttribute("error", error);
             }
-            model.addAttribute("cart",cart);
         }
         return "redirect:/user/cart";
     }
@@ -144,23 +140,20 @@ public class CartController {
     @PostMapping("/dec-cart")
     public String decrementCart(Model model, @Valid @RequestParam("productId") Long productId) {
         UserRequest userRequest = getUser();
+        Cart cart = cartService.findByCustomerId(userRequest.getId());
 
-        if(userRequest != null) {
-            Cart cart = cartService.findByCustomerId(userRequest.getId());
-            Product product = productServiceImpl.findById(productId).orElse(null);
-            CartDetailRequest cartDetailRequest = new CartDetailRequest();
-            CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
-            cartDetailRequest.setCart(cart);
-            cartDetailRequest.setProduct(product);
-            if (cartDetail.getQuantity() > 1){
-                cartDetailRequest.setQuantity(cartDetail.getQuantity()-1);
-                cartDetailRequest.setTotalPrice(product.getPrice().multiply(new BigDecimal(cartDetailRequest.getQuantity())));
-                if (!cartDetailServiceImpl.update(cartDetailRequest)) {
-                    String error = "Could not create cart detail";
-                    model.addAttribute("error", error);
-                }
+        Product product = productServiceImpl.findById(productId).orElse(null);
+        CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
+        CartDetailRequest cartDetailRequest = new CartDetailRequest();
+        BigDecimal price;
+
+        if(cartDetail != null) {
+            price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()-1));
+            cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() - 1, price, cart, product);
+            if (!cartDetailServiceImpl.update(cartDetailRequest)) {
+                String error = "Could not update cart detail";
+                model.addAttribute("error", error);
             }
-            model.addAttribute("cart",cart);
         }
         return "redirect:/user/cart";
     }
@@ -168,39 +161,28 @@ public class CartController {
     @GetMapping("/delete-all")
     public String deleteAllCart(Model model) {
         UserRequest userRequest = getUser();
-        if(userRequest != null) {
-            Cart cart = cartService.findByCustomerId(userRequest.getId());
-            if(cart != null) {
-                if(!cartDetailServiceImpl.deleteAll(cart.getId())){
-                    String error = "Could not delete cart detail";
-                    model.addAttribute("error", error);
-                }
-
+        Cart cart = cartService.findByCustomerId(userRequest.getId());
+        if(cart != null) {
+            if(!cartDetailServiceImpl.deleteAll(cart.getId())){
+                String error = "Could not delete cart detail";
+                model.addAttribute("error", error);
             }
         }
-        List<CartDetail> cartDetailList = new ArrayList<>();
-        model.addAttribute("cartDetailList", cartDetailList);
-
-        return "user/cart";
+        return "redirect:/user/cart";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(Model model, @Valid @PathVariable("id") Long productId) {
         UserRequest userRequest = getUser();
-        if(userRequest != null) {
-            Cart cart = cartService.findByCustomerId(userRequest.getId());
-            CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
-            if(cartDetail != null) {
-                if(!cartDetailServiceImpl.delete(cartDetail)) {
-                    String error = "Could not delete cart detail";
-                    model.addAttribute("error", error);
-                }
 
+        Cart cart = cartService.findByCustomerId(userRequest.getId());
+        CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
+        if(cartDetail != null) {
+            if(!cartDetailServiceImpl.delete(cartDetail)) {
+                String error = "Could not delete cart detail";
+                model.addAttribute("error", error);
             }
-            model.addAttribute("cart",cart);
         }
-        List<CartDetail> cartDetailList = new ArrayList<>();
-        model.addAttribute("cartDetailList", cartDetailList);
 
         return "redirect:/user/cart";
     }

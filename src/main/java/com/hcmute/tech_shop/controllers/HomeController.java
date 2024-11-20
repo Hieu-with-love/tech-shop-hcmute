@@ -59,33 +59,29 @@ public class HomeController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         List<Category> categories = categoryService.findAll();
-
         List<CartDetail> cartDetailList = new ArrayList<>();
-        List<CartDetail> cartDetailListFull = new ArrayList<>();
+        List<ProductResponse> products = productService.getAllProducts();
+
+        int numberProductInCart = 0;
+
         Cart cart = new Cart();
         if(!username.equals("anonymousUser")) {
             UserRequest userRequest = getUser();
             cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
-                cart = new Cart();
-                cart.setUserId(userRequest.getId());
-                cart.setTotalPrice(BigDecimal.ZERO);
-                cart = cartService.createCart(cart);
+                cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,userRequest.getId(),null));
             }
             cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
-            cartDetailListFull = cartDetailList;
+            numberProductInCart = cartDetailList.size();
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
         }
 
-        List<ProductResponse> products = productService.getAllProducts();
-
-
         model.addAttribute("categories", categories);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
-        model.addAttribute("cartDetailListFull", cartDetailListFull);
+        model.addAttribute("numberProductInCart", numberProductInCart);
         model.addAttribute("products", products);
 
 
@@ -93,7 +89,7 @@ public class HomeController {
         session.setAttribute("user", user);
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
-        session.setAttribute("cartDetailListFull", cartDetailListFull);
+        session.setAttribute("numberProductInCart", numberProductInCart);
         return "user/home";
     }
 

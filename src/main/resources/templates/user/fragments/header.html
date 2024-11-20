@@ -96,13 +96,13 @@
                             <button class="sidebar-close">
                                 <i class="fas fa-times"></i>
                             </button>
-                            <ul class="nav-menu-list" th:each="category : ${categories}">
-                                <li>
-                                    <a class="nav-link has-megamenu me-3" th:href="@{/user/products/{name}(name=${category.name})}">
-                                        <span class="menu-text" th:text="${category.name}"></span>
-                                    </a>
-                                </li>
-                            </ul>
+<!--                            <ul class="nav-menu-list" th:each="category : ${categories}">-->
+<!--                                <li>-->
+<!--                                    <a class="nav-link has-megamenu me-3" th:href="@{/user/products/{name}(name=${category.name})}">-->
+<!--                                        <span class="menu-text" th:text="${category.name}"></span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
                         </nav>
                     </aside>
                 </div>
@@ -182,8 +182,8 @@
                         <li class="shopping-cart">
                             <a href="#" class="cart-dropdown-btn">
                                 <span class="cart-count"
-                                      th:if="${session.cartDetailListFull.size() > 0}"
-                                      th:text="${session.cartDetailListFull.size()}"></span>
+                                      th:if="${cartDetailListFull.size() > 0}"
+                                      th:text="${cartDetailListFull.size()}"></span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>

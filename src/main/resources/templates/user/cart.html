@@ -41,12 +41,12 @@
                                         <div>
                                             <form th:action="@{/user/cart/dec-cart}" method="post">
                                                 <input type="hidden" name="productId" th:value="${cartDetail.product.id}"/>
-                                                <button class="dec qtybtn">-</button>
+                                                <button>-</button>
                                             </form>
                                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}" readonly>
                                             <form th:action="@{/user/cart/inc-cart}" method="post">
                                                 <input type="hidden" name="productId" th:value="${cartDetail.product.id}" />
-                                                <button class="inc qtybtn">+</button>
+                                                <button>+</button>
                                             </form>
                                         </div>
                                     </td>
