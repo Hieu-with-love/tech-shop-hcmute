@@ -14,6 +14,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
@@ -47,8 +48,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        List<Product> products = this.findAll();
+    public List<ProductResponse> getAllProducts(List<Product> products) {
         return products.stream().map(p -> {
             String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
             return ProductResponse.builder()
@@ -313,16 +313,6 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> findAll(Sort sort) {
-        return productRepository.findAll(sort);
-    }
-
-    @Override
-    public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
-
-    @Override
     public List<ProductRequest> findByCategoryName(String categoryName) {
         List<ProductRequest> productDTOList = new ArrayList<>();
         List<Product> products = productRepository.findByCategoryName(categoryName);
@@ -333,4 +323,16 @@ public class ProductServiceImpl implements IProductService {
         }
         return productDTOList;
     }
+
+    @Override
+    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getAllSortedProducts(int pageNumber, int pageSize, Sort sort) {
+        return null;
+    }
+
 }

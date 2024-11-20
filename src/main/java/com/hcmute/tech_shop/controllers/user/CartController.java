@@ -2,6 +2,8 @@ package com.hcmute.tech_shop.controllers.user;
 
 import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
+import com.hcmute.tech_shop.dtos.responses.CartResponse;
 import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.entities.CartDetail;
 import com.hcmute.tech_shop.entities.Product;

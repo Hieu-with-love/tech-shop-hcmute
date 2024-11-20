@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public interface IProductService {
     void init();
-    List<ProductResponse> getAllProducts();
+    List<ProductResponse> getAllProducts(List<Product> products);
 
     boolean deleteImage(String filename);
 
@@ -76,9 +76,7 @@ public interface IProductService {
 
     void deleteById(Long aLong);
 
-    List<Product> findAll(Sort sort);
-
-    Page<Product> findAll(Pageable pageable);
-
     List<ProductRequest> findByCategoryName(String categoryName);
+    Page<Product> getAllProducts(int pageNumber, int pageSize);
+    Page<Product> getAllSortedProducts(int pageNumber, int pageSize, Sort sort);
 }

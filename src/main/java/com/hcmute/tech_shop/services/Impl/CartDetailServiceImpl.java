@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.entities.CartDetail;
 import com.hcmute.tech_shop.entities.composites.CartDetailId;
@@ -8,6 +9,7 @@ import com.hcmute.tech_shop.repositories.CartDetailRepository;
 import com.hcmute.tech_shop.repositories.CartRepository;
 import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
+import com.hcmute.tech_shop.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,23 @@ public class CartDetailServiceImpl implements ICartDetailService {
     @Override
     public List<CartDetail> findAllByCart_Id(Long id) {
         return cartDetailRepository.findAllByCart_Id(id);
+    }
+
+    @Override
+    public List<CartDetailResponse> getAllItems(List<CartDetail> cartDetails) {
+        return cartDetails.stream().map(item ->{
+            BigDecimal totalPrice = item.getTotalPrice();
+            String totalPriceStr = Constant.formatter.format(totalPrice);
+
+            return CartDetailResponse.builder()
+                    .id(item.getId().getCartId())
+                    .thumbnail(item.getProduct().getThumbnail())
+                    .productName(item.getProduct().getName())
+                    .price(Constant.formatter.format(item.getProduct().getPrice()))
+                    .totalPrice(totalPriceStr)
+                    .quantity(item.getQuantity())
+                    .build();
+        }).toList();
     }
 
     @Override
