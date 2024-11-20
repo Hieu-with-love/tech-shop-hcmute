@@ -1,6 +1,8 @@
 package com.hcmute.tech_shop.repositories;
 
 import com.hcmute.tech_shop.entities.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -47,4 +49,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByCategoryName(String categoryName);
     List<Product> findByBrandName(String brandName);
+
+    // Paging and Sorting methods
+    Page<Product> findAll(Pageable pageable);
 }

@@ -41,12 +41,12 @@
                                         <div>
                                             <form th:action="@{/user/cart/dec-cart}" method="post">
                                                 <input type="hidden" name="productId" th:value="${cartDetail.product.id}"/>
-                                                <button class="dec qtybtn">-</button>
+                                                <button type="submit" class="dec qtybtn">-</button>
                                             </form>
                                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}" readonly>
                                             <form th:action="@{/user/cart/inc-cart}" method="post">
                                                 <input type="hidden" name="productId" th:value="${cartDetail.product.id}" />
-                                                <button class="inc qtybtn">+</button>
+                                                <button type="submit" class="inc qtybtn">+</button>
                                             </form>
                                         </div>
                                     </td>
@@ -123,24 +123,24 @@
     </main>
 
 
-    <div th:insert="/user/fragments/service-area-footer::service-area-footer"></div>
+    <div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
     <!-- Start Footer Area  -->
-    <div th:insert="/user/fragments/footer::footer"></div>
+    <div th:insert="~{/user/fragments/footer::footer}"></div>
     <!-- End Footer Area  -->
 
     <!-- Product Quick View Modal Start -->
-    <div th:insert="/user/fragments/quickview::quick-view"></div>
+    <div th:insert="~{/user/fragments/quickview::quick-view}"></div>
     <!-- Product Quick View Modal End -->
 
     <!-- Header Search Modal End -->
-    <div th:insert="/user/fragments/header-search::header-search"></div>
+    <div th:insert="~{/user/fragments/header-search::header-search}"></div>
     <!-- Header Search Modal End -->
 
-    <div th:insert="/user/fragments/cart-dropdown::cart-dropdown"></div>
+    <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
 
     <!-- JS
 ============================================ -->
-    <div th:insert="/user/fragments/script::script"></div>
+    <div th:insert="~{/user/fragments/script::script}"></div>
 
 </body>
 
