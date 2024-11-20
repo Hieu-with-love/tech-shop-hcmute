@@ -56,14 +56,15 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model, HttpSession session) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         List<Category> categories = categoryService.findAll();
 
-        UserRequest userRequest = getUser();
         List<CartDetail> cartDetailList = new ArrayList<>();
         List<CartDetail> cartDetailListFull = new ArrayList<>();
         Cart cart = new Cart();
-        if(userRequest != null) {
+        if(!username.equals("anonymousUser")) {
+            UserRequest userRequest = getUser();
             cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
                 cart = new Cart();
@@ -77,19 +78,21 @@ public class HomeController {
             }
         }
 
+        List<ProductResponse> products = productService.getAllProducts();
+
+
         model.addAttribute("categories", categories);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("cartDetailListFull", cartDetailListFull);
-        List<ProductResponse> products = productService.getAllProducts();
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("products", products);
+
+
         User user = userService.getUserByUsername(username);
         session.setAttribute("user", user);
-        session.setAttribute("cartId", 1);
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
         session.setAttribute("cartDetailListFull", cartDetailListFull);
-        session.setAttribute("products", products);
         return "user/home";
     }
 
@@ -104,6 +107,7 @@ public class HomeController {
         com.hcmute.tech_shop.entities.User user = userService.getUserByUsername(username);
         UserRequest userRequest = UserRequest.builder()
                 .id(user.getId())
+                .username(username)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
@@ -123,9 +127,15 @@ public class HomeController {
                                 BindingResult result) {
         if (result.hasErrors()){
             model.addAttribute("error", result.getAllErrors());
+            return "user/my-account";
         }
 
-        userService.updateProfile(userDto.getId(), userDto, result);
+        boolean isSuccess = userService.updateProfile(userDto.getUsername(), userDto, result);
+        if (isSuccess){
+            model.addAttribute("msg", "Doi thong tin tai khoan thanh cong !");
+        }else{
+            model.addAttribute("msg", "Doi thong tin tai khoan that bai !");
+        }
         return "user/my-account";
     }
 

@@ -24,13 +24,13 @@
                     <h6>Manage your products</h6>
                 </div>
                 <div class="page-btn">
-                    <a href="/manager/products/add/computer" class="btn btn-added">
+                    <a href="/admin/products/add/computer" class="btn btn-added">
                         <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Computer
                     </a>
-                    <a href="/manager/products/add/phone" class="btn btn-added">
+                    <a href="/admin/products/add/phone" class="btn btn-added">
                         <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Phone
                     </a>
-                    <a href="/manager/products/add/accessory" class="btn btn-added">
+                    <a href="/admin/products/add/accessory" class="btn btn-added">
                         <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Accessory
                     </a>
                 </div>
@@ -155,11 +155,11 @@
                                     </label>
                                 </td>
                                 <td class="productimgname">
-                                    <a th:href="@{/manager/products/edit(id=${product.getId()})}" class="product-img">
+                                    <a th:href="@{/admin/products/edit(id=${product.getId()})}" class="product-img">
                                         <img th:src="@{|/${product.getThumbnail()}|}" alt="Ảnh sản phẩm"
                                              width="200px;">
                                     </a>
-                                    <a th:href="@{/manager/products/edit(id=${product.getId()})}"
+                                    <a th:href="@{/admin/products/edit(id=${product.getId()})}"
                                        th:text="${product.getName()}">
                                     </a>
                                 </td>
@@ -170,26 +170,26 @@
                                 <td>
                                     <a th:attr="hidden=${product.getCategory().getName() == 'Computer' ? null : 'hidden'}"
                                        class="me-3"
-                                       th:href="@{/manager/products/computerDetail(id=${product.getId()})}">
+                                       th:href="@{/admin/products/computerDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
                                     <a th:attr="hidden=${product.getCategory().getName() == 'Phone' ? null : 'hidden'}"
-                                       class="me-3" th:href="@{/manager/products/phoneDetail(id=${product.getId()})}">
+                                       class="me-3" th:href="@{/admin/products/phoneDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
                                     <a th:attr="hidden=${product.getCategory().getName() == 'Accessory' ? null : 'hidden'}"
                                        class="me-3"
-                                       th:href="@{/manager/products/accessoryDetail(id=${product.getId()})}">
+                                       th:href="@{/admin/products/accessoryDetail(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
-                                    <a class="me-3" th:href="@{/manager/products/images(id=${product.getId()})}">
+                                    <a class="me-3" th:href="@{/admin/products/images(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/dash4.svg}" alt="img">
                                     </a>
-                                    <a class="me-3" th:href="@{/manager/products/edit(id=${product.getId()})}">
+                                    <a class="me-3" th:href="@{/admin/products/edit(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
                                     <a class="confirm-text"
-                                       th:href="@{/manager/products/delete(id=${product.getId()})}">
+                                       th:href="@{/admin/products/delete(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>

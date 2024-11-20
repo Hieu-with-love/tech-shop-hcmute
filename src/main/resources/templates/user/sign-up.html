@@ -112,12 +112,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="custom-file-container">
                                 <label>Your image</label>
-                                <input type="file" class="form-control"
+                                <input type="file"
                                        th:field="*{image}">
                                 <p th:if="${#fields.hasErrors('image')}" th:errors="*{image}" style="color: red;"></p>
                             </div>
+                            <br/>
+                            <br/>
                             <div class="form-group">
                                 <label>Day of birth</label>
                                 <input type="date" class="form-control" id="dob" th:field="*{dob}">

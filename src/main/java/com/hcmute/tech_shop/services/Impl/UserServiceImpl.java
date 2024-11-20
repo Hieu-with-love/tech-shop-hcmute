@@ -109,11 +109,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateProfile(Long id, UserRequest userRequest, BindingResult result) {
+    public boolean updateProfile(String username, UserRequest userRequest, BindingResult result) {
         // logic update user
         validation(userRequest, result);
         try{
-            User existingUser = userRepository.findById(id)
+            User existingUser = userRepository.findByUsernameIgnoreCase(username)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             existingUser.setFirstName(userRequest.getFirstName());
@@ -126,6 +126,7 @@ public class UserServiceImpl implements UserService {
             existingUser.setDateOfBirth(userRequest.getDob());
             existingUser.setImage(existingUser.getImage());
 
+            userRepository.save(existingUser);
             return true;
         }catch (Exception e){
             return false;

@@ -14,7 +14,7 @@ public interface UserService {
     User getUserByEmail(String email);
     boolean createUser(UserRequest userRequest, BindingResult result);
     boolean updateUser(Long id, UserRequest userRequest, BindingResult result);
-    boolean updateProfile(Long id, UserRequest userRequest, BindingResult result);
+    boolean updateProfile(String username, UserRequest userRequest, BindingResult result);
     void deleteUser(Long id);
     boolean existsEmail(String email);
     boolean existsUsername(String username);
