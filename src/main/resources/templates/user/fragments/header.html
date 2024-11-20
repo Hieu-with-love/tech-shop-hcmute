@@ -181,13 +181,17 @@
                         </li>
                         <li class="shopping-cart">
                             <a href="#" class="cart-dropdown-btn">
-                                <span class="cart-count">3</span>
+                                <span class="cart-count"
+                                      th:if="${session.cartDetailList.size() > 0}"
+                                      th:text="${session.cartDetailList.size()}"></span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>
                         <li class="my-account">
                             <a href="javascript:void(0)">
-                                <i class="flaticon-person"></i>
+                                <i class="flaticon-person"></i><p class="sub-title"
+                                                                  th:if="${#authentication.principal != null && #authentication.principal != 'anonymousUser'}"
+                                                                  th:text="${session.user.lastName}"></p>
                             </a>
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
