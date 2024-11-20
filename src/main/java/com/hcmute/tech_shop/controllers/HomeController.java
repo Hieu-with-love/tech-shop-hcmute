@@ -10,12 +10,12 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,15 +27,9 @@ import java.util.List;
 public class HomeController {
     private final UserService userService;
     private final IProductService productService;
-
-    @Autowired
-    private ICategoryService categoryService;
-
-    @Autowired
-    private CartService cartService;
-
-    @Autowired
-    private ICartDetailService cartDetailServiceImpl;
+    private final ICategoryService categoryService;
+    private final CartService cartService;
+    private final ICartDetailService cartDetailServiceImpl;
 
     public UserRequest getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -55,15 +49,28 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
+    public String home(Model model,
+                       HttpSession session,
+                       @RequestParam(defaultValue = "0") int pageNumber,
+                       @RequestParam(defaultValue = "10") int pageSize,
+                       @RequestParam(defaultValue = "sort") String sortBy,
+                       @RequestParam(defaultValue = "true") boolean ascending) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<Category> categories = categoryService.findAll();
+        Page<Product> currentPage = productService.getAllProducts(pageNumber, pageSize);
+        List<Product> products = currentPage.getContent();
+        List<ProductResponse> productResponses = productService.getAllProducts(products);
+        model.addAttribute("products", productResponses);
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalPages", currentPage.getTotalPages());
 
+        List<Category> categories = categoryService.findAll();
         List<CartDetail> cartDetailList = new ArrayList<>();
         List<CartDetail> cartDetailListFull = new ArrayList<>();
         Cart cart = new Cart();
         if(!username.equals("anonymousUser")) {
+            User user = userService.getUserByUsername(username);
             UserRequest userRequest = getUser();
             cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
@@ -77,20 +84,14 @@ public class HomeController {
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
+            session.setAttribute("user", user);
         }
-
-        List<ProductResponse> products = productService.getAllProducts();
-
 
         model.addAttribute("categories", categories);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("cartDetailListFull", cartDetailListFull);
-        model.addAttribute("products", products);
 
-
-        User user = userService.getUserByUsername(username);
-        session.setAttribute("user", user);
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
         session.setAttribute("cartDetailListFull", cartDetailListFull);

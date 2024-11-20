@@ -1,0 +1,142 @@
+.custom-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+    padding: 10px 0;
+}
+
+.custom-pagination ul {
+    display: flex;
+    list-style: none; /* Xóa ký hiệu gạch đầu dòng */
+    padding: 0;
+    margin: 0;
+    gap: 10px; /* Khoảng cách giữa các số */
+}
+
+.custom-pagination .page, .custom-pagination .prev, .custom-pagination .next {
+    width: 40px; /* Kích thước hình tròn hoặc hình vuông */
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* Bỏ gạch chân */
+    border: 2px solid gray; /* Viền */
+    font-size: 16px;
+    color: gray;
+    background-color: white; /* Màu nền */
+    transition: all 0.3s ease; /* Hiệu ứng hover */
+}
+
+.custom-pagination .prev, .custom-pagination .next {
+    border-radius: 5px; /* Hình vuông, có thể thêm bo góc nhỏ */
+}
+
+.custom-pagination .page {
+    border-radius: 50%; /* Bo tròn cho các số trang */
+}
+
+.custom-pagination .page.active {
+    background-color: orange; /* Màu nền cho trang hiện tại */
+    color: white; /* Màu chữ cho trang hiện tại */
+    border: 2px solid orange; /* Viền cho trang hiện tại */
+}
+
+.custom-pagination .page:hover, .custom-pagination .prev:hover, .custom-pagination .next:hover {
+    background-color: lightgray; /* Màu nền khi hover */
+    color: black; /* Màu chữ khi hover */
+}
+
+.custom-pagination .prev, .custom-pagination .next {
+    font-weight: bold; /* Đậm hơn cho nút Previous/Next */
+    min-width: 70px; /* Đảm bảo nút hình chữ nhật */
+    height: 40px;
+    text-align: center;
+}
+
+/* Container bao bọc bộ lọc */
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px; /* Giới hạn chiều rộng tối đa */
+    margin: 0 auto; /* Căn giữa container */
+    box-sizing: border-box;
+}
+
+/* Nhóm bộ lọc */
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between; /* Căn đều các phần tử trong hàng */
+    flex-wrap: nowrap; /* Các phần tử không xuống dòng */
+    overflow: hidden;
+}
+
+/* Nhãn */
+.filter-group span {
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap; /* Giữ cố định nội dung của label */
+    flex-shrink: 0;
+}
+
+/* Nút và dropdown */
+button, select {
+    flex: 1; /* Chia đều kích thước giữa các phần tử */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+button.active {
+    background-color: orange;
+    color: white;
+    border-color: orange;
+}
+
+button:hover, select:hover {
+    background-color: #f0f0f0;
+}
+
+select {
+    appearance: none;
+    padding-right: 20px;
+}
+
+button:focus, select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Đảm bảo các nút và dropdown có chiều cao đồng đều */
+button, select {
+    min-width: 100px; /* Đặt chiều rộng tối thiểu để cân đối */
+    max-width: 150px; /* Giới hạn chiều rộng tối đa */
+}
+
+
+.filter-wrapper {
+    max-width: 800px; /* Đặt chiều rộng tối đa */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+button:focus, select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
