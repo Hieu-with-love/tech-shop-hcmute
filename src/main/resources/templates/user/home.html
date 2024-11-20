@@ -34,7 +34,7 @@
                   <div class="thumbnail">
                     <a th:href="@{/user/productDetails}">
                       <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                        th:src="@{'/uploads/' + ${product.thumbnail}}" alt="Product Images" />
+                        th:src="@{|/${product.getThumbnail()}|}" alt="Product Images" />
                     </a>
                     <div class="label-block label-right">
                       <div class="product-badget">20% Off</div>
