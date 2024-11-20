@@ -4,6 +4,8 @@
 <head>
   <title>Tech Shop || Home</title>
   <div th:insert="~{user/fragments/head::head}"></div>
+  <link rel="stylesheet"
+        th:href="@{/user/customize/css/main.css}"/>
 </head>
 
 <body>
@@ -12,9 +14,40 @@
     <!-- Start Slider Area -->
     <div th:replace="~{user/fragments/slidebar::slidebar}"></div>
     <!-- End Slider Area -->
-    <!--Start service area-->
-    <div th:replace="~{user/fragments/content::category-area}"></div>
-    <!--      End service area-->
+
+    <!--Start Filter Products-->
+    <div class="filter-container">
+      <div class="filter-box">
+        <div class="item-filter price d-flex align-items">
+          <div class="filter-left">Chọn khoảng giá: </div>
+          <div class="filter-right d-flex align-items flex-wrap">
+            <div class="filter_bar-items">
+              <div class="txt-filter">2 triệu - 5 triệu</div>
+              <div class="txt-filter">10 triệu - 20 triệu</div>
+              <div class="txt-filter">20 triệu - 30 triệu</div>
+              <div class="txt-filter">30 triệu - 40 triệu</div>
+              <div class="txt-filter">40 triệu - 50 triệu</div>
+              <div class="txt-filter">Trên 50 triệu</div>
+            </div>
+          </div>
+        </div>
+        <div class="item-filter price d-flex align-items">
+          <div class="filter-left">Chọn theo tiêu chí: </div>
+          <div class="filter-right d-flex align-items flex-wrap">
+            <div class="filter_bar-items">
+              <span class="txt-filter">
+                <select>
+                  <option selected disabled>
+                    Thương hiệu
+                  </option>
+                </select>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Start Filter Products-->
     <!-- Start Expolre Product Area  -->
     <div class="axil-product-area bg-color-white axil-section-gap">
       <div class="container">
@@ -29,12 +62,13 @@
           <div class="slick-single-layout">
             <div class="row row--15">
               <!-- Start Single Product  -->
-              <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30" th:each="product:${products}">
+              <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"
+                   th:each="product:${products}">
                 <div class="axil-product product-style-one">
                   <div class="thumbnail">
                     <a th:href="@{/user/productDetails}">
                       <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                        th:src="@{|/${product.getThumbnail()}|}" alt="Product Images" />
+                           th:src="@{|/${product.thumbnail}|}" alt="Ảnh sản phẩm"/>
                     </a>
                     <div class="label-block label-right">
                       <div class="product-badget">20% Off</div>
@@ -75,15 +109,31 @@
                 </div>
               </div>
               <!-- End Single Product  -->
+              <!--Pagination here-->
+              <div class="custom-pagination">
+                <ul>
+                  <li th:if="${currentPage > 0}">
+                    <a th:href="@{/user/home(pageNumber=${currentPage - 1}, pageSize=${pageSize})}"
+                       class="prev">Previous</a>
+                  </li>
+                  <li th:each="index : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/user/home(pageNumber=*{index}, pageSize=${pageSize})}"
+                       th:text="${index + 1}"
+                       th:classappend="${index == currentPage} ? 'active' : '' "
+                       class="page"></a>
+                  </li>
+                  <li th:if="${currentPage < totalPages}">
+                    <a th:href="@{/user/home(pageNumber=${currentPage + 1}, pageSize=${pageSize})}"
+                       class="next">Next</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- End Pagination here-->
             </div>
           </div>
           <!-- End .slick-single-layout -->
         </div>
-        <div class="row">
-          <div class="col-lg-12 text-center mt--20 mt_sm--0">
-            <a href="shop.html" class="axil-btn btn-bg-lighter btn-load-more">View All Products</a>
-          </div>
-        </div>
+
       </div>
     </div>
     <!-- End Explore Product Area  -->
@@ -92,330 +142,9 @@
     <div th:insert="~{user/customer/user-feedback::feedback}"></div>
     <!-- End Testimonila Area  -->
 
-    <!-- Start New Arrivals Product Area  -->
-    <div class="axil-new-arrivals-product-area bg-color-white axil-section-gap pb--50">
-      <div class="container">
-        <div class="section-title-wrapper">
-          <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> This Week’s</span>
-          <h2 class="title">New Arrivals</h2>
-        </div>
-        <div class="new-arrivals-product-activation slick-layout-wrapper--30 axil-slick-arrow arrow-top-slide">
-          <div class="slick-single-layout">
-            <div class="axil-product product-style-two has-color-pick">
-              <div class="thumbnail">
-                <a href="single-product.html">
-                  <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                    th:src="@{/user/assets/images/product/fashion/product-14.png}" alt="Product Images" />
-                </a>
-                <div class="label-block label-right">
-                  <div class="product-badget">50% OFF</div>
-                </div>
-              </div>
-              <div class="product-content">
-                <div class="inner">
-                  <div class="color-variant-wrapper">
-                    <ul class="color-variant">
-                      <li class="color-extra-01 active">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-02">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-03">
-                        <span><span class="color"></span></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <h5 class="title">
-                    <a href="single-product.html">Full A-Line Dress</a>
-                  </h5>
-                  <div class="product-price-variant">
-                    <span class="price old-price">$50</span>
-                    <span class="price current-price">$25</span>
-                  </div>
-                </div>
-                <div class="product-hover-action">
-                  <ul class="cart-action justify-content-center">
-                    <li class="wishlist">
-                      <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                    </li>
-                    <li class="select-option">
-                      <a href="cart.html">Add to Cart</a>
-                    </li>
-                    <li class="quickview">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                          class="far fa-eye"></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End .slick-single-layout -->
-          <div class="slick-single-layout">
-            <div class="axil-product product-style-two has-color-pick">
-              <div class="thumbnail">
-                <a href="single-product.html">
-                  <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500"
-                    th:src="@{/user/assets/images/product/fashion/product-15.png}" alt="Product Images" />
-                </a>
-                <div class="label-block label-right">
-                  <div class="product-badget">15% OFF</div>
-                </div>
-              </div>
-              <div class="product-content">
-                <div class="inner">
-                  <div class="color-variant-wrapper">
-                    <ul class="color-variant">
-                      <li class="color-extra-01 active">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-02">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-03">
-                        <span><span class="color"></span></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <h5 class="title">
-                    <a href="single-product.html">Leather Hand Bag</a>
-                  </h5>
-                  <div class="product-price-variant">
-                    <span class="price old-price">$60</span>
-                    <span class="price current-price">$45</span>
-                  </div>
-                </div>
-                <div class="product-hover-action">
-                  <ul class="cart-action justify-content-center">
-                    <li class="wishlist">
-                      <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                    </li>
-                    <li class="select-option">
-                      <a href="cart.html">Add to Cart</a>
-                    </li>
-                    <li class="quickview">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                          class="far fa-eye"></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End .slick-single-layout -->
-          <div class="slick-single-layout">
-            <div class="axil-product product-style-two has-color-pick">
-              <div class="thumbnail">
-                <a href="single-product.html">
-                  <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500"
-                    th:src="@{/user/assets/images/product/fashion/product-4.png}" alt="Product Images" />
-                </a>
-                <div class="label-block label-right">
-                  <div class="product-badget">30% OFF</div>
-                </div>
-              </div>
-              <div class="product-content">
-                <div class="inner">
-                  <div class="color-variant-wrapper">
-                    <ul class="color-variant">
-                      <li class="color-extra-01 active">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-02">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-03">
-                        <span><span class="color"></span></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <h5 class="title">
-                    <a href="single-product.html">Guys Bomber Jacket</a>
-                  </h5>
-                  <div class="product-price-variant">
-                    <span class="price old-price">$30</span>
-                    <span class="price current-price">$20</span>
-                  </div>
-                </div>
-                <div class="product-hover-action">
-                  <ul class="cart-action justify-content-center">
-                    <li class="wishlist">
-                      <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                    </li>
-                    <li class="select-option">
-                      <a href="cart.html">Add to Cart</a>
-                    </li>
-                    <li class="quickview">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                          class="far fa-eye"></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End .slick-single-layout -->
-          <div class="slick-single-layout">
-            <div class="axil-product product-style-two has-color-pick">
-              <div class="thumbnail">
-                <a href="single-product.html">
-                  <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500"
-                    th:src="@{/user/assets/images/product/fashion/product-5.png}" alt="Product Images" />
-                </a>
-                <div class="label-block label-right">
-                  <div class="product-badget">50% OFF</div>
-                </div>
-              </div>
-              <div class="product-content">
-                <div class="inner">
-                  <div class="color-variant-wrapper">
-                    <ul class="color-variant">
-                      <li class="color-extra-01 active">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-02">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-03">
-                        <span><span class="color"></span></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <h5 class="title">
-                    <a href="single-product.html">Full A-Line Dress</a>
-                  </h5>
-                  <div class="product-price-variant">
-                    <span class="price old-price">$50</span>
-                    <span class="price current-price">$25</span>
-                  </div>
-                </div>
-                <div class="product-hover-action">
-                  <ul class="cart-action justify-content-center">
-                    <li class="wishlist">
-                      <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                    </li>
-                    <li class="select-option">
-                      <a href="cart.html">Add to Cart</a>
-                    </li>
-                    <li class="quickview">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                          class="far fa-eye"></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End .slick-single-layout -->
-          <div class="slick-single-layout">
-            <div class="axil-product product-style-two has-color-pick">
-              <div class="thumbnail">
-                <a href="single-product.html">
-                  <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                    th:src="@{/user/assets/images/product/fashion/product-10.png}" alt="Product Images" />
-                </a>
-                <div class="label-block label-right">
-                  <div class="product-badget">10% OFF</div>
-                </div>
-              </div>
-              <div class="product-content">
-                <div class="inner">
-                  <div class="color-variant-wrapper">
-                    <ul class="color-variant">
-                      <li class="color-extra-01 active">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-02">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-03">
-                        <span><span class="color"></span></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <h5 class="title">
-                    <a href="single-product.html">Men's Tshirt</a>
-                  </h5>
-                  <div class="product-price-variant">
-                    <span class="price old-price">$40</span>
-                    <span class="price current-price">$30</span>
-                  </div>
-                </div>
-                <div class="product-hover-action">
-                  <ul class="cart-action justify-content-center">
-                    <li class="wishlist">
-                      <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                    </li>
-                    <li class="select-option">
-                      <a href="cart.html">Add to Cart</a>
-                    </li>
-                    <li class="quickview">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                          class="far fa-eye"></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End .slick-single-layout -->
-          <div class="slick-single-layout">
-            <div class="axil-product product-style-two has-color-pick">
-              <div class="thumbnail">
-                <a href="single-product.html">
-                  <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500"
-                    th:src="@{/user/assets/images/product/fashion/product-13.png}" alt="Product Images" />
-                </a>
-                <div class="label-block label-right">
-                  <div class="product-badget">30% OFF</div>
-                </div>
-              </div>
-              <div class="product-content">
-                <div class="inner">
-                  <div class="color-variant-wrapper">
-                    <ul class="color-variant">
-                      <li class="color-extra-01 active">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-02">
-                        <span><span class="color"></span></span>
-                      </li>
-                      <li class="color-extra-03">
-                        <span><span class="color"></span></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <h5 class="title">
-                    <a href="single-product.html">Guys Bomber Jacket</a>
-                  </h5>
-                  <div class="product-price-variant">
-                    <span class="price old-price">$30</span>
-                    <span class="price current-price">$20</span>
-                  </div>
-                </div>
-                <div class="product-hover-action">
-                  <ul class="cart-action justify-content-center">
-                    <li class="wishlist">
-                      <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                    </li>
-                    <li class="select-option">
-                      <a href="cart.html">Add to Cart</a>
-                    </li>
-                    <li class="quickview">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                          class="far fa-eye"></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End .slick-single-layout -->
-        </div>
-      </div>
-    </div>
-    <!-- End New Arrivals Product Area  -->
+    <!--Start service area-->
+    <div th:replace="~{user/fragments/content::category-area}"></div>
+    <!--      End service area-->
 
   </main>
 
@@ -433,7 +162,7 @@
   <!-- Header Search Modal End -->
 
   <!-- Cart dropdown Start -->
-  <div th:insert="/user/fragments/cart-dropdown::cart-dropdown"></div>
+  <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
   <!-- Cart dropdown End -->
 
 

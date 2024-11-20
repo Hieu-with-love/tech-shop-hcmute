@@ -2,6 +2,8 @@ package com.hcmute.tech_shop.controllers.user;
 
 import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
+import com.hcmute.tech_shop.dtos.responses.CartResponse;
 import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.entities.CartDetail;
 import com.hcmute.tech_shop.entities.Product;
@@ -72,9 +74,12 @@ public class CartController {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
 
-            model.addAttribute("cart",cart);
+            CartResponse cartResponse = cartService.getCartResponse(cart);
+
+            model.addAttribute("cart",cartResponse);
         }
-        model.addAttribute("cartDetailListFull", cartDetailListFull);
+        List<CartDetailResponse> cartDetailResponses = cartDetailServiceImpl.getAllItems(cartDetailListFull);
+        model.addAttribute("cartDetailListFull", cartDetailResponses);
         model.addAttribute("cartDetailList", cartDetailList);
         return "user/cart";
     }

@@ -1,8 +1,11 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.dtos.requests.CartRequest;
+import com.hcmute.tech_shop.dtos.responses.CartResponse;
 import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.repositories.CartRepository;
 import com.hcmute.tech_shop.services.interfaces.CartService;
+import com.hcmute.tech_shop.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,13 @@ public class CartServiceImpl implements CartService {
     public Cart getCartById(Long id) {
         return cartRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
+    }
+
+    @Override
+    public CartResponse getCartResponse(Cart cart) {
+        return CartResponse.builder()
+                .totalPrice(Constant.formatter.format(cart.getTotalPrice()))
+                .build();
     }
 
     @Override
