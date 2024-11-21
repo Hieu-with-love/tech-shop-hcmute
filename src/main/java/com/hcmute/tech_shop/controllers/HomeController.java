@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
@@ -67,7 +68,7 @@ public class HomeController {
         model.addAttribute("totalPages", currentPage.getTotalPages());
 
         List<Category> categories = categoryService.findAll();
-        List<CartDetail> cartDetailList = new ArrayList<>();
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
 
         int numberProductInCart = 0;
 
@@ -79,7 +80,7 @@ public class HomeController {
             if(cart == null) {
                 cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,userRequest.getId(),null));
             }
-            cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
+            cartDetailList = cartDetailServiceImpl.getAllItems(cartDetailServiceImpl.findAllByCart_Id(cart.getId()));
             numberProductInCart = cartDetailList.size();
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);

@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
 import com.hcmute.tech_shop.dtos.requests.CartRequest;
 import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
@@ -60,8 +61,8 @@ public class HomeController {
         List<Category> categories = categoryService.findAll();
 
         UserRequest userRequest = getUser();
-        List<CartDetail> cartDetailList = new ArrayList<>();
-        List<CartDetail> cartDetailListFull = new ArrayList<>();
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+        int numberProductInCart = 0;
         Cart cart = new Cart();
         if(userRequest != null) {
             cart = cartService.findByCustomerId(userRequest.getId());
@@ -71,7 +72,8 @@ public class HomeController {
                 cart.setTotalPrice(BigDecimal.ZERO);
                 cart = cartService.createCart(cart);
             }
-            cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
+            cartDetailList = cartDetailServiceImpl.getAllItems(cartDetailServiceImpl.findAllByCart_Id(cart.getId()));
+            numberProductInCart = cartDetailList.size();
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
@@ -80,7 +82,7 @@ public class HomeController {
         model.addAttribute("categories", categories);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
-        model.addAttribute("cartDetailListFull", cartDetailListFull);
+        model.addAttribute("numberProductInCart", numberProductInCart);
         return "/user/home";
     }
 }
