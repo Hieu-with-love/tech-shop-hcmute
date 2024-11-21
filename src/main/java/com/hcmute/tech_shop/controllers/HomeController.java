@@ -54,7 +54,7 @@ public class HomeController {
     public String home(Model model,
                        HttpSession session,
                        @RequestParam(defaultValue = "0") int pageNumber,
-                       @RequestParam(defaultValue = "10") int pageSize,
+                       @RequestParam(defaultValue = "12") int pageSize,
                        @RequestParam(defaultValue = "sort") String sortBy,
                        @RequestParam(defaultValue = "true") boolean ascending) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

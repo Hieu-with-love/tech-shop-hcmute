@@ -7,21 +7,54 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
 
 @Configuration
 //@EnableWebSecurity
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {"/register", "/user/home", "/forgot-password"};
+    private final String[] PUBLIC_ENDPOINTS = {"/register", "/user/home", "/forgot-password", "/verify-account"};
 
     CustomUserDetailsServiceImpl customUserDetailsService;
+
+    @Component
+    public class CustomAuthenticationProvider implements AuthenticationProvider {
+
+        @Override
+        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+            String username = authentication.getName();
+            String password = authentication.getCredentials().toString();
+
+            // Lấy thông tin người dùng từ UserDetailsService
+            CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
+
+            // Kiểm tra trạng thái tài khoản
+            if (!userDetails.isActive()) {
+                // Trả về thông báo hoặc logic khác thay vì ném ngoại lệ
+                throw new BadCredentialsException("Your account is not active. Please activate it.");
+            }
+
+            // Xác thực thành công
+            return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        }
+
+        @Override
+        public boolean supports(Class<?> authentication) {
+            return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        }
+    }
 
 
     @Bean
@@ -51,6 +84,10 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/login?logout=true")
                         .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .maximumSessions(2)
+                        .maxSessionsPreventsLogin(true)
                 );
         return http.build();
     }
