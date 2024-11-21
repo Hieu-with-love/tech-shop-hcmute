@@ -54,21 +54,23 @@ public class CartDetailServiceImpl implements ICartDetailService {
     public boolean create(CartDetailRequest cartDetailRequest) {
         try {
             if (cartDetailRequest.getProduct() != null) {
-                CartDetail oldCart = cartDetailRepository.findByCart_IdAndAndProduct_Id(cartDetailRequest.getCart().getId(), cartDetailRequest.getProduct().getId()).orElse(null);
                 Cart cart = cartService.findById(cartDetailRequest.getCart().getId());
-                CartDetail cartDetail = new CartDetail();
-                cartDetail.setCart(cart);
-                cartDetail.setProduct(cartDetailRequest.getProduct());
-                cartDetail.setQuantity(cartDetailRequest.getQuantity());
-                cartDetail.setId(new CartDetailId(cartDetailRequest.getCart().getId(), cartDetailRequest.getProduct().getId()));
-                cartDetail.setTotalPrice(cartDetailRequest.getTotalPrice());
+                BigDecimal price = cart.getTotalPrice().add(cartDetailRequest.getTotalPrice()),
+                        limit = new BigDecimal("10000000000");
+
+                if(price.compareTo(limit) > 0) {
+                    return false;
+                }
+
+                CartDetail cartDetail = new CartDetail(
+                        new CartDetailId(cart.getId(), cartDetailRequest.getProduct().getId()),
+                        cartDetailRequest.getQuantity(),
+                        cartDetailRequest.getTotalPrice(),
+                        cart,
+                        cartDetailRequest.getProduct());
                 cartDetailRepository.save(cartDetail);
-                if (oldCart != null) {
-                    cart.setTotalPrice(cart.getTotalPrice().subtract(oldCart.getTotalPrice()).add(cartDetail.getTotalPrice()));
-                }
-                else {
-                    cart.setTotalPrice(cart.getTotalPrice().add(cartDetail.getTotalPrice()));
-                }
+
+                cart.setTotalPrice(price);
                 cartRepository.save(cart);
                 return true;
             }
@@ -81,10 +83,18 @@ public class CartDetailServiceImpl implements ICartDetailService {
     @Override
     public boolean update(CartDetailRequest cartDetailRequest) {
         try {
-            CartDetail oldCartDetail = cartDetailRepository.findByCart_IdAndAndProduct_Id(cartDetailRequest.getCart().getId(), cartDetailRequest.getProduct().getId()).orElse(null);
+            CartDetail oldCartDetail = cartDetailRepository.findByCart_IdAndAndProduct_Id(cartDetailRequest.getCart().getId(),
+                    cartDetailRequest.getProduct().getId()).orElse(null);
+
             if (oldCartDetail != null) {
                 Cart oldCart = cartService.findById(cartDetailRequest.getCart().getId());
-                BigDecimal totalPrice = oldCart.getTotalPrice().subtract(oldCartDetail.getTotalPrice()).add(cartDetailRequest.getTotalPrice());
+                BigDecimal totalPrice = oldCart.getTotalPrice().subtract(oldCartDetail.getTotalPrice())
+                        .add(cartDetailRequest.getTotalPrice()),
+                        limit = new BigDecimal("10000000000");
+
+                if(totalPrice.compareTo(limit) > 0) {
+                    return false;
+                }
 
                 oldCartDetail.setQuantity(cartDetailRequest.getQuantity());
                 oldCartDetail.setTotalPrice(cartDetailRequest.getTotalPrice());

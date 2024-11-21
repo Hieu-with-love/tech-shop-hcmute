@@ -22,6 +22,13 @@
                         <h4 class="title">Your Cart</h4>
                         <a th:href="@{/user/cart/delete-all}" class="cart-clear">Clear Shoping Cart</a>
                     </div>
+                    <div class="product-table-heading">
+                        <div th:if="${error != null}">
+                            <h6 th:text="*{error}"
+                                style="color: red;">
+                            </h6>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table axil-product-table axil-cart-table mb--40">
                             <thead>

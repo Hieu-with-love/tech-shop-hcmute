@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class CartController {
     }
 
     @PostMapping("/cart-add")
-    public String addToCart(Model model, @Valid @RequestParam("productId") Long productId,@RequestParam("quantity") int quantity, HttpSession session) {
+    public String addToCart(Model model, @Valid @RequestParam("productId") Long productId,@RequestParam("quantity") int quantity, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
         if(cart == null) {
             cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,cart.getUserId(),null));
@@ -103,49 +104,63 @@ public class CartController {
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
         CartDetailRequest cartDetailRequest;
         BigDecimal price;
+        BigDecimal limit = new BigDecimal("10000000000");
 
         if(cartDetail != null) {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+quantity));
             cartDetailRequest = new CartDetailRequest(quantity + cartDetail.getQuantity(), price, cart, product);
+            if (price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
             if (!cartDetailServiceImpl.update(cartDetailRequest)) {
                 String error = "Could not update cart detail";
-                model.addAttribute("error", error);
+                redirectAttributes.addFlashAttribute("error", error);
             }
         }
         else
         {
             price = product.getPrice().multiply(new BigDecimal(quantity));
             cartDetailRequest = new CartDetailRequest(quantity,price, cart, product);
-                if (!cartDetailServiceImpl.create(cartDetailRequest)) {
-                    String error = "Could not create cart detail";
-                    model.addAttribute("error", error);
-                }
+
+            if(price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else if (!cartDetailServiceImpl.create(cartDetailRequest)) {
+                String error = "Could not create cart detail";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
         }
         return "redirect:/user/home";
     }
 
     @PostMapping("/inc-cart")
-    public String incrementCart(Model model, @Valid @RequestParam("productId") String productName, HttpSession session) {
+    public String incrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
         Product product = productServiceImpl.findByName(productName).getFirst();
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         CartDetailRequest cartDetailRequest;
-        BigDecimal price;
+        BigDecimal price,limit = new BigDecimal("10000000000");
 
         if(cartDetail != null) {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+1));
             cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() + 1, price, cart, product);
-            if (!cartDetailServiceImpl.update(cartDetailRequest)) {
+            if(price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else if (!cartDetailServiceImpl.update(cartDetailRequest)) {
                 String error = "Could not update cart detail";
-                model.addAttribute("error", error);
+                redirectAttributes.addFlashAttribute("error", error);
             }
         }
         return "redirect:/user/cart";
     }
 
     @PostMapping("/dec-cart")
-    public String decrementCart(Model model, @Valid @RequestParam("productId") String productName, HttpSession session) {
+    public String decrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
         Product product = productServiceImpl.findByName(productName).getFirst();
@@ -159,25 +174,25 @@ public class CartController {
                 cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() - 1, price, cart, product);
                 if (!cartDetailServiceImpl.update(cartDetailRequest)) {
                     String error = "Could not update cart detail";
-                    model.addAttribute("error", error);
+                    redirectAttributes.addFlashAttribute("error", error);
                 }
             }
             else {
                 String error = "Quantity must be greater than 1";
-                model.addAttribute("error", error);
+                redirectAttributes.addFlashAttribute("error", error);
             }
         }
         return "redirect:/user/cart";
     }
 
     @GetMapping("/delete-all")
-    public String deleteAllCart(Model model, HttpSession session) {
+    public String deleteAllCart(HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
         if(cart != null) {
             if(!cartDetailServiceImpl.deleteAll(cart.getId())){
                 String error = "Could not delete cart detail";
-                model.addAttribute("error", error);
+                redirectAttributes.addFlashAttribute("error", error);
             }
         }
 
@@ -185,17 +200,15 @@ public class CartController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @Valid @PathVariable("id") String productName, HttpSession session) {
+    public String delete(@Valid @PathVariable("id") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
         Product product = productServiceImpl.findByName(productName).getFirst();
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         if(cartDetail != null) {
-            if (cartDetail.getQuantity() > 1){
-                if(!cartDetailServiceImpl.delete(cartDetail)) {
-                    String error = "Could not delete cart detail";
-                    model.addAttribute("error", error);
-                }
+            if(!cartDetailServiceImpl.delete(cartDetail)) {
+                String error = "Could not delete cart detail";
+                redirectAttributes.addFlashAttribute("error", error);
             }
         }
 
