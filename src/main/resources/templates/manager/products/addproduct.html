@@ -29,12 +29,12 @@
                 <div class="card-body">
                     <div class="tabs-set">
                         <form th:action="@{/manager/products/create}" th:method="post" enctype="multipart/form-data"
-                              th:object="${product}">
+                              th:object="${productDto}">
                             <div class="form-row">
                                 <div class="form-group col-lg-3 col-sm-6 col-12">
                                     <label>Product Name</label>
-                                    <input type="text" th:field="*{name}" placeholder="Enter product name" required>
-                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                    <input type="text" th:field="*{name}" placeholder="Enter name" required>
+                                    <div th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="*{name}"
                                          style="color: red;"></div>
                                 </div>
                                 <div class="form-group col-lg-3 col-sm-6 col-12">

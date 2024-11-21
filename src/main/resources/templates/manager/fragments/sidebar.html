@@ -3,36 +3,39 @@
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
                 <li class="active">
-                    <a th:href="@{/manager/home}"><img th:src="@{/admin/assets/img/icons/dashboard.svg}" alt="img"><span>
+                    <a th:href="@{/manager/home}"><img th:src="@{/admin/assets/img/icons/dashboard.svg}"
+                                                       alt="img"><span>
                                     Dashboard</span> </a>
                 </li>
                 <li class="inactive">
-                    <a th:href="@{/manager/products}"><img th:src="@{/admin/assets/img/icons/product.svg}" alt="img"><span>
+                    <a th:href="@{/manager/products}"><img th:src="@{/admin/assets/img/icons/product.svg}"
+                                                           alt="img"><span>
                                     Product</span> </a>
                 </li>
-                <li class="submenu">
+                <li class="inactive">
                     <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/sales1.svg}" alt="img"><span>
-                                    Order</span> <span class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a th:href="@{/manager/orders}">Order List</a></li>
-                        <li><a th:href="@{/manager/orders/add}">Add Order</a></li>
-                    </ul>
+                        Order</span> </a>
                 </li>
                 <li class="submenu">
-                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/purchase1.svg}" alt="img"><span>
+                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/purchase1.svg}"
+                                                       alt="img"><span>
                                     Brand</span> <span class="menu-arrow"></span></a>
                     <ul>
-                        <li><a href="purchaselist.html">Brand List</a></li>
-                        <li><a href="addpurchase.html">Add Brand</a></li>
+                        <li><a th:href="@{/manager/brands}">Brand List</a></li>
+                        <li><a th:href="@{/manager/brands/add-brand}">Add Brand</a></li>
                     </ul>
                 </li>
                 <li class="submenu">
                     <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/expense1.svg}" alt="img"><span>
                                     Voucher</span> <span class="menu-arrow"></span></a>
                     <ul>
-                        <li><a href="expenselist.html">Voucher List</a></li>
-                        <li><a href="createexpense.html">Add Voucher</a></li>
+                        <li><a th:href="@{/manager/vouchers}">Voucher List</a></li>
+                        <li><a th:href="@{/manager/vouchers/save}">Add Voucher</a></li>
                     </ul>
+                </li>
+                <li class="inactive">
+                    <a th:href="@{/user/home}"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
+                                    User Home</span> </a>
                 </li>
             </ul>
         </div>

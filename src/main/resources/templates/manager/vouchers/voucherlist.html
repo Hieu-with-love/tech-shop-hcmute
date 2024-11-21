@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:time="http://www.thymeleaf.org/extras/java8time">
+<head>
+    <title>Manager</title>
+    <div th:insert="~{manager/fragments/head::head}"></div>
+</head>
+
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"> </div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{manager/fragments/header::header}"></div>
+    <div th:replace="~{manager/fragments/sidebar::sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Voucher list</h4>
+                    <h6>View/Search Voucher</h6>
+                </div>
+                <div class="page-btn">
+                    <a th:href="@{/manager/vouchers/save}" th:class="'btn btn-added'">
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" class="me-1" alt="img">Add Voucher
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-top">
+                        <div class="search-set">
+                            <div class="search-input">
+                                <a class="btn btn-searchset"><img th:src="@{/admin/assets/img/icons/search-white.svg}"
+                                                                  alt="img"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table datanew">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label class="checkboxs">
+                                        <input type="checkbox" id="select-all">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </th>
+                                <th>Voucher Code</th>
+                                <th>Value</th>
+                                <th>Quantity</th>
+                                <th>Expiration Date</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="voucher : ${vouchers}">
+                                <td>
+                                    <label class="checkboxs">
+                                        <input type="checkbox">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                </td>
+                                <td th:text="${voucher.name}">Voucher Code</td>
+                                <td th:text="${#numbers.formatDecimal(voucher.value, 1, 'POINT', 2, 'COMMA')}">Value</td>
+                                <td th:text="${voucher.quantity}">Quantity</td>
+                                <td th:text="${voucher.expiredDate}">Expiration Date</td>
+                                <td>
+                                    <a class="me-3" th:href="@{'/manager/vouchers/save/' + ${voucher.id}}">
+                                        <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
+                                    </a>
+                                    <a class="me-3 confirm-text" th:href="@{'/manager/vouchers/delete/' + ${voucher.id}}">
+                                        <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{manager/fragments/script :: script}"></div>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Manager</title>
+    <div th:insert="~{manager/fragments/head::head}"></div>
+</head>
+
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"></div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{manager/fragments/header::header}"></div>
+
+    <div th:replace="~{manager/fragments/sidebar::sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4 th:text="${voucher.id != null ? 'Voucher Edit' : 'Voucher Add'}"></h4>
+                    <h6 th:text="${voucher.id != null ? 'Edit Voucher' : 'Create new Voucher'}"></h6>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/manager/vouchers/savevoucher}" th:object="${voucher}" th:method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Voucher Code</label>
+                                    <input type="text" th:field="*{name}" class="form-control"
+                                           placeholder="Enter voucher code">
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                         style="color: red;"></div>
+                                    <div th:if="${error}" style="color: red; font-weight: bold; margin-bottom: 5px;">
+                                        <p th:text="${error}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Value</label>
+                                    <input type="number" th:field="*{value}" class="form-control"
+                                           placeholder="Enter value">
+                                    <div th:if="${#fields.hasErrors('value')}" th:errors="*{value}"
+                                         style="color: red;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" th:field="*{quantity}" class="form-control"
+                                           placeholder="Enter quantity">
+                                    <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"
+                                         style="color: red;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Expiration Date</label>
+                                    <input type="date" name="expiredDate" th:value="${voucher.expiredDate}"
+                                           class="form-control">
+                                    <div th:if="${#fields.hasErrors('expiredDate')}" th:errors="*{expiredDate}"
+                                         style="color: red;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">Submit</button>
+                                <a th:href="@{/manager/vouchers}" class="btn btn-cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{manager/fragments/script::script}"></div>
+</body>
+
+</html>
