@@ -34,8 +34,7 @@ public class ProductController {
 
     @GetMapping("") // localhost:8080/manager/products
     public String index(Model model) {
-        List<Product> products = productService.findAll();
-        model.addAttribute("products", products);
+        model.addAttribute("products", productService.findAll());
         return "manager/products/productlist";
     }
 
@@ -69,7 +68,7 @@ public class ProductController {
     @GetMapping("/add/computer")
     public String addComputer(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        model.addAttribute("product", productDTO);
+        model.addAttribute("productDto", productDTO);
         model.addAttribute("brands", brandService.findAll());
         model.addAttribute("categoryId", 1);
         model.addAttribute("categoryChoice", "computer");
@@ -79,7 +78,7 @@ public class ProductController {
     @GetMapping("/add/phone")
     public String addPhone(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        model.addAttribute("product", productDTO);
+        model.addAttribute("productDto", productDTO);
         model.addAttribute("brands", brandService.findAll());
         model.addAttribute("categoryId", 2);
         model.addAttribute("categoryChoice", "phone");
@@ -89,7 +88,7 @@ public class ProductController {
     @GetMapping("/add/accessory")
     public String addAccessory(Model model) {
         ProductRequest productDTO = new ProductRequest();
-        model.addAttribute("product", productDTO);
+        model.addAttribute("productDto", productDTO);
         model.addAttribute("brands", brandService.findAll());
         model.addAttribute("categoryId", 3);
         model.addAttribute("categoryChoice", "accessory");
@@ -99,10 +98,9 @@ public class ProductController {
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam Long id) {
         Product product = productService.findById(id).get();
-        List<Category> categories = categoryService.findAll();
-        List<Brand> brands = brandService.findAll();
-        model.addAttribute("categories", categories);
-        model.addAttribute("brands", brands);
+        model.addAttribute("productID", id);
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("brands", brandService.findAll());
         model.addAttribute("product", product);
         if (product.getCategory().getName().equals("Computer")) {
             return "manager/products/editComputer";
@@ -137,16 +135,17 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String insert(@Valid @ModelAttribute("product") ProductRequest productDTO,
+    public String insert(@Valid @ModelAttribute("productDto") ProductRequest productDTO,
+                         BindingResult bindingResult,
                          @RequestParam("files") MultipartFile file,
                          @RequestParam("categoryId") Long categoryId,
                          @RequestParam("categoryChoice") String categoryChoice,
-                         Model model,
-                         BindingResult bindingResult) throws IOException {
+                         Model model) throws IOException {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("product", productDTO);
+            model.addAttribute("productDto", productDTO);
             model.addAttribute("categories", categoryService.findAll());
             model.addAttribute("brands", brandService.findAll());
+            model.addAttribute("categoryId", categoryId);
             model.addAttribute("categoryChoice", categoryChoice);
             return "manager/products/addproduct";
         }
@@ -159,22 +158,38 @@ public class ProductController {
 
     @PostMapping("/update")
     public String update(Model model,
-                         @RequestParam Long id,
+                         @RequestParam Long productID,
                          @Valid @ModelAttribute("product") ProductRequest productDTO,
+                         BindingResult bindingResult,
                          @RequestParam("files") MultipartFile file,
-                         BindingResult bindingResult) throws IOException {
+                         @RequestParam("editComputer") String editComputer,
+                         @RequestParam("editPhone") String editPhone,
+                         @RequestParam("editAccessory") String editAccessory) throws IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("productID", productID);
+            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("brands", brandService.findAll());
+            model.addAttribute("product", productDTO);
+            if (editComputer.equals("1")) {
+                return "manager/products/editComputer";
+            }
+            if (editPhone.equals("1")) {
+                return "manager/products/editPhone";
+            }
+            if (editAccessory.equals("1")) {
+                return "manager/products/editAccessory";
+            }
             return "manager/products/productlist";
         }
         if (file == null || file.isEmpty()) {
-            Product product = productService.updateProduct(id, productDTO);
+            Product product = productService.updateProduct(productID, productDTO);
             if (product == null) {
                 // handle exception with alert, use js code
             }
             return "redirect:/manager/products";
         }
 
-        Product product = productService.updateProduct(id, productDTO, file);
+        Product product = productService.updateProduct(productID, productDTO, file);
         if (product == null) {
             // handle exception with alert, use js code
         }

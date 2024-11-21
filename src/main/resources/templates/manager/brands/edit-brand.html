@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Manager</title>
+    <div th:insert="~{manager/fragments/head::head}"></div>
+</head>
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"></div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{manager/fragments/header::header}"></div>
+
+    <div th:replace="~{manager/fragments/sidebar::sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Edit Brand</h4>
+                    <h6>Edit a brand</h6>
+                </div>
+            </div>
+            <div class="page-header" th:if="${error != null}">
+                <div class="page-title">
+                    <h4 th:text="${error}" style="color: red"></h4>
+                </div>
+            </div>
+            <form th:action="@{/manager/brands/edit-brand/{id}(id=${brand.id})}" method="post"
+                  enctype="multipart/form-data" th:object="${brand}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Brand Name</label>
+                                    <input type="text" placeholder="Brand name" name="name" required th:field="*{name}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Active</label>
+                                    <div class="radio-group">
+                                        <div>
+                                            <input type="radio" id="active" name="active" value="true"
+                                                   th:checked="${brand.active} == true"/> Active
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="inactive" name="active" value="false"
+                                                   th:checked="${brand.active} == false"/>Inactive
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input type="hidden" th:field="*{id}">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label> Brand Image</label>
+                                <input type="text" name="oldImg" th:value="${brand.brandImg}" hidden="hidden">
+                                <img th:src="@{|/${brand.brandImg}|}" alt="Ảnh nhãn hàng"
+                                     width="500px;">
+                                <div class="image-upload">
+                                    <input type="file" name="files" accept="image/*">
+                                    <div class="image-uploads">
+                                        <img th:src="@{/admin/assets/img/icons/upload.svg}" alt="img"
+                                             th:field="*{brandImg}">
+                                        <h4>Drag and drop a file to upload</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2">Submit</button>
+                            <a th:href="@{/manager/brands}" class="btn btn-cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{manager/fragments/script::script}"></div>
+
+</body>
+</html>

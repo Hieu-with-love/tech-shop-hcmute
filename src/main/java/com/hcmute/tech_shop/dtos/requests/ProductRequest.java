@@ -21,8 +21,8 @@ public class ProductRequest implements Serializable {
     @NotBlank(message = "Product's description must not be empty")
     private String description;
 
-    @NotNull(message = "Product's price must not be empty")
-    @Min(value = 1000, message = "Product's price must be greater than 1000")
+    @Min(value = 1000, message = "Product's price must be greater than or equal 1.000")
+    @Max(value = 1000000000, message = "Price must be less than or equal to 1 million")
     @Digits(integer = 10, fraction = 2, message = "Giá trị phải có tối đa 10 chữ số nguyên và 2 chữ số thập phân")
     private BigDecimal price;
 
@@ -47,7 +47,7 @@ public class ProductRequest implements Serializable {
     private String frontCamera = "";
 
     @Min(value = 1, message = "Product's stock quantity must be greater than 0")
-    private int stockQuantity;
+    private Integer stockQuantity;
 
     @NotBlank(message = "Product's warranty must not be empty")
     private String warranty;

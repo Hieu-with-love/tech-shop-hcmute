@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Manager</title>
+    <div th:insert="~{manager/fragments/head::head}"></div>
+</head>
+<body>
+<div id="global-loader">
+    <div class="whirly-loader"></div>
+</div>
+
+<div class="main-wrapper">
+
+    <div th:replace="~{manager/fragments/header::header}"></div>
+
+    <div th:replace="~{manager/fragments/sidebar::sidebar}"></div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Order Edit</h4>
+                    <h6>Edit order</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="tabs-set">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="computer" role="tabpanel"
+                                 aria-labelledby="computer-tab">
+                                <div class="table-responsive">
+                                    <form th:action="@{/manager/products/update(id=${order.getId()})}" method="post"
+                                          enctype="multipart/form-data" th:object="${order}">
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>ID</label>
+                                                <input type="text" th:field="*{id}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="select">
+                                                    <option name="status">Active</option>
+                                                    <option name="status">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Voucher</label>
+                                                <input type="text" th:field="*{voucher.name}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Payment</label>
+                                                <input type="text" th:field="*{payment.name}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Buyer's Name</label>
+                                                <input type="text" th:field="*{user.lastName}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Buyer's Phone number</label>
+                                                <input type="text" th:field="*{user.phoneNumber}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Buyer's Address</label>
+<!--                                                <input type="text" th:field="*{address}" disabled>-->
+                                            </div>
+                                        </div>
+                                        <div th:each="detail : ${order.getOrderDetails()}">
+                                            <div class="col-lg-3 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Product</label>
+                                                    <input type="text" th:value="${detail.product.name}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Quantity</label>
+                                                    <input type="text" th:value="${detail.quantity}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Total price</label>
+                                                <input type="text" th:field="*{totalPrice}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input class="btn btn-submit me-2" type="submit" th:value="Update">
+                                            <a href="/manager/orders" class="btn btn-cancel">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{manager/fragments/script::script}"></div>
+
+</body>
+</html>
