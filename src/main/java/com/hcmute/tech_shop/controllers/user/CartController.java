@@ -104,10 +104,15 @@ public class CartController {
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
         CartDetailRequest cartDetailRequest;
         BigDecimal price;
+        BigDecimal limit = new BigDecimal("10000000000");
 
         if(cartDetail != null) {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+quantity));
             cartDetailRequest = new CartDetailRequest(quantity + cartDetail.getQuantity(), price, cart, product);
+            if (price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
             if (!cartDetailServiceImpl.update(cartDetailRequest)) {
                 String error = "Could not update cart detail";
                 redirectAttributes.addFlashAttribute("error", error);
@@ -117,10 +122,15 @@ public class CartController {
         {
             price = product.getPrice().multiply(new BigDecimal(quantity));
             cartDetailRequest = new CartDetailRequest(quantity,price, cart, product);
-                if (!cartDetailServiceImpl.create(cartDetailRequest)) {
-                    String error = "Could not create cart detail";
-                    redirectAttributes.addFlashAttribute("error", error);
-                }
+
+            if(price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else if (!cartDetailServiceImpl.create(cartDetailRequest)) {
+                String error = "Could not create cart detail";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
         }
         return "redirect:/user/home";
     }
@@ -132,12 +142,16 @@ public class CartController {
         Product product = productServiceImpl.findByName(productName).getFirst();
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         CartDetailRequest cartDetailRequest;
-        BigDecimal price;
+        BigDecimal price,limit = new BigDecimal("10000000000");
 
         if(cartDetail != null) {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+1));
             cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() + 1, price, cart, product);
-            if (!cartDetailServiceImpl.update(cartDetailRequest)) {
+            if(price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else if (!cartDetailServiceImpl.update(cartDetailRequest)) {
                 String error = "Could not update cart detail";
                 redirectAttributes.addFlashAttribute("error", error);
             }

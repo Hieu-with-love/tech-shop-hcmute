@@ -55,6 +55,12 @@ public class CartDetailServiceImpl implements ICartDetailService {
         try {
             if (cartDetailRequest.getProduct() != null) {
                 Cart cart = cartService.findById(cartDetailRequest.getCart().getId());
+                BigDecimal price = cart.getTotalPrice().add(cartDetailRequest.getTotalPrice()),
+                        limit = new BigDecimal("10000000000");
+
+                if(price.compareTo(limit) > 0) {
+                    return false;
+                }
 
                 CartDetail cartDetail = new CartDetail(
                         new CartDetailId(cart.getId(), cartDetailRequest.getProduct().getId()),
@@ -64,7 +70,7 @@ public class CartDetailServiceImpl implements ICartDetailService {
                         cartDetailRequest.getProduct());
                 cartDetailRepository.save(cartDetail);
 
-                cart.setTotalPrice(cart.getTotalPrice().add(cartDetail.getTotalPrice()));
+                cart.setTotalPrice(price);
                 cartRepository.save(cart);
                 return true;
             }
@@ -77,10 +83,18 @@ public class CartDetailServiceImpl implements ICartDetailService {
     @Override
     public boolean update(CartDetailRequest cartDetailRequest) {
         try {
-            CartDetail oldCartDetail = cartDetailRepository.findByCart_IdAndAndProduct_Id(cartDetailRequest.getCart().getId(), cartDetailRequest.getProduct().getId()).orElse(null);
+            CartDetail oldCartDetail = cartDetailRepository.findByCart_IdAndAndProduct_Id(cartDetailRequest.getCart().getId(),
+                    cartDetailRequest.getProduct().getId()).orElse(null);
+
             if (oldCartDetail != null) {
                 Cart oldCart = cartService.findById(cartDetailRequest.getCart().getId());
-                BigDecimal totalPrice = oldCart.getTotalPrice().subtract(oldCartDetail.getTotalPrice()).add(cartDetailRequest.getTotalPrice());
+                BigDecimal totalPrice = oldCart.getTotalPrice().subtract(oldCartDetail.getTotalPrice())
+                        .add(cartDetailRequest.getTotalPrice()),
+                        limit = new BigDecimal("10000000000");
+
+                if(totalPrice.compareTo(limit) > 0) {
+                    return false;
+                }
 
                 oldCartDetail.setQuantity(cartDetailRequest.getQuantity());
                 oldCartDetail.setTotalPrice(cartDetailRequest.getTotalPrice());
