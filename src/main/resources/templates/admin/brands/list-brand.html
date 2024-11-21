@@ -133,7 +133,7 @@
                                 </td>
                                 <td class="productimgname">
                                     <a class="product-img">
-                                        <img th:src="@{|/${brand.brandImg}|}" alt="Ảnh nhãn hàng" width="200px">
+                                        <img th:src="@{'/uploads/'+${brand.brandImg}}" alt="Ảnh nhãn hàng" width="200px">
                                     </a>
                                     <a th:text="${brand.name}"></a>
                                 </td>

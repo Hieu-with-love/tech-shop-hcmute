@@ -157,7 +157,7 @@
                                 </td>
                                 <td class="productimgname">
                                     <a th:href="@{/manager/products/edit(id=${product.getId()})}" class="product-img">
-                                        <img th:src="@{|/${product.getThumbnail()}|}" alt="Ảnh sản phẩm"
+                                        <img th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"
                                              width="200px;">
                                     </a>
                                     <a th:href="@{/manager/products/edit(id=${product.getId()})}"

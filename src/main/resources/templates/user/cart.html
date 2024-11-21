@@ -37,7 +37,7 @@
                             <tbody>
                                 <tr th:each="cartDetail : ${cartDetailListFull}">
                                     <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.id})}" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                    <td class="product-thumbnail"><a href="single-product.html"><img th:src="@{|/${cartDetail.thumbnail}|}" alt="Digital Product"></a></td>
+                                    <td class="product-thumbnail"><a href="single-product.html"><img th:src="@{'/uploads/'+${cartDetail.thumbnail}}" alt="Digital Product"></a></td>
                                     <td class="product-title"><a href="single-product.html" th:text="${cartDetail.productName}"></a></td>
                                     <td class="product-price" data-title="Price"><span class="currency-symbol">$</span><span th:text="${cartDetail.price}"></span></td>
                                     <td class="product-quantity" data-title="Qty">
