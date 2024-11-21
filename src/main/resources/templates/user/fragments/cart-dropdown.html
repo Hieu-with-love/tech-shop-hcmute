@@ -5,11 +5,11 @@
             <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-body">
-            <ul class="cart-item-list" th:each="cartDetail : ${cartDetailList}">
+            <ul class="cart-item-list" th:each="cartDetail : ${session.cartDetailList}">
                 <li class="cart-item">
                     <div class="item-img">
                         <a href="single-product.html">
-                            <img th:src="@{|/${cartDetail.product.monitor}|}" alt="Product Image"></a>
+                            <img th:src="@{|/${cartDetail.thumbnail}|}" alt="Product Image"></a>
                         <button class="close-btn"><i class="fas fa-times"></i></button>
                     </div>
                     <!-- End Single product cua Tuan-->
@@ -24,8 +24,8 @@
                         <!--                </span>-->
                         <!--                <span class="rating-number">(64)</span>-->
                         <!--              </div>-->
-                        <h3 class="item-title"><a href="single-product-3.html" th:text="${cartDetail.product.name}"></a></h3>
-                        <div class="item-price"><span class="currency-symbol">$</span><span th:text="${cartDetail.product.price}"></span></div>
+                        <h3 class="item-title"><a href="single-product-3.html" th:text="${cartDetail.productName}"></a></h3>
+                        <div class="item-price"><span class="currency-symbol">$</span><span th:text="${cartDetail.price}"></span></div>
                         <div class="pro-qty item-quantity">
                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}">
                         </div>
@@ -36,8 +36,8 @@
         <div class="cart-footer">
             <h3 class="cart-subtotal">
                 <span class="subtotal-title">Subtotal:</span>
-                <span class="subtotal-amount" th:if="${cart != null}"
-                      th:text="${cart.totalPrice}"></span>
+                <span class="subtotal-amount" th:if="${session.cart != null}"
+                      th:text="${session.cart.totalPrice}"></span>
             </h3>
             <div class="group-btn">
                 <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>

@@ -1,57 +1,22 @@
-<header class="header axil-header header-style-2">
-    <div class="header-top-campaign">
-        <div class="container position-relative">
-            <div class="campaign-content">
-                <div class="campaign-countdown"></div>
-                <p>
-                    Open Doors To A World Of Fashion Get
-                    <a href="#">Get Your Offer</a>
-                </p>
-            </div>
-        </div>
-        <button class="remove-campaign"><i class="fal fa-times"></i></button>
-    </div>
+<header class="header axil-header header-style-5" th:fragment="header">
     <!-- Start Header Top Area  -->
     <div class="axil-header-top">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-2 col-sm-3 col-5">
-                    <div class="header-brand">
-                        <a th:href="@{/user/home}" class="logo logo-dark">
-                            <img th:src="@{/user/assets/images/logo/logo.png}" alt="Site Logo" />
-                        </a>
-                        <a th:href="@{/user/home}" class="logo logo-light">
-                            <img
-                                    th:src="@{/user/assets/images/logo/logo-light.png}"
-                                    alt="Site Logo"
-                            />
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-10 col-sm-9 col-7">
-                    <div class="header-top-dropdown dropdown-box-style">
-                        <div class="axil-search">
-                            <button type="submit" class="icon wooc-btn-search">
-                                <i class="far fa-search"></i>
+                <div class="col-lg-6 col-sm-6 col-12">
+                    <div class="header-top-dropdown">
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                English
                             </button>
-                            <input
-                                    type="search"
-                                    class="placeholder product-search-input"
-                                    name="search2"
-                                    id="search2"
-                                    value=""
-                                    maxlength="128"
-                                    placeholder="What are you looking for...."
-                                    autocomplete="off"
-                            />
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">Arabic</a></li>
+                                <li><a class="dropdown-item" href="#">Spanish</a></li>
+                            </ul>
                         </div>
                         <div class="dropdown">
-                            <button
-                                    class="dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                            >
+                            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 USD
                             </button>
                             <ul class="dropdown-menu">
@@ -60,21 +25,15 @@
                                 <li><a class="dropdown-item" href="#">EUR</a></li>
                             </ul>
                         </div>
-                        <div class="dropdown">
-                            <button
-                                    class="dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                            >
-                                EN
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">EN</a></li>
-                                <li><a class="dropdown-item" href="#">ARB</a></li>
-                                <li><a class="dropdown-item" href="#">SPN</a></li>
-                            </ul>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-12">
+                    <div class="header-top-link">
+                        <ul class="quick-link">
+                            <li><a href="#">Help</a></li>
+                            <li><a th:href="@{/register}">Join Us</a></li>
+                            <li><a th:href="@{/login}">Sign In</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -83,28 +42,17 @@
     <!-- End Header Top Area  -->
 
     <!-- Start Mainmenu Area  -->
-    <div class="axil-mainmenu aside-category-menu">
+    <div id="axil-sticky-placeholder"></div>
+    <div class="axil-mainmenu">
         <div class="container">
             <div class="header-navbar">
-                <div class="header-nav-department">
-                    <aside class="header-department">
-                        <button class="header-department-text department-title">
-                            <span class="icon"><i class="fal fa-bars"></i></span>
-                            <span class="text">Categories</span>
-                        </button>
-                        <nav class="department-nav-menu">
-                            <button class="sidebar-close">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <ul class="nav-menu-list" th:each="category : ${categories}">
-                                <li>
-                                    <a class="nav-link has-megamenu me-3" th:href="@{/user/products/{name}(name=${category.name})}">
-                                        <span class="menu-text" th:text="${category.name}"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </aside>
+                <div class="header-brand">
+                    <a th:href="@{/user/home}" class="logo logo-dark">
+                        <img th:src="@{/user/assets/images/logo/logo.png}" alt="Site Logo">
+                    </a>
+                    <a th:href="@{/user/home}" class="logo logo-light">
+                        <img th:src="@{/user/assets/images/logo/logo-light.png}" alt="Site Logo">
+                    </a>
                 </div>
                 <div class="header-main-nav">
                     <!-- Start Mainmanu Nav -->
@@ -182,8 +130,8 @@
                         <li class="shopping-cart">
                             <a href="#" class="cart-dropdown-btn">
                                 <span class="cart-count"
-                                      th:if="${session.cartDetailListFull.size() > 0}"
-                                      th:text="${session.cartDetailListFull.size()}"></span>
+                                      th:if="${session.numberProductInCart > 0}"
+                                      th:text="${session.numberProductInCart}"></span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>
@@ -230,4 +178,25 @@
         </div>
     </div>
     <!-- End Mainmenu Area  -->
+
+    <div class="header-top-campaign">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-6 col-md-10">
+                    <div class="header-campaign-activation axil-slick-arrow arrow-both-side header-campaign-arrow">
+                        <div class="slick-slide">
+                            <div class="campaign-content">
+                                <p>STUDENT NOW GET 10% OFF : <a href="#">GET OFFER</a></p>
+                            </div>
+                        </div>
+                        <div class="slick-slide">
+                            <div class="campaign-content">
+                                <p>STUDENT NOW GET 10% OFF : <a href="#">GET OFFER</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>

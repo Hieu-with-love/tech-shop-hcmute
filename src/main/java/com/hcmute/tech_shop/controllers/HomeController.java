@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
@@ -10,6 +11,7 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,21 +68,20 @@ public class HomeController {
         model.addAttribute("totalPages", currentPage.getTotalPages());
 
         List<Category> categories = categoryService.findAll();
-        List<CartDetail> cartDetailList = new ArrayList<>();
-        List<CartDetail> cartDetailListFull = new ArrayList<>();
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+
+        int numberProductInCart = 0;
+
         Cart cart = new Cart();
         if(!username.equals("anonymousUser")) {
             User user = userService.getUserByUsername(username);
             UserRequest userRequest = getUser();
             cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
-                cart = new Cart();
-                cart.setUserId(userRequest.getId());
-                cart.setTotalPrice(BigDecimal.ZERO);
-                cart = cartService.createCart(cart);
+                cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,userRequest.getId(),null));
             }
-            cartDetailList = cartDetailServiceImpl.findAllByCart_Id(cart.getId());
-            cartDetailListFull = cartDetailList;
+            cartDetailList = cartDetailServiceImpl.getAllItems(cartDetailServiceImpl.findAllByCart_Id(cart.getId()));
+            numberProductInCart = cartDetailList.size();
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
@@ -90,11 +91,11 @@ public class HomeController {
         model.addAttribute("categories", categories);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
-        model.addAttribute("cartDetailListFull", cartDetailListFull);
+        model.addAttribute("numberProductInCart", numberProductInCart);
 
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
-        session.setAttribute("cartDetailListFull", cartDetailListFull);
+        session.setAttribute("numberProductInCart", numberProductInCart);
         return "user/home";
     }
 
