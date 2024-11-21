@@ -4,7 +4,9 @@ import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Confirmation;
 import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.utils.ImageUtil;
 import com.hcmute.tech_shop.repositories.ConfirmationRepository;
+import com.hcmute.tech_shop.repositories.RoleRepository;
 import com.hcmute.tech_shop.repositories.UserRepository;
 import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.EmailService;
@@ -14,11 +16,15 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +41,9 @@ public class UserServiceImpl implements UserService {
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     private void validation(UserRequest userRequest, BindingResult result){
         // Kiem tra username da ton tai chua?
@@ -156,6 +165,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public User convertToUser(UserRequest userRequest) {
         return modelMapper.map(userRequest, User.class);
+    }
+
+    @Override
+    public User saveUser(UserRequest userRequest, MultipartFile file) {
+        User user = new User();
+        BeanUtils.copyProperties(userRequest, user);
+
+        user.setDateOfBirth(userRequest.getDob());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setRole(roleService.getRoleById(userRequest.getRoleId()));
+
+        if (file != null && !file.isEmpty()) {
+            if (!ImageUtil.isValidSuffixImage(file.getOriginalFilename())) {
+                throw new IllegalArgumentException("File không đúng định dạng ảnh!");
+            }
+            try {
+                String savedImageName = ImageUtil.saveImage(file);
+                user.setImage(savedImageName);
+            } catch (IOException e) {
+                throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage());
+            }
+        } else {
+            user.setImage("avtdefault.jpg");
+        }
+        return userRepository.save(user);
     }
 
     @Override

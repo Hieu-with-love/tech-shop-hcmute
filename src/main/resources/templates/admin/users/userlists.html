@@ -48,7 +48,7 @@
                     <h6>Manage your User</h6>
                 </div>
                 <div class="page-btn">
-                    <a href="adduser.html" class="btn btn-added"><img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img"
+                    <a th:href="@{/admin/users/add-user}" class="btn btn-added"><img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img"
                                                                       class="me-2">Add User</a>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                                 </td>
                                 <td class="productimgname">
                                     <a href="javascript:void(0);" class="product-img">
-                                        <img th:src="@{|/${user.image != null ? user.image : 'avtdefault.jpg'}|}" alt="product" width="50" height="50">
+                                        <img th:src="@{|/uploads/${user.image != null ? user.image : 'avtdefault.jpg'}|}" alt="product" width="50" height="50">
                                     </a>
                                 </td>
                                 <td th:text="${user.firstName}">First Name</td>
