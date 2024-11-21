@@ -112,7 +112,7 @@ public class BrandController {
         if(brand != null && !brand.getId().equals(id) ) {
             msg = "Brand already exists";
             model.addAttribute("error", msg);
-            model.addAttribute("category", brandOld);
+            model.addAttribute("brand", brandOld);
             return "admin/brands/edit-brand";
         }
         if (file == null || file.isEmpty()) {
