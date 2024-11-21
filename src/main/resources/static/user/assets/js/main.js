@@ -966,7 +966,7 @@
 
         sideOffcanvasToggle: function(selectbtn, openElement) {
 
-            $('body').on('click', selectbtn, function(e) {
+            $('body').on('', selectbtn, function(e) {
                 e.preventDefault();
 
                 var $this = $(this),

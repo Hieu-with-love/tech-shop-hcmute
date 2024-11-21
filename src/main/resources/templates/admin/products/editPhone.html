@@ -132,7 +132,7 @@
                                         <div class="form-group col-lg-12">
                                             <label> Product Image</label>
                                             <input type="text" name="oldThumbnail" th:value="${product.getThumbnail()}" hidden="hidden">
-                                            <img th:src="@{|/${product.getThumbnail()}|}" alt="Ảnh sản phẩm"
+                                            <img th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"
                                                  width="500px;">
                                             <div class="image-upload">
                                                 <input type="file" name="files" accept="image/*">

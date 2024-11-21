@@ -14,9 +14,6 @@ server:
 
 #config database connection with mysql
 spring:
-  web:
-    resources:
-      static-locations: file:uploads/, classpath:/static/
   servlet:
     multipart:
       max-file-size: 10MB
