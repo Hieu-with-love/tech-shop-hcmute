@@ -107,7 +107,6 @@ public class ProductServiceImpl implements IProductService {
                 }
                 thumbnail = saveImage(file);
             }
-            assert file != null;
             Product product = Product.builder()
                     .name(productRequest.getName())
                     .description(productRequest.getDescription())

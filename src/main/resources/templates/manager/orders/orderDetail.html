@@ -39,106 +39,55 @@
                                 <ul class="product-bar">
                                     <li>
                                         <h4>Order</h4>
-                                        <h6><span th:text="${product.get().getId()}"></span></h6>
+                                        <h6><span th:text="${order.get().getId()}"></span></h6>
                                     </li>
                                     <li>
                                         <h4>Total Price</h4>
-                                        <h6><span th:text="${product.get().getPrice()}"></span></h6>
+                                        <h6><span th:text="${order.get().getTotalPrice()}"></span></h6>
                                     </li>
                                     <li>
                                         <h4>Status</h4>
                                         <h6>
                                             <span class="badges bg-lightgreen"
-                                                  th:if="${product.get().getId() % 2 == 0}">Active
+                                                  th:if="${order.get().isActive()}">Active
                                             </span>
                                             <span class="badges bg-lightred"
-                                                  th:if="${product.get().getId() % 2 != 0}">Inactive
+                                                  th:if="${!order.get().isActive()}">Inactive
                                             </span>
                                         </h6>
                                     </li>
                                     <li>
                                         <h4>Voucher</h4>
-                                        <h6><span th:text="${product.get().getStockQuantity()}"></span></h6>
+                                        <h6><span th:text="${order.get().getVoucher().getName()}"></span></h6>
                                     </li>
                                     <li>
                                         <h4>Payment</h4>
-                                        <h6><span th:text="${product.get().getPrice()}"></span></h6>
+                                        <h6><span th:text="${order.get().getPayment().getName()}"></span></h6>
                                     </li>
                                     <li>
                                         <h4>Buyer's Name</h4>
-                                        <h6><span th:text="${product.get().getName()}"></span></h6>
+                                        <h6><span th:text="${order.get().getUser().getLastName()}"></span></h6>
                                     </li>
                                     <li>
                                         <h4>Buyer's Phone number</h4>
-                                        <h6><span th:text="${product.get().getRam()}"></span></h6>
+                                        <h6><span th:text="${order.get().getUser().getPhoneNumber()}"></span></h6>
                                     </li>
                                     <li>
                                         <h4>Buyer's Address</h4>
-                                        <h6><span th:text="${product.get().getOs()}"></span></h6>
+<!--                                        <h6><span th:text="${order.get().getAddress()}"></span></h6>-->
                                     </li>
-                                    <li>
-                                        <h4>Monitor</h4>
-                                        <h6><span th:text="${product.get().getMonitor()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Weight</h4>
-                                        <h6><span th:text="${product.get().getWeight()}"></span></h6></li>
-                                    <li>
-                                        <h4>Battery</h4>
-                                        <h6><span th:text="${product.get().getBattery()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Graphic Card</h4>
-                                        <h6><span th:text="${product.get().getGraphicCard()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Port</h4>
-                                        <h6><span th:text="${product.get().getPort()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Warranty</h4>
-                                        <h6><span th:text="${product.get().getWarranty()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Description</h4>
-                                        <h6><span th:text="${product.get().getDescription()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Created At</h4>
-                                        <h6><span th:text="${product.get().getCreatedAt()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Updated At</h4>
-                                        <h6><span th:text="${product.get().getUpdatedAt()}"></span></h6>
-                                    </li>
-                                    <li>
-                                        <h4>Thumbnail</h4>
-                                        <h6>
-                                            <img th:src="@{|/${product.get().getThumbnail()}|}" alt="Ảnh sản phẩm"
-                                                 width="500px">
-                                        </h6>
+                                    <li th:each="detail : ${order.get().getOrderDetails()}">
+                                        <h4>Product</h4>
+                                        <h6><span th:text="${detail.getProduct().getName()}"></span></h6>
+                                        <h4>Quantity</h4>
+                                        <h6><span th:text="${detail.getQuantity()}"></span></h6>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="slider-product-details">
-                                <div class="owl-carousel owl-theme product-slide">
-                                    <div class="slider-product" th:each="image : ${productImages}">
-                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
-                                        <h4 th:text="${image.getUrl()}"></h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
         </div>
     </div>
 </div>

@@ -40,7 +40,7 @@ public class Order extends TrackingDate{
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderDetail> orderDetails;
 
 }
