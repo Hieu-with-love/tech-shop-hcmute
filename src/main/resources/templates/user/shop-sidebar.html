@@ -164,8 +164,8 @@
                             <div class="col-xl-4 col-sm-6">
                                 <div class="axil-product product-style-one mb--30">
                                     <div class="thumbnail">
-                                        <a href="single-product.html">
-                                            <img th:src="@{/user/assets/images/product/electric/product-01.png}" alt="Product Images">
+                                        <a th:href="@{/user/products/product-detail/{id}(id=${product.getId()})}">
+                                            <img th:src="@{'/uploads/'+${product.getThumbnail()}}" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">10% OFF</div>

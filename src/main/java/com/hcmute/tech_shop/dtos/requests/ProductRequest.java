@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 public class ProductRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private Long id;
+
     @NotBlank(message = "Product's name must not be empty")
     private String name;
 
