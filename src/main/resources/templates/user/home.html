@@ -2,106 +2,108 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
-  <title>Tech Shop || Home</title>
-  <div th:insert="~{user/fragments/head::head}"></div>
-  <link rel="stylesheet"
-        th:href="@{/user/customize/css/main.css}"/>
+    <title>Tech Shop || Home</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/user/customize/css/main.css}"/>
 </head>
 
 <body>
-  <div th:insert="~{user/fragments/header-home::header-home}"></div>
-  <main class="main-wrapper">
+<div th:insert="~{user/fragments/header-home::header-home}"></div>
+<main class="main-wrapper">
     <!-- Start Slider Area -->
     <div th:replace="~{user/fragments/slidebar::slidebar}"></div>
     <!-- End Slider Area -->
 
     <!-- Start Expolre Product Area  -->
     <div class="axil-product-area bg-color-white axil-section-gap">
-      <div class="container">
-        <div class="section-title-wrapper">
+        <div class="container">
+            <div class="section-title-wrapper">
           <span class="title-highlighter highlighter-primary">
             <i class="far fa-shopping-basket"></i> Our Products</span>
-          <h2 class="title">Explore our Products</h2>
-        </div>
-        <div
-          class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
-          <!-- Start .slick-single-layout -->
-          <div class="slick-single-layout">
-            <div class="row row--15">
-              <!-- Start Single Product  -->
-              <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"
-                   th:each="product:${products}">
-                <div class="axil-product product-style-one">
-                  <div class="thumbnail">
-                    <a th:href="@{/user/productDetails}">
-                      <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                           th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"/>
-                    </a>
-                    <div class="label-block label-right">
-                      <div class="product-badget">20% Off</div>
-                    </div>
-                    <div class="product-hover-action">
-                      <ul class="cart-action">
-                        <li class="quickview">
-                          <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                              class="far fa-eye"></i></a>
-                        </li>
-                        <li class="select-option">
-                          <form th:action="@{/user/cart/cart-add}" method="post" class="cart-action">
-                            <input type="hidden" name="productId" th:value="${product.id}" />
-                            <input type="hidden" name="quantity" value="1" />
-                            <li class="select-option">
-                              <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng
-                              </button>
-                            </li>
-                          </form>
-                        </li>
-                        <li class="wishlist">
-                          <a href="wishlist.html"><i class="far fa-heart"></i></a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="product-content">
-                    <div class="inner">
-                      <h5 class="title">
-                        <a th:href="@{/user/productDetails}" th:text="${product.name}"></a>
-                      </h5>
-                      <div class="product-price-variant">
-                        <span class="price current-price" th:text="${product.price}"></span>
-                        <span class="price old-price" th:text="${product.oldPrice}"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- End Single Product  -->
-              <!--Pagination here-->
-              <div class="custom-pagination">
-                <ul>
-                  <li th:if="${currentPage > 0}">
-                    <a th:href="@{/user/home(pageNumber=${currentPage - 1}, pageSize=${pageSize})}"
-                       class="prev">Previous</a>
-                  </li>
-                  <li th:each="index : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a th:href="@{/user/home(pageNumber=*{index}, pageSize=${pageSize})}"
-                       th:text="${index + 1}"
-                       th:classappend="${index == currentPage} ? 'active' : '' "
-                       class="page"></a>
-                  </li>
-                  <li th:if="${currentPage < totalPages}">
-                    <a th:href="@{/user/home(pageNumber=${currentPage + 1}, pageSize=${pageSize})}"
-                       class="next">Next</a>
-                  </li>
-                </ul>
-              </div>
-              <!-- End Pagination here-->
+                <h2 class="title">Explore our Products</h2>
             </div>
-          </div>
-          <!-- End .slick-single-layout -->
-        </div>
+            <div
+                    class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
+                <!-- Start .slick-single-layout -->
+                <div class="slick-single-layout">
+                    <div class="row row--15">
+                        <!-- Start Single Product  -->
+                        <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"
+                             th:each="product:${products}">
+                            <div class="axil-product product-style-one">
+                                <div class="thumbnail">
+                                    <a th:href="@{/user/products/product-detail/{id}(id=${product.id})}">
+                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
+                                             th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"/>
+                                    </a>
+                                    <div class="label-block label-right">
+                                        <div class="product-badget">20% Off</div>
+                                    </div>
+                                    <div class="product-hover-action">
+                                        <ul class="cart-action">
+                                            <li class="quickview">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
+                                                        class="far fa-eye"></i></a>
+                                            </li>
+                                            <li class="select-option">
+                                                <form th:action="@{/user/cart/cart-add}" method="post"
+                                                      class="cart-action">
+                                                    <input type="hidden" name="productId" th:value="${product.id}"/>
+                                                    <input type="hidden" name="quantity" value="1"/>
+                                                    <li class="select-option">
+                                                        <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng
+                                                        </button>
+                                                    </li>
+                                                </form>
+                                            </li>
+                                            <li class="wishlist">
+                                                <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <div class="inner">
+                                        <h5 class="title">
+                                            <a th:href="@{/user/products/product-detail/{id}(id=${product.id})}"
+                                               th:text="${product.name}"></a>
+                                        </h5>
+                                        <div class="product-price-variant">
+                                            <span class="price current-price" th:text="${product.price}"></span>
+                                            <span class="price old-price" th:text="${product.oldPrice}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Product  -->
+                        <!--Pagination here-->
+                        <div class="custom-pagination">
+                            <ul>
+                                <li th:if="${currentPage > 0}">
+                                    <a th:href="@{/user/home(pageNumber=${currentPage - 1}, pageSize=${pageSize})}"
+                                       class="prev">Previous</a>
+                                </li>
+                                <li th:each="index : ${#numbers.sequence(0, totalPages - 1)}">
+                                    <a th:href="@{/user/home(pageNumber=*{index}, pageSize=${pageSize})}"
+                                       th:text="${index + 1}"
+                                       th:classappend="${index == currentPage} ? 'active' : '' "
+                                       class="page"></a>
+                                </li>
+                                <li th:if="${currentPage < totalPages}">
+                                    <a th:href="@{/user/home(pageNumber=${currentPage + 1}, pageSize=${pageSize})}"
+                                       class="next">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Pagination here-->
+                    </div>
+                </div>
+                <!-- End .slick-single-layout -->
+            </div>
 
-      </div>
+        </div>
     </div>
     <!-- End Explore Product Area  -->
 
@@ -113,29 +115,29 @@
     <div th:replace="~{user/fragments/content::category-area}"></div>
     <!--      End service area-->
 
-  </main>
+</main>
 
-  <div th:insert="~{user/fragments/service-area-footer::service-area-footer}"></div>
-  <!-- Start Footer Area  -->
-  <div th:insert="~{user/fragments/footer::footer}"></div>
-  <!-- End Footer Area  -->
+<div th:insert="~{user/fragments/service-area-footer::service-area-footer}"></div>
+<!-- Start Footer Area  -->
+<div th:insert="~{user/fragments/footer::footer}"></div>
+<!-- End Footer Area  -->
 
-  <!-- Product Quick View Modal Start -->
-  <div th:insert="~{user/fragments/quickview::quick-view}"></div>
-  <!-- Product Quick View Modal End -->
+<!-- Product Quick View Modal Start -->
+<div th:insert="~{user/fragments/quickview::quick-view}"></div>
+<!-- Product Quick View Modal End -->
 
-  <!-- Header Search Modal Start -->
-  <div th:insert="~{user/fragments/header-search::header-search}"></div>
-  <!-- Header Search Modal End -->
+<!-- Header Search Modal Start -->
+<div th:insert="~{user/fragments/header-search::header-search}"></div>
+<!-- Header Search Modal End -->
 
-  <!-- Cart dropdown Start -->
-  <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
-  <!-- Cart dropdown End -->
+<!-- Cart dropdown Start -->
+<div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
+<!-- Cart dropdown End -->
 
 
-  <!-- JS
+<!-- JS
 ============================================ -->
-  <div th:insert="~{user/fragments/script::script}"></div>
+<div th:insert="~{user/fragments/script::script}"></div>
 
 </body>
 

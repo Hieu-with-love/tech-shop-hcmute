@@ -57,7 +57,7 @@
                             <div class="slider-product-details">
                                 <div class="owl-carousel owl-theme product-slide">
                                     <div class="slider-product" th:each="image : ${productImages}">
-                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
+                                        <img th:src="@{'/uploads/'+${image.getUrl()}}" alt="Ảnh sản phẩm">
                                         <h4 th:text="${image.getUrl()}"></h4>
                                         <a th:href="@{/admin/products/images/delete(image_id=${image.getId()})}"
                                            class="hideset"><i class="fa fa-trash-alt"></i>
