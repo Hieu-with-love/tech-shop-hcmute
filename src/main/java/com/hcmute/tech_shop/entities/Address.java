@@ -26,6 +26,6 @@ public class Address {
 
     private String detailLocation;
 
-    @ManyToMany(mappedBy = "addresses")
-    private Set<User> users = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    private User user;
 }
