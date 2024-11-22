@@ -19,7 +19,7 @@ public class CartDetail {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "total_price", nullable = false, columnDefinition = "DECIMAL(19, 4) DEFAULT 0")
+    @Column(name = "total_price", nullable = false, columnDefinition = "DECIMAL(19, 2) DEFAULT 0")
     private BigDecimal totalPrice;
 
     @ManyToOne

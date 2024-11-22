@@ -18,7 +18,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "total_price", nullable = false, columnDefinition = "DECIMAL(19, 4) DEFAULT 0")
+    @Column(name = "total_price", nullable = false, columnDefinition = "DECIMAL(19, 2) DEFAULT 0")
     private BigDecimal totalPrice;
 
     @Column(name = "user_id", nullable = false)

@@ -93,10 +93,12 @@ public class HomeController {
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("numberProductInCart", numberProductInCart);
+        model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
 
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
         session.setAttribute("numberProductInCart", numberProductInCart);
+        session.setAttribute("totalPriceOfCart", cartService.getCartResponse(cart));
         return "user/home";
     }
 
