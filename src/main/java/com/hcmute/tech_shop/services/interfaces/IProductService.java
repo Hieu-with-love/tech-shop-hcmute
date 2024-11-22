@@ -3,9 +3,7 @@ package com.hcmute.tech_shop.services.interfaces;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Product;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +27,7 @@ public interface IProductService {
     void deleteProduct(Long productId);
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
-    List<Product> findByName(String name);
+    Product findByName(String name);
 
     @Query("SELECT p FROM Product p WHERE p.cpu LIKE %?1%")
     List<Product> findByCpu(String cpu);
