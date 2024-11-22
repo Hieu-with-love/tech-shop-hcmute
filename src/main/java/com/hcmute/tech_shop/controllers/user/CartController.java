@@ -85,11 +85,14 @@ public class CartController {
         model.addAttribute("cartDetailListFull", cartDetailListFull);
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("numberProductInCart", numberProductInCart);
+        model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
 
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
         session.setAttribute("cartDetailListFull", cartDetailListFull);
         session.setAttribute("numberProductInCart", numberProductInCart);
+        session.setAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+
         return "user/cart";
     }
 
@@ -109,6 +112,11 @@ public class CartController {
         if(cartDetail != null) {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+quantity));
             cartDetailRequest = new CartDetailRequest(quantity + cartDetail.getQuantity(), price, cart, product);
+
+            if (cartDetailRequest.getQuantity() > product.getStockQuantity()){
+                String error = "Could not add quantity";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
             if (price.compareTo(limit) > 0){
                 String error = "The cart value in your cart has reached the limit.";
                 redirectAttributes.addFlashAttribute("error", error);
@@ -147,6 +155,10 @@ public class CartController {
         if(cartDetail != null) {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+1));
             cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() + 1, price, cart, product);
+            if (cartDetailRequest.getQuantity() > product.getStockQuantity()){
+                String error = "Could not add quantity";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
             if(price.compareTo(limit) > 0){
                 String error = "The cart value in your cart has reached the limit.";
                 redirectAttributes.addFlashAttribute("error", error);

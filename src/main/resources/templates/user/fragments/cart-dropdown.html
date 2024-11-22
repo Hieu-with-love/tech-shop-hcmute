@@ -36,7 +36,7 @@
             <h3 class="cart-subtotal">
                 <span class="subtotal-title">Subtotal:</span>
                 <span class="subtotal-amount" th:if="${session.cart != null}"
-                      th:text="${session.cart.totalPrice}"></span>
+                      th:text="${session.totalPriceOfCart.totalPrice}"></span>
             </h3>
             <div class="group-btn">
                 <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>

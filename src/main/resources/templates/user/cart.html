@@ -60,7 +60,7 @@
                                             </form>
                                         </div>
                                     </td>
-                                    <td class="product-subtotal" data-title="Subtotal"><span th:text="${cartDetail.totalPrice}"></span></td>
+                                    <td class="product-subtotal" data-title="Price"><span th:text="${cartDetail.totalPrice}"></span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -68,7 +68,7 @@
                     <div>
                         <h3 class="cart-subtotal">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="mb-20" th:text="${session.cart.totalPrice}"></span>
+                            <span class="mb-20" th:text="${session.totalPriceOfCart.totalPrice}"></span>
                         </h3>
                     </div>
                     <div class="cart-update-btn-area">
