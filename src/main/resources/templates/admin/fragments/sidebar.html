@@ -6,69 +6,60 @@
                     <a th:href="@{/admin/dashboard}"><img th:src="@{/admin/assets/img/icons/dashboard.svg}" alt="img"><span>
                                     Dashboard</span> </a>
                 </li>
+                <li class="inactive">
+                    <a th:href="@{/admin/products}"><img th:src="@{/admin/assets/img/icons/product.svg}"
+                                                           alt="img"><span>
+                                    Product</span> </a>
+                </li>
+                <li class="submenu">
+                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/purchase1.svg}"
+                                                       alt="img"><span>
+                                    Brand</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a th:href="@{/admin/brands}">Brand List</a></li>
+                        <li><a th:href="@{/admin/brands/add-brand}">Add Brand</a></li>
+                    </ul>
+                </li>
                 <li class="submenu">
                     <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/product.svg}" alt="img"><span>
-                                    Product</span> <span class="menu-arrow"></span></a>
+                                    Category</span> <span class="menu-arrow"></span></a>
                     <ul>
-                        <li><a href="/admin/products">Product List</a></li>
                         <li><a href="/admin/categories">Category List</a></li>
                         <li><a href="/admin/categories/add-category">Add Category</a></li>
-                        <li><a href="/admin/brands">Brand List</a></li>
-                        <li><a href="/admin/brands/add-brand">Add Brand</a></li>
-                        <li><a href="importproduct.html">Import Products</a></li>
-                        <li><a href="barcode.html">Print Barcode</a></li>
                     </ul>
                 </li>
-
                 <li class="submenu">
                     <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
-                                    People</span> <span class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="customerlist.html">Customer List</a></li>
-                        <li><a href="addcustomer.html">Add Customer </a></li>
-                        <li><a href="supplierlist.html">Supplier List</a></li>
-                        <li><a href="addsupplier.html">Add Supplier </a></li>
-                        <li><a th:href="@{/admin/users}">Users List</a></li>
-                        <li><a th:href="@{/admin/users/add-user}">New User</a></li>
-                        <li><a href="storelist.html">Store List</a></li>
-                        <li><a href="addstore.html">Add Store</a></li>
-                    </ul>
-                </li>
-                <li class="submenu">
-                    <a href="javascript:void(0);"><i data-feather="bar-chart-2"></i> <span> Charts </span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="chart-apex.html">Apex Charts</a></li>
-                        <li><a href="chart-js.html">Chart Js</a></li>
-                        <li><a href="chart-morris.html">Morris Charts</a></li>
-                        <li><a href="chart-flot.html">Flot Charts</a></li>
-                        <li><a href="chart-peity.html">Peity Charts</a></li>
-                    </ul>
-                </li>
-
-                <li class="submenu">
-                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
-                                    Users</span> <span class="menu-arrow"></span></a>
+                                    User</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a th:href="@{/admin/users}">Users List</a></li>
                         <li><a th:href="@{/admin/users/add-user}">New User</a></li>
-                        <li><a th:href="@{/admin/rolelist}">Role List</a></li>
-                        <li><a th:href="@{/admin/add-role}">New Role</a></li>
 
                     </ul>
                 </li>
-
                 <li class="submenu">
-                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/settings.svg}" alt="img"><span>
-                                    Settings</span> <span class="menu-arrow"></span></a>
+                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/sales1.svg}" alt="img"><span>
+                                    Order</span> <span class="menu-arrow"></span></a>
                     <ul>
-                        <li><a href="generalsettings.html">General Settings</a></li>
-                        <li><a href="emailsettings.html">Email Settings</a></li>
-                        <li><a href="paymentsettings.html">Payment Settings</a></li>
-                        <li><a href="currencysettings.html">Currency Settings</a></li>
-                        <li><a href="grouppermissions.html">Group Permissions</a></li>
-                        <li><a href="taxrates.html">Tax Rates</a></li>
+                        <li><a th:href="@{/admin/users}">Order</a></li>
+                        <li><a th:href="@{/admin/users}">Order</a></li>
                     </ul>
+                </li>
+                <li class="submenu">
+                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/expense1.svg}" alt="img"><span>
+                                    Voucher</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a th:href="@{/admin/vouchers}">Voucher List</a></li>
+                        <li><a th:href="@{/admin/vouchers/save}">Add Voucher</a></li>
+                    </ul>
+                </li>
+                <li class="inactive">
+                    <a th:href="@{/user/home}"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
+                                    User Home</span> </a>
+                </li>
+                <li class="inactive">
+                    <a th:href="@{/manager/home}"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
+                                    Manager Home</span> </a>
                 </li>
             </ul>
         </div>
