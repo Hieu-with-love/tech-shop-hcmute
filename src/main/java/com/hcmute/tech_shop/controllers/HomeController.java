@@ -142,6 +142,22 @@ public class HomeController {
         return "user/my-account";
     }
 
+    @PostMapping("/my-account-udt-pass")
+    public String updatePassword(Model model,
+                                 @Valid @ModelAttribute("userDto") UserRequest userDto,
+                                 BindingResult result) {
+        boolean isSuccess = userService.updatePassword(userDto.getId(),userDto.getPassword(), userDto.getConfirmPassword(), result);
+
+        if (isSuccess){
+            model.addAttribute("msg", "Doi mat khau thanh cong !");
+        }
+        else{
+            model.addAttribute("msg", "Doi mat khau khong thanh cong !");
+        }
+
+        return "user/my-account";
+    }
+
 
 
     // Làm chức năng gì thì đặt endpoint là, /user/<name-feature>

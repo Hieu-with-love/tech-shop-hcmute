@@ -16,7 +16,7 @@
                             <p>
                                 Trường Đại học SPKT, <br />
                                 Số 1 Võ Văn Ngân, <br />
-                                Việt Nam.
+                                Phường Linh Trung, TP Thủ Đức.
                             </p>
                             <ul class="support-list-item">
                                 <li>
@@ -42,11 +42,11 @@
                         <h5 class="widget-title">Account</h5>
                         <div class="inner">
                             <ul>
-                                <li><a href="my-account.html">My Account</a></li>
-                                <li><a href="sign-up.html">Login / Register</a></li>
-                                <li><a href="cart.html">Cart</a></li>
-                                <li><a href="wishlist.html">Wishlist</a></li>
-                                <li><a href="shop.html">Shop</a></li>
+                                <li><a th:href="@{/user/my-account}">My Account</a></li>
+                                <li><a th:href="@{/login}">Login / Register</a></li>
+                                <li><a th:href="@{/user/cart}">Cart</a></li>
+                                <li><a th:href="@{/user/whishlist}">Wishlist</a></li>
+                                <li><a th:href="@{/user/shop}">Shop</a></li>
                             </ul>
                         </div>
                     </div>
@@ -58,11 +58,11 @@
                         <h5 class="widget-title">Quick Link</h5>
                         <div class="inner">
                             <ul>
-                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                <li><a href="terms-of-service.html">Terms Of Use</a></li>
+                                <li><a th:href="privacy-policy.html">Privacy Policy</a></li>
+                                <li><a th:href="terms-of-service.html">Terms Of Use</a></li>
                                 <li><a href="#">FAQ</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a th:href="contact.html">Contact</a></li>
+                                <li><a th:href="contact.html">Contact</a></li>
                             </ul>
                         </div>
                     </div>
@@ -120,9 +120,9 @@
                     >
                         <ul class="quick-link">
                             <li>
-                                © 2023. All rights reserved by
-                                <a target="_blank" href="https://axilthemes.com/"
-                                >Axilthemes</a
+                                © 2024. All rights reserved by
+                                <a target="_blank" href="https://github.com/Hieu-with-love/tech-shop-hcmute.git"
+                                >4 Con ong Team.</a
                                 >.
                             </li>
                         </ul>
@@ -142,7 +142,7 @@
                             </li>
                             <li>
                                 <img
-                                        th:src="@{/user/assets/images/icons/cart/cart-2.png}"
+                                        th:src="@{/user/assets/images/icons/cart/vnpay.png}"
                                         alt="paypal cart"
                                 />
                             </li>

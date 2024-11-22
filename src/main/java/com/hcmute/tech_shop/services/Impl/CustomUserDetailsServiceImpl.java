@@ -2,8 +2,10 @@ package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.configurations.CustomUserDetails;
 import com.hcmute.tech_shop.repositories.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,19 +23,17 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.hcmute.tech_shop.entities.User user = userRepository.findByUsername(username)
-                .orElse(new com.hcmute.tech_shop.entities.User());
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        if (user.getId() == null){
-            throw new BadCredentialsException("Invalid username");
-        }
+        if (!user.isActive())
+            throw new UsernameNotFoundException("User is disabled");
 
         String role = "ROLE_" + user.getRole().getName().toUpperCase();
         GrantedAuthority grantedAuth = new SimpleGrantedAuthority(role);
 
-        return new CustomUserDetails(
+        return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.isActive(),
                 Collections.singletonList(grantedAuth)
         );
     }

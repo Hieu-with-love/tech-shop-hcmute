@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-            result.addError(new FieldError("registerUser", "password",
+            result.addError(new FieldError("userRegister", "password",
                     "Mat khau khong khop"));
         }
 
@@ -128,7 +128,6 @@ public class UserServiceImpl implements UserService {
             existingUser.setFirstName(userRequest.getFirstName());
             existingUser.setLastName(userRequest.getLastName());
             existingUser.setGender(userRequest.getGender());
-            existingUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             existingUser.setEmail(userRequest.getEmail());
             existingUser.setPhoneNumber(userRequest.getPhoneNumber());
             existingUser.setGender(userRequest.getGender());
@@ -140,6 +139,21 @@ public class UserServiceImpl implements UserService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public boolean updatePassword(Long id, String password, String confirmPassword, BindingResult result) {
+        User existingUser = this.getUser(id);
+
+        if (!password.equals(confirmPassword)){
+            result.addError(new FieldError("userDto", "password", "Tài khoản và mat khẩu không khớp."));
+            return false;
+        }
+
+        existingUser.setPassword(passwordEncoder.encode(password));
+        userRepository.save(existingUser);
+
+        return true;
     }
 
     @Override

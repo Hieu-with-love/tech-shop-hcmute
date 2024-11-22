@@ -28,34 +28,7 @@ public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINTS = {"/register", "/user/home", "/forgot-password", "/verify-account"};
 
     CustomUserDetailsServiceImpl customUserDetailsService;
-
-    @Component
-    public class CustomAuthenticationProvider implements AuthenticationProvider {
-
-        @Override
-        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-            String username = authentication.getName();
-            String password = authentication.getCredentials().toString();
-
-            // Lấy thông tin người dùng từ UserDetailsService
-            CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
-
-            // Kiểm tra trạng thái tài khoản
-            if (!userDetails.isActive()) {
-                // Trả về thông báo hoặc logic khác thay vì ném ngoại lệ
-                throw new BadCredentialsException("Your account is not active. Please activate it.");
-            }
-
-            // Xác thực thành công
-            return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        }
-
-        @Override
-        public boolean supports(Class<?> authentication) {
-            return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-        }
-    }
-
+    CustomAuthFailureHandler customAuthFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -75,7 +48,7 @@ public class SecurityConfig {
                 .formLogin(form ->
                     form.loginPage("/login")
                             .successHandler(new CustomizeSuccessHandler())
-                            .failureHandler(new CustomAuthFailureHandler())
+                            .failureHandler(customAuthFailureHandler)
                             .permitAll()
                 )
                 .logout(logout -> logout
