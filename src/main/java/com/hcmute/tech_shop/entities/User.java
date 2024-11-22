@@ -58,12 +58,7 @@ public class User extends TrackingDate{
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_addresses",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id")
-    )
+    @OneToMany(mappedBy = "user")
     private Set<Address> addresses = new HashSet<>();
 
 }
