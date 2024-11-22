@@ -16,6 +16,7 @@ public interface UserService {
     boolean createUser(UserRequest userRequest, BindingResult result);
     boolean updateUser(Long id, UserRequest userRequest, BindingResult result);
     boolean updateProfile(String username, UserRequest userRequest, BindingResult result);
+    boolean updatePassword(Long id, String password, String confirmPassword, BindingResult result);
     void deleteUser(Long id);
     boolean existsEmail(String email);
     boolean existsUsername(String username);

@@ -9,23 +9,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
+@Component
+public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
-
-        if (exception.getMessage().contains("not active")) {
-            response.sendRedirect("/login?account_disable=true");
-        }
-        if (exception.getMessage().contains("Invalid username")){
-            response.sendRedirect("/login?usernameNotFound=true");
-        }
-        else{
+        if (exception.getMessage().contains("Bad credentials")) {
+            response.sendRedirect("/login?disabled=true");
+       }else{
             response.sendRedirect("/login?error=true");
         }
+
     }
 }

@@ -61,12 +61,13 @@
                 alert('Đăng xuất thành công!')
             </script>
         </div>
+
         <div th:if="${param.usernameNotFound}">
             <script type="text/javascript">
                 alert('Username không tồn tại!')
             </script>
         </div>
-        <div th:if="${param.account_disable}">
+        <div th:if="${param.disabled}">
             <script type="text/javascript">
                 alert('Tài khoản chưa được kích hoạt. Gửi email để kích hoạt, rồi mới đăng nhập!')
             </script>
