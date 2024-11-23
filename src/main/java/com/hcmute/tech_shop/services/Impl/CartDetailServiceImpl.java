@@ -44,7 +44,8 @@ public class CartDetailServiceImpl implements ICartDetailService {
                     .thumbnail(item.getProduct().getThumbnail())
                     .productName(item.getProduct().getName())
                     .price(Constant.formatter.format(item.getProduct().getPrice()))
-                    .totalPrice(totalPriceStr)
+                    .totalPriceString(totalPriceStr)
+                    .totalPrice(totalPrice)
                     .quantity(item.getQuantity())
                     .build();
         }).toList();

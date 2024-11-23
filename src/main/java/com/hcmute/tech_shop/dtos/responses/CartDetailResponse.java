@@ -2,6 +2,8 @@ package com.hcmute.tech_shop.dtos.responses;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,7 +14,8 @@ public class CartDetailResponse {
     private String thumbnail;
     private String productName;
     private String price;
-    private String totalPrice;
+    private String totalPriceString;
+    private BigDecimal totalPrice;
 
     private int quantity;
 }

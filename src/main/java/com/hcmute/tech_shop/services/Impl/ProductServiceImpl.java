@@ -211,7 +211,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
     @Override
-    public List<Product> findByName(String name) {
+    public Product findByName(String name) {
         return productRepository.findByName(name);
     }
 

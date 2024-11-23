@@ -16,6 +16,11 @@ public class PaymentServiceImpl implements IPaymentService {
     private final PaymentRepository paymentRepository;
 
     @Override
+    public Payment findByName(String name) {
+        return paymentRepository.findByName(name);
+    }
+
+    @Override
     public List<Payment> findAll() {
         return paymentRepository.findAll();
     }

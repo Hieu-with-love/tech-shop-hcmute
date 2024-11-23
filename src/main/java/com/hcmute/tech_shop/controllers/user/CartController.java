@@ -147,7 +147,7 @@ public class CartController {
     public String incrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
-        Product product = productServiceImpl.findByName(productName).getFirst();
+        Product product = productServiceImpl.findByName(productName);
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         CartDetailRequest cartDetailRequest;
         BigDecimal price,limit = new BigDecimal("10000000000");
@@ -175,7 +175,7 @@ public class CartController {
     public String decrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
-        Product product = productServiceImpl.findByName(productName).getFirst();
+        Product product = productServiceImpl.findByName(productName);
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         CartDetailRequest cartDetailRequest;
         BigDecimal price;
@@ -215,7 +215,7 @@ public class CartController {
     public String delete(@Valid @PathVariable("id") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
 
-        Product product = productServiceImpl.findByName(productName).getFirst();
+        Product product = productServiceImpl.findByName(productName);
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         if(cartDetail != null) {
             if(!cartDetailServiceImpl.delete(cartDetail)) {

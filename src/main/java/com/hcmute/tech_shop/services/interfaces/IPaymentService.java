@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IPaymentService {
+    Payment findByName(String name);
+
     List<Payment> findAll();
 
     <S extends Payment> S save(S entity);
