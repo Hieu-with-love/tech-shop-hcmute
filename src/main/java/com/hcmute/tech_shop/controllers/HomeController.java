@@ -87,18 +87,18 @@ public class HomeController {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
             session.setAttribute("user", user);
+            model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+            session.setAttribute("totalPriceOfCart", cartService.getCartResponse(cart));
         }
 
         model.addAttribute("categories", categories);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("numberProductInCart", numberProductInCart);
-        model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
 
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
         session.setAttribute("numberProductInCart", numberProductInCart);
-        session.setAttribute("totalPriceOfCart", cartService.getCartResponse(cart));
         return "user/home";
     }
 

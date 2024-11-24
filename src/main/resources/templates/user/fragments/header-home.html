@@ -175,7 +175,7 @@
                             </a>
                         </li>
                         <li class="wishlist">
-                            <a href="wishlist.html">
+                            <a th:href="@{/user/wishlist}">
                                 <i class="flaticon-heart"></i>
                             </a>
                         </li>
@@ -199,14 +199,18 @@
                                     <li>
                                         <a th:href="@{/user/my-account}">My Account</a>
                                     </li>
+                                    <li th:if="${#strings.equalsIgnoreCase(session.user.role.name,'admin')}">
+                                        <a th:href="@{/admin/dashboard}">Dashboard Admin</a>
+                                    </li>
+                                    <li th:if="${#strings.equalsIgnoreCase(session.user.role.name, 'manager')}">
+                                        <a th:href="@{/manager/home}">Home Manager</a>
+                                    </li>
+
                                     <li>
                                         <a href="#">Initiate return</a>
                                     </li>
                                     <li>
                                         <a href="#">Support</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Language</a>
                                     </li>
                                 </ul>
                                 <div class="login-btn">

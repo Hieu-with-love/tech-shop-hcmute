@@ -25,13 +25,10 @@ import java.util.Optional;
 @RequestMapping("/user/products")
 @RequiredArgsConstructor
 public class ProductController {
-    @Autowired
-    private IProductService productService;
+    private final IProductService productService;
     private final IProductImageService productImageService;
     private final IRatingService ratingService;
-
-    @Autowired
-    private ICategoryService categoryService;
+    private final ICategoryService categoryService;
 
     @GetMapping("/{name}")
     public String getProductsByCategoryName(Model model, @PathVariable String name) {

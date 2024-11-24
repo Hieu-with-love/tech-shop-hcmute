@@ -81,11 +81,15 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public boolean deleteImage(String filename) {
         try {
-            Path file = root.resolve(filename);
-            return Files.deleteIfExists(file);
+            java.nio.file.Path oldImage = Paths.get("uploads/" + filename);
+            if (!oldImage.getFileName().equals(filename) && Files.exists(oldImage)) {
+                Files.delete(oldImage);
+                return true;
+            }
         } catch (IOException e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
+        return false;
     }
 
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
@@ -100,7 +104,7 @@ public class ProductServiceImpl implements IProductService {
         try {
             String thumbnail = "";
             if (file == null) {
-                thumbnail = "/uploads/default-product.jpg";
+                thumbnail = "default-product.jpg";
             } else {
                 if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
                     throw new BadRequestException("Image is not valid");
