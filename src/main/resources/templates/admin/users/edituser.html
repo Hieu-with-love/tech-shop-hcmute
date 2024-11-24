@@ -153,7 +153,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-success">Save Changes</button>
-                                <a href="/admin/users/password" class="btn btn-warning">Change Password</a>
+                                <a th:href="@{'/admin/users/password/' + ${profileRequest.id}}" class="btn btn-warning">Change Password</a>
                             </div>
                         </div>
                     </form>

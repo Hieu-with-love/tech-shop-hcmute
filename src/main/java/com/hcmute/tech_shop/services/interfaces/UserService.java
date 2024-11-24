@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.services.interfaces;
 
+import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.User;
@@ -25,4 +26,5 @@ public interface UserService {
     User convertToUser(UserRequest userRequest);
     void saveUser(UserRequest userRequest, MultipartFile file);
     void updateProfile(ProfileRequest profileRequest, MultipartFile file);
+    void editPassword(PasswordRequest passwordRequest);
 }

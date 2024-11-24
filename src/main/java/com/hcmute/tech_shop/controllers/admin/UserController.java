@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.controllers.admin;
 
+import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Role;
@@ -9,6 +10,7 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,8 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+
 
     private void addRolesToModel(Model model) {
         List<Role> roles = roleService.getAllRoles();
@@ -140,12 +144,43 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
-
     @GetMapping("/password/{id}")
     public String passWord(@PathVariable("id") Long id, Model model) {
         User user = userService.getUser(id);
-        addRolesToModel(model);
-        model.addAttribute("user", user);
+        if (user == null) {
+            throw new RuntimeException("User not found!");
+        }
+
+        PasswordRequest passwordRequest = new PasswordRequest();
+        passwordRequest.setId(user.getId());
+
+        model.addAttribute("passwordRequest", passwordRequest);
         return "admin/users/editpassword";
     }
+
+    @PostMapping("/password")
+    public String changePassword(@Valid @ModelAttribute("passwordRequest") PasswordRequest passwordRequest,
+                                 BindingResult bindingResult,
+                                 Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/users/editpassword";
+        }
+
+        if (!passwordRequest.getNewPassword().equals(passwordRequest.getConfirmPassword())) {
+            model.addAttribute("error", "Mạt khau khong khop");
+            return "admin/users/editpassword";
+        }
+
+        try {
+            userService.editPassword(passwordRequest);
+        } catch (Exception e) {
+            model.addAttribute("error", "Có lỗi xảy ra khi cập nhật thông tin người dùng.");
+            return "admin/users/editpassword";
+        }
+
+        return "redirect:/admin/users";
+    }
+
+
+
 }

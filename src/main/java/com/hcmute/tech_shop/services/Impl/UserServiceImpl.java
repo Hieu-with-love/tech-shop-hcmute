@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Confirmation;
@@ -231,6 +232,16 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage());
             }
         }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void editPassword(PasswordRequest passwordRequest) {
+        User user = userRepository.findById(passwordRequest.getId())
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        String encodedPassword = passwordEncoder.encode(passwordRequest.getNewPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 
