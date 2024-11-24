@@ -91,7 +91,7 @@
                                        th:classappend="${index == currentPage} ? 'active' : '' "
                                        class="page"></a>
                                 </li>
-                                <li th:if="${currentPage < totalPages}">
+                                <li th:if="${currentPage < totalPages - 1}">
                                     <a th:href="@{/user/home(pageNumber=${currentPage + 1}, pageSize=${pageSize})}"
                                        class="next">Next</a>
                                 </li>
