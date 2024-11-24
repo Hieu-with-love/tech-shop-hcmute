@@ -223,7 +223,7 @@ public class UserServiceImpl implements UserService {
             }
 
             try {
-                if (user.getImage().isEmpty() || !user.getImage().equals("avtdefault.jpg")) {
+                if (user.getImage() != null && !user.getImage().isEmpty() && !user.getImage().equals("avtdefault.jpg")) {
                     ImageUtil.deleteImage(user.getImage());
                 }
                 String savedImageName = ImageUtil.saveImage(file);
