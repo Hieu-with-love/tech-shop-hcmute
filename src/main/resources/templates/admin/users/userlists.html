@@ -168,7 +168,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a class="me-3" href="edituser.html">
+
+                                    <a class="me-3" th:href="@{'/admin/users/edit/' + ${user.id}}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
                                     <a class="me-3 confirm-text" href="javascript:void(0);">

@@ -1,11 +1,11 @@
 package com.hcmute.tech_shop.services.interfaces;
 
+import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
@@ -23,5 +23,6 @@ public interface UserService {
     boolean verifyToken(String token);
     UserRequest convertToDto(User user);
     User convertToUser(UserRequest userRequest);
-    User saveUser(UserRequest userRequest, MultipartFile file);
+    void saveUser(UserRequest userRequest, MultipartFile file);
+    void updateProfile(ProfileRequest profileRequest, MultipartFile file);
 }

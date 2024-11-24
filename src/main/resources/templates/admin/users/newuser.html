@@ -144,13 +144,15 @@
                                     <div class="form-group">
                                         <label>Profile Picture</label>
                                         <div class="image-upload image-upload-new">
-                                            <input type="file" name="file" class="form-control-file">
-                                            <div class="image-uploads">
-                                                <img src="/admin/assets/img/icons/upload.svg" alt="img">
+                                            <img id="preview" src="/admin/assets/img/icons/upload.svg" alt="Profile Picture"
+                                                 class="img-thumbnail mt-3" style="max-width: 200px; max-height: 200px;">
+                                            <input type="file" name="file" class="form-control-file" onchange="previewImage(event)">
+                                            <div class="image-uploads mt-2">
                                                 <h4>Drag and drop a file to upload</h4>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="col-lg-12">
@@ -165,7 +167,21 @@
         </div>
     </div>
 
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const reader = new FileReader();
 
+            reader.onload = function () {
+                const preview = document.getElementById('preview');
+                preview.src = reader.result;
+            };
+
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
     <script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
 
     <script th:src="@{/admin/assets/js/feather.min.js}"></script>

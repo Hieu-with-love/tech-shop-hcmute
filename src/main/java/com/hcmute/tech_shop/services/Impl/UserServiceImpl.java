@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Confirmation;
 import com.hcmute.tech_shop.entities.Role;
@@ -182,7 +183,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(UserRequest userRequest, MultipartFile file) {
+    public void saveUser(UserRequest userRequest, MultipartFile file) {
         User user = new User();
         BeanUtils.copyProperties(userRequest, user);
 
@@ -203,7 +204,34 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setImage("avtdefault.jpg");
         }
-        return userRepository.save(user);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateProfile(ProfileRequest profileRequest, MultipartFile file) {
+        User user = new User();
+        BeanUtils.copyProperties(profileRequest, user);
+
+        user.setDateOfBirth(profileRequest.getDateOfBirth());
+        user.setPassword(passwordEncoder.encode(profileRequest.getPassword()));
+        user.setRole(roleService.getRoleById(profileRequest.getRoleId()));
+
+        if (file != null && !file.isEmpty()) {
+            if (!ImageUtil.isValidSuffixImage(file.getOriginalFilename())) {
+                throw new IllegalArgumentException("File không đúng định dạng ảnh!");
+            }
+
+            try {
+                if (user.getImage().isEmpty() || !user.getImage().equals("avtdefault.jpg")) {
+                    ImageUtil.deleteImage(user.getImage());
+                }
+                String savedImageName = ImageUtil.saveImage(file);
+                user.setImage(savedImageName);
+            } catch (IOException e) {
+                throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage());
+            }
+        }
+        userRepository.save(user);
     }
 
     @Override
