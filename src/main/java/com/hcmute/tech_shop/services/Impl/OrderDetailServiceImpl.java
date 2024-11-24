@@ -15,6 +15,11 @@ import java.util.Optional;
 public class OrderDetailServiceImpl implements IOrderDetailService {
     private final OrderDetailRepository orderDetailRepository;
 
+    public boolean createOrderDetail(OrderDetail orderDetail) {
+        orderDetailRepository.save(orderDetail);
+        return true;
+    }
+
     @Override
     public List<OrderDetail> findAll() {
         return orderDetailRepository.findAll();
