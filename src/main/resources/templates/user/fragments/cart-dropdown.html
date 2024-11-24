@@ -9,7 +9,7 @@
                 <li class="cart-item">
                     <div class="item-img">
                         <a href="single-product.html">
-                            <img th:src="@{|/${cartDetail.thumbnail}|}" alt="Product Image"></a>
+                            <img th:src="@{'uploads/' + ${cartDetail.thumbnail}}" alt="Product Image"></a>
                     </div>
                     <!-- End Single product cua Tuan-->
                     <div class="item-content">
@@ -35,7 +35,7 @@
         <div class="cart-footer">
             <h3 class="cart-subtotal">
                 <span class="subtotal-title">Subtotal:</span>
-                <span class="subtotal-amount" th:if="${session.cart != null}"
+                <span class="subtotal-amount" th:if="${session.cart.id != null}"
                       th:text="${session.totalPriceOfCart.totalPrice}"></span>
             </h3>
             <div class="group-btn">

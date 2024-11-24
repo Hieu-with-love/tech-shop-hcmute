@@ -24,7 +24,7 @@
                     </div>
                     <div class="product-table-heading">
                         <div th:if="${error != null}">
-                            <h6 th:text="*{error}"
+                            <h6 th:text="${error}"
                                 style="color: red;">
                             </h6>
                         </div>
@@ -43,9 +43,13 @@
                             </thead>
                             <tbody>
                                 <tr th:each="cartDetail : ${session.cartDetailListFull}">
-                                    <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productName})}" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                    <td class="product-thumbnail"><a href="single-product.html"><img th:src="@{|/${cartDetail.thumbnail}|}" alt="Digital Product"></a></td>
-                                    <td class="product-title"><a href="single-product.html" th:text="${cartDetail.productName}"></a></td>
+                                    <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productName})}"
+                                                                  class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+                                    <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                        ><img th:src="@{'/uploads/' + ${cartDetail.thumbnail}}"
+                                                                                                     alt="Digital Product"></a></td>
+                                    <td class="product-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                                                 th:text="${cartDetail.productName}"></a></td>
                                     <td class="product-price" data-title="Price"><span th:text="${cartDetail.price}"></span></td>
                                     <td class="product-quantity" data-title="Qty">
                                         <div class="pro-qty">
@@ -60,7 +64,7 @@
                                             </form>
                                         </div>
                                     </td>
-                                    <td class="product-subtotal" data-title="Price"><span th:text="${cartDetail.totalPrice}"></span></td>
+                                    <td class="product-subtotal" data-title="Price"><span th:text="${cartDetail.totalPriceString}"></span></td>
                                 </tr>
                             </tbody>
                         </table>

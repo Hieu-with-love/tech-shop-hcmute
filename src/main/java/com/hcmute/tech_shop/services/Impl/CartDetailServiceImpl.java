@@ -2,6 +2,7 @@ package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
+import com.hcmute.tech_shop.dtos.responses.WishlistResponse;
 import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.entities.CartDetail;
 import com.hcmute.tech_shop.entities.composites.CartDetailId;
@@ -41,12 +42,28 @@ public class CartDetailServiceImpl implements ICartDetailService {
 
             return CartDetailResponse.builder()
                     .id(item.getId().getCartId())
+                    .productId(item.getProduct().getId())
                     .thumbnail(item.getProduct().getThumbnail())
                     .productName(item.getProduct().getName())
                     .price(Constant.formatter.format(item.getProduct().getPrice()))
                     .totalPriceString(totalPriceStr)
                     .totalPrice(totalPrice)
                     .quantity(item.getQuantity())
+                    .build();
+        }).toList();
+    }
+
+    @Override
+    public List<WishlistResponse> getAllWishlist() {
+        List<CartDetail> cartDetails = cartDetailRepository.findAll();
+        return cartDetails.stream().map(item -> {
+            boolean instock = item.getQuantity() > 0;
+            return WishlistResponse.builder()
+                    .thumbnail(item.getProduct().getThumbnail())
+                    .title(item.getProduct().getName())
+                    .status(instock)
+                    .unitPrice(Constant.formatter.format(item.getProduct().getPrice()))
+                    .productId(item.getProduct().getId())
                     .build();
         }).toList();
     }

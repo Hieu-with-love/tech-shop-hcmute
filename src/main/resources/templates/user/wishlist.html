@@ -2,8 +2,10 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
-<div th:insert="~{user/fragments/head::head}"></div>
-
+<head>
+    <title>TechShop || Wishlist</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+</head>
 
 <body class="sticky-header">
     <!-- Start Header -->
@@ -11,7 +13,6 @@
     <!-- End Header -->
 
     <main class="main-wrapper">
-
         <!-- Start Wishlist Area  -->
         <div class="axil-wishlist-area axil-section-gap">
             <div class="container">
@@ -24,24 +25,29 @@
                             <tr>
                                 <th scope="col" class="product-remove"></th>
                                 <th scope="col" class="product-thumbnail">Product</th>
-                                <th scope="col" class="product-title"></th>
+                                <th scope="col" class="product-title">Product Name</th>
                                 <th scope="col" class="product-price">Unit Price</th>
                                 <th scope="col" class="product-stock-status">Stock Status</th>
                                 <th scope="col" class="product-add-cart"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr th:each="wishlist : ${listWishlist}">
                                 <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                <td class="product-thumbnail"><a href="single-product.html"><img th:src="@{/user/assets/images/product/electric/product-01.png}" alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product.html">Wireless PS Handler</a></td>
-                                <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
-                                <td class="product-stock-status" data-title="Status">In Stock</td>
+                                <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
+                                ><img th:src="@{'/uploads/' + ${wishlist.thumbnail}}" alt="Digital Product"></a></td>
+                                <td class="product-title"><a th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
+                                                                th:text="*{wishlist.title}"></a></td>
+                                <td class="product-price" data-title="Price"
+                                    th:text="*{wishlist.unitPrice}"></td>
+                                <td class="product-stock-status" data-title="Status"
+                                    th:text="${wishlist.status ? 'In Stock' : 'Out of stock'}">In Stock</td>
                                 <td class="product-add-cart"><a href="cart.html" class="axil-btn btn-outline">Add to Cart</a></td>
                             </tr>
                             <tr>
                                 <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                <td class="product-thumbnail"><a href="single-product-2.html"><img th:src="@{/user/assets/images/product/electric/product-02.png}" alt="Digital Product"></a></td>
+                                <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                        ><img th:src="@{/user/assets/images/product/electric/product-02.png}" alt="Digital Product"></a></td>
                                 <td class="product-title"><a href="single-product-2.html">Gradient Light Keyboard</a></td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
                                 <td class="product-stock-status" data-title="Status">In Stock</td>
