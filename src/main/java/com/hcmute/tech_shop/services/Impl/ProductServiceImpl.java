@@ -181,7 +181,7 @@ public class ProductServiceImpl implements IProductService {
             if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
                 throw new BadRequestException("Image is not valid");
             }
-            deleteImage(existingProduct.getThumbnail());
+//            deleteImage(existingProduct.getThumbnail());
             thumbnail = saveImage(file);
         }
         // get product old by id
@@ -322,6 +322,7 @@ public class ProductServiceImpl implements IProductService {
         for (Product product : products) {
             ProductRequest productDTO = new ProductRequest();
             BeanUtils.copyProperties(product, productDTO);
+            productDTO.setImg(product.getThumbnail());
             productDTOList.add(productDTO);
         }
         return productDTOList;

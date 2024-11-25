@@ -159,13 +159,13 @@
                             </div>
                         </div>
                         <!-- End .row -->
-                        <div class="row row--15" th:each="product : ${products}">
+                        <div class="row row--15">
                             <!-- Start Single Product  -->
-                            <div class="col-xl-4 col-sm-6">
+                            <div class="col-xl-4 col-sm-6" th:each="product : ${products}">
                                 <div class="axil-product product-style-one mb--30">
                                     <div class="thumbnail">
                                         <a th:href="@{/user/products/product-detail/{id}(id=${product.getId()})}">
-                                            <img th:src="@{'/uploads/'+${product.getThumbnail()}}" alt="Product Images">
+                                            <img th:src="@{'/uploads/'+${product.getImg()}}" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">10% OFF</div>
