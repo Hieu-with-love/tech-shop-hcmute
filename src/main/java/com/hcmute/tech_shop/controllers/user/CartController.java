@@ -4,10 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.dtos.responses.CartResponse;
-import com.hcmute.tech_shop.entities.Cart;
-import com.hcmute.tech_shop.entities.CartDetail;
-import com.hcmute.tech_shop.entities.Product;
-import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -39,6 +36,12 @@ public class CartController {
     @Autowired
     private IProductService productServiceImpl;
 
+    @Autowired
+    private WishlistItemService wishlistItemServiceImpl;
+
+    @Autowired
+    private WishlistService wishlistServiceImpl;
+
     public UserRequest getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
@@ -68,6 +71,8 @@ public class CartController {
         if(!username.equals("anonymousUser")) {
             UserRequest userRequest = getUser();
             cart = cartService.findByCustomerId(userRequest.getId());
+            Wishlist wishlist = wishlistServiceImpl.getWishlistByUserId(userRequest.getId());
+            int wishlistItems = wishlistItemServiceImpl.getItemsCount(wishlist.getId());
             if(cart == null) {
                 cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,userRequest.getId(),null));
             }
@@ -77,6 +82,8 @@ public class CartController {
             if(cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
+            session.setAttribute("wishlistId", wishlist.getId());
+            session.setAttribute("wishlistCount", wishlistItems);
         }
 
         User user = userService.getUserByUsername(username);
@@ -86,6 +93,7 @@ public class CartController {
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("numberProductInCart", numberProductInCart);
         model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+
 
         session.setAttribute("cart", cart);
         session.setAttribute("cartDetailList", cartDetailList);
@@ -223,6 +231,62 @@ public class CartController {
                 redirectAttributes.addFlashAttribute("error", error);
             }
         }
+
+        return "redirect:/user/cart";
+    }
+
+    @PostMapping("/cart-add-wishlist")
+    public String addToCartFromWishList(Model model, @Valid @RequestParam("productId") Long productId,@RequestParam("quantity") int quantity, HttpSession session, RedirectAttributes redirectAttributes) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        Long wishlistId = (Long) session.getAttribute("wishlistId");
+        if(cart == null) {
+            cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,cart.getUserId(),null));
+        }
+
+        Product product = productServiceImpl.findById(productId).orElse(null);
+        CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), productId);
+        CartDetailRequest cartDetailRequest;
+        BigDecimal price;
+        BigDecimal limit = new BigDecimal("10000000000");
+
+        if(cartDetail != null) {
+            price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+quantity));
+            cartDetailRequest = new CartDetailRequest(quantity + cartDetail.getQuantity(), price, cart, product);
+
+            if (cartDetailRequest.getQuantity() > product.getStockQuantity()){
+                String error = "Could not add quantity";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            if (price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            if (!cartDetailServiceImpl.update(cartDetailRequest)) {
+                String error = "Could not update cart detail";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else {
+                wishlistItemServiceImpl.removeItemFromWishlist(wishlistId, productId);
+            }
+        }
+        else
+        {
+            price = product.getPrice().multiply(new BigDecimal(quantity));
+            cartDetailRequest = new CartDetailRequest(quantity,price, cart, product);
+
+            if(price.compareTo(limit) > 0){
+                String error = "The cart value in your cart has reached the limit.";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else if (!cartDetailServiceImpl.create(cartDetailRequest)) {
+                String error = "Could not create cart detail";
+                redirectAttributes.addFlashAttribute("error", error);
+            }
+            else {
+                wishlistItemServiceImpl.removeItemFromWishlist(wishlistId, productId);
+            }
+        }
+
 
         return "redirect:/user/cart";
     }

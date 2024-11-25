@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WishlistItemRepository extends JpaRepository<WishlistItem, Long> {
-    void deleteWishlistItemByWishlistId(Long wishlistId);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM WishlistItem wi WHERE wi.id = :wishlistItemId")
+    void deleteWishlistItemById(Long wishlistItemId);
 
     void deleteAllByWishlistId(Long wishlistId);
 

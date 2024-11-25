@@ -56,7 +56,13 @@
                                     th:text="*{wishlist.unitPrice}"></td>
                                 <td class="product-stock-status" data-title="Status"
                                     th:text="${wishlist.status ? 'In Stock' : 'Out of stock'}">In Stock</td>
-                                <td class="product-add-cart"><a href="cart.html" class="axil-btn btn-outline">Add to Cart</a></td>
+                                <td class="product-add-cart">
+                                    <form th:action="@{/user/cart/cart-add-wishlist}" method="post">
+                                        <input type="hidden" name="productId" th:value="${wishlist.productId}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="axil-btn btn-outline" th:disabled="${!wishlist.status}">Add to Cart</button>
+                                    </form>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

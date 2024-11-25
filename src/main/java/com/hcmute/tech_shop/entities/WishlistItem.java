@@ -19,7 +19,7 @@ public class WishlistItem {
 
     private boolean status;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
