@@ -62,4 +62,7 @@ public class User extends TrackingDate implements Serializable {
     @OneToMany(mappedBy = "user")
     private Set<Address> addresses = new HashSet<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Wishlist wishlist;
+
 }

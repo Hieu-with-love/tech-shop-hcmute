@@ -33,6 +33,8 @@ public class HomeController {
     private final ICategoryService categoryService;
     private final CartService cartService;
     private final ICartDetailService cartDetailServiceImpl;
+    private final WishlistService wishlistService;
+    private final WishlistItemService wishlistItemService;
 
     public UserRequest getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -76,6 +78,10 @@ public class HomeController {
         Cart cart = new Cart();
         if(!username.equals("anonymousUser")) {
             User user = userService.getUserByUsername(username);
+            wishlistService.createWishlist(user);
+            Wishlist wishlist = wishlistService.getWishlistByUserId(user.getId());
+            int wishlistItems = wishlistItemService.getItemsCount(wishlist.getId());
+
             UserRequest userRequest = getUser();
             cart = cartService.findByCustomerId(userRequest.getId());
             if(cart == null) {
@@ -87,6 +93,8 @@ public class HomeController {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
             session.setAttribute("user", user);
+            session.setAttribute("wishlistId", wishlist.getId());
+            session.setAttribute("wishlistCount", wishlistItems);
             model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
             session.setAttribute("totalPriceOfCart", cartService.getCartResponse(cart));
         }

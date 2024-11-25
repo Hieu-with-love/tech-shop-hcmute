@@ -54,6 +54,39 @@
     text-align: center;
 }
 
+.wishlist-form {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* Nền trắng */
+    border-radius: 8px; /* Bo góc nếu cần */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+.wishlist-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    padding: 8px; /* Khoảng cách bên trong nút */
+    font-size: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wishlist-btn i {
+    font-size: 1.5rem;
+    color: #ff0000; /* Màu đỏ cho biểu tượng trái tim */
+}
+
+.wishlist-btn:hover i {
+    color: #ff5555; /* Màu đỏ sáng hơn khi hover */
+}
+
+
+
+
 /*!* Container bao bọc bộ lọc *!*/
 /*.filter-container {*/
 /*    display: flex;*/

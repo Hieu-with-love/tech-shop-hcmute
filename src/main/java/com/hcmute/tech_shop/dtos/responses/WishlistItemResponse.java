@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WishlistResponse {
+public class WishlistItemResponse {
     private String thumbnail;
     private String title;
     private String unitPrice;
