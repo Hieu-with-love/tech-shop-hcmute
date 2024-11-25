@@ -82,6 +82,4 @@ public class Product extends TrackingDate{
     @OneToMany(mappedBy = "product")
     private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "product")
-    private Set<WishlistItem> items = new HashSet<>();
 }

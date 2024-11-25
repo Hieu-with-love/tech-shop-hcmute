@@ -91,6 +91,7 @@ public class WishlistItemServiceImpl implements WishlistItemService {
     }
 
     @Override
+    @Transactional
     public void removeItemFromWishlist(Long wishlistId, Long productId) {
         Wishlist wishlist = this.getWishlist(wishlistId);
         WishlistItem itemToRemove = wishlist.getItems()
@@ -102,6 +103,7 @@ public class WishlistItemServiceImpl implements WishlistItemService {
     }
 
     @Override
+    @Transactional
     public int getItemsCount(Long wishlistId) {
         return wishlistItemRepository.countByWishlistId(wishlistId);
     }

@@ -7,10 +7,13 @@ import com.hcmute.tech_shop.repositories.WishlistRepository;
 import com.hcmute.tech_shop.services.interfaces.WishlistService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WishlistServiceImpl implements WishlistService {
     private final WishlistRepository wishlistRepository;
     private final WishlistItemRepository wishlistItemRepository;
@@ -47,7 +50,8 @@ public class WishlistServiceImpl implements WishlistService {
     public void clearWishlist(Long id) {
         Wishlist wishlist = this.getWishlistById(id);
         wishlist.getItems().clear();
-        wishlistItemRepository.deleteWishlistItemByWishlistId(id);
+        log.info("Deleting all items from wishlist with ID: {}", id);
+        wishlistItemRepository.deleteAllByWishlistId(id);
     }
 
 

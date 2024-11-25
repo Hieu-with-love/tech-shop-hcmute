@@ -18,7 +18,12 @@
             <div class="container">
                 <div class="product-table-heading">
                     <h4 class="title">My Wish List on eTrade</h4>
-                    <a th:href="@{/user/cart/delete-all}" class="cart-clear">Clear Wishlist</a>
+                    <form class="clear-wishlist">
+                        <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
+                        <button class="cart-clear">
+                            Clear Wishlist
+                        </button>
+                    </form>
                 </div>
                 <div class="table-responsive">
                     <table class="table axil-product-table axil-wishlist-table">
@@ -35,7 +40,13 @@
                         <tbody>
                             <tr th:each="wishlist : ${wishlistItems}">
                                 <td class="product-remove">
-                                    <a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a>
+                                    <form th:action="@{/user/wishlist/remove}" class="remove-item">
+                                        <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
+                                        <input type="hidden" name="productId" th:value="${wishlist.productId}">
+                                        <button type="submit" class="remove-wishlist wishlist-remove">
+                                            <i class="fal fa-times"></i>
+                                        </button>
+                                    </form>
                                 </td>
                                 <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
                                 ><img th:src="@{'/uploads/' + ${wishlist.thumbnail}}" alt="Digital Product"></a></td>
@@ -76,7 +87,46 @@
     <div th:insert="~{/user/fragments/script::script}"></div>
 
 <script>
+    $(document).on('submit', '.remove-item', function(event) {
+        event.preventDefault(); // Ngăn form submit bình thường
+        // Lấy dữ liệu từ form
+        const $form = $(this);
+        const wishlistId = $form.find('input[name="wishlistId"]').val();
+        const productId = $form.find('input[name="productId"]').val();
 
+        // Gửi yêu cầu AJAX DELETE
+        $.ajax({
+            url: '/user/wishlist/remove',
+            type: 'DELETE',
+            data: { wishlistId: wishlistId, productId: productId },
+            success: function(response) {
+                alert(response); // Hiển thị thông báo thành công
+                $form.closest('tr').remove(); // Xoá dòng sản phẩm khỏi giao diện
+            },
+            error: function(xhr) {
+                alert(xhr.responseText || 'Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    });
+
+    $(document).on('submit', '.clear-wishlist', function (event){
+       event.preventDefault();
+
+       const $form = $(this);
+       const wishlistId = $form.find('input[name="wishlistId"]').val();
+
+       $.ajax({
+           url: '/user/wishlist/clear',
+           type: 'POST',
+           data: {wishlistId: wishlistId},
+           success: function (response){
+               alert(response);
+           },
+           error: function (xhr){
+               alert(xhr.responseText || 'Co loi, Vui long thu lai');
+           }
+       })
+    });
 </script>
 
 </body>
