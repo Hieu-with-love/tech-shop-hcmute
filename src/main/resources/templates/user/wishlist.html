@@ -18,6 +18,7 @@
             <div class="container">
                 <div class="product-table-heading">
                     <h4 class="title">My Wish List on eTrade</h4>
+                    <a th:href="@{/user/cart/delete-all}" class="cart-clear">Clear Wishlist</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table axil-product-table axil-wishlist-table">
@@ -32,8 +33,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="wishlist : ${listWishlist}">
-                                <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+                            <tr th:each="wishlist : ${wishlistItems}">
+                                <td class="product-remove">
+                                    <a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a>
+                                </td>
                                 <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
                                 ><img th:src="@{'/uploads/' + ${wishlist.thumbnail}}" alt="Digital Product"></a></td>
                                 <td class="product-title"><a th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}"
@@ -44,23 +47,6 @@
                                     th:text="${wishlist.status ? 'In Stock' : 'Out of stock'}">In Stock</td>
                                 <td class="product-add-cart"><a href="cart.html" class="axil-btn btn-outline">Add to Cart</a></td>
                             </tr>
-                            <tr>
-                                <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
-                                        ><img th:src="@{/user/assets/images/product/electric/product-02.png}" alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product-2.html">Gradient Light Keyboard</a></td>
-                                <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
-                                <td class="product-stock-status" data-title="Status">In Stock</td>
-                                <td class="product-add-cart"><a href="cart.html" class="axil-btn btn-outline">Add to Cart</a></td>
-                            </tr>
-                            <tr>
-                                <td class="product-remove"><a href="#" class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                <td class="product-thumbnail"><a href="single-product-3.html"><img th:src="@{/user/assets/images/product/electric/product-03.png}" alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product-3.html">HD CC Camera</a></td>
-                                <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>124.00</td>
-                                <td class="product-stock-status" data-title="Status">In Stock</td>
-                                <td class="product-add-cart"><a href="cart.html" class="axil-btn btn-outline">Add to Cart</a></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -69,25 +55,29 @@
         <!-- End Wishlist Area  -->
     </main>
 
-    <div th:insert="/user/fragments/service-area-footer::service-area-footer"></div>
+    <div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
     <!-- Start Footer Area  -->
-    <div th:insert="/user/fragments/footer::footer"></div>
+    <div th:insert="~{/user/fragments/footer::footer}"></div>
     <!-- End Footer Area  -->
 
     <!-- Product Quick View Modal Start -->
-    <div th:insert="/user/fragments/quickview::quick-view"></div>
+    <div th:insert="~{/user/fragments/quickview::quick-view}"></div>
     <!-- Product Quick View Modal End -->
 
     <!-- Header Search Modal End -->
-    <div th:insert="/user/fragments/header-search::header-search"></div>
+    <div th:insert="~{/user/fragments/header-search::header-search}"></div>
     <!-- Header Search Modal End -->
 
-    <div th:insert="/user/fragments/cart-dropdown::cart-dropdown"></div>
+    <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
 
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->
-    <div th:insert="/user/fragments/script::script"></div>
+    <div th:insert="~{/user/fragments/script::script}"></div>
+
+<script>
+
+</script>
 
 </body>
 

@@ -5,9 +5,10 @@ import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -80,4 +81,7 @@ public class Product extends TrackingDate{
 
     @OneToMany(mappedBy = "product")
     private List<Rating> ratings;
+
+    @OneToMany(mappedBy = "product")
+    private Set<WishlistItem> items = new HashSet<>();
 }

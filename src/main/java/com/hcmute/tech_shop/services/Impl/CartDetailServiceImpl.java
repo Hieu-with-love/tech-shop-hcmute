@@ -2,7 +2,7 @@ package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
-import com.hcmute.tech_shop.dtos.responses.WishlistResponse;
+import com.hcmute.tech_shop.dtos.responses.WishlistItemResponse;
 import com.hcmute.tech_shop.entities.Cart;
 import com.hcmute.tech_shop.entities.CartDetail;
 import com.hcmute.tech_shop.entities.composites.CartDetailId;
@@ -54,11 +54,11 @@ public class CartDetailServiceImpl implements ICartDetailService {
     }
 
     @Override
-    public List<WishlistResponse> getAllWishlist() {
+    public List<WishlistItemResponse> getAllWishlist() {
         List<CartDetail> cartDetails = cartDetailRepository.findAll();
         return cartDetails.stream().map(item -> {
             boolean instock = item.getQuantity() > 0;
-            return WishlistResponse.builder()
+            return WishlistItemResponse.builder()
                     .thumbnail(item.getProduct().getThumbnail())
                     .title(item.getProduct().getName())
                     .status(instock)

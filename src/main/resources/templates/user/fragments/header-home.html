@@ -176,14 +176,17 @@
                         </li>
                         <li class="wishlist">
                             <a th:href="@{/user/wishlist}">
+                                <p class="cart-count"
+                                        th:if="${session.wishlistCount > 0}"
+                                        th:text="${session.wishlistCount}"></p>
                                 <i class="flaticon-heart"></i>
                             </a>
                         </li>
                         <li class="shopping-cart">
                             <a href="#" class="cart-dropdown-btn">
                                 <span class="cart-count"
-                                      th:if="${numberProductInCart > 0}"
-                                      th:text="${numberProductInCart}"></span>
+                                      th:if="${session.numberProductInCart > 0}"
+                                      th:text="${session.numberProductInCart}"></span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>

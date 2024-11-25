@@ -58,7 +58,13 @@
                                                 </form>
                                             </li>
                                             <li class="wishlist">
-                                                <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                                                <form th:action="@{/user/wishlist/insert}" method="post" class="wishlist-form">
+                                                    <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
+                                                    <input type="hidden" name="productId" th:value="${product.id}">
+                                                    <button type="submit" class="wishlist-btn">
+                                                        <i class="far fa-heart"></i>
+                                                    </button>
+                                                </form>
                                             </li>
                                         </ul>
                                     </div>
@@ -138,6 +144,30 @@
 <!-- JS
 ============================================ -->
 <div th:insert="~{user/fragments/script::script}"></div>
+
+<script>
+    document.querySelectorAll('.wishlist-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn tải lại trang
+            const formData = new FormData(this);
+            const actionUrl = this.getAttribute('action');
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data); // Thông báo thành công
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra!');
+                });
+        });
+    });
+</script>
+
 
 </body>
 
