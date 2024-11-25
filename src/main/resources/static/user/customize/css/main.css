@@ -84,6 +84,15 @@
     color: #ff5555; /* Màu đỏ sáng hơn khi hover */
 }
 
+.product-image {
+    width: 100%; /* Đảm bảo ảnh chiếm hết chiều ngang của khung */
+    max-width: 300px; /* Giới hạn chiều rộng tối đa, điều chỉnh phù hợp với giao diện của bạn */
+    height: auto; /* Giữ tỷ lệ gốc của ảnh */
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung mà không bị méo */
+    border-radius: 5px; /* (Tùy chọn) Bo tròn góc để tạo cảm giác mềm mại */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* (Tùy chọn) Đổ bóng để tăng tính thẩm mỹ */
+}
+
 
 
 

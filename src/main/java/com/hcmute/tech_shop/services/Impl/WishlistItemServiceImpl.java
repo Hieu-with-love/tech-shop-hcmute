@@ -42,9 +42,10 @@ public class WishlistItemServiceImpl implements WishlistItemService {
 
     @Override
     @Transactional
-    public List<WishlistItemResponse> getItems() {
+    public List<WishlistItemResponse> getItems(Long wishlistId) {
         List<WishlistItem> wishlistItems = wishlistItemRepository.findAll();
         return wishlistItems.stream()
+                .filter(item -> item.getWishlist().getId().equals(wishlistId))
                 .map(item -> WishlistItemResponse.builder()
                         .thumbnail(item.getProduct().getThumbnail())
                         .title(item.getProduct().getName())
@@ -52,7 +53,8 @@ public class WishlistItemServiceImpl implements WishlistItemService {
                         .status(item.isStatus())
                         .productId(item.getProduct().getId())
                         .build()
-                ).toList();
+                )
+                .toList();
     }
 
     private boolean existsItem(Long productId) {

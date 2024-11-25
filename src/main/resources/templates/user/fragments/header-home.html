@@ -175,7 +175,7 @@
                             </a>
                         </li>
                         <li class="wishlist">
-                            <a th:href="@{/user/wishlist}">
+                            <a th:href="@{/user/wishlist(wishlistId=${session.wishlistId})}">
                                 <p class="cart-count"
                                         th:if="${session.wishlistCount > 0}"
                                         th:text="${session.wishlistCount}"></p>
