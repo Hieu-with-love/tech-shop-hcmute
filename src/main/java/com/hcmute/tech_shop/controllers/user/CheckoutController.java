@@ -35,11 +35,18 @@ public class CheckoutController {
         List<Address> addresses = addressService.findByUser_Username(username);
         Cart cart = (Cart) session.getAttribute("cart");
         List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
+        List<Voucher> vouchers = voucherService.findAll();
+        // Extract voucher names and values
+        List<String> voucherNames = vouchers.stream().map(Voucher::getName).toList();
+        List<BigDecimal> voucherValues = vouchers.stream().map(Voucher::getValue).toList();
 
         model.addAttribute("user", user);
         model.addAttribute("addresses", addresses);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("voucherNames", voucherNames);
+        model.addAttribute("voucherValues", voucherValues);
+
         return "user/checkout";
     }
 

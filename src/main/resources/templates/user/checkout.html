@@ -27,9 +27,12 @@
                                 <div class="axil-checkout-coupon toggle-open">
                                     <p>If you have a coupon code, please apply it below.</p>
                                     <div class="input-group">
-                                        <input placeholder="Enter coupon code" type="text" name="voucher">
+                                        <input placeholder="Enter coupon code" type="text" name="voucher"
+                                               id="voucher-code">
                                         <div class="apply-btn">
-                                            <button type="submit" class="axil-btn btn-bg-primary">Apply</button>
+                                            <button type="button" class="axil-btn btn-bg-primary"
+                                                    onclick="applyVoucher()">Apply
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -67,11 +70,6 @@
                                             th:text="|${address.getDetailLocation()}, ${address.getStreet()}, ${address.getDistrict()}, ${address.getCity()}|">
                                     </option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Other Notes (optional)</label>
-                                <textarea id="notes" rows="2"
-                                          placeholder="Notes about your order, e.g. speacial notes for delivery."></textarea>
                             </div>
                         </div>
                     </div>
@@ -177,11 +175,6 @@
 ============================================ -->
 <div th:insert="~{/user/fragments/script::script}"></div>
 <script>
-    function showMessage(message) {
-        alert(message);
-    }
-</script>
-<script>
     function processCheckout() {
         // Get the selected payment method
         const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
@@ -191,6 +184,29 @@
         const voucher = document.querySelector('input[name="voucher"]').value;
         // Redirect to the checkout URL with the payment method as a parameter
         window.location.href = `/user/checkout/process?paymentMethod=${encodeURIComponent(paymentMethod)}&addressId=${encodeURIComponent(addressId)}&voucher=${encodeURIComponent(voucher)}`;
+    }
+</script>
+<script th:inline="javascript">
+    // Injecting voucher names and values from the model attributes
+    const voucherName = /*[[${voucherNames}]]*/ [];
+    const voucherValue = /*[[${voucherValues}]]*/ [];
+
+    function applyVoucher() {
+        const voucherCode = document.getElementById('voucher-code').value;
+        const voucherIndex = voucherName.indexOf(voucherCode);
+
+        if (voucherIndex !== -1) {
+            const discountPercent = voucherValue[voucherIndex];
+            const totalPrice = parseFloat(document.querySelector('.order-total-amount').textContent);
+            const newPrice = totalPrice - (totalPrice * (discountPercent / 100));
+            updateTotalPrice(newPrice.toFixed(2));
+        } else {
+            alert("Invalid voucher code");
+        }
+    }
+
+    function updateTotalPrice(newPrice) {
+        document.querySelector('.order-total-amount').textContent = newPrice;
     }
 </script>
 
