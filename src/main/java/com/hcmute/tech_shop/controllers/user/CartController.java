@@ -125,7 +125,7 @@ public class CartController {
                 String error = "Could not add quantity";
                 redirectAttributes.addFlashAttribute("error", error);
             }
-            if (price.compareTo(limit) > 0){
+            else if (price.compareTo(limit) > 0){
                 String error = "The cart value in your cart has reached the limit.";
                 redirectAttributes.addFlashAttribute("error", error);
             }
@@ -164,10 +164,10 @@ public class CartController {
             price = product.getPrice().multiply(new BigDecimal(cartDetail.getQuantity()+1));
             cartDetailRequest = new CartDetailRequest(cartDetail.getQuantity() + 1, price, cart, product);
             if (cartDetailRequest.getQuantity() > product.getStockQuantity()){
-                String error = "Could not add quantity";
+                String error = "Not enough stock";
                 redirectAttributes.addFlashAttribute("error", error);
             }
-            if(price.compareTo(limit) > 0){
+            else if(price.compareTo(limit) > 0){
                 String error = "The cart value in your cart has reached the limit.";
                 redirectAttributes.addFlashAttribute("error", error);
             }
@@ -254,14 +254,14 @@ public class CartController {
             cartDetailRequest = new CartDetailRequest(quantity + cartDetail.getQuantity(), price, cart, product);
 
             if (cartDetailRequest.getQuantity() > product.getStockQuantity()){
-                String error = "Could not add quantity";
+                String error = "Not enough stock";
                 redirectAttributes.addFlashAttribute("error", error);
             }
-            if (price.compareTo(limit) > 0){
+            else if (price.compareTo(limit) > 0){
                 String error = "The cart value in your cart has reached the limit.";
                 redirectAttributes.addFlashAttribute("error", error);
             }
-            if (!cartDetailServiceImpl.update(cartDetailRequest)) {
+            else if (!cartDetailServiceImpl.update(cartDetailRequest)) {
                 String error = "Could not update cart detail";
                 redirectAttributes.addFlashAttribute("error", error);
             }
