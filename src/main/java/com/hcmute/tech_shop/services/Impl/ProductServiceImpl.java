@@ -1,5 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.builder.ProductFilterBuilder;
+import com.hcmute.tech_shop.convert.ProductFilterBuilderConverter;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Brand;
@@ -8,6 +10,7 @@ import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
+import com.hcmute.tech_shop.repositories.custome.ProductRepositoryCustom;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.utils.Constant;
 import org.apache.coyote.BadRequestException;
@@ -37,6 +40,8 @@ public class ProductServiceImpl implements IProductService {
     BrandRepository brandRepository;
 
     private final Path root = Paths.get("./uploads");
+    @Autowired
+    private ProductFilterBuilderConverter productFilterBuilderConverter;
 
     @Override
     public void init() {
@@ -59,6 +64,17 @@ public class ProductServiceImpl implements IProductService {
                     .thumbnail(p.getThumbnail())
                     .build();
         }).toList();
+    }
+
+    @Override
+    public List<ProductResponse> filterProducts(Map<String, Object> params) {
+        ProductFilterBuilder builder = productFilterBuilderConverter.toProductFilterBuilder(params);
+
+        List<Product> productEntities =productRepository.findAll(
+                ProductRepositoryCustom.filter(builder)
+        );
+
+        return getAllProducts(productEntities);
     }
 
     public String saveImage(MultipartFile file) {

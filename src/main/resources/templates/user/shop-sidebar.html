@@ -3,232 +3,396 @@
 
 <!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
 <div th:insert="~{user/fragments/head::head}"></div>
+<link rel="stylesheet"
+      th:href="@{/user/customize/css/main.css}"/>
 
+<style>
+    .shop-submenu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* Style cho mỗi tùy chọn RAM */
+    .ram-option {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 14px;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    /* Khi chọn, hiển thị màu xanh */
+    .ram-option.selected {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+</style>
 
 <body class="sticky-header">
-    <!-- Start Header -->
-    <div th:insert="~{user/fragments/header::header}"></div>
-    <!-- End Header -->
+<!-- Start Header -->
+<div th:insert="~{user/fragments/header::header}"></div>
+<!-- End Header -->
 
-    <main class="main-wrapper">
-        <!-- Start Breadcrumb Area  -->
-        <div class="axil-breadcrumb-area">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-8">
-                        <div class="inner">
-                            <ul class="axil-breadcrumb">
-                                <li class="axil-breadcrumb-item"><a th:href="@{/user/dashboard}">Home</a></li>
-                                <li class="separator"></li>
-                                <li class="axil-breadcrumb-item active" aria-current="page">My Account</li>
-                            </ul>
-                            <h1 class="title">Explore All Products</h1>
-                        </div>
+<main class="main-wrapper">
+    <!-- Start Breadcrumb Area  -->
+    <div class="axil-breadcrumb-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="inner">
+                        <ul class="axil-breadcrumb">
+                            <li class="axil-breadcrumb-item"><a th:href="@{/user/dashboard}">Home</a></li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">My Account</li>
+                        </ul>
+                        <h1 class="title">Explore All Products</h1>
                     </div>
-                    <div class="col-lg-6 col-md-4">
-                        <div class="inner">
-                            <div class="bradcrumb-thumb">
-                                <img th:src="@{/user/assets/images/product/product-45.png}" alt="Image">
-                            </div>
+                </div>
+                <div class="col-lg-6 col-md-4">
+                    <div class="inner">
+                        <div class="bradcrumb-thumb">
+                            <img th:src="@{/user/assets/images/product/product-45.png}" alt="Image">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End Breadcrumb Area  -->
+    </div>
+    <!-- End Breadcrumb Area  -->
 
-        <!-- Start Shop Area  -->
-        <div class="axil-shop-area axil-section-gap bg-color-white">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="axil-shop-sidebar">
-                            <div class="d-lg-none">
-                                <button class="sidebar-close filter-close-btn"><i class="fas fa-times"></i></button>
-                            </div>
-
-                            <!-- Start Categories  -->
-                            <div class="toggle-list product-categories active">
-                                <h6 class="title">CATEGORIES</h6>
-                                <div class="shop-submenu">
-                                    <ul th:each="category : ${categories}">
-                                        <li th:classappend="${categoryName == category.name} ? 'current-cat'">
-                                            <a th:href="@{/user/products/{name}(name=${category.name})}" th:text="${category.name}"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Categories  -->
-
-                            <!-- Start Brands  -->
-                            <div class="toggle-list product-categories product-gender active">
-                                <h6 class="title">Brand</h6>
-                                <div class="shop-submenu">
-                                    <ul>
-                                        <li class="chosen"><a href="#">Men (40)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Brands  -->
-
-                            <!-- Start RAM  -->
-                            <div class="toggle-list product-categories product-gender active">
-                                <h6 class="title">RAM</h6>
-                                <div class="shop-submenu">
-                                    <ul>
-                                        <li class="chosen"><a href="#">Men (40)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End RAM  -->
-
-                            <!-- Start Hard disk  -->
-                            <div class="toggle-list product-size active">
-                                <h6 class="title">Hard disk</h6>
-                                <div class="shop-submenu">
-                                    <ul>
-                                        <li class="chosen"><a href="#">XS</a></li>
-                                        <li><a href="#">S</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Hard disk  -->
-
-                            <!-- Start CPU  -->
-                            <div class="toggle-list product-size active">
-                                <h6 class="title">CPU</h6>
-                                <div class="shop-submenu">
-                                    <ul>
-                                        <li class="chosen"><a href="#">XS</a></li>
-                                        <li><a href="#">S</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End CPU  -->
-
-                            <!-- Start monitor  -->
-                            <div class="toggle-list product-size active">
-                                <h6 class="title">Monitor</h6>
-                                <div class="shop-submenu">
-                                    <ul>
-                                        <li class="chosen"><a href="#">XS</a></li>
-                                        <li><a href="#">S</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End monitor  -->
-
-                            <!-- Start price  -->
-                            <div class="toggle-list product-price-range active">
-                                <h6 class="title">PRICE</h6>
-                                <div class="shop-submenu">
-                                    <form action="#" class="mt--25">
-                                        <div id="slider-range"></div>
-                                        <div class="flex-center mt--20">
-                                            <span class="input-range">Price: </span>
-                                            <input type="text" id="amount" class="amount-range" readonly>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- End price  -->
-
-                            <button class="axil-btn btn-bg-primary">All Reset</button>
+    <!-- Start Shop Area  -->
+    <div class="axil-shop-area axil-section-gap bg-color-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="axil-shop-sidebar">
+                        <div class="d-lg-none">
+                            <button class="sidebar-close filter-close-btn"><i class="fas fa-times"></i></button>
                         </div>
-                        <!-- End .axil-shop-sidebar -->
+
+<!--                        &lt;!&ndash; Start Categories  &ndash;&gt;-->
+<!--                        <div class="toggle-list product-categories active">-->
+<!--                            <h6 class="title">CATEGORIES</h6>-->
+<!--                            <div class="shop-submenu">-->
+<!--                                <ul th:each="category : ${categories}">-->
+<!--                                    <li th:classappend="${categoryName == category.name} ? 'current-cat'">-->
+<!--                                        <a th:href="@{/user/products/{name}(name=${category.name})}"-->
+<!--                                           th:text="${category.name}"></a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <!-- End Categories  -->
+                        <div class="toggle-list product-categories product-gender active">
+                            <h6 class="title">Category</h6>
+                            <div class="shop-submenu">
+                                <ul>
+                                    <li th:each="category : ${categories}">
+                                        <input type="radio" th:id="'category-' + ${category.name}" name="category"
+                                               th:value="${category.name}" th:checked="${name == category.name}"/>
+                                        <label th:for="'category-' + ${category.name}" th:text="${category.name}"></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- End Categories  -->
+
+                        <!-- Start Categories  -->
+                        <div class="toggle-list product-categories product-gender active">
+                            <h6 class="title">Brand</h6>
+                            <div class="shop-submenu">
+                                <ul>
+                                    <li th:each="brand : ${brands}">
+                                        <input type="checkbox" th:id="'brand-' + ${brand.name}" name="brand"
+                                               th:value="${brand.name}" th:checked="${name == brand.name}"/>
+                                        <label th:for="'brand-' + ${brand.name}" th:text="${brand.name}"></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Brands  -->
+
+                        <!-- Start RAM  -->
+                        <div class="toggle-list product-size active">
+                            <h6 class="title">RAM</h6>
+                            <div class="shop-submenu">
+                                <ul>
+                                    <li class="ram-option" data-value="4GB">4GB</li>
+                                    <li class="ram-option" data-value="6GB">6GB</li>
+                                    <li class="ram-option" data-value="8GB">8GB</li>
+                                    <li class="ram-option" data-value="16GB">16GB</li>
+                                    <li class="ram-option" data-value="32GB">32GB</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Ram  -->
+
+<!--                        &lt;!&ndash; Start OS  &ndash;&gt;-->
+<!--                        <div class="toggle-list product-categories product-gender active">-->
+<!--                            <h6 class="title">OS</h6>-->
+<!--                            <div class="shop-submenu">-->
+<!--                                <ul>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="os-windows" name="os" value="Windows" />-->
+<!--                                        <label for="os-windows">Windows</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="os-macos" name="os" value="MacOS" />-->
+<!--                                        <label for="os-macos">MacOS</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="os-linux" name="os" value="Linux" />-->
+<!--                                        <label for="os-linux">Linux</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="os-android" name="os" value="Android" />-->
+<!--                                        <label for="os-android">Android</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="os-ios" name="os" value="iOS" />-->
+<!--                                        <label for="os-ios">iOS</label>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; End OS  &ndash;&gt;-->
+
+<!--                        &lt;!&ndash; Start CPU  &ndash;&gt;-->
+<!--                        <div class="toggle-list product-categories product-gender active">-->
+<!--                            <h6 class="title">CPU</h6>-->
+<!--                            <div class="shop-submenu">-->
+<!--                                <ul>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="cpu-intel" name="cpu" value="Intel" />-->
+<!--                                        <label for="cpu-intel">Intel</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="cpu-amd" name="cpu" value="AMD" />-->
+<!--                                        <label for="cpu-amd">AMD</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="cpu-apple-m1" name="cpu" value="Apple M1" />-->
+<!--                                        <label for="cpu-apple-m1">Apple M1</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="cpu-apple-m2" name="cpu" value="Apple M2" />-->
+<!--                                        <label for="cpu-apple-m2">Apple M2</label>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <input type="checkbox" id="cpu-qualcomm" name="cpu" value="Qualcomm" />-->
+<!--                                        <label for="cpu-qualcomm">Qualcomm</label>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; End CPU  &ndash;&gt;-->
+
+                        <div class="toggle-list product-price-range active">
+                            <h6 class="title">PRICE</h6>
+                            <div class="shop-submenu">
+                                <form action="#" class="mt--25">
+                                    <div id="slider-range"></div>
+                                    <div class="flex-center mt--20">
+                                        <span class="input-range">Price: </span>
+                                        <input type="text" id="amount" class="amount-range" readonly>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End price  -->
+
+                        <button class="axil-btn btn-bg-primary">All Reset</button>
                     </div>
-                    <div class="col-lg-9">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="axil-shop-top mb--40">
-                                    <div class="category-select align-items-center justify-content-lg-end justify-content-between">
-                                        <!-- Start Single Select  -->
-                                        <span class="filter-results">Showing 1-12 of 84 results</span>
-                                        <select class="single-select">
-                                            <option>Short by Latest</option>
-                                            <option>Short by Oldest</option>
-                                            <option>Short by Name</option>
-                                            <option>Short by Price</option>
-                                        </select>
-                                        <!-- End Single Select  -->
+                    <!-- End .axil-shop-sidebar -->
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="axil-shop-top mb--40">
+                                <div class="category-select align-items-center justify-content-lg-end justify-content-between">
+                                    <!-- Start Single Select  -->
+                                    <span class="filter-results">Showing 1-12 of 84 results</span>
+                                    <select class="single-select">
+                                        <option>Short by Latest</option>
+                                        <option>Short by Oldest</option>
+                                        <option>Short by Name</option>
+                                        <option>Short by Price</option>
+                                    </select>
+                                    <!-- End Single Select  -->
+                                </div>
+                                <div class="d-lg-none">
+                                    <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i>
+                                        FILTER
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End .row -->
+                    <div class="row row--15">
+                        <!-- Start Single Product  -->
+<!--                        <div class="col-xl-4 col-sm-6" th:each="product : ${products}">-->
+<!--                            <div class="axil-product product-style-one mb&#45;&#45;30">-->
+<!--                                <div class="thumbnail">-->
+<!--                                    <a th:href="@{/user/products/product-detail/{id}(id=${product.getId()})}">-->
+<!--                                        <img th:src="@{'/uploads/'+${product.getThumbnail()}}" alt="Product Images">-->
+<!--                                    </a>-->
+<!--                                    <div class="label-block label-right">-->
+<!--                                        <div class="product-badget">10% OFF</div>-->
+<!--                                    </div>-->
+<!--                                    <div class="product-hover-action">-->
+<!--                                        <ul class="cart-action">-->
+<!--                                            <li class="wishlist"><a href="wishlist.html"><i-->
+<!--                                                    class="far fa-heart"></i></a></li>-->
+<!--                                            <li class="select-option"><a href="cart.html">Add to Cart</a></li>-->
+<!--                                            <li class="quickview"><a href="#" data-bs-toggle="modal"-->
+<!--                                                                     data-bs-target="#quick-view-modal"><i-->
+<!--                                                    class="far fa-eye"></i></a></li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="product-content">-->
+<!--                                    <div class="inner">-->
+<!--                                        <h5 class="title"><a href="single-product.html" th:text="${product.name}">3D™-->
+<!--                                            wireless headset</a></h5>-->
+<!--                                        <div class="product-price-variant">-->
+<!--                                            <span class="price current-price" th:field="${product.getOldPrice()}">$30</span>-->
+<!--                                            <span class="price old-price" th:field="${product.getPrice()}">$30</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"
+                             th:each="product:${products}">
+                            <div class="axil-product product-style-one">
+                                <div class="thumbnail">
+                                    <a th:href="@{/user/products/product-detail/{id}(id=${product.id})}">
+                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
+                                             th:src="@{'/uploads/'+${product.thumbnail}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm"/>
+                                    </a>
+                                    <div class="label-block label-right">
+                                        <div class="product-badget">20% Off</div>
                                     </div>
-                                    <div class="d-lg-none">
-                                        <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i> FILTER</button>
+                                    <div class="product-hover-action">
+                                        <ul class="cart-action">
+                                            <li class="quickview">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
+                                                        class="far fa-eye"></i></a>
+                                            </li>
+                                            <li class="select-option">
+                                                <form th:action="@{/user/cart/cart-add}" method="post"
+                                                      class="cart-action">
+                                                    <input type="hidden" name="productId" th:value="${product.id}"/>
+                                                    <input type="hidden" name="quantity" value="1"/>
+                                                    <li class="select-option">
+                                                        <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng
+                                                        </button>
+                                                    </li>
+                                                </form>
+                                            </li>
+                                            <li class="wishlist">
+                                                <form th:action="@{/user/wishlist/insert}" method="post" class="wishlist-form">
+                                                    <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
+                                                    <input type="hidden" name="productId" th:value="${product.id}">
+                                                    <button type="submit" class="wishlist-btn">
+                                                        <i class="far fa-heart"></i>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <div class="inner">
+                                        <h5 class="title">
+                                            <a th:href="@{/user/products/product-detail/{id}(id=${product.id})}"
+                                               th:text="${product.name}"></a>
+                                        </h5>
+                                        <div class="product-price-variant">
+                                            <span class="price current-price" th:text="${product.price}"></span>
+                                            <span class="price old-price" th:text="${product.oldPrice}"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- End .row -->
-                        <div class="row row--15">
-                            <!-- Start Single Product  -->
-                            <div class="col-xl-4 col-sm-6" th:each="product : ${products}">
-                                <div class="axil-product product-style-one mb--30">
-                                    <div class="thumbnail">
-                                        <a th:href="@{/user/products/product-detail/{id}(id=${product.getId()})}">
-                                            <img th:src="@{'/uploads/'+${product.getImg()}}" alt="Product Images">
-                                        </a>
-                                        <div class="label-block label-right">
-                                            <div class="product-badget">10% OFF</div>
-                                        </div>
-                                        <div class="product-hover-action">
-                                            <ul class="cart-action">
-                                                <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
-                                                <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                                <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="inner">
-                                            <h5 class="title"><a href="single-product.html" th:text="${product.name}">3D™ wireless headset</a></h5>
-                                            <div class="product-price-variant">
-                                                <span class="price current-price" th:field="${product.price}">$30</span>
-                                                <span class="price old-price" th:field="${product.price}">$30</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product  -->
+                        <!-- End Single Product  -->
 
-                        </div>
-                        <div class="text-center pt--20">
-                            <a href="#" class="axil-btn btn-bg-lighter btn-load-more">Load more</a>
-                        </div>
+                    </div>
+                    <div class="custom-pagination">
+                        <ul>
+                            <li>
+                                <a href="/user/home?pageNumber=0&pageSize=10" class="prev">Previous</a>
+                            </li>
+                            <li>
+                                <a href="/user/home?pageNumber=1&pageSize=10" class="page">1</a>
+                            </li>
+                            <li>
+                                <a href="/user/home?pageNumber=2&pageSize=10" class="page">2</a>
+                            </li>
+                            <li>
+                                <a href="/user/home?pageNumber=3&pageSize=10" class="page">3</a>
+                            </li>
+                            <li>
+                                <a href="/user/home?pageNumber=4&pageSize=10" class="next">Next</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <!-- End .container -->
         </div>
-        <!-- End Shop Area  -->
+        <!-- End .container -->
+    </div>
+    <!-- End Shop Area  -->
 
-        <!-- Start Axil Newsletter Area  -->
-        <div th:insert="~{/user/fragments/newsletter::newsletter}"></div>
-        <!-- End Axil Newsletter Area  -->
-    </main>
+    <!-- Start Axil Newsletter Area  -->
+    <div th:insert="~{/user/fragments/newsletter::newsletter}"></div>
+    <!-- End Axil Newsletter Area  -->
+</main>
 
-    <div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
-    <!-- Start Footer Area  -->
-    <div th:insert="~{/user/fragments/footer::footer}"></div>
-    <!-- End Footer Area  -->
+<div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
+<!-- Start Footer Area  -->
+<div th:insert="~{/user/fragments/footer::footer}"></div>
+<!-- End Footer Area  -->
 
-    <!-- Product Quick View Modal Start -->
-    <div th:insert="~{/user/fragments/quickview::quick-view}"></div>
-    <!-- Product Quick View Modal End -->
+<!-- Product Quick View Modal Start -->
+<div th:insert="~{/user/fragments/quickview::quick-view}"></div>
+<!-- Product Quick View Modal End -->
 
-    <!-- Header Search Modal End -->
-    <div th:insert="~{/user/fragments/header-search::header-search}"></div>
-    <!-- Header Search Modal End -->
+<!-- Header Search Modal End -->
+<div th:insert="~{/user/fragments/header-search::header-search}"></div>
+<!-- Header Search Modal End -->
 
-    <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
+<div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
 
-    <!-- JS
+<!-- JS
 ============================================ -->
-    <!-- Modernizer JS -->
-    <div th:insert="~{/user/fragments/script::script}"></div>
+<!-- Modernizer JS -->
+<div th:insert="~{/user/fragments/script::script}"></div>
+<script>
+    document.querySelectorAll('.ram-option').forEach(option => {
+        option.addEventListener('click', () => {
+            // Toggle trạng thái selected
+            option.classList.toggle('selected');
 
+            // (Tuỳ chọn) In ra danh sách RAM được chọn
+            const selectedRAM = Array.from(document.querySelectorAll('.ram-option.selected'))
+                .map(opt => opt.getAttribute('data-value'));
+            console.log('Selected RAM:', selectedRAM);
+        });
+    });</script>
 </body>
 
-
-<!-- Mirrored from new.axilthemes.com/demo/template/etrade/shop-sidebar.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:31:54 GMT -->
 </html>

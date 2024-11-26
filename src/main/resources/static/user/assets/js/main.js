@@ -201,19 +201,39 @@
             })
         },
 
-        priceRangeSlider: function(e) {
+        // priceRangeSlider: function(e) {
+        //     $('#slider-range').slider({
+        //         range: true,
+        //         min: 0,
+        //         max: 5000,
+        //         values: [0, 3000],
+        //         slide: function(event, ui) {
+        //             $('#amount').val('$' + ui.values[0] + '  $' + ui.values[1]);
+        //         }
+        //     });
+        //     $('#amount').val('$' + $('#slider-range').slider('values', 0) +
+        //         '  $' + $('#slider-range').slider('values', 1));
+        //
+        // },
+
+        priceRangeSlider: function() {
             $('#slider-range').slider({
                 range: true,
                 min: 0,
-                max: 5000,
-                values: [0, 3000],
+                max: 100000000,
+                values: [0, 100000000],
                 slide: function(event, ui) {
-                    $('#amount').val('$' + ui.values[0] + '  $' + ui.values[1]);
+                    $('#amount').val(ui.values[0].toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}) +
+                        ' - ' +
+                        ui.values[1].toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}));
                 }
             });
-            $('#amount').val('$' + $('#slider-range').slider('values', 0) +
-                '  $' + $('#slider-range').slider('values', 1));
 
+            $('#amount').val(
+                $('#slider-range').slider('values', 0).toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}) +
+                ' - ' +
+                $('#slider-range').slider('values', 1).toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})
+            );
         },
 
         quantityRanger: function() {

@@ -10,11 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IProductService {
     void init();
     List<ProductResponse> getAllProducts(List<Product> products);
+
+    List<ProductResponse> filterProducts(Map<String, Object> params);
 
     boolean deleteImage(String filename);
 
