@@ -78,9 +78,9 @@ public class CheckoutController {
         session.setAttribute("cart", cart);
 
         if (!Objects.equals(voucherCode, "")) {
-            orderService.createOrder(user, newPrice, voucher, payment, cart.getId(), cartDetailList);
+            orderService.createOrder(user, newPrice, voucher, payment, address, cart.getId(), cartDetailList);
         } else {
-            orderService.createOrder(user, newPrice, payment, cart.getId(), cartDetailList);
+            orderService.createOrder(user, newPrice, payment, address, cart.getId(), cartDetailList);
         }
 
         String redirectUrl;
