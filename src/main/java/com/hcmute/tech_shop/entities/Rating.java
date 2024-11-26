@@ -2,10 +2,7 @@ package com.hcmute.tech_shop.entities;
 
 import com.hcmute.tech_shop.entities.composites.RatingId;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +11,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
+@Getter
 @Table(name = "ratings")
 public class Rating {
     @EmbeddedId
