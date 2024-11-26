@@ -6,32 +6,33 @@ Nếu tài khoản mật khẩu không đúng -> CSDL cũ -> DROP DATABASE techs
 
 Code to insert data to database
 
-INSERT INTO tech_shop.brands (name, brand_img) VALUES 
-('Dell', 'https://example.com/images/dell.png'),
-('HP', 'https://example.com/images/hp.png'),
-('Acer', 'https://example.com/images/acer.png'),
-('Lenovo', 'https://example.com/images/lenovo.png'),
-('Apple', 'https://example.com/images/apple.png'),
-('Asus', 'https://example.com/images/asus.png'),
-('MSI', 'https://example.com/images/msi.png'),
-('Samsung', 'https://example.com/images/samsung.png'),
-('LG', 'https://example.com/images/lg.png'),
-('Razer', 'https://example.com/images/razer.png'),
-('Xiaomi', 'https://example.com/images/xiaomi.png'),
-('OnePlus', 'https://example.com/images/oneplus.png'),
-('Google', 'https://example.com/images/google.png'),
-('Oppo', 'https://example.com/images/oppo.png'),
-('Huawei', 'https://example.com/images/huawei.png'),
-('Motorola', 'https://example.com/images/motorola.png'),
-('Realme', 'https://example.com/images/realme.png'),
-('Sony', 'https://example.com/images/sony.png'),
-('Logitech', 'https://example.com/images/logitech.png'),
-('JBL', 'https://example.com/images/jbl.png'),
-('Anker', 'https://example.com/images/anker.png'),
-('Corsair', 'https://example.com/images/corsair.png'),
-('WD', 'https://example.com/images/wd.png'),
-('Seagate', 'https://example.com/images/seagate.png'),
-('Belkin', 'https://example.com/images/belkin.png');
+INSERT INTO tech_shop.brands (name, brand_img, active) VALUES
+('Dell', 'https://example.com/images/dell.png', 1),
+('HP', 'https://example.com/images/hp.png', 1),
+('Acer', 'https://example.com/images/acer.png', 1),
+('Lenovo', 'https://example.com/images/lenovo.png', 1),
+('Apple', 'https://example.com/images/apple.png', 1),
+('Asus', 'https://example.com/images/asus.png', 1),
+('MSI', 'https://example.com/images/msi.png', 1),
+('Samsung', 'https://example.com/images/samsung.png', 1),
+('LG', 'https://example.com/images/lg.png', 1),
+('Razer', 'https://example.com/images/razer.png', 1),
+('Xiaomi', 'https://example.com/images/xiaomi.png', 1),
+('OnePlus', 'https://example.com/images/oneplus.png', 1),
+('Google', 'https://example.com/images/google.png', 1),
+('Oppo', 'https://example.com/images/oppo.png', 1),
+('Huawei', 'https://example.com/images/huawei.png', 1),
+('Motorola', 'https://example.com/images/motorola.png', 1),
+('Realme', 'https://example.com/images/realme.png', 1),
+('Sony', 'https://example.com/images/sony.png', 1),
+('Logitech', 'https://example.com/images/logitech.png', 1),
+('JBL', 'https://example.com/images/jbl.png', 1),
+('Anker', 'https://example.com/images/anker.png', 1),
+('Corsair', 'https://example.com/images/corsair.png', 1),
+('WD', 'https://example.com/images/wd.png', 1),
+('Seagate', 'https://example.com/images/seagate.png', 1),
+('Belkin', 'https://example.com/images/belkin.png', 1);
+
 
 INSERT INTO tech_shop.products (battery, brand_id, category_id, cpu, description, graphic_card, monitor, os, port, price, product_name, ram, stock_quantity, warranty, weight) VALUES
 ('6000mAh', 1, 1, 'Intel i7', 'Gaming Laptop', 'NVIDIA RTX 3060', '15.6 inch', 'Windows 11', 'USB-C, HDMI, Thunderbolt', '1500', 'Dell G15', '16GB', '25', '1 year', 2.5),
@@ -69,7 +70,9 @@ INSERT INTO tech_shop.products (brand_id, category_id, description, price, produ
 (2, 3, 'USB-C hub', '25', 'HP Travel Hub', '100', '1 year'),
 (25, 3, 'Laptop stand', '60', 'Belkin Stand', '80', '1 year');
 
-INSERT INTO tech_shop.categories(id, description, name) VALUES
-(1, 'An electronic machine that is used for storing, organizing, and finding words, numbers,...', 'Computer'),
-(2, 'a mobile phone that performs many of the functions of a computer, typically having a touchscreen interface, internet access, and an operating system capable of running downloaded applications', 'Smartphone');
+INSERT INTO tech_shop.categories (id, description, name, active) VALUES
+(1, 'An electronic machine that is used for storing, organizing, and finding words, numbers, etc.', 'Computer', 1),
+(2, 'A mobile phone that performs many of the functions of a computer, typically having a touchscreen interface, internet access, and an operating system capable of running downloaded applications.', 'Phone', 1),
+(3, 'Additional components or devices that enhance functionality or aesthetics, often used with primary devices.', 'Accessory', 1);
+
 
