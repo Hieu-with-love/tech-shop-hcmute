@@ -1,5 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.builder.ProductFilterBuilder;
+import com.hcmute.tech_shop.convert.ProductFilterBuilderConverter;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Brand;
@@ -8,6 +10,7 @@ import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
+import com.hcmute.tech_shop.repositories.custome.ProductRepositoryCustom;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.utils.Constant;
 import org.apache.coyote.BadRequestException;
@@ -37,6 +40,8 @@ public class ProductServiceImpl implements IProductService {
     BrandRepository brandRepository;
 
     private final Path root = Paths.get("./uploads");
+    @Autowired
+    private ProductFilterBuilderConverter productFilterBuilderConverter;
 
     @Override
     public void init() {
@@ -51,14 +56,30 @@ public class ProductServiceImpl implements IProductService {
     public List<ProductResponse> getAllProducts(List<Product> products) {
         return products.stream().map(p -> {
             String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
+            boolean isUrlImage = false;
+            if (p.getThumbnail() != null && p.getThumbnail().startsWith("https") ){
+               isUrlImage = true;
+            }
             return ProductResponse.builder()
                     .id(p.getId())
                     .name(p.getName())
                     .price(Constant.formatter.format(p.getPrice()))
                     .oldPrice(oldPrice)
                     .thumbnail(p.getThumbnail())
+                    .isUrlImage(isUrlImage)
                     .build();
         }).toList();
+    }
+
+    @Override
+    public List<ProductResponse> filterProducts(Map<String, Object> params) {
+        ProductFilterBuilder builder = productFilterBuilderConverter.toProductFilterBuilder(params);
+
+        List<Product> productEntities =productRepository.findAll(
+                ProductRepositoryCustom.filter(builder)
+        );
+
+        return getAllProducts(productEntities);
     }
 
     public String saveImage(MultipartFile file) {
@@ -181,7 +202,7 @@ public class ProductServiceImpl implements IProductService {
             if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
                 throw new BadRequestException("Image is not valid");
             }
-            deleteImage(existingProduct.getThumbnail());
+//            deleteImage(existingProduct.getThumbnail());
             thumbnail = saveImage(file);
         }
         // get product old by id
@@ -322,6 +343,7 @@ public class ProductServiceImpl implements IProductService {
         for (Product product : products) {
             ProductRequest productDTO = new ProductRequest();
             BeanUtils.copyProperties(product, productDTO);
+            productDTO.setImg(product.getThumbnail());
             productDTOList.add(productDTO);
         }
         return productDTOList;

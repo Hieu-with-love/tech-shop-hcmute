@@ -33,7 +33,7 @@ public class Order extends TrackingDate{
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "voucher_id", nullable = false)
+    @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 
     @ManyToOne
@@ -43,4 +43,7 @@ public class Order extends TrackingDate{
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderDetail> orderDetails;
 
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 }

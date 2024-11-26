@@ -29,12 +29,6 @@
                 <div class="col-lg-8 col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="bar-code-view">
-                                <img th:src="@{/admin/assets/img/barcode1.png}" alt="barcode">
-                                <a class="printimg">
-                                    <img th:src="@{/admin/assets/img/icons/printer.svg}" alt="print">
-                                </a>
-                            </div>
                             <div class="productdetails">
                                 <ul class="product-bar">
                                     <li>
@@ -74,7 +68,7 @@
                                     </li>
                                     <li>
                                         <h4>Buyer's Address</h4>
-<!--                                        <h6><span th:text="${order.get().getAddress()}"></span></h6>-->
+                                        <h6><span th:text="|${order.get().getAddress().getDetailLocation()}, ${order.get().getAddress().getStreet()}, ${order.get().getAddress().getDistrict()}, ${order.get().getAddress().getCity()}|">></span></h6>
                                     </li>
                                     <li th:each="detail : ${order.get().getOrderDetails()}">
                                         <h4>Product</h4>

@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
+import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.Confirmation;
@@ -29,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.UUID;
 
 @Service
@@ -49,12 +50,13 @@ public class UserServiceImpl implements UserService {
 
     private void validation(UserRequest userRequest, BindingResult result){
         // Kiem tra username da ton tai chua?
+
         if (this.existsUsername(userRequest.getUsername())) {
-            result.addError(new FieldError("userRegister", "username",
+            result.addError(new FieldError("userDto", "username",
                     "Username da ton tai. Vui long nhap username khac"));
         }
         if (this.existsEmail(userRequest.getEmail())) {
-            result.addError(new FieldError("userRegister", "email",
+            result.addError(new FieldError("userDto", "email",
                     "Email da ton tai. Vui long nhap Email khac"));
         }
 
@@ -120,20 +122,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateProfile(String username, UserRequest userRequest, BindingResult result) {
+    public boolean updateProfile(User user, ProfileDto profileDto, BindingResult result) {
         // logic update user
-        validation(userRequest, result);
+        if (!user.getUsername().equals(profileDto.getUsername()) && this.existsUsername(profileDto.getUsername())) {
+            result.addError(new FieldError("userRequest", "username",
+                    "Username da ton tai. Vui long nhap username khac"));
+        }
+
+        if (!user.getEmail().equals(profileDto.getEmail()) && this.existsEmail(profileDto.getEmail())){
+            result.addError(new FieldError("userRequest", "username",
+                    "Username da ton tai. Vui long nhap username khac"));
+        }
+
+        if (!profileDto.getDob().isBefore(LocalDate.now().minusYears(15))){
+            result.addError(new FieldError("userRegister", "dob",
+                    "Bạn chưa đủ 15 tuổi"));
+        }
+
+        if (result.hasErrors()) {
+            return false;
+        }
+
         try{
-            User existingUser = userRepository.findByUsernameIgnoreCase(username)
+            User existingUser = userRepository.findByUsernameIgnoreCase(user.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            existingUser.setFirstName(userRequest.getFirstName());
-            existingUser.setLastName(userRequest.getLastName());
-            existingUser.setGender(userRequest.getGender());
-            existingUser.setEmail(userRequest.getEmail());
-            existingUser.setPhoneNumber(userRequest.getPhoneNumber());
-            existingUser.setGender(userRequest.getGender());
-            existingUser.setDateOfBirth(userRequest.getDob());
+            existingUser.setFirstName(profileDto.getFirstName());
+            existingUser.setLastName(profileDto.getLastName());
+            existingUser.setGender(profileDto.getGender());
+            existingUser.setEmail(profileDto.getEmail());
+            existingUser.setPhoneNumber(profileDto.getPhone());
+            existingUser.setGender(profileDto.getGender());
+            existingUser.setDateOfBirth(profileDto.getDob());
             existingUser.setImage(existingUser.getImage());
 
             userRepository.save(existingUser);
@@ -144,18 +164,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(Long id, String password, String confirmPassword, BindingResult result) {
-        User existingUser = this.getUser(id);
-
-        if (!password.equals(confirmPassword)){
-            result.addError(new FieldError("userDto", "password", "Tài khoản và mat khẩu không khớp."));
-            return false;
+    public boolean updatePassword(Map<String,String> params, BindingResult result) {
+        String password = params.get("password");
+        String confirmPassword = params.get("confirmPassword");
+        String username = params.get("username");
+        // Kiểm tra mật khẩu trống hoặc độ dài ngắn
+        if (password == null || password.length() < 3) {
+            result.addError(new FieldError("changePassword", "password", "Password phải có ít nhất 3 ký tự."));
         }
 
-        existingUser.setPassword(passwordEncoder.encode(password));
-        userRepository.save(existingUser);
+        // Kiểm tra xác nhận mật khẩu
+        if (!password.equals(confirmPassword)) {
+            result.addError(new FieldError("changePassword", "confirmPassword", "Xác nhận mật khẩu không khớp."));
+        }
 
-        return true;
+        if (!result.hasErrors()) {
+            User user = this.getUserByUsername(username);
+            user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -58,5 +58,7 @@ public class ProductRequest implements Serializable {
 
     private Long brandId;
 
+    private String img;
+
     private MultipartFile thumbnail;
 }

@@ -1,0 +1,19 @@
+.form-group .error-text {
+    color: red;
+    font-size: 12px;
+}
+
+.status-box {
+     text-align: center;
+     margin: 10px 0;
+ }
+.status h4 {
+    font-size: 18px;
+    font-weight: bold;
+}
+.text-success {
+    color: green;
+}
+.text-danger {
+    color: red;
+}

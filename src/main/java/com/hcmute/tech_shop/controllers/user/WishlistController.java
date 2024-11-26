@@ -25,6 +25,7 @@ public class WishlistController {
                                 @RequestParam("wishlistId") Long wishlistId) {
         List<WishlistItemResponse> wishlistItems = wishlistItemService.getItems(wishlistId);
         model.addAttribute("wishlistItems", wishlistItems);
+        model.addAttribute("wishlistEmpty", wishlistItems.isEmpty());
         return "/user/wishlist";
     }
 

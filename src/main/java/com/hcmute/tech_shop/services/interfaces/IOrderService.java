@@ -1,10 +1,7 @@
 package com.hcmute.tech_shop.services.interfaces;
 
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
-import com.hcmute.tech_shop.entities.Order;
-import com.hcmute.tech_shop.entities.Payment;
-import com.hcmute.tech_shop.entities.User;
-import com.hcmute.tech_shop.entities.Voucher;
+import com.hcmute.tech_shop.entities.*;
 import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
@@ -12,8 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
-    boolean createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment,
-                        List<CartDetailResponse> cartDetailListFull);
+    void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,
+                        Long cartId,
+                        List<CartDetailResponse> cartDetailList);
+
+    void createOrder(User user, BigDecimal totalPrice, Payment payment, Address address,
+                        Long cartId,
+                        List<CartDetailResponse> cartDetailList);
 
     void deleteAll();
 

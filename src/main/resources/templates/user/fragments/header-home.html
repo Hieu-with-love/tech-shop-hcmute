@@ -98,7 +98,7 @@
                             </button>
                             <ul class="nav-menu-list" th:each="category : ${categories}">
                                 <li>
-                                    <a class="nav-link has-megamenu me-3" th:href="@{/user/products/{name}(name=${category.name})}">
+                                    <a class="nav-link has-megamenu me-3" th:href="@{/user/products(categoryName=${category.name})}">
                                         <span class="menu-text" th:text="${category.name}"></span>
                                     </a>
                                 </li>
