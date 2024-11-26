@@ -1,10 +1,16 @@
 package com.hcmute.tech_shop.entities.composites;
 
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class RatingId implements Serializable {
     private Long userId;

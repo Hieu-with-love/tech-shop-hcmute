@@ -1,13 +1,14 @@
 package com.hcmute.tech_shop.services.interfaces;
 
 import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
+import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.*;
 
 public interface UserService {
     List<User> getAllUsers();
@@ -16,8 +17,8 @@ public interface UserService {
     User getUserByEmail(String email);
     boolean createUser(UserRequest userRequest, BindingResult result);
     boolean updateUser(Long id, UserRequest userRequest, BindingResult result);
-    boolean updateProfile(String username, UserRequest userRequest, BindingResult result);
-    boolean updatePassword(Long id, String password, String confirmPassword, BindingResult result);
+    boolean updateProfile(User user, ProfileDto profileDto, BindingResult result);
+    boolean updatePassword(Map<String, String> params, BindingResult result);
     void deleteUser(Long id);
     boolean existsEmail(String email);
     boolean existsUsername(String username);

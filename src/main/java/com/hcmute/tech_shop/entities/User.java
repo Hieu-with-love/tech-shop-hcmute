@@ -19,6 +19,8 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "users")
 public class User extends TrackingDate implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderDetailService {
+    List<OrderDetail> findByProductId(Long productId);
+
     List<OrderDetail> findAll();
 
     <S extends OrderDetail> S save(S entity);

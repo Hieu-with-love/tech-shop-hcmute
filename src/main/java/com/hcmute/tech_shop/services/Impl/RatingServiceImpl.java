@@ -1,8 +1,12 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.dtos.requests.RatingRequest;
+import com.hcmute.tech_shop.entities.OrderDetail;
+import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.Rating;
+import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.entities.composites.RatingId;
-import com.hcmute.tech_shop.repositories.RatingRepository;
+import com.hcmute.tech_shop.repositories.*;
 import com.hcmute.tech_shop.services.interfaces.IRatingService;
 import lombok.*;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RatingServiceImpl implements IRatingService {
     private final RatingRepository ratingRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final OrderDetailRepository orderDetailRepository;
+
+    @Override
+    public List<Rating> findByProductId(Long productId) {
+        return ratingRepository.findByProductId(productId);
+    }
 
     @Override
     public int countUser(Long productId) {
@@ -65,5 +77,38 @@ public class RatingServiceImpl implements IRatingService {
     @Override
     public void deleteAll() {
         ratingRepository.deleteAll();
+    }
+
+    @Override
+    public boolean insert(RatingRequest ratingRequest){
+        try {
+            Product product = productRepository.findById(ratingRequest.getProductId()).orElse(null);
+            User user = userRepository.findById(ratingRequest.getUserId()).orElse(null);
+            if(product == null||user == null){
+                return false;
+            }
+            Rating rating = new Rating(new RatingId(user.getId(),product.getId()),
+                    ratingRequest.getContent(),ratingRequest.getStar(),user,product);
+
+            ratingRepository.save(rating);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkOrderFirst(Long productId, Long userId) {
+        List<OrderDetail> orderDetails = orderDetailRepository.findByProductId(productId);
+
+        if(orderDetails.size() > 0){
+            for(OrderDetail orderDetail : orderDetails){
+                if (orderDetail.getOrder().getUser().getId().equals(userId)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
