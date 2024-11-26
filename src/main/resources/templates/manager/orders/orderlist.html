@@ -137,7 +137,7 @@
                                         <span class="checkmarks"></span>
                                     </label>
                                 </td>
-                                <td class="productimgname">
+                                <td>
                                     <a th:href="@{/manager/products/edit(id=${order.getId()})}"
                                        th:text="${order.getId()}">
                                     </a>
@@ -152,7 +152,7 @@
                                           th:if="${!order.isActive()}">Inactive
                                     </span>
                                 </td>
-                                <td th:text="${order.getVoucher().getName()}"></td>
+                                <td th:attr="text=${order.getPayment().getName() != null ? order.getPayment().getName() : ''}"></td>
                                 <td th:text="${order.getPayment().getName()}"></td>
                                 <td>
                                     <a class="me-3"

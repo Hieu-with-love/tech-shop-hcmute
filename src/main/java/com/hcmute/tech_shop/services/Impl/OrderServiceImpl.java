@@ -23,7 +23,7 @@ public class OrderServiceImpl implements IOrderService {
     private final ICartDetailService cartDetailService;
 
     @Override
-    public void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment,
+    public void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,
                                Long cartId,
                                List<CartDetailResponse> cartDetailList) {
         Order order = new Order();
@@ -32,6 +32,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setUser(user);
         order.setVoucher(voucher);
         order.setPayment(payment);
+        order.setAddress(address);
         List<OrderDetail> orderDetails = new ArrayList<>();
         for (CartDetailResponse cartDetailResponse : cartDetailList) {
             OrderDetail orderDetail = new OrderDetail();
@@ -47,7 +48,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void createOrder(User user, BigDecimal totalPrice, Payment payment,
+    public void createOrder(User user, BigDecimal totalPrice, Payment payment, Address address,
                                Long cartId,
                                List<CartDetailResponse> cartDetailList) {
         Order order = new Order();
@@ -55,6 +56,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setActive(true);
         order.setUser(user);
         order.setPayment(payment);
+        order.setAddress(address);
         List<OrderDetail> orderDetails = new ArrayList<>();
         for (CartDetailResponse cartDetailResponse : cartDetailList) {
             OrderDetail orderDetail = new OrderDetail();
