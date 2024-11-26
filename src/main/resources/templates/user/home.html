@@ -34,10 +34,14 @@
                             <div class="axil-product product-style-one">
                                 <div class="thumbnail">
                                     <a th:href="@{/user/products/product-detail/{id}(id=${product.id})}">
-                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                                             th:src="@{'/uploads/'+${product.thumbnail}}"
+                                        <img th:if="${product.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
                                              class="product-image"
-                                             alt="Ảnh sản phẩm"/>
+                                             alt="Ảnh sản phẩm mặc định">
+                                        <img th:unless="${product.isUrlImage()}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm">
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">20% Off</div>
@@ -116,7 +120,7 @@
     <!-- End Explore Product Area  -->
 
     <!-- Start Testimonila Area  -->
-    <div th:insert="~{user/customer/user-feedback::feedback}"></div>
+<!--    <div th:insert="~{user/fragments/user-feedback::feedback}"></div>-->
     <!-- End Testimonila Area  -->
 
     <!--Start service area-->

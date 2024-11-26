@@ -13,4 +13,5 @@ public class ProductResponse {
     private String price;
     private String oldPrice;
     private String thumbnail;
+    private boolean isUrlImage;
 }
