@@ -19,7 +19,7 @@
         <div class="axil-wishlist-area axil-section-gap">
             <div class="container">
                 <div class="product-table-heading">
-                    <h4 class="title">My Wish List on eTrade</h4>
+                    <h4 class="title">My Wish List on TechShop</h4>
                     <form class="clear-wishlist">
                         <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
                         <button class="cart-clear">
@@ -128,6 +128,11 @@
             success: function(response) {
                 alert(response); // Hiển thị thông báo thành công
                 $form.closest('tr').remove(); // Xoá dòng sản phẩm khỏi giao diện
+                // Kiểm tra nếu giỏ hàng trống
+                if ($('#cart-container table tbody tr').length === 0) {
+                    $('#cart-container table').hide();
+                    $('#cart-empty-message').fadeIn();
+                }
             },
             error: function(xhr) {
                 alert(xhr.responseText || 'Có lỗi xảy ra, vui lòng thử lại.');
