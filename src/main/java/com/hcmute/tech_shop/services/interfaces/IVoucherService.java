@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface IVoucherService {
 
+    List<Voucher> findByQuantityGreaterThan(int quantityIsGreaterThan);
+
     List<Voucher> findAll();
 
     Voucher save(VoucherRequest voucherDTO);
