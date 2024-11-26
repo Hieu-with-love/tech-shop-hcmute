@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.services.Impl;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.repositories.OrderRepository;
+import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
 import com.hcmute.tech_shop.services.interfaces.IOrderService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,11 @@ import java.util.Optional;
 public class OrderServiceImpl implements IOrderService {
     private final OrderRepository orderRepository;
     private final IProductService productService;
+    private final ICartDetailService cartDetailService;
 
     @Override
-    public boolean createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment,
+    public void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment,
+                               Long cartId,
                                List<CartDetailResponse> cartDetailList) {
         Order order = new Order();
         order.setTotalPrice(totalPrice);
@@ -40,7 +43,30 @@ public class OrderServiceImpl implements IOrderService {
         }
         order.setOrderDetails(orderDetails);
         orderRepository.save(order);
-        return true;
+        cartDetailService.deleteAll(cartId);
+    }
+
+    @Override
+    public void createOrder(User user, BigDecimal totalPrice, Payment payment,
+                               Long cartId,
+                               List<CartDetailResponse> cartDetailList) {
+        Order order = new Order();
+        order.setTotalPrice(totalPrice);
+        order.setActive(true);
+        order.setUser(user);
+        order.setPayment(payment);
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for (CartDetailResponse cartDetailResponse : cartDetailList) {
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrder(order);
+            orderDetail.setProduct(productService.findByName(cartDetailResponse.getProductName()));
+            orderDetail.setQuantity(cartDetailResponse.getQuantity());
+            orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
+            orderDetails.add(orderDetail);
+        }
+        order.setOrderDetails(orderDetails);
+        orderRepository.save(order);
+        cartDetailService.deleteAll(cartId);
     }
 
     @Override

@@ -12,8 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
-    boolean createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment,
-                        List<CartDetailResponse> cartDetailListFull);
+    void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment,
+                        Long cartId,
+                        List<CartDetailResponse> cartDetailList);
+
+    void createOrder(User user, BigDecimal totalPrice, Payment payment,
+                        Long cartId,
+                        List<CartDetailResponse> cartDetailList);
 
     void deleteAll();
 

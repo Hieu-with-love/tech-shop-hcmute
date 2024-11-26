@@ -33,7 +33,7 @@ public class Order extends TrackingDate{
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "voucher_id", nullable = false)
+    @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 
     @ManyToOne

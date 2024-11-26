@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <a href="#" class="axil-btn btn-bg-primary checkout-btn"
-                               onclick="processCheckout('Order Successfully')">Process to Checkout</a>
+                               onclick="processCheckout()">Process to Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -181,9 +181,33 @@
         // Get the selected address ID from the dropdown
         const addressId = document.getElementById('Region').value;
         // Get the voucher code
-        const voucher = document.querySelector('input[name="voucher"]').value;
-        // Redirect to the checkout URL with the payment method as a parameter
-        window.location.href = `/user/checkout/process?paymentMethod=${encodeURIComponent(paymentMethod)}&addressId=${encodeURIComponent(addressId)}&voucher=${encodeURIComponent(voucher)}`;
+        const voucher = document.getElementById('voucher-code').value;
+        // Get the new price
+        const newPrice = document.querySelector('.order-total-amount').textContent;
+
+        // Create a FormData object to hold the data
+        const formData = new FormData();
+        formData.append('paymentMethod', paymentMethod);
+        formData.append('addressId', addressId);
+        formData.append('voucher', voucher);
+        formData.append('newPrice', newPrice);
+
+        // Send the data using a POST request
+        fetch('/user/checkout/process', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    console.error('Error:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>
 <script th:inline="javascript">
@@ -207,6 +231,8 @@
 
     function updateTotalPrice(newPrice) {
         document.querySelector('.order-total-amount').textContent = newPrice;
+        document.querySelector('.apply-btn button').disabled = true;
+
     }
 </script>
 
