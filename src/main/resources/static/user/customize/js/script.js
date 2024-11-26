@@ -95,3 +95,67 @@ function registerUser() {
         })
         .catch(error => console.error("Error: ", error))
 }
+
+
+$(document).ready(function (){
+    const isWishlistEmpty = $('#is-wishlist-empty').val() === 'true';
+    if (isWishlistEmpty){
+        $('#wishlist-items-container').hide();
+        $('#wishlist-empty-message').fadeIn();
+    }else{
+        $('#wishlist-items-container').show();
+    }
+});
+
+$(document).on('submit', '.remove-item', function(event) {
+    event.preventDefault(); // Ngăn form submit bình thường
+    // Lấy dữ liệu từ form
+    const $form = $(this);
+    const wishlistId = $form.find('input[name="wishlistId"]').val();
+    const productId = $form.find('input[name="productId"]').val();
+
+    // Gửi yêu cầu AJAX DELETE
+    $.ajax({
+        url: '/user/wishlist/remove',
+        type: 'DELETE',
+        data: { wishlistId: wishlistId, productId: productId },
+        success: function(response) {
+            alert(response); // Hiển thị thông báo thành công
+            $form.closest('tr').remove(); // Xoá dòng sản phẩm khỏi giao diện
+            // Kiểm tra nếu giỏ hàng trống
+            if ($('#cart-container table tbody tr').length === 0) {
+                $('#cart-container table').hide();
+                $('#cart-empty-message').fadeIn();
+            }
+        },
+        error: function(xhr) {
+            alert(xhr.responseText || 'Có lỗi xảy ra, vui lòng thử lại.');
+        }
+    });
+});
+
+$(document).on('submit', '.clear-wishlist', function (event){
+    event.preventDefault();
+
+    const $form = $(this);
+    const wishlistId = $form.find('input[name="wishlistId"]').val();
+
+    if (confirm("Are your sure you want to clear all items from the wishlist?")){
+        $.ajax({
+            url: '/user/wishlist/clear',
+            type: 'POST',
+            data: {wishlistId: wishlistId},
+            success: function (response){
+                // Xoa toan bo thu muc ra khoi bang
+                const container = $('#wishlist-items-container')
+                container.hide();
+                alert(response);
+                // Hiển thị thông báo wishlist trống
+                $('#wishlist-empty-message').fadeIn();
+            },
+            error: function (xhr){
+                alert(xhr.responseText || 'Co loi, Vui long thu lai');
+            }
+        });
+    }
+});

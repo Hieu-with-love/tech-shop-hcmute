@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.controllers;
 
+import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
@@ -11,7 +12,6 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,6 @@ import org.springframework.data.domain.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -119,56 +118,20 @@ public class HomeController {
     public String showProfile(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         com.hcmute.tech_shop.entities.User user = userService.getUserByUsername(username);
-        UserRequest userRequest = UserRequest.builder()
-                .id(user.getId())
+        ProfileDto profileDto = ProfileDto.builder()
                 .username(username)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
+                .phone(user.getPhoneNumber())
                 .gender(user.getGender())
                 .dob(user.getDateOfBirth())
-                .active(user.isActive())
+                .status(user.isActive())
                 .image(user.getImage())
                 .build();
-        model.addAttribute("userDto", userRequest);
+        model.addAttribute("profileDto", profileDto);
         return "user/my-account";
     }
-
-    @PostMapping("/my-account")
-    public String updateProfile(Model model,
-                                @Valid @ModelAttribute("userDto") UserRequest userDto,
-                                BindingResult result) {
-        if (result.hasErrors()){
-            model.addAttribute("error", result.getAllErrors());
-            return "user/my-account";
-        }
-
-        boolean isSuccess = userService.updateProfile(userDto.getUsername(), userDto, result);
-        if (isSuccess){
-            model.addAttribute("msg", "Doi thong tin tai khoan thanh cong !");
-        }else{
-            model.addAttribute("msg", "Doi thong tin tai khoan that bai !");
-        }
-        return "user/my-account";
-    }
-
-    @PostMapping("/my-account-udt-pass")
-    public String updatePassword(Model model,
-                                 @Valid @ModelAttribute("userDto") UserRequest userDto,
-                                 BindingResult result) {
-        boolean isSuccess = userService.updatePassword(userDto.getId(),userDto.getPassword(), userDto.getConfirmPassword(), result);
-
-        if (isSuccess){
-            model.addAttribute("msg", "Doi mat khau thanh cong !");
-        }
-        else{
-            model.addAttribute("msg", "Doi mat khau khong thanh cong !");
-        }
-
-        return "user/my-account";
-    }
-
 
 
     // Làm chức năng gì thì đặt endpoint là, /user/<name-feature>

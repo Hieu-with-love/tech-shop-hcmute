@@ -57,10 +57,6 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/login?logout=true")
                         .permitAll()
-                )
-                .sessionManagement(session -> session
-                        .maximumSessions(2)
-                        .maxSessionsPreventsLogin(true)
                 );
         return http.build();
     }
