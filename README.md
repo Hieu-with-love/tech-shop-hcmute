@@ -1,7 +1,6 @@
-Tài khoản admin mặc định cho chương trình:
-username = admin
-password = admin
+Tài khoản admin mặc định cho chương trình: username = admin, password = admin
 Nếu tài khoản mật khẩu không đúng -> CSDL cũ -> DROP DATABASE techshop; -> CREATE DATABASE techshop; -> Run Program
+Tạo payment gồm: cod, paypal, vnpay
 
 
 Code to insert data to database
