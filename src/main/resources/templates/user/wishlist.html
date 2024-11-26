@@ -5,6 +5,8 @@
 <head>
     <title>TechShop || Wishlist</title>
     <div th:insert="~{user/fragments/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/user/customize/css/main.css}"/>
 </head>
 
 <body class="sticky-header">
@@ -17,7 +19,7 @@
         <div class="axil-wishlist-area axil-section-gap">
             <div class="container">
                 <div class="product-table-heading">
-                    <h4 class="title">My Wish List on eTrade</h4>
+                    <h4 class="title">My Wish List on TechShop</h4>
                     <form class="clear-wishlist">
                         <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
                         <button class="cart-clear">
@@ -25,7 +27,8 @@
                         </button>
                     </form>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" id="wishlist-items-container">
+                    <input type="hidden"  id="is-wishlist-empty" th:value="${wishlistEmpty}">
                     <table class="table axil-product-table axil-wishlist-table">
                         <thead>
                             <tr>
@@ -56,10 +59,23 @@
                                     th:text="*{wishlist.unitPrice}"></td>
                                 <td class="product-stock-status" data-title="Status"
                                     th:text="${wishlist.status ? 'In Stock' : 'Out of stock'}">In Stock</td>
-                                <td class="product-add-cart"><a href="cart.html" class="axil-btn btn-outline">Add to Cart</a></td>
+                                <td class="product-add-cart">
+                                    <form th:action="@{/user/cart/cart-add-wishlist}" method="post">
+                                        <input type="hidden" name="productId" th:value="${wishlist.productId}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="axil-btn btn-outline" th:disabled="${!wishlist.status}">Add to Cart</button>
+                                    </form>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div id="wishlist-empty-message" style="display: none;">
+                    <div class="empty-notification">
+                        <img th:src="@{/user/assets/images/my-image/empty-wishlist.png}" alt="Empty Wishlist">
+                        <p>Browse our catalog to add your favorite products to your wishlist!</p>
+                        <a href="/user/home" class="btn btn-primary">Continue Shopping</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,6 +103,16 @@
     <div th:insert="~{/user/fragments/script::script}"></div>
 
 <script>
+    $(document).ready(function (){
+       const isWishlistEmpty = $('#is-wishlist-empty').val() === 'true';
+       if (isWishlistEmpty){
+           $('#wishlist-items-container').hide();
+           $('#wishlist-empty-message').fadeIn();
+       }else{
+           $('#wishlist-items-container').show();
+       }
+    });
+
     $(document).on('submit', '.remove-item', function(event) {
         event.preventDefault(); // Ngăn form submit bình thường
         // Lấy dữ liệu từ form
@@ -102,6 +128,11 @@
             success: function(response) {
                 alert(response); // Hiển thị thông báo thành công
                 $form.closest('tr').remove(); // Xoá dòng sản phẩm khỏi giao diện
+                // Kiểm tra nếu giỏ hàng trống
+                if ($('#cart-container table tbody tr').length === 0) {
+                    $('#cart-container table').hide();
+                    $('#cart-empty-message').fadeIn();
+                }
             },
             error: function(xhr) {
                 alert(xhr.responseText || 'Có lỗi xảy ra, vui lòng thử lại.');
@@ -115,17 +146,25 @@
        const $form = $(this);
        const wishlistId = $form.find('input[name="wishlistId"]').val();
 
-       $.ajax({
-           url: '/user/wishlist/clear',
-           type: 'POST',
-           data: {wishlistId: wishlistId},
-           success: function (response){
-               alert(response);
-           },
-           error: function (xhr){
-               alert(xhr.responseText || 'Co loi, Vui long thu lai');
-           }
-       })
+       if (confirm("Are your sure you want to clear all items from the wishlist?")){
+           $.ajax({
+               url: '/user/wishlist/clear',
+               type: 'POST',
+               data: {wishlistId: wishlistId},
+               success: function (response){
+                   // Xoa toan bo thu muc ra khoi bang
+                   const container = $('#wishlist-items-container')
+                   container.hide();
+                   alert(response);
+                   // Hiển thị thông báo wishlist trống
+                   $('#wishlist-empty-message').fadeIn();
+               },
+               error: function (xhr){
+                   alert(xhr.responseText || 'Co loi, Vui long thu lai');
+               }
+           });
+       }
+
     });
 </script>
 

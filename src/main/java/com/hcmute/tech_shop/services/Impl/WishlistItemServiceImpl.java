@@ -99,7 +99,7 @@ public class WishlistItemServiceImpl implements WishlistItemService {
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElse(new WishlistItem());
         wishlist.getItems().remove(itemToRemove);
-        wishlistItemRepository.delete(itemToRemove);
+        wishlistItemRepository.deleteWishlistItemById(itemToRemove.getId());
     }
 
     @Override

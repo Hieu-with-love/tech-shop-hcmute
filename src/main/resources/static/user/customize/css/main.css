@@ -93,6 +93,47 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* (Tùy chọn) Đổ bóng để tăng tính thẩm mỹ */
 }
 
+.empty-notification {
+    text-align: center;
+    margin: 50px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.empty-notification img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.empty-notification h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.empty-notification p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.empty-notification .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.empty-notification .btn:hover {
+    background: #0056b3;
+}
 
 
 

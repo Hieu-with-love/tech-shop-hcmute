@@ -17,6 +17,11 @@ public class VoucherServiceImpl implements IVoucherService {
     VoucherRepository voucherRepository;
 
     @Override
+    public List<Voucher> findByQuantityGreaterThan(int quantityIsGreaterThan) {
+        return voucherRepository.findByQuantityGreaterThan(quantityIsGreaterThan);
+    }
+
+    @Override
     public List<Voucher> findAll() {
         return voucherRepository.findAll();
     }
