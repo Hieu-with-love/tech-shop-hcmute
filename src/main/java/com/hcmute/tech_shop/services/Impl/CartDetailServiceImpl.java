@@ -40,6 +40,11 @@ public class CartDetailServiceImpl implements ICartDetailService {
             BigDecimal totalPrice = item.getTotalPrice();
             String totalPriceStr = Constant.formatter.format(totalPrice);
 
+            boolean isUrlImage = false;
+            if (item.getProduct().getThumbnail() != null && item.getProduct().getThumbnail().startsWith("https") ){
+                isUrlImage = true;
+            }
+
             return CartDetailResponse.builder()
                     .id(item.getId().getCartId())
                     .productId(item.getProduct().getId())
@@ -48,6 +53,7 @@ public class CartDetailServiceImpl implements ICartDetailService {
                     .price(Constant.formatter.format(item.getProduct().getPrice()))
                     .totalPriceString(totalPriceStr)
                     .totalPrice(totalPrice)
+                    .isUrlImage(isUrlImage)
                     .quantity(item.getQuantity())
                     .build();
         }).toList();
