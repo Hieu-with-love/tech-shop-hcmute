@@ -235,6 +235,22 @@ public class UserServiceImpl implements UserService {
             user.setImage("avtdefault.jpg");
         }
         userRepository.save(user);
+
+        Confirmation confirm = Confirmation.builder()
+                .user(user)
+                .token(UUID.randomUUID().toString())
+                .createDate(LocalDateTime.now())
+                .build();
+        confirmationRepository.save(confirm);
+
+        // TODO Send email to user with token, using SimpleMailSender
+        try{
+            emailService.sendEmailToVerifyAccount(user.getUsername(), user.getEmail(),
+                    confirm.getToken()
+            );
+        }catch (Exception e){
+            throw new RuntimeException("Send email failed\n\n" + e.getMessage());
+        }
     }
 
     @Override
