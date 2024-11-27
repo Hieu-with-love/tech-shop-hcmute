@@ -2,6 +2,7 @@ package com.hcmute.tech_shop.controllers.manager;
 
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.entities.*;
+import com.hcmute.tech_shop.enums.OrderStatus;
 import com.hcmute.tech_shop.services.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderController {
     private final IOrderService orderService;
-    private final IOrderDetailService orderDetailService;
     private final IPaymentService paymentService;
     private final IVoucherService voucherService;
 
@@ -30,6 +30,7 @@ public class OrderController {
         List<Payment> payments = paymentService.findAll();
         List<Voucher> vouchers = voucherService.findAll();
         model.addAttribute("orders", orders);
+        model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("payments", payments);
         model.addAttribute("vouchers", vouchers);
         return "manager/orders/orderlist";
@@ -57,17 +58,8 @@ public class OrderController {
 
     @PostMapping("/update")
     public String update(Model model,
-                         @RequestParam Long id,
-                         @Valid @ModelAttribute("product") ProductRequest productDTO,
-                         BindingResult bindingResult) throws IOException {
-        if (bindingResult.hasErrors()) {
-            return "manager/orders/orderlist";
-        }
+                         @RequestParam Long id) throws IOException {
 
-//        Product product = productService.updateProduct(id, productDTO, file);
-//        if (product == null) {
-//            // handle exception with alert, use js code
-//        }
         return "redirect:/manager/orders";
     }
 }

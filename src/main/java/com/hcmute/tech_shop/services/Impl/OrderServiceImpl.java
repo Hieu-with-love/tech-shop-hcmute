@@ -43,6 +43,8 @@ public class OrderServiceImpl implements IOrderService {
             orderDetail.setOrder(order);
             orderDetail.setProduct(productService.findByName(cartDetailResponse.getProductName()));
             orderDetail.setQuantity(cartDetailResponse.getQuantity());
+            // Decrease product quantity
+            productService.decreaseStockQuantity(orderDetail.getProduct().getId(), cartDetailResponse.getQuantity());
             orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
             orderDetails.add(orderDetail);
         }

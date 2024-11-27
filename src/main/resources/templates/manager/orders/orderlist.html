@@ -146,13 +146,13 @@
                                 </td>
                                 <td>
                                     <span class="badges bg-lightgreen"
-                                          th:if="${order.isActive()}">Active
+                                          th:if="${order.getStatus().equals(orderStatus[0])}">Pending
                                     </span>
                                     <span class="badges bg-lightred"
-                                          th:if="${!order.isActive()}">Inactive
+                                          th:if="${order.getStatus().equals(orderStatus[3])}">Cancelled
                                     </span>
                                 </td>
-                                <td th:attr="text=${order.getPayment().getName() != null ? order.getPayment().getName() : ''}"></td>
+                                <td th:text="${order.getVoucher() != null ? order.getVoucher().getName() : ''}"></td>
                                 <td th:text="${order.getPayment().getName()}"></td>
                                 <td>
                                     <a class="me-3"

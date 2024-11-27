@@ -35,7 +35,7 @@
                                           enctype="multipart/form-data" th:object="${product}">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <input type="text" name="productID" th:value="${productID}">
+                                                <input type="text" name="productID" th:value="${productID}" hidden="hidden">
                                                 <input type="text" name="editComputer" value="0" hidden="hidden">
                                                 <input type="text" name="editPhone" value="1" hidden="hidden">
                                                 <input type="text" name="editAccessory" value="0" hidden="hidden">
