@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -17,7 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 public class ApplicationInitConfig {
 
-    private final PasswordEncoder passwordEncoder;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     private final RoleServiceImpl roleService;
 
     @Bean
@@ -43,7 +48,7 @@ public class ApplicationInitConfig {
                 com.hcmute.tech_shop.entities.User user = User.builder()
                         .username("admin")
                         .email("admin@gmail.com")
-                        .password(passwordEncoder.encode("admin"))
+                        .password(passwordEncoder().encode("admin"))
                         .firstName("admin")
                         .lastName("tech system")
                         .isActive(true)

@@ -18,6 +18,7 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -75,12 +77,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createUser(UserRequest userRequest, BindingResult result) {
+    public boolean createUser(UserRequest userRequest, MultipartFile file, BindingResult result) throws IOException {
         Role role = roleService.getRoleByName("user");
 
         validation(userRequest, result);
 
         if (!result.hasErrors()) {
+
+            String avatar = null;
+            if (file == null){
+                avatar = "avtdefault.png";
+            } else {
+                if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                    throw new BadRequestException("Image is not valid");
+                }
+                avatar = ImageUtil.saveImage(file);
+            }
+
             User user = User.builder()
                     .username(userRequest.getUsername())
                     .email(userRequest.getEmail())
@@ -91,6 +104,7 @@ public class UserServiceImpl implements UserService {
                     .dateOfBirth(userRequest.getDob())
                     .role(role)
                     .isActive(false)
+                    .image(avatar)
                     .build();
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
@@ -122,7 +136,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateProfile(User user, ProfileDto profileDto, BindingResult result) {
+    public boolean updateProfile(User user, ProfileDto profileDto, MultipartFile file, BindingResult result) {
         // logic update user
         if (!user.getUsername().equals(profileDto.getUsername()) && this.existsUsername(profileDto.getUsername())) {
             result.addError(new FieldError("userRequest", "username",
@@ -144,6 +158,18 @@ public class UserServiceImpl implements UserService {
         }
 
         try{
+            String avatar = null;
+            if (file == null){
+                avatar = "avtdefault.png";
+            } else {
+                if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+                    throw new BadRequestException("Image is not valid");
+                }
+                if (ImageUtil.deleteImage(profileDto.getImage())) {
+                    avatar = ImageUtil.saveImage(file);
+                }
+            }
+
             User existingUser = userRepository.findByUsernameIgnoreCase(user.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -154,7 +180,7 @@ public class UserServiceImpl implements UserService {
             existingUser.setPhoneNumber(profileDto.getPhone());
             existingUser.setGender(profileDto.getGender());
             existingUser.setDateOfBirth(profileDto.getDob());
-            existingUser.setImage(existingUser.getImage());
+            existingUser.setImage(avatar);
 
             userRepository.save(existingUser);
             return true;

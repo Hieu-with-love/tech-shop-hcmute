@@ -17,3 +17,17 @@
 .text-danger {
     color: red;
 }
+
+.profile-picture-section {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ public class UserRestController {
 
     @PostMapping("/my-account/profile")
     public ResponseEntity<?> updateProfile(@Valid @RequestBody ProfileDto profileDto,
+                                           MultipartFile file,
                                            BindingResult result){
         try{
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -31,7 +33,7 @@ public class UserRestController {
                         errors.put(error.getField(), error.getDefaultMessage()));
                 return ResponseEntity.badRequest().body(errors);
             }
-            userService.updateProfile(user, profileDto, result);
+            userService.updateProfile(user, profileDto, file, result);
             return ResponseEntity.ok("Cập nhat profile thành công!");
         }catch (Exception e){
             return ResponseEntity.badRequest().body("Cập nhat profile thất bại!");
@@ -58,5 +60,25 @@ public class UserRestController {
             return ResponseEntity.badRequest().body("Đôi mật khẩu thất bại!");
         }
     }
+
+//    @PostMapping("/updateProfileImage")
+//    public ResponseEntity<?> updateProfileImage(@RequestParam("profileImage") MultipartFile file) {
+//        try {
+//            // Lưu file vào thư mục server hoặc cloud storage
+//            String imageUrl = saveProfileImage(file);
+//
+//            // Trả về URL của ảnh đã lưu
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("success", true);
+//            response.put("imageUrl", imageUrl);
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("success", false);
+//            response.put("message", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
+//    }
 
 }

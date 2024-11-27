@@ -129,9 +129,9 @@
                 alert(response); // Hiển thị thông báo thành công
                 $form.closest('tr').remove(); // Xoá dòng sản phẩm khỏi giao diện
                 // Kiểm tra nếu giỏ hàng trống
-                if ($('#cart-container table tbody tr').length === 0) {
-                    $('#cart-container table').hide();
-                    $('#cart-empty-message').fadeIn();
+                if ($('#wishlist-items-container table tbody tr').length === 0) {
+                    $('#wishlist-items-container table').hide();
+                    $('#wishlist-empty-message').fadeIn();
                 }
             },
             error: function(xhr) {

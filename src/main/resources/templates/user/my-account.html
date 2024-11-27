@@ -50,8 +50,18 @@
                     <div class="axil-dashboard-author">
                         <div class="media">
                             <div class="thumbnail">
-                                <img th:if="${profileDto.image != null}" th:src="@{'/uploads/user/' + ${profileDto.image}}" alt="Hello Annie">
-                                <img th:if="${profileDto.image == null}" alt="Welcome to LaptopShop" th:src="@{/user/assets/images/product/author1.png}">
+
+                                <div class="profile-picture-section">
+                                    <form id="uploadForm" enctype="multipart/form-data">
+                                        <label for="profileImage">
+                                            <img id="profileImagePreview" th:if="${profileDto.image != null}" th:src="@{'/uploads/' + ${profileDto.image}}" alt="Hello Annie"
+                                                 class="profile-picture">
+                                            <img th:if="${profileDto.image == null}" alt="Welcome to LaptopShop" th:src="@{/user/assets/images/product/author1.png}"
+                                                 class="profile-picture">
+                                        </label>
+                                        <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display: none;">
+                                    </form>
+                                </div>
                             </div>
                             <div class="media-body">
                                 <h5 class="title mb-0" th:text="'Hello' + ' ' + ${profileDto.firstName} + ' ' + ${profileDto.lastName}"></h5>
@@ -117,7 +127,7 @@
                                                             <input type="text" class="form-control" th:field="*{phone}">
                                                             <small id="phone-error" class="error-text"></small>                                                    </div>
                                                         </div>
-                                                    <div class="col-lg-12 col-sm-6">
+                                                    <div class="col-lg-6 col-sm-6">
                                                         <div class="form-group">
                                                             <label>Day of birth</label>
                                                             <input type="date" class="form-control" th:field="*{dob}">
@@ -383,6 +393,26 @@
                     console.error("Error:", error);
                     alert("Đổi mật khẩu thất bại!");
                 });
+        });
+
+        document.getElementById('profileImage').addEventListener('change', function () {
+            const formData = new FormData(document.getElementById('uploadForm'));
+
+            // Gửi dữ liệu qua AJAX
+            fetch('/user/updateProfileImage', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('profileImagePreview').src = data.imageUrl; // Cập nhật ảnh hiển thị
+                        alert('Profile image updated successfully!');
+                    } else {
+                        alert('Failed to update profile image: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
 
     </script>

@@ -26,7 +26,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
         if (!user.isActive())
-            throw new UsernameNotFoundException("User is disabled");
+            throw new DisabledException("User is disabled");
 
         String role = "ROLE_" + user.getRole().getName().toUpperCase();
         GrantedAuthority grantedAuth = new SimpleGrantedAuthority(role);

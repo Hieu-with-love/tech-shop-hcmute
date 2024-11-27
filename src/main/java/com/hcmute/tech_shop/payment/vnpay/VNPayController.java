@@ -24,7 +24,7 @@ public class VNPayController {
     public String submidOrder(HttpServletRequest request, HttpSession session) {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         Cart cart = (Cart) session.getAttribute("cart");
-        String vnpayUrl = vnPayService.createOrder(request, cart.getTotalPrice().multiply(BigDecimal.valueOf(100)).intValue(), baseUrl);
+        String vnpayUrl = vnPayService.createOrder(request, cart.getTotalPrice().intValue(), baseUrl);
         return "redirect:" + vnpayUrl;
     }
 
