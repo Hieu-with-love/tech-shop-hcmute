@@ -67,4 +67,7 @@ public class User extends TrackingDate implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Wishlist wishlist;
 
+    @OneToMany(mappedBy = "shipper")
+    private List<Order> orders;
+
 }

@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.entities;
 
+import com.hcmute.tech_shop.enums.OrderStatus;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,10 @@ public class Order extends TrackingDate{
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private OrderStatus status = OrderStatus.PENDING;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -46,4 +51,9 @@ public class Order extends TrackingDate{
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @ManyToOne
+    @JoinColumn(name = "shipper_id", nullable = true)
+    private User shipper;
+
 }

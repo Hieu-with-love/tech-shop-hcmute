@@ -285,7 +285,6 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(profileRequest, user);
 
         user.setDateOfBirth(profileRequest.getDateOfBirth());
-        user.setPassword(passwordEncoder.encode(profileRequest.getPassword()));
         user.setRole(roleService.getRoleById(profileRequest.getRoleId()));
 
         if (file != null && !file.isEmpty()) {
