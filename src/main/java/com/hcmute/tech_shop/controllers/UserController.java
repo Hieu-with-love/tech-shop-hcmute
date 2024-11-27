@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,14 +51,15 @@ public class UserController {
     @PostMapping("/register")
     public String register(Model model,
                            @Valid @ModelAttribute("userRegister") UserRequest userRequest,
+                           MultipartFile file,
                            BindingResult result
-                           ){
+                           ) throws IOException {
         // Catch null value exception
         if (result.hasErrors()) {
             return "user/sign-up";
         }
 
-        boolean is = userService.createUser(userRequest, result);
+        boolean is = userService.createUser(userRequest, file, result);
 
         // Catch logic by system exception
         if (result.hasErrors()) {

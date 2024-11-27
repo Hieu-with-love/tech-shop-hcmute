@@ -5,9 +5,11 @@ import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.entities.User;
+import org.apache.coyote.BadRequestException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 public interface UserService {
@@ -15,9 +17,9 @@ public interface UserService {
     User getUser(Long id);
     User getUserByUsername(String username);
     User getUserByEmail(String email);
-    boolean createUser(UserRequest userRequest, BindingResult result);
+    boolean createUser(UserRequest userRequest, MultipartFile file, BindingResult result) throws IOException;
     boolean updateUser(Long id, UserRequest userRequest, BindingResult result);
-    boolean updateProfile(User user, ProfileDto profileDto, BindingResult result);
+    boolean updateProfile(User user, ProfileDto profileDto, MultipartFile file, BindingResult result);
     boolean updatePassword(Map<String, String> params, BindingResult result);
     void deleteUser(Long id);
     boolean existsEmail(String email);

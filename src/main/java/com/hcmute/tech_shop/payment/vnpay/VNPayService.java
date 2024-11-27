@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.payment.vnpay;
 
+import com.hcmute.tech_shop.utils.Constant;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,8 @@ public class VNPayService {
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        String totalAmount = String.valueOf(amount) + "00";
+        vnp_Params.put("vnp_Amount", totalAmount);
         vnp_Params.put("vnp_CurrCode", "VND");
 
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
