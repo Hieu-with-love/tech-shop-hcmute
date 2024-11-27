@@ -65,12 +65,6 @@ public class CheckoutController {
         // Get the current user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
-        // Check if the voucher code is null
-        Voucher voucher = new Voucher();
-        if (!Objects.equals(voucherCode, "")) {
-            // Find the voucher by its name
-            voucher = voucherService.findByName(voucherCode).get();
-        }
         // Find the address by its ID
         Address address = addressService.findById(addressId).get();
         // Find the payment method by its name
@@ -87,6 +81,8 @@ public class CheckoutController {
         }
 
         if (!Objects.equals(voucherCode, "")) {
+            // Check if the voucher code is null
+            Voucher voucher = voucherService.findValidVoucher(voucherCode);
             orderService.createOrder(user, newPrice, voucher, payment, address, cart.getId(), cartDetailList);
         } else {
             orderService.createOrder(user, newPrice, payment, address, cart.getId(), cartDetailList);

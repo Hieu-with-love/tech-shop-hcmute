@@ -18,6 +18,18 @@ public class VoucherServiceImpl implements IVoucherService {
     VoucherRepository voucherRepository;
 
     @Override
+    public void decreaseQuantity(Long id) {
+        Voucher voucher = voucherRepository.findById(id).get();
+        voucher.setQuantity(voucher.getQuantity() - 1);
+        voucherRepository.save(voucher);
+    }
+
+    @Override
+    public Voucher findValidVoucher(String name) {
+        return voucherRepository.findByNameAndQuantityGreaterThanAndExpiredDateGreaterThan(name, 0, LocalDate.now());
+    }
+
+    @Override
     public List<Voucher> findValidVoucher() {
         return voucherRepository.findByQuantityGreaterThanAndExpiredDateGreaterThan(0, LocalDate.now());
     }

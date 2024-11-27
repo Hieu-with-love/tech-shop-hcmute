@@ -13,4 +13,6 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
     List<Voucher> findByQuantityGreaterThan(int quantityIsGreaterThan);
 
     List<Voucher> findByQuantityGreaterThanAndExpiredDateGreaterThan(int quantityIsGreaterThan, LocalDate expiredDateIsGreaterThan);
+
+    Voucher findByNameAndQuantityGreaterThanAndExpiredDateGreaterThan(String name, int quantityIsGreaterThan, LocalDate expiredDateIsGreaterThan);
 }

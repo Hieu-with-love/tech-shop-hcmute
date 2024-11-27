@@ -6,6 +6,7 @@ import com.hcmute.tech_shop.repositories.OrderRepository;
 import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
 import com.hcmute.tech_shop.services.interfaces.IOrderService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
+import com.hcmute.tech_shop.services.interfaces.IVoucherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class OrderServiceImpl implements IOrderService {
     private final OrderRepository orderRepository;
     private final IProductService productService;
     private final ICartDetailService cartDetailService;
+    private final IVoucherService voucherService;
 
     @Override
     public void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,
@@ -31,6 +33,8 @@ public class OrderServiceImpl implements IOrderService {
         order.setActive(true);
         order.setUser(user);
         order.setVoucher(voucher);
+        // Decrease voucher quantity
+        voucherService.decreaseQuantity(voucher.getId());
         order.setPayment(payment);
         order.setAddress(address);
         List<OrderDetail> orderDetails = new ArrayList<>();

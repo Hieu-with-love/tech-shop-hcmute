@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public interface IVoucherService {
 
+    void decreaseQuantity(Long id);
+
+    Voucher findValidVoucher(String name);
+
     List<Voucher> findValidVoucher();
 
     List<Voucher> findByQuantityGreaterThan(int quantityIsGreaterThan);
