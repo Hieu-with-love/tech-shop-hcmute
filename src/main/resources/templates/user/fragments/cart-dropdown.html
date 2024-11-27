@@ -8,8 +8,16 @@
             <ul class="cart-item-list" th:each="cartDetail : ${session.cartDetailList}">
                 <li class="cart-item">
                     <div class="item-img">
-                        <a href="single-product.html">
-                            <img th:src="@{'uploads/' + ${cartDetail.thumbnail}}" alt="Product Image"></a>
+                        <a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
+                            <img th:if="${cartDetail.isUrlImage()}"
+                                 th:src="${cartDetail.thumbnail}"
+                                 class="product-image"
+                                 alt="Ảnh sản phẩm mặc định">
+                            <img th:unless="${cartDetail.isUrlImage()}"
+                                 th:src="@{'/uploads/' + ${cartDetail.thumbnail}}"
+                                 class="product-image"
+                                 alt="Ảnh sản phẩm">
+                        </a>
                     </div>
                     <!-- End Single product cua Tuan-->
                     <div class="item-content">

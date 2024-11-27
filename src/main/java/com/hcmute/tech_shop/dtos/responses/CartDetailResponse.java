@@ -17,6 +17,7 @@ public class CartDetailResponse {
     private String price;
     private String totalPriceString;
     private BigDecimal totalPrice;
+    private boolean isUrlImage;
 
     private int quantity;
 }

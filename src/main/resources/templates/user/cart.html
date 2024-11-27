@@ -45,9 +45,19 @@
                                 <tr th:each="cartDetail : ${session.cartDetailListFull}">
                                     <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productName})}"
                                                                   class="remove-wishlist"><i class="fal fa-times"></i></a></td>
-                                    <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
-                                        ><img th:src="@{'/uploads/' + ${cartDetail.thumbnail}}"
-                                                                                                     alt="Digital Product"></a></td>
+                                    <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
+                                        <a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
+                                            <img th:if="${cartDetail.isUrlImage()}"
+                                                 th:src="${cartDetail.thumbnail}"
+                                                 class="product-image"
+                                                 alt="Ảnh sản phẩm mặc định">
+                                            <img th:unless="${cartDetail.isUrlImage()}"
+                                                 th:src="@{'/uploads/' + ${cartDetail.thumbnail}}"
+                                                 class="product-image"
+                                                 alt="Ảnh sản phẩm">
+                                        </a>
+                                    </a>
+                                    </td>
                                     <td class="product-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
                                                                  th:text="${cartDetail.productName}"></a></td>
                                     <td class="product-price" data-title="Price"><span th:text="${cartDetail.price}"></span></td>
