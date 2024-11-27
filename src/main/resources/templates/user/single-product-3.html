@@ -3,6 +3,8 @@
 <head>
     <title>TechShop || Product Details</title>
     <div th:insert="~{user/fragments/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/user/customize/css/main.css}"/>
 </head>
 
 
@@ -79,26 +81,9 @@
                                 <div class="product-variations-wrapper">
 
                                     <!-- Start Product Variation  -->
-                                    <div class="product-variation">
-                                        <h6 class="title">Colors:</h6>
-                                        <div class="color-variant-wrapper">
-                                            <ul class="color-variant">
-                                                <li class="color-extra-01 active"><span><span
-                                                        class="color"></span></span>
-                                                </li>
-                                                <li class="color-extra-02"><span><span class="color"></span></span>
-                                                </li>
-                                                <li class="color-extra-03"><span><span class="color"></span></span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Variation  -->
-
-                                    <!-- Start Product Variation  -->
                                     <div class="product-variation product-size-variation">
                                         <h6 class="title">RAM Type:</h6>
-                                        <ul class="range-variant">
+                                        <ul class="radius">
                                             <li>4 GB RAM</li>
                                             <li>8 GB RAM</li>
                                             <li>16 GB RAM</li>
@@ -121,8 +106,17 @@
                                     <ul class="product-action d-flex-center mb--0">
                                         <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add
                                             to Cart</a></li>
-                                        <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i
-                                                class="far fa-heart"></i></a></li>
+                                        <li class="wishlist">
+                                        <li class="wishlist">
+                                            <form th:action="@{/user/wishlist/insert}" method="post" class="wishlist-form">
+                                                <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
+                                                <input type="hidden" name="productId" th:value="${product.id}">
+                                                <button type="submit" class="wishlist-btn">
+                                                    <i class="far fa-heart"></i>
+                                                </button>
+                                            </form>
+                                        </li>
+
                                     </ul>
                                     <!-- End Product Action  -->
 
@@ -766,6 +760,27 @@
             for (let i = 1; i <= rating; i++) {
                 $("#st" + i).css("color", "blue");
             }
+        });
+    });
+
+    document.querySelectorAll('.wishlist-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn tải lại trang
+            const formData = new FormData(this);
+            const actionUrl = this.getAttribute('action');
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data); // Thông báo thành công
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra!');
+                });
         });
     });
 </script>

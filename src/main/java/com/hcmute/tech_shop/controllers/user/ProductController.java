@@ -1,6 +1,5 @@
 package com.hcmute.tech_shop.controllers.user;
 
-import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 
 import com.hcmute.tech_shop.dtos.requests.RatingRequest;
@@ -10,11 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
-import com.hcmute.tech_shop.entities.*;
-import com.hcmute.tech_shop.services.interfaces.*;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
