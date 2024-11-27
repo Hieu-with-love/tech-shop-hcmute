@@ -51,24 +51,28 @@ public class OrderServiceImpl implements IOrderService {
     public void createOrder(User user, BigDecimal totalPrice, Payment payment, Address address,
                                Long cartId,
                                List<CartDetailResponse> cartDetailList) {
-        Order order = new Order();
-        order.setTotalPrice(totalPrice);
-        order.setActive(true);
-        order.setUser(user);
-        order.setPayment(payment);
-        order.setAddress(address);
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        for (CartDetailResponse cartDetailResponse : cartDetailList) {
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setOrder(order);
-            orderDetail.setProduct(productService.findByName(cartDetailResponse.getProductName()));
-            orderDetail.setQuantity(cartDetailResponse.getQuantity());
-            orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
-            orderDetails.add(orderDetail);
+        try {
+            Order order = new Order();
+            order.setTotalPrice(totalPrice);
+            order.setActive(true);
+            order.setUser(user);
+            order.setPayment(payment);
+            order.setAddress(address);
+            List<OrderDetail> orderDetails = new ArrayList<>();
+            for (CartDetailResponse cartDetailResponse : cartDetailList) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(order);
+                orderDetail.setProduct(productService.findByName(cartDetailResponse.getProductName()));
+                orderDetail.setQuantity(cartDetailResponse.getQuantity());
+                orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
+                orderDetails.add(orderDetail);
+            }
+            order.setOrderDetails(orderDetails);
+            orderRepository.save(order);
+            cartDetailService.deleteAll(cartId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        order.setOrderDetails(orderDetails);
-        orderRepository.save(order);
-        cartDetailService.deleteAll(cartId);
     }
 
     @Override
