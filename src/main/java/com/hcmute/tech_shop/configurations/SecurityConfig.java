@@ -25,7 +25,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {"/register", "/user/home", "/forgot-password", "/verify-account"};
+    private final String[] PUBLIC_ENDPOINTS = {"/register", "/user/home", "/forgot-password", "/verify-account",
+        "/user/products/**"
+    };
 
     CustomUserDetailsServiceImpl customUserDetailsService;
     CustomAuthFailureHandler customAuthFailureHandler;
