@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,11 @@ import java.util.Optional;
 public class VoucherServiceImpl implements IVoucherService {
     @Autowired
     VoucherRepository voucherRepository;
+
+    @Override
+    public List<Voucher> findValidVoucher() {
+        return voucherRepository.findByQuantityGreaterThanAndExpiredDateGreaterThan(0, LocalDate.now());
+    }
 
     @Override
     public List<Voucher> findByQuantityGreaterThan(int quantityIsGreaterThan) {

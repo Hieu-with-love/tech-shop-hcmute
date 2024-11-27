@@ -26,9 +26,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMapping("/user/checkout")
 public class CheckoutController {
-    private final ICartDetailService cartDetailService;
     private final IOrderService orderService;
-    private final IOrderDetailService orderDetailService;
     private final UserService userService;
     private final IAddressService addressService;
     private final IVoucherService voucherService;
@@ -43,7 +41,7 @@ public class CheckoutController {
         Cart cart = (Cart) session.getAttribute("cart");
         List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
         // Extract voucher names and values
-        List<Voucher> vouchers = voucherService.findByQuantityGreaterThan(0);
+        List<Voucher> vouchers = voucherService.findValidVoucher();
         List<String> voucherNames = vouchers.stream().map(Voucher::getName).toList();
         List<BigDecimal> voucherValues = vouchers.stream().map(Voucher::getValue).toList();
 
@@ -81,9 +79,12 @@ public class CheckoutController {
         List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
         // Retrieve the cart from the session
         Cart cart = (Cart) session.getAttribute("cart");
-        // Update the cart's total price
-        cart.setTotalPrice(newPrice);
-        session.setAttribute("cart", cart);
+        if (cart != null) {
+            // Update the cart's total price
+            cart.setTotalPrice(newPrice);
+            // Set the updated cart back into the session
+            session.setAttribute("cart", cart);
+        }
 
         if (!Objects.equals(voucherCode, "")) {
             orderService.createOrder(user, newPrice, voucher, payment, address, cart.getId(), cartDetailList);
