@@ -38,10 +38,16 @@ public class ProductServiceImpl implements IProductService {
     CategoryRepository categoryRepository;
     @Autowired
     BrandRepository brandRepository;
-
-    private final Path root = Paths.get("./uploads");
     @Autowired
     private ProductFilterBuilderConverter productFilterBuilderConverter;
+    private final Path root = Paths.get("./uploads");
+
+    @Override
+    public void decreaseStockQuantity(Long productId, int quantity) {
+        Product product = productRepository.findById(productId).get();
+        product.setStockQuantity(product.getStockQuantity() - quantity);
+        productRepository.save(product);
+    }
 
     @Override
     public void init() {

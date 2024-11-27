@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface IProductService {
+    void decreaseStockQuantity(Long productId, int quantity);
+
     void init();
     List<ProductResponse> getAllProducts(List<Product> products);
 
