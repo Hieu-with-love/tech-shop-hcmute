@@ -33,6 +33,19 @@ INSERT INTO tech_shop.brands (name, brand_img, active) VALUES
 ('Belkin', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk8QL3Qnj2-H9r4aN4UhlgMWfpZhDztdVCig&s', 1);
 
 
+INSERT INTO tech_shop.categories (id, description, name, active) VALUES
+(1, 'An electronic machine that is used for storing, organizing, and finding words, numbers, etc.', 'Computer', 1),
+(2, 'A mobile phone that performs many of the functions of a computer, typically having a touchscreen interface, internet access, and an operating system capable of running downloaded applications.', 'Phone', 1),
+(3, 'Additional components or devices that enhance functionality or aesthetics, often used with primary devices.', 'Accessory', 1);
+
+
+INSERT INTO payments(id, payment_name)
+VALUES
+(1, 'cod'),
+(2, 'paypal'),
+(3, 'vnpay');
+
+
 INSERT INTO tech_shop.products (
     id, created_at, updated_at, battery, brand_id, category_id, cpu, description, front_camera, 
     graphic_card, monitor, product_name, os, port, price, ram, rear_camera, stock_quantity, 
@@ -68,6 +81,7 @@ INSERT INTO tech_shop.products (
 (10, '2024-11-01', '2024-11-01', '5200mAh', 10, 1, 'Intel i7', 'High-performance gaming laptop', 'N/A', 
     'NVIDIA RTX 3070', '15.6 inch', 'Razer Blade', 'Windows 11', 'USB-C, HDMI, Thunderbolt', 22000000.00, 
     '16GB', 'N/A', 8, 'https://bizweb.dktcdn.net/100/512/769/products/razer-blade-15-2021.jpg?v=1719731675653', '2 years', 2);
+
 
 INSERT INTO tech_shop.products (
     id, created_at, updated_at, battery, brand_id, category_id, cpu, description, front_camera, 
@@ -105,6 +119,7 @@ INSERT INTO tech_shop.products (
     '6.5 inch', 'Android 11', 12000000.00, 'Sony Xperia 1 III', '12GB', '12MP', 15, '1 year', 
     'N/A', 'USB-C', 'https://clickbuy.com.vn/uploads/product-variant/sony-xperia-1-iii-mark-3-12gb-256gb-nhat-cu-99-black-195939-2047.png', 0.18);
 
+
 INSERT INTO tech_shop.products (
     id, created_at, updated_at, brand_id, category_id, description, price, product_name, stock_quantity, 
     warranty, battery, cpu, front_camera, graphic_card, monitor, os, port, ram, rear_camera, 
@@ -132,9 +147,24 @@ INSERT INTO tech_shop.products (
     'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'https://product.hstatic.net/200000890439/product/cetracker_straighton_ortho-device_web_37f91475d8ec4c18961011bc6f01e17e_86744c8b57e441c6aa1c6439fa92a5f1.jpg', 0.4);
 
 
-INSERT INTO tech_shop.categories (id, description, name, active) VALUES
-(1, 'An electronic machine that is used for storing, organizing, and finding words, numbers, etc.', 'Computer', 1),
-(2, 'A mobile phone that performs many of the functions of a computer, typically having a touchscreen interface, internet access, and an operating system capable of running downloaded applications.', 'Phone', 1),
-(3, 'Additional components or devices that enhance functionality or aesthetics, often used with primary devices.', 'Accessory', 1);
+INSERT INTO roles (id, active, name)
+VALUES
+(1, 1, 'user'),
+(2, 1, 'manager'),
+(3, 1, 'shipping'),
+(4, 1, 'admin');
 
+
+INSERT INTO tech_shop.vouchers (id, created_at, updated_at, expired_date, name, quantity, value)
+VALUES
+(1, '2024-11-01', '2024-11-01', '2024-12-01', 'Voucher 1', 100, 10000.00),
+(2, '2024-11-02', '2024-11-02', '2024-12-02', 'Voucher 2', 150, 15000.00),
+(3, '2024-11-03', '2024-11-03', '2024-12-03', 'Voucher 3', 200, 20000.00),
+(4, '2024-11-04', '2024-11-04', '2024-12-04', 'Voucher 4', 250, 25000.00),
+(5, '2024-11-05', '2024-11-05', '2024-12-05', 'Voucher 5', 300, 30000.00),
+(6, '2024-11-06', '2024-11-06', '2024-12-06', 'Voucher 6', 120, 35000.00),
+(7, '2024-11-07', '2024-11-07', '2024-12-07', 'Voucher 7', 180, 40000.00),
+(8, '2024-11-08', '2024-11-08', '2024-12-08', 'Voucher 8', 220, 45000.00),
+(9, '2024-11-09', '2024-11-09', '2024-12-09', 'Voucher 9', 130, 50000.00),
+(10, '2024-11-10', '2024-11-10', '2024-12-10', 'Voucher 10', 170, 55000.00);
 
