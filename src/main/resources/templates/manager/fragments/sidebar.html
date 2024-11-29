@@ -33,6 +33,10 @@
                         <li><a th:href="@{/manager/vouchers/save}">Add Voucher</a></li>
                     </ul>
                 </li>
+                <li class="inactive" th:if="${#strings.equalsIgnoreCase(session.user.role.name,'admin')}">
+                    <a th:href="@{/admin/dashboard}"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
+                                    Admin Dashboard</span> </a>
+                </li>
                 <li class="inactive">
                     <a th:href="@{/user/home}"><img th:src="@{/admin/assets/img/icons/users1.svg}" alt="img"><span>
                                     User Home</span> </a>

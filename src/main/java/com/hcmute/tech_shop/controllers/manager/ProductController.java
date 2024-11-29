@@ -1,8 +1,6 @@
 package com.hcmute.tech_shop.controllers.manager;
 
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
-import com.hcmute.tech_shop.entities.Brand;
-import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.ProductImage;
 import com.hcmute.tech_shop.services.interfaces.IBrandService;
@@ -38,31 +36,13 @@ public class ProductController {
         return "manager/products/productlist";
     }
 
-    @GetMapping("/computerDetail")
+    @GetMapping("/productDetail")
     public String computerDetail(Model model, @RequestParam Long id) {
         Optional<Product> product = productService.findById(id);
         List<ProductImage> images = productImageService.findByProductId(id);
         model.addAttribute("product", product);
         model.addAttribute("productImages", images);
-        return "manager/products/computerDetail";
-    }
-
-    @GetMapping("/phoneDetail")
-    public String phoneDetail(Model model, @RequestParam Long id) {
-        Optional<Product> product = productService.findById(id);
-        List<ProductImage> images = productImageService.findByProductId(id);
-        model.addAttribute("product", product);
-        model.addAttribute("productImages", images);
-        return "manager/products/phoneDetail";
-    }
-
-    @GetMapping("/accessoryDetail")
-    public String accessoryDetail(Model model, @RequestParam Long id) {
-        Optional<Product> product = productService.findById(id);
-        List<ProductImage> images = productImageService.findByProductId(id);
-        model.addAttribute("product", product);
-        model.addAttribute("productImages", images);
-        return "manager/products/accessoryDetail";
+        return "manager/products/productDetail";
     }
 
     @GetMapping("/add/computer")
