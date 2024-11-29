@@ -146,15 +146,6 @@ INSERT INTO tech_shop.products (
 (30, '2024-11-01', '2024-11-01', 25, 3, 'Laptop stand', 600000.00, 'Belkin Stand', 80, '1 year', 
     'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'https://product.hstatic.net/200000890439/product/cetracker_straighton_ortho-device_web_37f91475d8ec4c18961011bc6f01e17e_86744c8b57e441c6aa1c6439fa92a5f1.jpg', 0.4);
 
-
-INSERT INTO roles (id, active, name)
-VALUES
-(1, 1, 'user'),
-(2, 1, 'manager'),
-(3, 1, 'shipping'),
-(4, 1, 'admin');
-
-
 INSERT INTO tech_shop.vouchers (id, created_at, updated_at, expired_date, name, quantity, value)
 VALUES
 (1, '2024-11-01', '2024-11-01', '2024-12-01', 'Voucher 1', 100, 10000.00),
