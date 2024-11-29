@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.dtos.requests;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,7 +23,7 @@ public class ProfileDto {
     private String email;
     @NotBlank(message = "phone is required")
     private String phone;
-    @NotBlank(message = "Day of birth is required")
+    @NotNull(message = "Day of birth is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private String gender;

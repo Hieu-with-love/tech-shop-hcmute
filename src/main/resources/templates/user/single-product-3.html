@@ -25,7 +25,12 @@
                             <div class="col-lg-12">
                                 <div class="product-large-thumbnail-4 single-product-thumbnail axil-product">
                                     <div class="thumbnail">
-                                        <img th:src="@{'/uploads/'+${product.getThumbnail()}}" alt="Product Images">
+                                        <img th:if="${productRes.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
+                                             alt="Ảnh sản phẩm mặc định">
+                                        <img th:unless="${productRes.isUrlImage()}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             alt="Ảnh sản phẩm">
                                     </div>
                                     <div class="thumbnail" th:each="productImage : ${productImages}">
                                         <img th:src="@{'/uploads/'+${productImage.getUrl()}}" alt="Product Images">
@@ -48,7 +53,7 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title" th:text="${product.getName()}"></h2>
-                                <span class="price-amount" th:text="${product.getPrice()}"></span>
+                                <span class="price-amount" th:text="${productRes.getPrice()}"></span>
                                 <div class="product-rating">
                                     <div class="star-rating">
                                         <!-- Define ratingCount to ensure it's a number -->

@@ -60,22 +60,24 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductResponse> getAllProducts(List<Product> products) {
-        return products.stream().map(p -> {
-            String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
-            boolean isUrlImage = false;
-            if (p.getThumbnail() != null && p.getThumbnail().startsWith("https") ){
-               isUrlImage = true;
-            }
-            return ProductResponse.builder()
-                    .id(p.getId())
-                    .name(p.getName())
-                    .price(Constant.formatter.format(p.getPrice()))
-                    .oldPrice(oldPrice)
-                    .thumbnail(p.getThumbnail())
-                    .isUrlImage(isUrlImage)
-                    .build();
-        }).toList();
+        return products.stream().map(p -> getProductResponse(p.getId())).toList();
     }
+
+    @Override
+    public ProductResponse getProductResponse(Long productId) {
+        Product p = productRepository.findById(productId).get();
+        String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
+        boolean isUrlImage = p.getThumbnail() != null && p.getThumbnail().startsWith("https");
+        return ProductResponse.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .price(Constant.formatter.format(p.getPrice()))
+                .oldPrice(oldPrice)
+                .thumbnail(p.getThumbnail())
+                .isUrlImage(isUrlImage)
+                .build();
+    }
+
 
     @Override
     public List<ProductResponse> filterProducts(Map<String, Object> params) {

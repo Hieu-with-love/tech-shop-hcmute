@@ -38,7 +38,8 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout(){
-        return "redirect:/login";
+
+        return "redirect:/user/home";
     }
 
     @GetMapping("/register")
