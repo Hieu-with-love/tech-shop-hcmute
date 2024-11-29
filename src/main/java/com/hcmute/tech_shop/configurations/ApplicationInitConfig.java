@@ -58,8 +58,10 @@ public class ApplicationInitConfig {
                 log.info("Default admin user created with password:admin, please change it");
             }
 
+            // Tạo 10 account mặc định để test ratings
+
             for (int i = 0; i < 10; i++){
-                if (userRepository.findByUsername("user " + i).isEmpty()){
+                if (userRepository.findByUsername("user" + i).isEmpty()){
                     Role roleUser = roleService.getRoleByName("user");
                     com.hcmute.tech_shop.entities.User user = User.builder()
                             .username("user" + i)

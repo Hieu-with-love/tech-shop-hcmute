@@ -42,6 +42,7 @@
                                              th:src="@{'/uploads/' + ${product.thumbnail}}"
                                              class="product-image"
                                              alt="Ảnh sản phẩm">
+
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">20% Off</div>
@@ -150,6 +151,12 @@
 <!-- JS
 ============================================ -->
 <div th:insert="~{user/fragments/script::script}"></div>
+
+<div th:if="${param.logout}">
+    <script type="text/javascript">
+        alert('Đăng xuất thành công!')
+    </script>
+</div>
 
 <script>
     document.querySelectorAll('.wishlist-form').forEach(form => {
