@@ -62,10 +62,6 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/user/home?logout=true")
                         .permitAll()
-                )
-                .sessionManagement(session -> session
-                        .maximumSessions(1) // Giới hạn 1 phiên đăng nhập tại một thời điểm (nếu cần)
-                        .expiredUrl("/login?sessionExpired=true") // URL chuyển hướng khi session hết hạn
                 );
 
         return http.build();
