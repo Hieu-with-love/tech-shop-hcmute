@@ -2,6 +2,7 @@ package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
+import com.hcmute.tech_shop.enums.OrderStatus;
 import com.hcmute.tech_shop.repositories.OrderRepository;
 import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
 import com.hcmute.tech_shop.services.interfaces.IOrderService;
@@ -23,6 +24,34 @@ public class OrderServiceImpl implements IOrderService {
     private final IProductService productService;
     private final ICartDetailService cartDetailService;
     private final IVoucherService voucherService;
+
+    @Override
+    public void orderPending(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.PENDING);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderCancelled(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderDelivered(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.DELIVERED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderShipping(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.SHIPPING);
+        orderRepository.save(order);
+    }
 
     @Override
     public void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,

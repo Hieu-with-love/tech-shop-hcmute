@@ -32,7 +32,7 @@
                             <div class="tab-pane fade show active" id="computer" role="tabpanel"
                                  aria-labelledby="computer-tab">
                                 <div class="table-responsive">
-                                    <form th:action="@{/manager/products/update(id=${order.getId()})}" method="post"
+                                    <form th:action="@{/manager/orders/shipping(id=${order.getId()})}" method="post"
                                           enctype="multipart/form-data" th:object="${order}">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
@@ -43,11 +43,17 @@
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Status</label>
+                                                <span class="badges bg-lightyellow"
+                                                      th:if="${order.getStatus().equals(orderStatus[0])}">Pending
+                                                </span>
+                                                <span class="badges bg-lightpurple"
+                                                      th:if="${order.getStatus().equals(orderStatus[1])}">Shipping
+                                                </span>
                                                 <span class="badges bg-lightgreen"
-                                                      th:if="${order.active}">Active
+                                                      th:if="${order.getStatus().equals(orderStatus[2])}">Delivered
                                                 </span>
                                                 <span class="badges bg-lightred"
-                                                      th:if="${!order.active}">Inactive
+                                                      th:if="${order.getStatus().equals(orderStatus[3])}">Cancelled
                                                 </span>
                                             </div>
                                         </div>
@@ -104,8 +110,8 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
-                                            <input class="btn btn-submit me-2" type="submit" th:value="Delivery">
-                                            <a href="/manager/orders" class="btn btn-cancel">Cancel</a>
+                                            <input class="btn btn-submit me-2" type="submit" th:value="Shipping">
+                                            <a href="/manager/orders/" class="btn btn-cancel">Cancel</a>
                                         </div>
                                     </form>
                                 </div>

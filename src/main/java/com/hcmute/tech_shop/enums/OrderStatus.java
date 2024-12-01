@@ -2,7 +2,7 @@ package com.hcmute.tech_shop.enums;
 
 public enum OrderStatus {
     PENDING,
-    SHIPPED,
+    SHIPPING,
     DELIVERED,
     CANCELLED
 }
