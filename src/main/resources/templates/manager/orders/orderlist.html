@@ -145,8 +145,14 @@
                                 <td th:text="${order.getTotalPrice()}">
                                 </td>
                                 <td>
-                                    <span class="badges bg-lightgreen"
+                                    <span class="badges bg-lightyellow"
                                           th:if="${order.getStatus().equals(orderStatus[0])}">Pending
+                                    </span>
+                                    <span class="badges bg-lightpurple"
+                                          th:if="${order.getStatus().equals(orderStatus[1])}">Shipping
+                                    </span>
+                                    <span class="badges bg-lightgreen"
+                                          th:if="${order.getStatus().equals(orderStatus[2])}">Delivered
                                     </span>
                                     <span class="badges bg-lightred"
                                           th:if="${order.getStatus().equals(orderStatus[3])}">Cancelled
@@ -159,11 +165,11 @@
                                        th:href="@{/manager/orders/detail(id=${order.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/eye.svg}" alt="img">
                                     </a>
-                                    <a class="me-3" th:href="@{/manager/orders/edit(id=${order.getId()})}">
-                                        <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
-                                    </a>
+<!--                                    <a class="me-3" th:href="@{/manager/orders/edit(id=${order.getId()})}">-->
+<!--                                        <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">-->
+<!--                                    </a>-->
                                     <a class="confirm-text"
-                                       th:href="@{/manager/orders/delete(id=${order.getId()})}">
+                                       th:href="@{/manager/orders/cancelled(id=${order.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>

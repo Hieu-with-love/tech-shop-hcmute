@@ -9,9 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
+    void orderPending(Long id);
+
+    void orderCancelled(Long id);
+
+    void orderDelivered(Long id);
+
+    void orderShipping(Long id);
+
     void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,
-                        Long cartId,
-                        List<CartDetailResponse> cartDetailList);
+                     Long cartId,
+                     List<CartDetailResponse> cartDetailList);
 
     void createOrder(User user, BigDecimal totalPrice, Payment payment, Address address,
                         Long cartId,

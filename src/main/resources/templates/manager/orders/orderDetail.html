@@ -42,17 +42,25 @@
                                     <li>
                                         <h4>Status</h4>
                                         <h6>
+                                            <span class="badges bg-lightyellow"
+                                                  th:if="${order.get().getStatus().equals(orderStatus[0])}">Pending
+                                            </span>
+                                            <span class="badges bg-lightpurple"
+                                                  th:if="${order.get().getStatus().equals(orderStatus[1])}">Shipping
+                                            </span>
                                             <span class="badges bg-lightgreen"
-                                                  th:if="${order.get().isActive()}">Active
+                                                  th:if="${order.get().getStatus().equals(orderStatus[2])}">Delivered
                                             </span>
                                             <span class="badges bg-lightred"
-                                                  th:if="${!order.get().isActive()}">Inactive
+                                                  th:if="${order.get().getStatus().equals(orderStatus[3])}">Cancelled
                                             </span>
                                         </h6>
                                     </li>
                                     <li>
                                         <h4>Voucher</h4>
-                                        <h6><span th:text="${order.get().getVoucher().getName()}"></span></h6>
+                                        <h6>
+                                            <span th:text="${order.get().getVoucher() != null ? order.get().getVoucher().getName() : ''}"></span>
+                                        </h6>
                                     </li>
                                     <li>
                                         <h4>Payment</h4>
@@ -68,7 +76,9 @@
                                     </li>
                                     <li>
                                         <h4>Buyer's Address</h4>
-                                        <h6><span th:text="|${order.get().getAddress().getDetailLocation()}, ${order.get().getAddress().getStreet()}, ${order.get().getAddress().getDistrict()}, ${order.get().getAddress().getCity()}|">></span></h6>
+                                        <h6><span
+                                                th:text="|${order.get().getAddress().getDetailLocation()}, ${order.get().getAddress().getStreet()}, ${order.get().getAddress().getDistrict()}, ${order.get().getAddress().getCity()}|">></span>
+                                        </h6>
                                     </li>
                                     <li th:each="detail : ${order.get().getOrderDetails()}">
                                         <h4>Product</h4>
@@ -77,6 +87,17 @@
                                         <h6><span th:text="${detail.getQuantity()}"></span></h6>
                                     </li>
                                 </ul>
+                                <div style="display: flex; gap: 10px;">
+                                    <form th:action="@{/manager/orders/shipping(id=${order.get().getId()})}" method="post">
+                                        <input class="btn btn-submit" type="submit" th:value="Shipping">
+                                    </form>
+                                    <form th:action="@{/manager/orders/pending(id=${order.get().getId()})}" method="post">
+                                        <input class="btn btn-submit" type="submit" th:value="Pending">
+                                    </form>
+                                    <form th:action="@{/manager/orders/cancelled(id=${order.get().getId()})}" method="post">
+                                        <input class="btn btn-submit" type="submit" th:value="Cancelled">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -39,6 +39,7 @@ public class OrderController {
     @GetMapping("/detail")
     public String orderDetail(Model model, @RequestParam Long id) {
         Optional<Order> order = orderService.findById(id);
+        model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("order", order);
         return "manager/orders/orderDetail";
     }
@@ -46,6 +47,7 @@ public class OrderController {
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam Long id) {
         Order order = orderService.findById(id).get();
+        model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("order", order);
         return "manager/orders/editOrder";
     }
@@ -56,10 +58,21 @@ public class OrderController {
         return "redirect:/manager/orders";
     }
 
-    @PostMapping("/update")
-    public String update(Model model,
-                         @RequestParam Long id) throws IOException {
+    @PostMapping("/pending")
+    public String pending(Model model, @RequestParam Long id) throws IOException {
+        orderService.orderPending(id);
+        return "redirect:/manager/orders";
+    }
 
+    @PostMapping("/shipping")
+    public String update(Model model, @RequestParam Long id) throws IOException {
+        orderService.orderShipping(id);
+        return "redirect:/manager/orders";
+    }
+
+    @PostMapping("/cancelled")
+    public String cancel(Model model, @RequestParam Long id) throws IOException {
+        orderService.orderCancelled(id);
         return "redirect:/manager/orders";
     }
 }
