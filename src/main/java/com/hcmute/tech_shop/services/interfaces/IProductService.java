@@ -18,6 +18,7 @@ public interface IProductService {
 
     void init();
     List<ProductResponse> getAllProducts(List<Product> products);
+    ProductResponse getProductResponse(Long productId);
 
     List<ProductResponse> filterProducts(Map<String, Object> params);
 

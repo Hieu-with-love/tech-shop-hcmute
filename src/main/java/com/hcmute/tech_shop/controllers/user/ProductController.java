@@ -84,12 +84,14 @@ public class ProductController {
     @GetMapping("/product-detail/{id}")
     public String productDetail(Model model, @PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
+        ProductResponse productResponse = productService.getProductResponse(id);
         List<ProductImage> productImages = productImageService.findByProductId(id);
         List<Rating> ratings = ratingService.findByProductId(id);
         int ratingCount = ratingService.countRatingStar(id);
         int ratingUser = ratingService.countUser(id);
 
         model.addAttribute("product", product.get());
+        model.addAttribute("productRes", productResponse);
         model.addAttribute("productImages", productImages);
         model.addAttribute("ratings", ratings);
         model.addAttribute("ratingCount", ratingCount);

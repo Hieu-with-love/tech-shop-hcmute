@@ -57,6 +57,25 @@ public class ApplicationInitConfig {
                 userRepository.save(user);
                 log.info("Default admin user created with password:admin, please change it");
             }
+
+            // Tạo 10 account mặc định để test ratings
+
+            for (int i = 0; i < 10; i++){
+                if (userRepository.findByUsername("user" + i).isEmpty()){
+                    Role roleUser = roleService.getRoleByName("user");
+                    com.hcmute.tech_shop.entities.User user = User.builder()
+                            .username("user" + i)
+                            .email("user" + i + "@gmail.com")
+                            .password(passwordEncoder().encode("user"))
+                            .firstName("system")
+                            .lastName("user" + i)
+                            .isActive(true)
+                            .role(roleUser)
+                            .build();
+                    userRepository.save(user);
+                    log.info("Default user created with username = {} password = {}", user.getUsername(), user.getPassword());
+                }
+            }
         };
     }
 }
