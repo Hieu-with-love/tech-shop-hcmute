@@ -26,6 +26,11 @@ public class OrderServiceImpl implements IOrderService {
     private final IVoucherService voucherService;
 
     @Override
+    public List<Order> findByUsername(String username) {
+        return orderRepository.findByUser_Username(username);
+    }
+
+    @Override
     public void orderPending(Long id) {
         Order order = orderRepository.findById(id).get();
         order.setStatus(OrderStatus.PENDING);

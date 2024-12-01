@@ -114,25 +114,6 @@ public class HomeController {
         return "user/404";
     }
 
-    @GetMapping("/my-account")
-    public String showProfile(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        com.hcmute.tech_shop.entities.User user = userService.getUserByUsername(username);
-        ProfileDto profileDto = ProfileDto.builder()
-                .username(username)
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .phone(user.getPhoneNumber())
-                .gender(user.getGender())
-                .dob(user.getDateOfBirth())
-                .status(user.isActive())
-                .image(user.getImage())
-                .build();
-        model.addAttribute("profileDto", profileDto);
-        return "user/my-account";
-    }
-
 
     // Làm chức năng gì thì đặt endpoint là, /user/<name-feature>
     /*

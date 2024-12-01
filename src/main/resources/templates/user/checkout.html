@@ -87,7 +87,7 @@
                                     <tbody>
                                     <tr class="order-product" th:each="cartDetail : ${cartDetailList}">
                                         <td th:text="|${cartDetail.getProductName()} x${cartDetail.getQuantity()}|"></td>
-                                        <td th:text="${cartDetail.getTotalPrice()}"></td>
+                                        <td th:text="${T(com.hcmute.tech_shop.utils.PriceUtil).formatPrice(cartDetail.getTotalPrice())}"></td>
                                     </tr>
                                     <tr class="order-shipping">
                                         <td colspan="2">
@@ -223,7 +223,8 @@
             const discountPercent = voucherValue[voucherIndex];
             const totalPrice = parseFloat(document.querySelector('.order-total-amount').textContent);
             const newPrice = totalPrice - (totalPrice * (discountPercent / 100));
-            updateTotalPrice(newPrice.toFixed(2));
+            updateTotalPrice(newPrice);
+            alert("Voucher code applied successfully");
         } else {
             alert("Invalid voucher code");
         }

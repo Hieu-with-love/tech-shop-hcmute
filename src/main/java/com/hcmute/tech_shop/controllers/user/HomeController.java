@@ -1,15 +1,10 @@
 package com.hcmute.tech_shop.controllers.user;
 
-import com.hcmute.tech_shop.dtos.requests.CartDetailRequest;
-import com.hcmute.tech_shop.dtos.requests.CartRequest;
-import com.hcmute.tech_shop.dtos.requests.CategoryRequest;
-import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.requests.*;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
-import com.hcmute.tech_shop.services.interfaces.CartService;
-import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
-import com.hcmute.tech_shop.services.interfaces.ICategoryService;
-import com.hcmute.tech_shop.services.interfaces.UserService;
+import com.hcmute.tech_shop.services.interfaces.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,18 +21,18 @@ import java.util.List;
 
 @Controller(value = "homeUserController")
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class HomeController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private ICategoryService categoryService;
-
     @Autowired
     private CartService cartService;
-
     @Autowired
     private ICartDetailService cartDetailServiceImpl;
+    private final IOrderService orderService;
+    private final IAddressService addressService;
 
     public UserRequest getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -84,5 +79,28 @@ public class HomeController {
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("numberProductInCart", numberProductInCart);
         return "/user/home";
+    }
+
+    @GetMapping("/my-account")
+    public String showProfile(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        com.hcmute.tech_shop.entities.User user = userService.getUserByUsername(username);
+        ProfileDto profileDto = ProfileDto.builder()
+                .username(username)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phone(user.getPhoneNumber())
+                .gender(user.getGender())
+                .dob(user.getDateOfBirth())
+                .status(user.isActive())
+                .image(user.getImage())
+                .build();
+        List<Order> orders = orderService.findByUsername(username);
+        List<Address> addresses = addressService.findByUser_Username(username);
+        model.addAttribute("profileDto", profileDto);
+        model.addAttribute("orders", orders);
+        model.addAttribute("addresses", addresses);
+        return "user/my-account";
     }
 }

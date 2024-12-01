@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
+    List<Order> findByUsername(String username);
+
     void orderPending(Long id);
 
     void orderCancelled(Long id);
