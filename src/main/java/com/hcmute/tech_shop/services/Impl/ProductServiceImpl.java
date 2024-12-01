@@ -66,7 +66,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductResponse getProductResponse(Long productId) {
         Product p = productRepository.findById(productId).get();
-        String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
+        String oldPrice = Constant.formatter.format(p.getPrice().add(p.getPrice().multiply(BigDecimal.valueOf(0.2))));
         boolean isUrlImage = p.getThumbnail() != null && p.getThumbnail().startsWith("https");
         return ProductResponse.builder()
                 .id(p.getId())

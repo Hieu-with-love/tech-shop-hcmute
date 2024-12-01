@@ -52,11 +52,11 @@
                                     </form>
                                 </td>
                                 <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${wishlist.productId})}">
-                                    <img th:if="${wishlist.thumbnail}"
+                                    <img th:if="${wishlist.isUrlImg()}"
                                          th:src="${wishlist.thumbnail}"
                                          class="product-image"
                                          alt="Ảnh sản phẩm mặc định">
-                                    <img th:unless="${wishlist.thumbnail}"
+                                    <img th:unless="${wishlist.isUrlImg()}"
                                          th:src="@{'/uploads/' + ${wishlist.thumbnail}}"
                                          class="product-image"
                                          alt="Ảnh sản phẩm">

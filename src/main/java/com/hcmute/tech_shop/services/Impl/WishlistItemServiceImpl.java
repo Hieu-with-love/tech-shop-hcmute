@@ -52,6 +52,7 @@ public class WishlistItemServiceImpl implements WishlistItemService {
                         .unitPrice(Constant.formatter.format(item.getProduct().getPrice()))
                         .status(item.isStatus())
                         .productId(item.getProduct().getId())
+                        .isUrlImg(item.getProduct().getThumbnail().contains("https"))
                         .build()
                 )
                 .toList();
