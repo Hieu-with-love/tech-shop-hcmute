@@ -75,12 +75,6 @@ public class ProductController {
 
     }
 
-    @GetMapping("/single-product")
-    public String singleProduct() {
-        return "user/single-product-3";
-    }
-
-
     @GetMapping("/product-detail/{id}")
     public String productDetail(Model model, @PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
