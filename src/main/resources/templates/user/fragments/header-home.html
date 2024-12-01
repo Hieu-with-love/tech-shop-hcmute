@@ -130,14 +130,14 @@
                             <li class="menu-item-has-children">
                                 <a href="#">Pages</a>
                                 <ul class="axil-submenu">
-                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a th:href="@{/user/wishlist(wishlistId=${session.wishlistId})}">Wishlist</a></li>
                                     <li><a th:href="@{/user/cart}">Cart</a></li>
                                 </ul>
                             </li>
                             <!--              Start page-->
 
                             <!--              Start about-->
-                            <li><a href="about-us.html">About</a></li>
+                            <li><a th:href="@{/user/about-us}">About</a></li>
                             <!--              Start home-->
 
                             <!--              Start blog-->

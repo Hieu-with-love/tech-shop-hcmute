@@ -104,4 +104,9 @@ public class UserController {
         return "redirect:/login?success";
     }
 
+    @GetMapping("/user/about-us")
+    public String aboutUs(){
+        return "user/about-us";
+    }
+
 }

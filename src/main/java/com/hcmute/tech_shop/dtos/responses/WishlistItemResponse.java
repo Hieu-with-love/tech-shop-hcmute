@@ -13,4 +13,5 @@ public class WishlistItemResponse {
     private String unitPrice;
     private boolean status;
     private Long productId;
+    private boolean isUrlImg;
 }

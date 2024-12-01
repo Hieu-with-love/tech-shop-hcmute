@@ -1,8 +1,10 @@
 package com.hcmute.tech_shop.payment.vnpay;
 
 import com.hcmute.tech_shop.entities.Cart;
+import com.hcmute.tech_shop.utils.Constant;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping()
@@ -34,21 +38,31 @@ public class VNPayController {
         int paymentStatus =vnPayService.orderReturn(request);
 
 //        String orderInfo = request.getParameter("vnp_OrderInfo");
+        String orderInfo = request.getParameter("vnp_OrderInfo");
         String paymentTime = request.getParameter("vnp_PayDate");
         String transactionId = request.getParameter("vnp_TransactionNo");
         String totalPrice = request.getParameter("vnp_Amount");
 
+        // Định dạng đầu vào
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+        // Định dạng đầu ra
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        // Chuyển chuỗi sang LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.parse(paymentTime, inputFormatter);
+
+        // Chuyển LocalDateTime sang chuỗi định dạng mới
+        String formattedDate = dateTime.format(outputFormatter);
+
 //        model.addAttribute("orderId", orderInfo);
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("paymentTime", paymentTime);
+        model.addAttribute("orderId", orderInfo);
+        model.addAttribute("totalPrice", Constant.formatter.format(totalPrice));
+        model.addAttribute("paymentTime", formattedDate);
         model.addAttribute("transactionId", transactionId);
 
-        if(paymentStatus == 1){
-            return "redirect:/user/home";
-        }
-        return "redirect:/user/checkout";
+        return paymentStatus == 1 ? "user/orderSuccess" : "user/orderFail";
 
-//        return paymentStatus == 1 ? "ordersuccess" : "orderfail";
     }
 }
 
