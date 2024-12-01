@@ -133,7 +133,14 @@
                                 </td>
                                 <td class="productimgname">
                                     <a class="product-img">
-                                        <img th:src="@{'/uploads/'+${brand.brandImg}}" alt="Ảnh nhãn hàng" width="200px">
+                                        <img th:if="${brand.brandImg.startsWith('https')}"
+                                             th:src="${brand.brandImg}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định">
+                                        <img th:unless="${brand.brandImg.startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${brand.brandImg}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm">
                                     </a>
                                     <a th:text="${brand.name}"></a>
                                 </td>
