@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shipper Dashboard</title>
+    <div th:insert="~{/shipper/fragment/head::head}"></div>
+    <style>
+        .profile-img {
+            background-size: cover;
+            background-position: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile {
+            text-align: center;
+            padding: 2rem 0rem;
+        }
+
+        .bg-img {
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 50%;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <!-- Navbar Brand-->
+    <a class="navbar-brand ps-3" href="/shipper/dashboard">Trang người giao hàng</a>
+
+    <!-- Sidebar Toggle-->
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+
+    <!-- Navbar-->
+    <ul class="navbar-nav ms-auto md-0 me-3 me-lg-4 ms-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/shipper/shipper-info">Thông tin cá nhân</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="=/logout">Đăng xuất</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+        <div class="nav">
+            <div class="profile pt-3 pb-0">
+                <img class="profile-img mb-3" th:src="'/uploads/' + ${session.user.image}"
+                     alt="image">
+                <h4 th:text="${session.user.firstName} + ' ' + ${session.user.lastName}"></h4>
+<!--                <th:if test="${sessionScope.user.type==1}">-->
+<!--                    <small>Seller</small>-->
+<!--                </th:if>-->
+            </div>
+            <div class="sb-sidenav-menu-heading">Đơn hàng</div>
+            <a class="nav-link"
+               href="/shipper/list-need-ship">
+                <div class="sb-nav-link-icon">
+                    <i class="fas fa-truck"></i>
+                </div> Cần giao
+            </a> <a class="nav-link"
+                    href="/shipper/list-receive">
+            <div class="sb-nav-link-icon">
+                <i class="fas fa-cubes"></i>
+            </div> Nhận đơn
+        </a> <a class="nav-link"
+                href="/shipper/shipper-list-history-ship">
+            <div class="sb-nav-link-icon">
+                <i class="fas fa-history"></i>
+            </div> Lịch sử
+        </a>
+            <div class="sb-sidenav-menu-heading">Thông tin</div>
+            <a class="nav-link" href="/shipper/shipper-satistical">
+                <div class="sb-nav-link-icon">
+                    <i class="fas fa-bar-chart"></i>
+                </div> Thống kê
+            </a> <a class="nav-link" href="/shipper/shipper-info">
+            <div class="sb-nav-link-icon">
+                <i class="fas fa-address-card"></i>
+            </div> Thông tin cá nhân
+        </a>
+        </div>
+    </div>
+</nav>
+
+
+</body>
+</html>
