@@ -100,8 +100,14 @@
                                                 <label> Product Image</label>
                                                 <input type="text" name="oldThumbnail"
                                                        th:value="${product.getThumbnail()}" hidden="hidden">
-                                                <img th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"
-                                                     width="500px;">
+                                                <img th:if="${product.thumbnail.startsWith('https')}"
+                                                     th:src="${product.thumbnail}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm mặc định" width="300px;">
+                                                <img th:unless="${product.thumbnail.startsWith('https')}"
+                                                     th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm" width="300px;">
                                                 <div class="image-upload">
                                                     <input type="file" name="files" accept="image/*">
                                                     <div class="image-uploads">

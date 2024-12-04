@@ -76,8 +76,14 @@
                                     <li>
                                         <h4>Thumbnail</h4>
                                         <h6>
-                                            <img th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"
-                                                 width="500px">
+                                            <img th:if="${product.get().thumbnail.startsWith('https')}"
+                                                 th:src="${product.get().thumbnail}"
+                                                 class="product-image"
+                                                 alt="Ảnh sản phẩm mặc định" width="300px;">
+                                            <img th:unless="${product.get().thumbnail.startsWith('https')}"
+                                                 th:src="@{'/uploads/' + ${product.get().thumbnail}}"
+                                                 class="product-image"
+                                                 alt="Ảnh sản phẩm" width="300px;">
                                         </h6>
                                     </li>
                                 </ul>
@@ -91,7 +97,14 @@
                             <div class="slider-product-details">
                                 <div class="owl-carousel owl-theme product-slide">
                                     <div class="slider-product" th:each="image : ${productImages}">
-                                        <img th:src="@{|/${image.getUrl()}|}" alt="Ảnh sản phẩm">
+                                        <img th:if="${image.getUrl().startsWith('https')}"
+                                             th:src="${image.getUrl()}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="200px;">
+                                        <img th:unless="${image.getUrl().startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${image.getUrl()}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="200px;">
                                         <h4 th:text="${image.getUrl()}"></h4>
                                     </div>
                                 </div>

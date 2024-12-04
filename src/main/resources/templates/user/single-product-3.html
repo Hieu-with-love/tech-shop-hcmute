@@ -33,17 +33,38 @@
                                              alt="Ảnh sản phẩm">
                                     </div>
                                     <div class="thumbnail" th:each="productImage : ${productImages}">
-                                        <img th:src="@{'/uploads/'+${productImage.getUrl()}}" alt="Product Images">
+                                        <img th:if="${productImage.getUrl().startsWith('https')}"
+                                             th:src="${productImage.getUrl()}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="200px;">
+                                        <img th:unless="${productImage.getUrl().startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${productImage.getUrl()}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="200px;">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="small-thumb-wrapper product-small-thumb-4 slick-layout-wrapper--10 axil-slick-arrow arrow-both-side">
                                     <div class="small-thumb-img">
-                                        <img th:src="@{'/uploads/'+${product.getThumbnail()}}" alt="samll-thumb">
+                                        <img th:if="${product.getThumbnail().startsWith('https')}"
+                                             th:src="${product.getThumbnail()}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="200px;">
+                                        <img th:unless="${product.getThumbnail().startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${product.getThumbnail()}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="200px;">
                                     </div>
                                     <div class="small-thumb-img" th:each="productImage : ${productImages}">
-                                        <img th:src="@{'/uploads/'+${productImage.getUrl()}}" alt="samll-thumb">
+                                        <img th:if="${productImage.getUrl().startsWith('https')}"
+                                             th:src="${productImage.getUrl()}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="200px;">
+                                        <img th:unless="${productImage.getUrl().startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${productImage.getUrl()}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="200px;">
                                     </div>
                                 </div>
                             </div>

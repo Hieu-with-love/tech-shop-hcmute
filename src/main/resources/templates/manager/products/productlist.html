@@ -157,8 +157,14 @@
                                 </td>
                                 <td class="productimgname">
                                     <a th:href="@{/manager/products/edit(id=${product.getId()})}" class="product-img">
-                                        <img th:src="@{'/uploads/'+${product.thumbnail}}" alt="Ảnh sản phẩm"
-                                             width="200px;">
+                                        <img th:if="${product.thumbnail.startsWith('https')}"
+                                             th:src="${product.thumbnail}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="300px;">
+                                        <img th:unless="${product.thumbnail.startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="300px;">
                                     </a>
                                     <a th:href="@{/manager/products/edit(id=${product.getId()})}"
                                        th:text="${product.getName()}">

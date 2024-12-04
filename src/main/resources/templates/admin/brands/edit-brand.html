@@ -63,8 +63,14 @@
                                 <div class="form-group">
                                     <label> Brand Image</label>
                                     <input type="text" name="oldImg" th:value="${brand.brandImg}" hidden="hidden">
-                                    <img th:src="@{'/uploads/'+${brand.brandImg}}" alt="Ảnh nhãn hàng"
-                                         width="500px;">
+                                    <img th:if="${brand.brandImg.startsWith('https')}"
+                                         th:src="${brand.brandImg}"
+                                         class="product-image"
+                                         alt="Ảnh nhãn hàng" width="300px;">
+                                    <img th:unless="${brand.brandImg.startsWith('https')}"
+                                         th:src="@{'/uploads/' + ${brand.brandImg}}"
+                                         class="product-image"
+                                         alt="Ảnh nhãn hàng" width="300px;">
                                     <div class="image-upload">
                                         <input type="file" name="files" accept="image/*">
                                         <div class="image-uploads">
