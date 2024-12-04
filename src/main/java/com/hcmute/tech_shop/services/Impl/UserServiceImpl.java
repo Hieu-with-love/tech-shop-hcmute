@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.Confirmation;
 import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
@@ -22,6 +23,7 @@ import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
+    AddressServiceImpl addressService;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -127,6 +130,32 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Address saveAddress(Map<String, String> params) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new RuntimeException("Don't have user")
+        );
+        String city = params.get("city");
+        String district = params.get("district");
+        String street = params.get("street");
+        String detailLocation = params.get("detailLocation");
+        Address address = Address.builder()
+                .city(city)
+                .district(district)
+                .street(street)
+                .detailLocation(detailLocation)
+                .user(user)
+                .build();
+
+        // Thêm địa chỉ vào danh sách địa chỉ của User
+        user.getAddresses().add(address);
+
+        // Lưu user (cascade sẽ tự lưu address nếu được cấu hình đúng)
+        userRepository.save(user);
+        return address;
     }
 
     @Override

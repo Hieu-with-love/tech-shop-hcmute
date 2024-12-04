@@ -5,6 +5,8 @@
 <head>
     <title>TechShop || Your Cart</title>
     <div th:insert="~{user/fragments/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/user/customize/css/main.css}"/>
 </head>
 
 <body class="sticky-header">
@@ -15,7 +17,7 @@
     <main class="main-wrapper">
 
         <!-- Start Cart Area  -->
-        <div class="axil-product-cart-area axil-section-gap">
+        <div class="axil-product-cart-area axil-section-gap" id="cart-items-container">
             <div class="container">
                 <div class="axil-product-cart-wrap">
                     <div class="product-table-heading">
@@ -29,7 +31,8 @@
                             </h6>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" >
+                        <input type="hidden" id="is-cart-empty" th:value="${isEmptyCart}">
                         <table class="table axil-product-table axil-cart-table mb--40">
                             <thead>
                                 <tr>
@@ -143,7 +146,13 @@
             </div>
         </div>
         <!-- End Cart Area  -->
-
+        <div id="cart-empty-message" style="display: none;">
+            <div class="empty-notification">
+                <img th:src="@{/user/assets/images/my-image/empty-cart-yellow.png}" alt="Empty Cart">
+                <p>Browse our catalog to add your favorite products to your cart!</p>
+                <a href="/user/home" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
     </main>
 
 
@@ -166,8 +175,18 @@
 ============================================ -->
     <div th:insert="~{/user/fragments/script::script}"></div>
 
+<script>
+    $(document).ready(function (){
+        const isWishlistEmpty = $('#is-cart-empty').val() === 'true';
+        if (isWishlistEmpty){
+            $('#cart-items-container').hide();
+            $('#cart-empty-message').fadeIn();
+        }else{
+            $('#cart-items-container').show();
+        }
+    });
+</script>
+
 </body>
-
-
 <!-- Mirrored from new.axilthemes.com/demo/template/etrade/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:29 GMT -->
 </html>

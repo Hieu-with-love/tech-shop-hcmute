@@ -12,6 +12,6 @@ public class ShipperDashboard {
     @GetMapping
     public String dashboard(Model model){
 
-        return "shipper/dashboard";
+        return "shipper/index";
     }
 }
