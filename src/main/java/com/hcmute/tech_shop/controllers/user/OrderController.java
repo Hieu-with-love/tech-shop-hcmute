@@ -34,6 +34,6 @@ public class OrderController {
     @PostMapping("/cancelled")
     public String cancel(Model model, @RequestParam Long id) throws IOException {
         orderService.orderCancelled(id);
-        return "redirect:/user/home";
+        return "redirect:/user/my-account";
     }
 }

@@ -92,14 +92,19 @@
                         <tbody>
                         <tr th:each="orderDetail : ${order.getOrderDetails()}">
                             <td class="product-thumbnail">
-                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}">
-                                    <img th:src="@{'/uploads/' + ${orderDetail.getProduct().getThumbnail()}}"
+                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}" class="product-img">
+                                    <img th:if="${orderDetail.getProduct().getThumbnail().startsWith('https')}"
+                                         th:src="${orderDetail.getProduct().getThumbnail()}"
                                          class="product-image"
-                                         alt="Ảnh sản phẩm">
+                                         alt="Ảnh sản phẩm mặc định" width="200px;">
+                                    <img th:unless="${orderDetail.getProduct().getThumbnail().startsWith('https')}"
+                                         th:src="@{'/uploads/' + ${orderDetail.getProduct().getThumbnail()}}"
+                                         class="product-image"
+                                         alt="Ảnh sản phẩm" width="200px;">
                                 </a>
                             </td>
                             <td class="product-title">
-                                <span th:text="${orderDetail.getProduct().getName()}"></span>
+                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}" th:text="${orderDetail.getProduct().getName()}"></a>
                             </td>
                             <td class="product-price" data-title="Price">
                                 <span th:text="${orderDetail.getProduct().getPrice()}"></span>
