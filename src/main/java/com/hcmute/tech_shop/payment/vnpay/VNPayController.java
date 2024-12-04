@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Controller
 @RequestMapping()
@@ -55,9 +57,10 @@ public class VNPayController {
         // Chuyển LocalDateTime sang chuỗi định dạng mới
         String formattedDate = dateTime.format(outputFormatter);
 
-//        model.addAttribute("orderId", orderInfo);
+        String totalPriceVND = totalPrice.substring(0, totalPrice.length() - 2);
+
         model.addAttribute("orderId", orderInfo);
-        model.addAttribute("totalPrice", Constant.formatter.format(totalPrice));
+        model.addAttribute("totalPrice", Constant.formatter.format(Long.parseLong(totalPriceVND)));
         model.addAttribute("paymentTime", formattedDate);
         model.addAttribute("transactionId", transactionId);
 

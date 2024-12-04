@@ -1,9 +1,11 @@
 package com.hcmute.tech_shop.configurations;
 
 import com.hcmute.tech_shop.dtos.requests.RoleRequest;
+import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.repositories.UserRepository;
+import com.hcmute.tech_shop.services.Impl.AddressServiceImpl;
 import com.hcmute.tech_shop.services.Impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -24,6 +29,7 @@ public class ApplicationInitConfig {
     }
 
     private final RoleServiceImpl roleService;
+    private final AddressServiceImpl addressService;
 
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository) {
@@ -42,8 +48,14 @@ public class ApplicationInitConfig {
             }
 
             // Tạo tài khoản admin mặc định nếu chưa tồn tại
-
             if(userRepository.findByUsername("admin").isEmpty()){
+                // The first, we create a address for admin
+                Address addressAdmin = Address.builder()
+                        .detailLocation("Đường 1 ngõ 1 ngách 1")
+                        .district("Quận 12")
+                        .city("TPHCM")
+                        .build();
+                addressService.save(addressAdmin);
                 Role roleAdmin = roleService.getRoleByName("admin");
                 com.hcmute.tech_shop.entities.User user = User.builder()
                         .username("admin")
@@ -51,6 +63,7 @@ public class ApplicationInitConfig {
                         .password(passwordEncoder().encode("admin"))
                         .firstName("admin")
                         .lastName("tech system")
+                        .addresses(Collections.singleton(addressAdmin))
                         .isActive(true)
                         .role(roleAdmin)
                         .build();
@@ -62,6 +75,13 @@ public class ApplicationInitConfig {
 
             for (int i = 0; i < 10; i++){
                 if (userRepository.findByUsername("user" + i).isEmpty()){
+                    Address address = Address.builder()
+                            .detailLocation("Đường " + i + " ngõ " + i  + " ngách " + i)
+                            .district("Quận 12")
+                            .city("TPHCM")
+                            .build();
+                    addressService.save(address);
+
                     Role roleUser = roleService.getRoleByName("user");
                     com.hcmute.tech_shop.entities.User user = User.builder()
                             .username("user" + i)
@@ -71,6 +91,7 @@ public class ApplicationInitConfig {
                             .lastName("user" + i)
                             .isActive(true)
                             .role(roleUser)
+                            .addresses(Collections.singleton(address))
                             .build();
                     userRepository.save(user);
                     log.info("Default user created with username = {} password = {}", user.getUsername(), user.getPassword());
