@@ -237,7 +237,9 @@
                                             <div class="address-info mb--40">
                                                 <div class="addrss-header d-flex align-items-center justify-content-between">
                                                     <h4 class="title mb-0">Shipping Address</h4>
-                                                    <a href="#" class="address-edit"><i class="far fa-edit"></i></a>
+                                                    <a href="#" class="address-edit"
+                                                       data-bs-toggle="modal"
+                                                       data-bs-target="#address-modal"><i class="far fa-edit"></i></a>
                                                 </div>
                                                 <ul class="address-details">
                                                     <li th:text="'Detail: ' + ${address.getDetailLocation()}"></li>
@@ -261,6 +263,39 @@
         </div>
     </div>
     <!-- End My Account Area  -->
+    <!-- Address Modal -->
+    <div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="address-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="address-modal-label">Edit Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter your city">
+                    </div>
+                    <div class="form-group">
+                        <label for="district">District</label>
+                        <input type="text" class="form-control" id="district" placeholder="Enter your district">
+                    </div>
+                    <div class="form-group">
+                        <label for="street">Street</label>
+                        <input type="text" class="form-control" id="street" placeholder="Enter your street">
+                    </div>
+                    <div class="form-group">
+                        <label for="detailLocation">Detail Location</label>
+                        <input type="text" class="form-control" id="detailLocation" placeholder="Enter your detail location">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAddress()">Save Address</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
@@ -377,6 +412,7 @@
                 if (data.success) {
                     document.getElementById('profileImagePreview').src = data.imageUrl; // Cập nhật ảnh hiển thị
                     alert('Profile image updated successfully!');
+                    window.location.reload();
                 } else {
                     alert('Failed to update profile image: ' + data.message);
                 }
@@ -384,11 +420,46 @@
             .catch(error => console.error('Error:', error));
     });
 
-</script>
+    function saveAddress() {
+        var city = $("#city").val(); // Using jQuery to get the value
+        const district = $("#district").val();
+        const street = $("#street").val();
+        const detailLocation = $("#detailLocation").val();
+        if (city === "") {
+            alert("Please enter your city!");
+            return;
+        }
+        if (district === "") {
+            alert("Please enter your district!");
+            return;
+        }
+        if (street === "") {
+            alert("Please enter your street!");
+            return;
+        }
+        if (detailLocation === "") {
+            alert("Please enter your detail location!");
+            return;
+        }
 
+        $.ajax({
+            url: "/user/save-address",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ city: city, district: district, street: street, detailLocation: detailLocation }),
+            success: function (response) {
+                alert("Address saved successfully!");
+                $('#address-modal').modal('hide'); // Hides the modal
+                window.location.reload(); // Reloads the window
+            },
+            error: function (xhr) {
+                alert("Failed to save address. Please try again.");
+            }
+        });
+    }
+
+</script>
 
 </body>
 
-
-<!-- Mirrored from new.axilthemes.com/demo/template/etrade/my-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:30 GMT -->
 </html>

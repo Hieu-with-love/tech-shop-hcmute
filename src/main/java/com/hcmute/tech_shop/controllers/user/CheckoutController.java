@@ -10,16 +10,21 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.hcmute.tech_shop.utils.PriceUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -45,12 +50,15 @@ public class CheckoutController {
         List<String> voucherNames = vouchers.stream().map(Voucher::getName).toList();
         List<BigDecimal> voucherValues = vouchers.stream().map(Voucher::getValue).toList();
 
+        boolean hasAddress = !addresses.isEmpty();
+
         model.addAttribute("user", user);
         model.addAttribute("addresses", addresses);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
         model.addAttribute("voucherNames", voucherNames);
         model.addAttribute("voucherValues", voucherValues);
+        model.addAttribute("hasAddress", hasAddress);
 
         return "user/checkout";
     }
@@ -208,6 +216,24 @@ public class CheckoutController {
     @GetMapping("/paypal/cancel")
     public String paypalCancel() {
         return "redirect:/user/checkout"; // Quay lại trang checkout
+    }
+
+    @PostMapping("/save-address")
+    public ResponseEntity<?> saveAddress(@Valid @RequestBody Map<String, String> params,
+                                         BindingResult result){
+        try{
+            if (result.hasErrors()) {
+                List<String> errors = result.getFieldErrors().stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errors);
+            }
+            userService.saveAddress(params);
+            return ResponseEntity.ok("Success");
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body("Error");
+        }
+
     }
 
 }
