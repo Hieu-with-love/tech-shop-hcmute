@@ -1,0 +1,158 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
+<head>
+    <title>TechShop || Your Cart</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+</head>
+
+<body class="sticky-header">
+<!-- Start Header -->
+<div th:insert="~{user/fragments/header::header}"></div>
+<!-- End Header -->
+
+<main class="main-wrapper">
+
+    <!-- Start Cart Area  -->
+    <div class="axil-product-cart-area axil-section-gap">
+        <div class="container">
+            <div class="axil-product-cart-wrap">
+                <div class="product-table-heading">
+                    <h4 class="title">Your Order</h4>
+                </div>
+                <div class="axil-checkout-billing">
+                    <h4 class="title mb--40">Order details</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Status<span>*</span></label>
+                                <input type="text" id="status" th:value="${order.getStatus()}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>First Name <span>*</span></label>
+                                <input type="text" id="first-name" th:value="${order.getUser().getFirstName()}"
+                                       readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Last Name <span>*</span></label>
+                                <input type="text" id="last-name" th:value="${order.getUser().getLastName()}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Phone <span>*</span></label>
+                                <input type="tel" id="phone" th:value="${order.getUser().getPhoneNumber()}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Email Address <span>*</span></label>
+                                <input type="email" id="email" th:value="${order.getUser().getEmail()}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Address <span>*</span></label>
+                                <input th:value="|${order.getAddress().getDetailLocation()}, ${order.getAddress().getStreet()}, ${order.getAddress().getDistrict()}, ${order.getAddress().getCity()}|"
+                                       readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" th:attr="hidden=${order.getVoucher() != null ? '' : 'hidden'}">
+                            <div class="form-group">
+                                <label>Voucher <span>*</span></label>
+                                <input th:value="${order.getVoucher() != null ? order.getVoucher().getName() : 'None'}"
+                                       readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" th:attr="hidden=${order.getVoucher() != null ? '' : 'hidden'}">
+                            <div class="form-group">
+                                <label>Voucher Value<span>*</span></label>
+                                <input th:value="${order.getVoucher() != null ? order.getVoucher().getValue() : 'None'}"
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table axil-product-table axil-cart-table mb--40">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="product-thumbnail">Thumbnail</th>
+                            <th scope="col" class="product-title">Product Name</th>
+                            <th scope="col" class="product-price">Price</th>
+                            <th scope="col" class="product-quantity">Quantity</th>
+                            <th scope="col" class="product-subtotal">Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="orderDetail : ${order.getOrderDetails()}">
+                            <td class="product-thumbnail">
+                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}">
+                                    <img th:src="@{'/uploads/' + ${orderDetail.getProduct().getThumbnail()}}"
+                                         class="product-image"
+                                         alt="Ảnh sản phẩm">
+                                </a>
+                            </td>
+                            <td class="product-title">
+                                <span th:text="${orderDetail.getProduct().getName()}"></span>
+                            </td>
+                            <td class="product-price" data-title="Price">
+                                <span th:text="${orderDetail.getProduct().getPrice()}"></span>
+                            </td>
+                            <td class="product-quantity" data-title="Qty">
+                                <span th:text="${orderDetail.getQuantity()}"></span>
+                            </td>
+                            <td class="product-subtotal" data-title="Price">
+                                <span th:text="${orderDetail.getTotalPrice()}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3 class="cart-subtotal">
+                        <span class="subtotal-title">Subtotal:</span>
+                        <span class="mb-20" th:text="${order.getTotalPrice()}"></span>
+                    </h3>
+                </div>
+                <div class="cart-update-btn-area" th:if="${order.getStatus().equals(orderStatus[0])}">
+                    <form th:action="@{/user/orders/cancelled(id=${order.getId()})}" method="post">
+                        <input class="btn btn-danger" type="submit" th:value="Cancelled">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Cart Area  -->
+
+</main>
+
+
+<div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
+<!-- Start Footer Area  -->
+<div th:insert="~{/user/fragments/footer::footer}"></div>
+<!-- End Footer Area  -->
+
+<!-- Product Quick View Modal Start -->
+<div th:insert="~{/user/fragments/quickview::quick-view}"></div>
+<!-- Product Quick View Modal End -->
+
+<!-- Header Search Modal End -->
+<div th:insert="~{/user/fragments/header-search::header-search}"></div>
+<!-- Header Search Modal End -->
+
+<div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
+
+<!-- JS
+============================================ -->
+<div th:insert="~{/user/fragments/script::script}"></div>
+
+</body>
+
+
+<!-- Mirrored from new.axilthemes.com/demo/template/etrade/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:29 GMT -->
+</html>

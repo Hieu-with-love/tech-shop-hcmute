@@ -223,7 +223,7 @@
                                                 <td th:text="${order.getCreatedAt().toString()}"></td>
                                                 <td th:text="${order.getStatus()}"></td>
                                                 <td th:text="${T(com.hcmute.tech_shop.utils.PriceUtil).formatPrice(order.getTotalPrice())} + ' for ' + ${order.getOrderDetails().size()} + ' items'"></td>
-                                                <td><a th:href="@{/manager/orders/detail(id=${order.getId()})}" class="axil-btn view-btn">View</a></td>
+                                                <td><a th:href="@{/user/orders/detail(id=${order.getId()})}" class="axil-btn view-btn">View</a></td>
                                             </tr>
                                             </tbody>
                                         </table>
