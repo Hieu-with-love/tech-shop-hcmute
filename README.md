@@ -1,7 +1,5 @@
 # Welcome to TechShopHCMUTE Website
----
 # Project Overview
----
 TechShopHCMUTE là một project được xây dựng với mong muốn học hỏi về nghiệp vụ bán hàng với nhiều giai đoạn từ các bước của người quản lý chuẩn bị thêm hàng vào kho, cho đến sản phẩm được hiển thị lên trang web cho phép người dùng xem, yêu thích, thêm vào giỏ hàng cho đến các công đoạn thanh toán phức tạp,... TechShopHCMUTE không chỉ là một project kết thúc học phần môn Lập trình Web mà còn là một project tâm huyết với tinh thần ham học hỏi, đổi mới và thách thức bản thân cải tiến sản phẩm hơn thế nữa. Đây cũng là sản phẩm đầu tay của nhóm chúng em chắc vẫn có sai sót, nhưng mong nhận được sự góp ý từ mọi người để chúng em cải tiến, học hỏi được nhiều hơn.
 
 
@@ -16,7 +14,7 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 - [Note](#note)
 
 ## Features
----
+
 ### 1. Main Features
 - Product Management: Display product lists, product details, and support keyword search, price filtering, brand, or features.
 - Shopping Cart and Checkout: Users can add products to the cart, update quantities, and proceed with payment.
@@ -31,7 +29,7 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 - Authentication and Authorization: Using Spring Security to protect personal data and manage access rights.
 - Password Encryption: Enhance user information security by encrypting passwords.
 ## Technologies Used
----
+
 - **Spring Boot**: A framework for building Java-based web applications.
 - **Spring Security**: A powerful and customizable authentication and access-control framework for Java applications.
 - **Bootstrap**: A front-end framework for developing responsive and mobile-first websites.
@@ -43,7 +41,7 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 - **GitHub**: A web-based platform for version control and collaboration, allowing multiple people to work on projects simultaneously.
 - **AJAX**: A technique for creating asynchronous web applications, allowing web pages to be updated asynchronously by exchanging small amounts of data with the server behind the scenes.
 ## Prerequisites
----
+
 ### Make sure you have the following installed:
 
 - Java Development Kit (JDK) - Prefer JDK 17 or higher. 
@@ -60,7 +58,7 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 4. Modify the package name according to your project. If the libraries I used are outdated, you can replace them with newer or alternative libraries.
 5. Run your project. Wish you success!
 ## Configuration
----
+
 1. Configuration the database connection in `src\main\resources\application.yml`
     Ex: 
     ```
@@ -81,7 +79,7 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 3. Explore the furniture items, login, and enjoy a seamless shopping experience.
 
 ## Contributing
----
+
 
 We welcome contributions from everyone! If you have ideas, suggestions, or improvements, please feel free to contribute to this project. Here’s how you can get started:
 
@@ -113,8 +111,8 @@ We welcome contributions from everyone! If you have ideas, suggestions, or impro
 
 We appreciate your contributions and look forward to working together to improve TechShopHCMUTE!
 
-### Note:
----
+## Note:
+
 1. I created account admin at the first times running project.
     Default admin account:
     ```
