@@ -67,7 +67,7 @@
                                 <div th:if="${!hasAddress}">
                                     <div class="form-group">
                                         <label>Your Address</label>
-                                        <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal" data-bs-target="#address-modal">Enter Address</button>
+                                        <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal" data-bs-target="#address-modal">You haven't address for payment, enter address to payment</button>
                                     </div>
                                 </div>
                                 <div th:if="${hasAddress}">
@@ -166,7 +166,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="address-modal-label">You didn't address. Please enter your address</h5>
+                    <h5 class="modal-title" id="address-modal-label">Enter your address</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

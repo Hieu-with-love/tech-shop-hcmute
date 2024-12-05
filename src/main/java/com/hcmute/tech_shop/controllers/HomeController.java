@@ -5,6 +5,7 @@ import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.*;
+import com.hcmute.tech_shop.services.Impl.AddressServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.*;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
@@ -12,16 +13,19 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -34,6 +38,7 @@ public class HomeController {
     private final ICartDetailService cartDetailServiceImpl;
     private final WishlistService wishlistService;
     private final WishlistItemService wishlistItemService;
+    private final AddressServiceImpl addressService;
 
     public UserRequest getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -112,6 +117,45 @@ public class HomeController {
     @GetMapping("/not-found")
     public String notFound(Model model) {
         return "user/404";
+    }
+
+    @PostMapping("/save-address")
+    public ResponseEntity<?> createNewAddress(@Valid @RequestBody Map<String, String> params,
+                                              BindingResult result){
+        try{
+            if (result.hasErrors()){
+                List<String> errors = result.getFieldErrors().stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errors);
+            }
+            userService.saveAddress(params);
+            return ResponseEntity.ok("Tao dia chi moi thanh cong");
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body("Tao that bai");
+        }
+    }
+
+    @GetMapping("/get-address/{id}")
+    public ResponseEntity<?> getAddress(@PathVariable Long id){
+        try{
+            return ResponseEntity.ok((addressService.findById(id)));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error");
+        }
+    }
+
+    @PostMapping("/update-address")
+    public ResponseEntity<?> updateAddress(@Valid @RequestBody Map<String, String> params, BindingResult result){
+        if(result.hasErrors()){
+            return ResponseEntity.badRequest().body("Error");
+        }
+        try{
+            addressService.updateAddress(params);
+            return ResponseEntity.ok("Success");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error");
+        }
     }
 
 

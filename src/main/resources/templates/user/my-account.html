@@ -232,15 +232,57 @@
                             </div>
                             <div class="tab-pane fade" id="nav-address" role="tabpanel">
                                 <div class="axil-dashboard-address">
+                                    <a href="#"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#address-modal"
+                                            class="btn btn-primary">Thêm địa chỉ mới</a>
                                     <div class="row row--30">
                                         <div class="col-lg-6" th:each="address : ${addresses}">
                                             <div class="address-info mb--40">
                                                 <div class="addrss-header d-flex align-items-center justify-content-between">
                                                     <h4 class="title mb-0">Shipping Address</h4>
-                                                    <a href="#" class="address-edit"
+                                                    <a href="#"
+                                                       id="address-edit"
+                                                       class="address-edit"
                                                        data-bs-toggle="modal"
-                                                       data-bs-target="#address-modal"><i class="far fa-edit"></i></a>
+                                                       data-bs-target="#edit-address-modal"
+                                                       th:onclick="|loadAddressData(${address.id})|"
+                                                        th:value="${address.id}"><i class="far fa-edit"></i></a>
                                                 </div>
+
+                                                <div class="modal fade" id="edit-address-modal" tabindex="-1" aria-labelledby="address-modal-label" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="add-address-modal-label">Update Address</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label for="city">City</label>
+                                                                    <input type="text" class="form-control" id="edit-city" placeholder="Enter your city">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="district">District</label>
+                                                                    <input type="text" class="form-control" id="edit-district" placeholder="Enter your district">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="street">Street</label>
+                                                                    <input type="text" class="form-control" id="edit-street" placeholder="Enter your street">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="detailLocation">Detail Location</label>
+                                                                    <input type="text" class="form-control" id="edit-detailLocation" placeholder="Enter your detail location">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" onclick="updateAddress()">Update Address</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <ul class="address-details">
                                                     <li th:text="'Detail: ' + ${address.getDetailLocation()}"></li>
                                                     <li th:text="'Street: ' + ${address.getStreet()}"></li>
@@ -268,7 +310,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="address-modal-label">Edit Address</h5>
+                    <h5 class="modal-title" id="address-modal-label">Add Address</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -296,6 +338,8 @@
             </div>
         </div>
     </div>
+
+
 </main>
 
 <div th:insert="~{/user/fragments/service-area-footer::service-area-footer}"></div>
@@ -454,6 +498,51 @@
             },
             error: function (xhr) {
                 alert("Failed to save address. Please try again.");
+            }
+        });
+    }
+
+    function loadAddressData(addressId) {
+        $.ajax({
+            url: `/user/get-address/${addressId}`,
+            type: 'GET',
+            success: function (response) {
+                $('#edit-city').val(response.city);
+                $('#edit-district').val(response.district);
+                $('#edit-street').val(response.street);
+                $('#edit-detailLocation').val(response.detailLocation);
+                $('#edit-address-modal').modal('show');
+            },
+            error: function (xhr) {
+                alert('Failed to load address data. Please try again.');
+            }
+        });
+    }
+
+    function updateAddress() {
+        const addressId = $('#address-edit').attr('value');
+        const city = $('#edit-city').val();
+        const district = $('#edit-district').val();
+        const street = $('#edit-street').val();
+        const detailLocation = $('#edit-detailLocation').val();
+
+        if (city === "" || district === "" || street === "" || detailLocation === "") {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        $.ajax({
+            url: `/user/update-address`,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ addressId: addressId, city: city, district: district, street: street, detailLocation: detailLocation }),
+            success: function (response) {
+                alert('Address updated successfully!');
+                $('#edit-address-modal').modal('hide');
+                window.location.reload();
+            },
+            error: function (xhr) {
+                alert('Failed to update address. Please try again.');
             }
         });
     }
