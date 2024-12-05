@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.services.interfaces;
 import com.hcmute.tech_shop.entities.Address;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IAddressService {
@@ -21,4 +22,5 @@ public interface IAddressService {
     void deleteById(Long aLong);
 
     void deleteAll();
+    void updateAddress(Map<String, String> params);
 }

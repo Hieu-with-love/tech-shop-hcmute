@@ -107,22 +107,7 @@ public class HomeController {
         return "user/my-account";
     }
 
-    @PostMapping("/save-address")
-    public ResponseEntity<?> createNewAddress(@Valid @RequestBody Map<String, String> params,
-                                              BindingResult result){
-        try{
-            if (result.hasErrors()){
-                List<String> errors = result.getFieldErrors().stream()
-                        .map(FieldError::getDefaultMessage)
-                        .toList();
-                return ResponseEntity.badRequest().body(errors);
-            }
-            userService.saveAddress(params);
-            return ResponseEntity.ok("Tao dia chi moi thanh cong");
-        }catch (Exception ex){
-            return ResponseEntity.badRequest().body("Tao that bai");
-        }
-    }
+
 
 
 }
