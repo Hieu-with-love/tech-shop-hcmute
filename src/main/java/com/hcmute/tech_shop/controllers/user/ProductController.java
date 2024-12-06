@@ -3,6 +3,7 @@ package com.hcmute.tech_shop.controllers.user;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 
 import com.hcmute.tech_shop.dtos.requests.RatingRequest;
+import com.hcmute.tech_shop.dtos.responses.ProductImageRes;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
 import jakarta.servlet.http.HttpSession;
@@ -83,7 +84,7 @@ public class ProductController {
     public String productDetail(Model model, @PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
         ProductResponse productResponse = productService.getProductResponse(id);
-        List<ProductImage> productImages = productImageService.findByProductId(id);
+        List<ProductImageRes> productImages = productImageService.getProductImages(id);
         List<Rating> ratings = ratingService.findByProductId(id);
         int ratingCount = ratingService.countRatingStar(id);
         int ratingUser = ratingService.countUser(id);
@@ -106,6 +107,9 @@ public class ProductController {
         ProductResponse product = productService.getProductResponse(productId);
 
         // Tạo Map để trả về dữ liệu
+        int ratings = ratingService.countUser(productId);
+        String ratingsString = ratings > 0 ? String.valueOf(ratings) : "Chưa có đánh giá!";
+
         Map<String, String> response = new HashMap<>();
         response.put("name", product.getName());
         response.put("price", String.valueOf(product.getPrice())); // Chuyển giá trị số sang chuỗi
@@ -113,6 +117,7 @@ public class ProductController {
         response.put("thumbnail", product.getThumbnail());
         response.put("stockQuantity", String.valueOf(product.getStockQuantity()));
         response.put("isUrlImage", String.valueOf(product.isUrlImage()));
+        response.put("ratings", ratingsString);
 
         return ResponseEntity.ok(response);
     }

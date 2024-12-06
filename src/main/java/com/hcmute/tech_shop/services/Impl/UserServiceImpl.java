@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
             String avatar = null;
             if (file == null){
-                avatar = "avtdefault.png";
+                avatar = "avtdefault.jpg";
             } else {
                 if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
                     throw new BadRequestException("Image is not valid");
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
         try{
             String avatar = null;
             if (file == null){
-                avatar = "avtdefault.png";
+                avatar = "avtdefault.jpg";
             } else {
                 if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
                     throw new BadRequestException("Image is not valid");

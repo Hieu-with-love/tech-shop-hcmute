@@ -56,7 +56,8 @@
                                     <label for="profileImage">
                                         <img id="profileImagePreview" th:if="${profileDto.image != null}"
                                              th:src="@{'/uploads/' + ${profileDto.image}}" alt="Hello Annie"
-                                             class="profile-picture">
+                                             class="profile-picture"
+                                            style="width: 50px; height: 50px;">
                                         <img th:if="${profileDto.image == null}" alt="Welcome to LaptopShop"
                                              th:src="@{/user/assets/images/product/author1.png}"
                                              class="profile-picture">
