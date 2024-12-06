@@ -69,4 +69,9 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     public List<OrderDetail> findAll(Sort sort) {
         return orderDetailRepository.findAll(sort);
     }
+
+    @Override
+    public List<OrderDetail> findAllByOrderId(Long id){
+        return orderDetailRepository.findByOrderId(id);
+    }
 }

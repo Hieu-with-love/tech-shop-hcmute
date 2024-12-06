@@ -26,4 +26,6 @@ public interface IOrderDetailService {
     void deleteAll();
 
     List<OrderDetail> findAll(Sort sort);
+
+    List<OrderDetail> findAllByOrderId(Long id);
 }

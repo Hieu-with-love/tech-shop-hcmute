@@ -3,8 +3,11 @@ package com.hcmute.tech_shop.controllers.shipper;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.OrderReponse;
 import com.hcmute.tech_shop.entities.Address;
+import com.hcmute.tech_shop.entities.Order;
+import com.hcmute.tech_shop.entities.OrderDetail;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.enums.OrderStatus;
+import com.hcmute.tech_shop.services.Impl.OrderDetailServiceImpl;
 import com.hcmute.tech_shop.services.Impl.OrderServiceImpl;
 import com.hcmute.tech_shop.services.Impl.UserServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.IAddressService;
@@ -14,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -32,6 +32,9 @@ public class ShipperOperation {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private OrderDetailServiceImpl orderDetailService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model){
@@ -71,8 +74,12 @@ public class ShipperOperation {
     }
 
     @GetMapping("/shipping/{id}")
-    public String showDetailShipping(@RequestParam("id") Long id, Model model) {
+    public String showDetailShipping(@PathVariable("id") Long id, Model model) {
+        Order order = orderService.findById(id).get();
+        List<OrderDetail> orderDetailList = orderDetailService.findAllByOrderId(id);
 
+        model.addAttribute("order", order);
+        model.addAttribute("orderDetailList", orderDetailList);
         return "shipper/pages-invoice";
     }
 

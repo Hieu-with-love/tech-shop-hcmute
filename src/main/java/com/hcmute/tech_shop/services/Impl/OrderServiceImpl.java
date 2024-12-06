@@ -184,7 +184,7 @@ public class OrderServiceImpl implements IOrderService {
             orderReponse.setOrderId(order.getId());
             orderReponse.setShipper(order.getShipper());
             orderReponse.setStatus(order.getStatus());
-            orderReponse.setCustomerName(order.getUser().getLastName()+order.getUser().getFirstName());
+            orderReponse.setCustomerName(order.getUser().getLastName()+" "+order.getUser().getFirstName());
             orderReponse.setPaymentName(order.getPayment().getName());
             orderReponse.setTotalPrice(Constant.formatter.format(order.getTotalPrice()));
             orderReponse.setShippingAddress(order.getAddress());
@@ -200,7 +200,7 @@ public class OrderServiceImpl implements IOrderService {
         orderReponse.setOrderId(order.getId());
         orderReponse.setShipper(order.getShipper());
         orderReponse.setStatus(order.getStatus());
-        orderReponse.setCustomerName(order.getUser().getLastName()+order.getUser().getFirstName());
+        orderReponse.setCustomerName(order.getUser().getLastName()+" "+order.getUser().getFirstName());
         orderReponse.setPaymentName(order.getPayment().getName());
         orderReponse.setTotalPrice(Constant.formatter.format(order.getTotalPrice()));
         orderReponse.setShippingAddress(order.getAddress());
