@@ -43,6 +43,21 @@ public class ProductServiceImpl implements IProductService {
     private final Path root = Paths.get("./uploads");
 
     @Override
+    public List<ProductResponse> findByNameContaining(String name) {
+        List<Product> products = productRepository.findByNameContaining(name);
+        List<ProductResponse> productResponses = new ArrayList<>();
+        for (Product product : products) {
+            productResponses.add(ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .price(Constant.formatter.format(product.getPrice()))
+                    .thumbnail(product.getThumbnail())
+                    .build());
+        }
+        return productResponses;
+    }
+
+    @Override
     public void decreaseStockQuantity(Long productId, int quantity) {
         Product product = productRepository.findById(productId).get();
         product.setStockQuantity(product.getStockQuantity() - quantity);
@@ -79,15 +94,35 @@ public class ProductServiceImpl implements IProductService {
     }
 
 
-    @Override
-    public List<ProductResponse> filterProducts(Map<String, Object> params) {
+    public Page<ProductResponse> filterProducts(Map<String, Object> params, Pageable pageable) {
+        // Chuyển đổi tham số filter từ Map sang ProductFilterBuilder
         ProductFilterBuilder builder = productFilterBuilderConverter.toProductFilterBuilder(params);
 
-        List<Product> productEntities =productRepository.findAll(
-                ProductRepositoryCustom.filter(builder)
+        // Lấy Page<Product> từ ProductRepository với filter và phân trang
+        Page<Product> productPage = productRepository.findAll(
+                ProductRepositoryCustom.filter(builder), pageable
         );
 
-        return getAllProducts(productEntities);
+        // Chuyển đổi Page<Product> sang Page<ProductResponse>
+        return productPage.map(this::convertToProductResponse);
+    }
+
+    private ProductResponse convertToProductResponse(Product p) {
+        String oldPrice = Constant.formatter.format(p.getPrice().add(BigDecimal.valueOf(2000000)));
+        boolean isUrlImage = false;
+
+        if (p.getThumbnail() != null && p.getThumbnail().startsWith("https")) {
+            isUrlImage = true;
+        }
+
+        return ProductResponse.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .price(Constant.formatter.format(p.getPrice()))
+                .oldPrice(oldPrice)
+                .thumbnail(p.getThumbnail())
+                .isUrlImage(isUrlImage)
+                .build();
     }
 
     public String saveImage(MultipartFile file) {
@@ -210,7 +245,7 @@ public class ProductServiceImpl implements IProductService {
             if (!isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
                 throw new BadRequestException("Image is not valid");
             }
-//            deleteImage(existingProduct.getThumbnail());
+            deleteImage(existingProduct.getThumbnail());
             thumbnail = saveImage(file);
         }
         // get product old by id

@@ -3,13 +3,16 @@ package com.hcmute.tech_shop.builder;
 import java.util.List;
 
 public class ProductFilterBuilder {
+    private String name;
     private String categoryName;
     private List<String> brandNames;
     private List<String> rams;
     private Long minPrice;
     private Long maxPrice;
 
+    // Constructor private để đảm bảo chỉ sử dụng Builder
     private ProductFilterBuilder(Builder builder) {
+        this.name = builder.name;
         this.categoryName = builder.categoryName;
         this.brandNames = builder.brandNames;
         this.rams = builder.rams;
@@ -17,12 +20,20 @@ public class ProductFilterBuilder {
         this.maxPrice = builder.maxPrice;
     }
 
+    // Builder class
     public static class Builder {
+        private String name;
         private String categoryName;
         private List<String> brandNames;
         private List<String> rams;
         private Long minPrice;
         private Long maxPrice;
+
+        // Setter cho name
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
 
         public Builder setCategoryName(String categoryName) {
             this.categoryName = categoryName;
@@ -54,6 +65,11 @@ public class ProductFilterBuilder {
         }
     }
 
+    // Getter methods
+    public String getName() {
+        return name;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -73,7 +89,7 @@ public class ProductFilterBuilder {
     public Long getMaxPrice() {
         return maxPrice;
     }
-
 }
+
 
 

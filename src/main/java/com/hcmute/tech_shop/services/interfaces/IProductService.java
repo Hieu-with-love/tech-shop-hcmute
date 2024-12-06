@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
 import com.hcmute.tech_shop.entities.Product;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,13 +15,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface IProductService {
+    List<ProductResponse> findByNameContaining(String name);
+
     void decreaseStockQuantity(Long productId, int quantity);
 
     void init();
     List<ProductResponse> getAllProducts(List<Product> products);
     ProductResponse getProductResponse(Long productId);
 
-    List<ProductResponse> filterProducts(Map<String, Object> params);
+    Page<ProductResponse> filterProducts(Map<String, Object> params, Pageable pageable);
 
     boolean deleteImage(String filename);
 

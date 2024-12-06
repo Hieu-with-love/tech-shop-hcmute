@@ -102,4 +102,73 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function searchProducts(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                const query = document.getElementById('prod-search').value;
+                if (query.length < 3) {
+                    // Optionally, you can clear the results if the query is too short
+                    document.querySelector('.psearch-results').innerHTML = '';
+                    return;
+                }
+
+                fetch(`/user/products/search?query=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        displaySearchResults(data);
+                    })
+                    .catch(error => console.error('Error fetching products:', error));
+            }
+
+            function displaySearchResults(products) {
+                const resultsContainer = document.querySelector('.psearch-results');
+                resultsContainer.innerHTML = '';
+
+                products.forEach(product => {
+                    const productElement = document.createElement('div');
+                    productElement.classList.add('axil-product-list');
+                    productElement.innerHTML = `
+                <div class="thumbnail">
+                    <a href="/product/${product.id}">
+                        <img src="${product.oldThumbnail}" alt="${product.name}" />
+                    </a>
+                </div>
+                <div class="product-content">
+                    <div class="product-rating">
+                        <span class="rating-icon">
+                            ${getRatingStars(product.rating)}
+                        </span>
+                        <span class="rating-number"><span>${product.reviewsCount}</span> Reviews</span>
+                    </div>
+                    <h6 class="product-title">
+                        <a href="/product/${product.id}">${product.name}</a>
+                    </h6>
+                    <div class="product-price-variant">
+                        <span class="price current-price">$${product.currentPrice}</span>
+                        <span class="price old-price">$${product.oldPrice}</span>
+                    </div>
+                    <div class="product-cart">
+                        <a href="/cart" class="cart-btn"><i class="fal fa-shopping-cart"></i></a>
+                        <a href="/wishlist" class="cart-btn"><i class="fal fa-heart"></i></a>
+                    </div>
+                </div>
+            `;
+                    resultsContainer.appendChild(productElement);
+                });
+            }
+
+            function getRatingStars(rating) {
+                let stars = '';
+                for (let i = 0; i < 5; i++) {
+                    stars += i < rating ? '<i class="fas fa-star"></i>' : '<i class="fal fa-star"></i>';
+                }
+                return stars;
+            }
+
+            // Expose the searchProducts function to the global scope
+            window.searchProducts = searchProducts;
+        });
+    </script>
 </div>

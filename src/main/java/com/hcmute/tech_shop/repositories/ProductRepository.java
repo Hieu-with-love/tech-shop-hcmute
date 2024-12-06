@@ -12,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+    List<Product> findByNameContaining(String name);
+
     Product findByName(String name);
 
     @Query("SELECT p FROM Product p WHERE p.cpu LIKE %?1%")
@@ -48,6 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByStockQuantity(int stockQuantity);
 
     List<Product> findByCategoryName(String categoryName);
+
     List<Product> findByBrandName(String brandName);
 
     // Paging and Sorting methods
