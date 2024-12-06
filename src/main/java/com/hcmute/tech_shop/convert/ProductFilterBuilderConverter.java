@@ -13,6 +13,7 @@ public class ProductFilterBuilderConverter {
 
     public ProductFilterBuilder toProductFilterBuilder(Map<String, Object> params) {
         ProductFilterBuilder productFilterBuilder = new ProductFilterBuilder.Builder()
+                .setName(MapUtil.getObject(params,"name",String.class))
                 .setCategoryName(MapUtil.getObject(params, "categoryName", String.class))
                 .setBrandNames(MapUtil.getObject(params, "brandNames", List.class))
                 .setRams(MapUtil.getObject(params, "rams", List.class))
