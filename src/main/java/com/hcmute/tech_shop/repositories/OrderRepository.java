@@ -12,5 +12,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     String user(User user);
 
-    List<Order> findByShipper_IdAndStatusEquals(Long shipperId, String status);
+    List<Order> getAllByShipperIdAndStatusEquals(Long shipperId, String status);
+    List<Order> getAllByShipperId(Long shipperId);
 }

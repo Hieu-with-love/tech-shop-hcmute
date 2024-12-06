@@ -9,6 +9,7 @@ import com.hcmute.tech_shop.services.interfaces.ICartDetailService;
 import com.hcmute.tech_shop.services.interfaces.IOrderService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.services.interfaces.IVoucherService;
+import com.hcmute.tech_shop.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -158,19 +159,51 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, String orderStatus) {
-        List<Order> orderList = orderRepository.findByShipper_IdAndStatusEquals(shipperId, orderStatus);
+        List<Order> orderList = orderRepository.getAllByShipperIdAndStatusEquals(shipperId, orderStatus);
         List<OrderReponse> orderReponseList = new ArrayList<>();
         for (Order order : orderList) {
             OrderReponse orderReponse = new OrderReponse();
-            orderReponse.setId(order.getId());
+            orderReponse.setOrderId(order.getId());
             orderReponse.setShipper(order.getShipper());
             orderReponse.setStatus(order.getStatus());
             orderReponse.setCustomerName(order.getUser().getLastName()+order.getUser().getFirstName());
             orderReponse.setPaymentName(order.getPayment().getName());
-            orderReponse.setTotalPrice(order.getTotalPrice());
-            orderReponse.setAddress(order.getAddress().getDetailLocation());
+            orderReponse.setTotalPrice(Constant.formatter.format(order.getTotalPrice()));
+            orderReponse.setShippingAddress(order.getAddress());
             orderReponseList.add(orderReponse);
         }
         return orderReponseList;
+    }
+
+    @Override
+    public List<OrderReponse> findAllByShipperId(Long shipperId) {
+        List<Order> orderList = orderRepository.getAllByShipperId(shipperId);
+        List<OrderReponse> orderReponseList = new ArrayList<>();
+        for (Order order : orderList) {
+            OrderReponse orderReponse = new OrderReponse();
+            orderReponse.setOrderId(order.getId());
+            orderReponse.setShipper(order.getShipper());
+            orderReponse.setStatus(order.getStatus());
+            orderReponse.setCustomerName(order.getUser().getLastName()+order.getUser().getFirstName());
+            orderReponse.setPaymentName(order.getPayment().getName());
+            orderReponse.setTotalPrice(Constant.formatter.format(order.getTotalPrice()));
+            orderReponse.setShippingAddress(order.getAddress());
+            orderReponseList.add(orderReponse);
+        }
+        return orderReponseList;
+    }
+
+    @Override
+    public OrderReponse findByOrderId(Long id){
+        Order order = orderRepository.findById(id).get();
+        OrderReponse orderReponse = new OrderReponse();
+        orderReponse.setOrderId(order.getId());
+        orderReponse.setShipper(order.getShipper());
+        orderReponse.setStatus(order.getStatus());
+        orderReponse.setCustomerName(order.getUser().getLastName()+order.getUser().getFirstName());
+        orderReponse.setPaymentName(order.getPayment().getName());
+        orderReponse.setTotalPrice(Constant.formatter.format(order.getTotalPrice()));
+        orderReponse.setShippingAddress(order.getAddress());
+        return orderReponse;
     }
 }

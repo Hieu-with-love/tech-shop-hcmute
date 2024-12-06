@@ -45,4 +45,7 @@ public interface IOrderService {
 
     List<Order> findAll(Sort sort);
     List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, String orderStatus);
+    List<OrderReponse> findAllByShipperId(Long shipperId);
+
+    OrderReponse findByOrderId(Long id);
 }

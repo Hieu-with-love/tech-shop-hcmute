@@ -45,7 +45,7 @@ public class SecurityConfig {
                     .requestMatchers("/uploads/**").permitAll()
                     .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                     .requestMatchers("/login").permitAll()
-                    .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER", "MANAGER")
+                    .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER", "MANAGER", "SHIPPER")
                     .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
                     .requestMatchers("/shipper/**").hasAnyRole("ADMIN", "SHIPPER")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
