@@ -112,22 +112,10 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label>Your Address</label>
-                                <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal" data-bs-target="#address-modal">Enter Address</button>
-                            </div>
-
                             <div class="form-group">
                                 <label>Day of birth</label>
                                 <input type="date" class="form-control" id="dob" th:field="*{dob}">
                                 <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" style="color: red;"></p>
-                            </div>
-                            <div class="custom-file-container">
-                                <label>Your image</label>
-                                <input type="file"
-                                       th:field="*{image}">
-                                <p th:if="${#fields.hasErrors('image')}" th:errors="*{image}" style="color: red;"></p>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">
@@ -136,40 +124,6 @@
                             </div>
                         </form>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Address Modal -->
-    <div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="address-modal-label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="address-modal-label">Enter Your Address</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" placeholder="Enter your city">
-                    </div>
-                    <div class="form-group">
-                        <label for="city">District</label>
-                        <input type="text" class="form-control" id="district" placeholder="Enter your district">
-                    </div>
-                    <div class="form-group">
-                        <label for="city">Street</label>
-                        <input type="text" class="form-control" id="street" placeholder="Enter your street">
-                    </div>
-                    <div class="form-group">
-                        <label for="city">Detail Location</label>
-                        <input type="text" class="form-control" id="detailLocation" placeholder="Enter your detail location">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveAddress()">Save Address</button>
                 </div>
             </div>
         </div>

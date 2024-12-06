@@ -80,22 +80,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createUser(UserRequest userRequest, MultipartFile file, BindingResult result) throws IOException {
+    public boolean createUser(UserRequest userRequest, BindingResult result) throws IOException {
         Role role = roleService.getRoleByName("user");
 
         validation(userRequest, result);
 
         if (!result.hasErrors()) {
 
-            String avatar = null;
-            if (file == null){
-                avatar = "avtdefault.jpg";
-            } else {
-                if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
-                    throw new BadRequestException("Image is not valid");
-                }
-                avatar = ImageUtil.saveImage(file);
-            }
+//            String avatar = null;
+//            if (file == null){
+//                avatar = "avtdefault.jpg";
+//            } else {
+//                if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
+//                    throw new BadRequestException("Image is not valid");
+//                }
+//                avatar = ImageUtil.saveImage(file);
+//            }
 
             User user = User.builder()
                     .username(userRequest.getUsername())
@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService {
                     .dateOfBirth(userRequest.getDob())
                     .role(role)
                     .isActive(false)
-                    .image(avatar)
                     .build();
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
@@ -220,21 +219,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updatePassword(Map<String,String> params, BindingResult result) {
+        String oldPassword = params.get("old-password");
         String password = params.get("password");
-        String confirmPassword = params.get("confirmPassword");
         String username = params.get("username");
+        User user = this.getUserByUsername(username);
         // Kiểm tra mật khẩu trống hoặc độ dài ngắn
         if (password == null || password.length() < 3) {
             result.addError(new FieldError("changePassword", "password", "Password phải có ít nhất 3 ký tự."));
         }
 
         // Kiểm tra xác nhận mật khẩu
-        if (!password.equals(confirmPassword)) {
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             result.addError(new FieldError("changePassword", "confirmPassword", "Xác nhận mật khẩu không khớp."));
         }
 
         if (!result.hasErrors()) {
-            User user = this.getUserByUsername(username);
             user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
             return true;
