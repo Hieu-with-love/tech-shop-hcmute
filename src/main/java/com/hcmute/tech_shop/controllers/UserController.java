@@ -52,7 +52,6 @@ public class UserController {
     @PostMapping("/register")
     public String register(Model model,
                            @Valid @ModelAttribute("userRegister") UserRequest userRequest,
-                           MultipartFile file,
                            BindingResult result
                            ) throws IOException {
         // Catch null value exception
@@ -60,7 +59,7 @@ public class UserController {
             return "user/sign-up";
         }
 
-        boolean is = userService.createUser(userRequest, file, result);
+        boolean is = userService.createUser(userRequest, result);
 
         // Catch logic by system exception
         if (result.hasErrors()) {

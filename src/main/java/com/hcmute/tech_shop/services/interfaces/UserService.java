@@ -18,7 +18,7 @@ public interface UserService {
     User getUser(Long id);
     User getUserByUsername(String username);
     User getUserByEmail(String email);
-    boolean createUser(UserRequest userRequest, MultipartFile file, BindingResult result) throws IOException;
+    boolean createUser(UserRequest userRequest, BindingResult result) throws IOException;
     Address saveAddress(Map<String, String> params);
     boolean updateUser(Long id, UserRequest userRequest, BindingResult result);
     boolean updateProfile(User user, ProfileDto profileDto, MultipartFile file, BindingResult result);
