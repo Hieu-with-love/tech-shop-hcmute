@@ -387,6 +387,7 @@ public class ProductServiceImpl implements IProductService {
             ProductRequest productDTO = new ProductRequest();
             BeanUtils.copyProperties(product, productDTO);
             productDTO.setImg(product.getThumbnail());
+            productDTO.setUrlImage(product.getThumbnail().startsWith("https"));
             productDTOList.add(productDTO);
         }
         return productDTOList;

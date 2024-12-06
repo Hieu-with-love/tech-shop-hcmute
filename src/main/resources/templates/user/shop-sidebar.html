@@ -1,39 +1,43 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
 
-<div th:insert="~{user/fragments/head::head}"></div>
-<link rel="stylesheet"
-      th:href="@{/user/customize/css/main.css}"/>
+<head>
+    <title>TechShop || Shop</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/user/customize/css/main.css}"/>
 
-<style>
-    .shop-submenu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
+    <style>
+        .shop-submenu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-    /* Style cho mỗi tùy chọn RAM */
-    .ram-option {
-        padding: 10px 15px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 14px;
-        color: #333;
-        transition: all 0.3s ease;
-    }
+        /* Style cho mỗi tùy chọn RAM */
+        .ram-option {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
 
-    /* Khi chọn, hiển thị màu xanh */
-    .ram-option.selected {
-        background-color: #007bff;
-        color: #fff;
-        border-color: #007bff;
-    }
-</style>
+        /* Khi chọn, hiển thị màu xanh */
+        .ram-option.selected {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+
 
 <body class="sticky-header">
 <!-- Start Header -->
@@ -189,6 +193,12 @@
                                 <div class="thumbnail">
                                     <a th:href="@{/user/products/product-detail/{id}(id=${product.id})}">
                                         <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
+                                             th:if="${product.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm"/>
+                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
+                                             th:unless="${product.isUrlImage()}"
                                              th:src="@{'/uploads/'+${product.thumbnail}}"
                                              class="product-image"
                                              alt="Ảnh sản phẩm"/>
@@ -242,6 +252,14 @@
                         <!-- End Single Product  -->
 
                     </div>
+
+                    <input type="hidden" id="totalPages" th:value="${totalPages}">
+                    <div th:if="${totalPages == 0}" id="error-notification" style="display: none;">
+                        <div class="empty-notification">
+                            <img th:src="@{/user/assets/images/my-image/shop-empty.png}" alt="Error Notification">
+                            <p>Somethings you can don't available. You can looking for some different!</p>
+                        </div>
+                    </div>
                     <div class="custom-pagination">
                         <ul>
                             <!-- Nút "Trang Trước" -->
@@ -251,7 +269,8 @@
                             </li>
 
                             <!-- Hiển thị số trang -->
-                            <li th:each="index : ${#numbers.sequence(0, totalPages - 1)}">
+                            <li th:if="${totalPages > 0}"
+                                th:each="index : ${#numbers.sequence(0, totalPages - 1)}">
                                 <a th:href="@{${baseUrl} + 'pageNumber=' + ${index} + '&pageSize=' + ${pageSize} + '&sortBy=' + ${sortBy} + '&sortOrder=' + ${sortOrder}}"
                                    th:text="${index + 1}"
                                    th:classappend="${index == currentPage} ? 'active' : '' "
@@ -297,9 +316,16 @@
 <!-- Modernizer JS -->
 <div th:insert="~{/user/fragments/script::script}"></div>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const totalPages = parseInt(document.getElementById('totalPages').value, 10);
+        if (totalPages == 0) {
+            document.getElementById('error-notification').style.display = 'block';
+        }
+    });
+
     document.querySelectorAll('.wishlist-form').forEach(form => {
         form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Ngăn tải lại trang
+            e.preventDefault(); // Prevent page reload
             const formData = new FormData(this);
             const actionUrl = this.getAttribute('action');
 
@@ -309,11 +335,16 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    alert(data); // Thông báo thành công
+                    if (data.includes('<div class="axil-signin-form">')) {
+                        // Redirect to login page if login page content is detected
+                        window.location.href = '/login';
+                    } else {
+                        alert(data); // Success notification
+                    }
                 })
                 .catch(error => {
-                    console.error('Lỗi:', error);
-                    alert('Có lỗi xảy ra!');
+                    console.error('Error:', error);
+                    alert('An error occurred!');
                 });
         });
     });
