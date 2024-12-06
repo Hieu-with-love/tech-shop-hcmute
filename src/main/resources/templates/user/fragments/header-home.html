@@ -18,7 +18,7 @@
                 <div class="col-lg-2 col-sm-3 col-5">
                     <div class="header-brand">
                         <a th:href="@{/user/home}" class="logo logo-dark">
-                            <img th:src="@{/user/assets/images/logo/logo.png}" alt="Site Logo" />
+                            <img th:src="@{/user/assets/images/logo/logo.png}" alt="Site Logo"/>
                         </a>
                         <a th:href="@{/user/home}" class="logo logo-light">
                             <img
@@ -31,19 +31,21 @@
                 <div class="col-lg-10 col-sm-9 col-7">
                     <div class="header-top-dropdown dropdown-box-style">
                         <div class="axil-search">
-                            <button type="submit" class="icon wooc-btn-search">
-                                <i class="far fa-search"></i>
-                            </button>
-                            <input
-                                    type="search"
-                                    class="placeholder product-search-input"
-                                    name="search2"
-                                    id="search2"
-                                    value=""
-                                    maxlength="128"
-                                    placeholder="What are you looking for...."
-                                    autocomplete="off"
-                            />
+                            <form th:action="@{/user/products/search}" method="post" onsubmit="setSearchAction()">
+                                <button type="submit" class="icon wooc-btn-search">
+                                    <i class="far fa-search"></i>
+                                </button>
+                                <input
+                                        type="search"
+                                        class="placeholder product-search-input"
+                                        name="search"
+                                        id="search"
+                                        value=""
+                                        maxlength="128"
+                                        placeholder="What are you looking for...."
+                                        autocomplete="off"
+                                />
+                            </form>
                         </div>
                         <div class="dropdown">
                             <button
@@ -98,7 +100,8 @@
                             </button>
                             <ul class="nav-menu-list" th:each="category : ${categories}">
                                 <li>
-                                    <a class="nav-link has-megamenu me-3" th:href="@{/user/products(categoryName=${category.name})}">
+                                    <a class="nav-link has-megamenu me-3"
+                                       th:href="@{/user/products(categoryName=${category.name})}">
                                         <span class="menu-text" th:text="${category.name}"></span>
                                     </a>
                                 </li>
@@ -130,7 +133,8 @@
                             <li class="menu-item-has-children">
                                 <a href="#">Pages</a>
                                 <ul class="axil-submenu">
-                                    <li><a th:href="@{/user/wishlist(wishlistId=${session.wishlistId})}">Wishlist</a></li>
+                                    <li><a th:href="@{/user/wishlist(wishlistId=${session.wishlistId})}">Wishlist</a>
+                                    </li>
                                     <li><a th:href="@{/user/cart}">Cart</a></li>
                                 </ul>
                             </li>
@@ -177,8 +181,8 @@
                         <li class="wishlist">
                             <a th:href="@{/user/wishlist(wishlistId=${session.wishlistId})}">
                                 <p class="cart-count"
-                                        th:if="${session.wishlistCount > 0}"
-                                        th:text="${session.wishlistCount}"></p>
+                                   th:if="${session.wishlistCount > 0}"
+                                   th:text="${session.wishlistCount}"></p>
                                 <i class="flaticon-heart"></i>
                             </a>
                         </li>
@@ -192,9 +196,10 @@
                         </li>
                         <li class="my-account">
                             <a href="javascript:void(0)">
-                                <i class="flaticon-person"></i><p class="sub-title"
-                                                                  th:if="${#authentication.principal != null && #authentication.principal != 'anonymousUser'}"
-                                                                  th:text="${session.user.lastName}"></p>
+                                <i class="flaticon-person"></i>
+                                <p class="sub-title"
+                                   th:if="${#authentication.principal != null && #authentication.principal != 'anonymousUser'}"
+                                   th:text="${session.user.lastName}"></p>
                             </a>
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
@@ -219,8 +224,10 @@
                                     </li>
                                 </ul>
                                 <div class="login-btn">
-                                    <a th:if="${#authentication.principal != 'anonymousUser'}" th:href="@{/logout}" class="axil-btn btn-bg-primary">Logout</a>
-                                    <a th:if="${#authentication.principal == 'anonymousUser'}" th:href="@{/login}" class="axil-btn btn-bg-primary">Login</a>
+                                    <a th:if="${#authentication.principal != 'anonymousUser'}" th:href="@{/logout}"
+                                       class="axil-btn btn-bg-primary">Logout</a>
+                                    <a th:if="${#authentication.principal == 'anonymousUser'}" th:href="@{/login}"
+                                       class="axil-btn btn-bg-primary">Login</a>
                                 </div>
                                 <div class="reg-footer text-center">
                                     No account yet?
@@ -239,4 +246,11 @@
         </div>
     </div>
     <!-- End Mainmenu Area  -->
+    <script>
+        function setSearchAction() {
+            const searchInput = document.getElementById('search').value;
+            const form = document.getElementById('searchForm');
+            form.action = `/user/products/search?search=${searchInput}`;
+        }
+    </script>
 </header>

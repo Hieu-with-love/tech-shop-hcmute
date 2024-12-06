@@ -41,9 +41,6 @@ public class ProductController {
     private final IProductImageService productImageService;
     private final IRatingService ratingService;
     private final ICategoryService categoryService;
-
-    private final IOrderDetailService orderDetailService;
-
     private final IBrandService brandService;
 
 
@@ -54,19 +51,18 @@ public class ProductController {
         List<ProductRequest> productDTOList = productService.findByCategoryName(name);
 
 
-
         model.addAttribute("brands", brands);
 
         model.addAttribute("categories", categoryDTOList);
         model.addAttribute("categoryName", name);
         model.addAttribute("products", productDTOList);
-        model.addAttribute("rating",new RatingRequest());
+        model.addAttribute("rating", new RatingRequest());
         return "user/shop-sidebar";
     }
 
 
     @GetMapping("")
-    public String getProducts(@RequestParam Map<String, Object> params,Model model) {
+    public String getProducts(@RequestParam Map<String, Object> params, Model model) {
 
 
         List<ProductResponse> productResponses = productService.filterProducts(params);
@@ -95,7 +91,7 @@ public class ProductController {
         model.addAttribute("ratings", ratings);
         model.addAttribute("ratingCount", ratingCount);
         model.addAttribute("ratingUser", ratingUser);
-        model.addAttribute("rating",new RatingRequest());
+        model.addAttribute("rating", new RatingRequest());
 
         return "user/single-product-3";
     }
@@ -123,27 +119,35 @@ public class ProductController {
     }
 
 
-
     @PostMapping("/reviews")
     public String reviews(@Valid @ModelAttribute("rating") RatingRequest ratingRequest,
                           @RequestParam("productId") Long productId, HttpSession session,
                           RedirectAttributes redirectAttributes) {
-        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")){
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
             User user = (User) session.getAttribute("user");
             ratingRequest.setProductId(productId);
             ratingRequest.setUserId(user.getId());
 
-            if(ratingService.checkOrderFirst(productId,user.getId())){
-                if (!ratingService.insert(ratingRequest)){
+            if (ratingService.checkOrderFirst(productId, user.getId())) {
+                if (!ratingService.insert(ratingRequest)) {
                     String msg = "Not found user/product";
                     redirectAttributes.addFlashAttribute("msg", msg);
                 }
-            }
-            else {
+            } else {
                 String msg = "You need to buy first";
                 redirectAttributes.addFlashAttribute("msg", msg);
             }
         }
-        return "redirect:/user/products/product-detail/"+productId;
+        return "redirect:/user/products/product-detail/" + productId;
+    }
+
+    @PostMapping("/search")
+    public String searchProducts(@RequestParam("search") String searchValue, Model model) {
+        List<Category> categoryDTOList = categoryService.findAll();
+        List<Brand> brands = brandService.findAll();
+        model.addAttribute("brands", brands);
+        model.addAttribute("categories", categoryDTOList);
+        model.addAttribute("products", productService.findByNameContaining(searchValue));
+        return "user/shop-sidebar";
     }
 }

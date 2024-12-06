@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface IProductService {
+    List<ProductResponse> findByNameContaining(String name);
+
     void decreaseStockQuantity(Long productId, int quantity);
 
     void init();

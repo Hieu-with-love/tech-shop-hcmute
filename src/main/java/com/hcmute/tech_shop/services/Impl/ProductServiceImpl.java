@@ -43,6 +43,21 @@ public class ProductServiceImpl implements IProductService {
     private final Path root = Paths.get("./uploads");
 
     @Override
+    public List<ProductResponse> findByNameContaining(String name) {
+        List<Product> products = productRepository.findByNameContaining(name);
+        List<ProductResponse> productResponses = new ArrayList<>();
+        for (Product product : products) {
+            productResponses.add(ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .price(Constant.formatter.format(product.getPrice()))
+                    .thumbnail(product.getThumbnail())
+                    .build());
+        }
+        return productResponses;
+    }
+
+    @Override
     public void decreaseStockQuantity(Long productId, int quantity) {
         Product product = productRepository.findById(productId).get();
         product.setStockQuantity(product.getStockQuantity() - quantity);
