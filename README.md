@@ -1,7 +1,7 @@
 # Welcome to TechShopHCMUTE Website
 # Project Overview
-TechShopHCMUTE là một project được xây dựng với mong muốn học hỏi về nghiệp vụ bán hàng với nhiều giai đoạn từ các bước của người quản lý chuẩn bị thêm hàng vào kho, cho đến sản phẩm được hiển thị lên trang web cho phép người dùng xem, yêu thích, thêm vào giỏ hàng cho đến các công đoạn thanh toán phức tạp,... TechShopHCMUTE không chỉ là một project kết thúc học phần môn Lập trình Web mà còn là một project tâm huyết với tinh thần ham học hỏi, đổi mới và thách thức bản thân cải tiến sản phẩm hơn thế nữa. Đây cũng là sản phẩm đầu tay của nhóm chúng em chắc vẫn có sai sót, nhưng mong nhận được sự góp ý từ mọi người để chúng em cải tiến, học hỏi được nhiều hơn.
 
+TechShopHCMUTE is a project developed with the goal of learning about sales processes through various stages, from the manager's steps in preparing to add products to inventory, to showcasing products on the website for users to view, favorite, add to their cart, and proceed through the complex payment processes. TechShopHCMUTE is not only a capstone project for the Web Programming course but also a passionate initiative driven by the spirit of curiosity, innovation, and self-challenge to continuously improve the product. This is also our team’s first project, so it might still have shortcomings. We sincerely welcome feedback from everyone to help us improve and learn even more.
 
 # Table of Contents
 - [Features](#features)
@@ -11,7 +11,6 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [Note](#note)
 
 ## Features
 
@@ -28,6 +27,86 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 ### 3. Security
 - Authentication and Authorization: Using Spring Security to protect personal data and manage access rights.
 - Password Encryption: Enhance user information security by encrypting passwords.
+
+## 📚 Project Architecture: Spring Boot with Thymeleaf
+
+## 🔍 Overview
+This project leverages **Spring Boot** as the backend framework and **Thymeleaf** as the frontend templating engine to build a robust web application. It follows a layered architecture to ensure scalability, maintainability, and modular design.
+📦We implemented the project using a three-tier architecture.
+
+## 🏗️ Architecture Layers
+
+### 1. **Presentation Layer (Frontend)**
+- **Description**: Handles user interactions and displays dynamic web pages.
+- **Tools & Technologies**: Thymeleaf, HTML5, CSS3, JavaScript, Bootstrap.
+- **Responsibilities**:
+  - Display data retrieved from the backend using Thymeleaf templates.
+  - Validate user inputs using both client-side (JavaScript) and server-side validations.
+  - Communicate with the backend via HTTP requests (AJAX for dynamic updates).
+
+### 2. **Business Logic Layer (Service Layer)**
+- **Description**: Contains the core business logic of the application.
+- **Key Classes**: Services (`@Service` annotated classes).
+- **Responsibilities**:
+  - Implements the business rules and operations.
+  - Calls the appropriate repositories for data manipulation.
+  - Performs validations and data transformations before sending results to the controller.
+
+### 3. **Data Access Layer**
+- **Description**: Manages interactions with the database with some RDBMS such as MySQL/PostgreSQL (or any supported RDBMS).
+- **Key Components**: Spring Data JPA, Repositories (`@Repository`).
+- **Responsibilities**:
+  - Define repository interfaces for CRUD operations.
+  - Handle complex queries using JPA or custom `@Query` annotations.
+  - Ensure data integrity and consistency.
+
+## ⚙️ Key Components and Structure
+
+### **📂 Project Structure**
+```
+src/
+├── main/
+│   ├── java/com/example/project/
+│   │   ├── config/               # Configuration files
+│   │   │   ├── WebConfig.java
+│   │   │   └── SecurityConfig.java
+│   │   ├── controller/           # Controller layer (handling HTTP requests)
+│   │   │   ├── UserController.java
+│   │   │   ├── ProductController.java
+│   │   │   └── OrderController.java
+│   │   ├── dto/                  # Data Transfer Objects (DTOs)
+│   │   │   ├── UserDTO.java
+│   │   │   └── ProductDTO.java
+│   │   ├── exception/            # Exception handling
+│   │   │   └── GlobalExceptionHandler.java
+│   │   ├── model/                # Entities representing database tables
+│   │   │   ├── User.java
+│   │   │   ├── Product.java
+│   │   │   └── Order.java
+│   │   ├── repository/           # Repository layer for database operations
+│   │   │   ├── UserRepository.java
+│   │   │   └── ProductRepository.java
+│   │   ├── service/              # Service layer (business logic)
+│   │   │   ├── UserService.java
+│   │   │   └── ProductService.java
+│   │   └── ProjectApplication.java # Main entry point
+│   ├── resources/
+│   │   ├── templates/            # Thymeleaf templates for frontend
+│   │   │   ├── index.html
+│   │   │   ├── login.html
+│   │   │   └── product/
+│   │   │       ├── product-list.html
+│   │   │       └── product-detail.html
+│   │   ├── static/               # Static assets (CSS, JS, images)
+│   │   │   ├── css/
+│   │   │   └── js/
+│   │   └── application.yml       # Application configuration file
+├── test/                         # Unit and integration tests
+└── pom.xml                       # Maven dependencies
+```
+
+
+
 ## Technologies Used
 
 - **Spring Boot**: A framework for building Java-based web applications.
@@ -37,9 +116,9 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 - **Hibernate**: An object-relational mapping (ORM) tool for Java.
 - **MySQL**: A relational database management system.
 - **Maven**: A build automation tool used primarily for Java projects.
-- **Git**: A distributed version control system for tracking changes in source code during software development. 
 - **GitHub**: A web-based platform for version control and collaboration, allowing multiple people to work on projects simultaneously.
 - **AJAX**: A technique for creating asynchronous web applications, allowing web pages to be updated asynchronously by exchanging small amounts of data with the server behind the scenes.
+
 ## Prerequisites
 
 ### Make sure you have the following installed:
@@ -50,7 +129,6 @@ TechShopHCMUTE là một project được xây dựng với mong muốn học h�
 - Git and GitHub Account.
 
 ## Installation
----
 1. Clone the repository:
 `https://github.com/Hieu-with-love/tech-shop-hcmute.git`
 2. Open the project with your preferred IDE
@@ -110,13 +188,3 @@ We welcome contributions from everyone! If you have ideas, suggestions, or impro
 7. **Create a Pull Request**: Go to the original repository and create a pull request from your forked repository. Provide a clear description of your changes and why they should be merged.
 
 We appreciate your contributions and look forward to working together to improve TechShopHCMUTE!
-
-## Note:
-
-1. I created account admin at the first times running project.
-    Default admin account:
-    ```
-    usernmae: admin
-    password: admin
-    ```
-2. I also created some users at the first times running project. You can see it in `ApplicationInit` file.
