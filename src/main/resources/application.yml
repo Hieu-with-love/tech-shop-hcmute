@@ -32,7 +32,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    open-in-view: false
+    open-in-view: true
   mail:
     host: ${EMAIL_HOST}
     port: ${EMAIL_PORT}

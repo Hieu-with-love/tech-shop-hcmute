@@ -44,32 +44,40 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>First Name <span>*</span></label>
-                                        <input type="text" id="first-name" th:value="${user.getFirstName()}" disabled>
+                                        <input type="text" id="first-name" th:value="${user.getFirstName()}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Last Name <span>*</span></label>
-                                        <input type="text" id="last-name" th:value="${user.getLastName()}" disabled>
+                                        <input type="text" id="last-name" th:value="${user.getLastName()}" readonly>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Phone <span>*</span></label>
-                                <input type="tel" id="phone" th:value="${user.getPhoneNumber()}" disabled>
+                                <input type="tel" id="phone" th:value="${user.getPhoneNumber()}" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Email Address <span>*</span></label>
-                                <input type="email" id="email" th:value="${user.getEmail()}" disabled>
+                                <input type="email" id="email" th:value="${user.getEmail()}" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Address <span>*</span></label>
-                                <select id="Region">
-                                    <option th:each="address : ${addresses}"
-                                            th:value="${address.getId()}"
-                                            th:text="|${address.getDetailLocation()}, ${address.getStreet()}, ${address.getDistrict()}, ${address.getCity()}|">
-                                    </option>
-                                </select>
+                                <div th:if="${!hasAddress}">
+                                    <div class="form-group">
+                                        <label>Your Address</label>
+                                        <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal" data-bs-target="#address-modal">You haven't address for payment, enter address to payment</button>
+                                    </div>
+                                </div>
+                                <div th:if="${hasAddress}">
+                                    <select id="Region">
+                                        <option th:each="address : ${addresses}"
+                                                th:value="${address.getId()}"
+                                                th:text="|${address.getDetailLocation()}, ${address.getStreet()}, ${address.getDistrict()}, ${address.getCity()}|">
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,6 +161,40 @@
     </div>
     <!-- End Checkout Area  -->
 
+    <!-- Address Modal -->
+    <div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="address-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="address-modal-label">Enter your address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter your city">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">District</label>
+                        <input type="text" class="form-control" id="district" placeholder="Enter your district">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Street</label>
+                        <input type="text" class="form-control" id="street" placeholder="Enter your street">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Detail Location</label>
+                        <input type="text" class="form-control" id="detailLocation" placeholder="Enter your detail location">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAddress()">Save Address</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 
@@ -209,6 +251,44 @@
                 console.error('Error:', error);
             });
     }
+
+    function saveAddress() {
+        var city = $("#city").val(); // Using jQuery to get the value
+        const district = $("#district").val();
+        const street = $("#street").val();
+        const detailLocation = $("#detailLocation").val();
+        if (city === "") {
+            alert("Please enter your city!");
+            return;
+        }
+        if (district === "") {
+            alert("Please enter your district!");
+            return;
+        }
+        if (street === "") {
+            alert("Please enter your street!");
+            return;
+        }
+        if (detailLocation === "") {
+            alert("Please enter your detail location!");
+            return;
+        }
+
+        $.ajax({
+            url: "/user/checkout/save-address",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ city: city, district: district, street: street, detailLocation: detailLocation }),
+            success: function (response) {
+                alert("Address saved successfully!");
+                $('#address-modal').modal('hide'); // Hides the modal
+                window.location.reload(); // Reloads the window
+            },
+            error: function (xhr) {
+                alert("Failed to save address. Please try again.");
+            }
+        });
+    }
 </script>
 <script th:inline="javascript">
     // Injecting voucher names and values from the model attributes
@@ -232,7 +312,7 @@
 
     function updateTotalPrice(newPrice) {
         document.querySelector('.order-total-amount').textContent = newPrice;
-        document.querySelector('.apply-btn button').disabled = true;
+        document.querySelector('.apply-btn button').readonly = true;
 
     }
 </script>

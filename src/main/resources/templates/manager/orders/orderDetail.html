@@ -95,7 +95,7 @@
                                         <input class="btn btn-submit" type="submit" th:value="Pending">
                                     </form>
                                     <form th:action="@{/manager/orders/cancelled(id=${order.get().getId()})}" method="post">
-                                        <input class="btn btn-submit" type="submit" th:value="Cancelled">
+                                        <input class="btn btn-danger" type="submit" th:value="Cancelled">
                                     </form>
                                 </div>
                             </div>

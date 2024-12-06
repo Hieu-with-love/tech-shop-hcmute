@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.services.Impl;
 
+import com.hcmute.tech_shop.dtos.responses.ProductImageRes;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.ProductImage;
 import com.hcmute.tech_shop.repositories.ProductImageRepository;
@@ -79,6 +80,17 @@ public class ProductImageServiceImpl implements IProductImageService {
     @Override
     public List<ProductImage> findByProductId(Long productId) {
         return productImageRepository.findByProductId(productId);
+    }
+
+    @Override
+    public List<ProductImageRes> getProductImages(Long productId) {
+        List<ProductImage> productImages = this.findByProductId(productId);
+        return productImages.stream()
+                .map(productImage -> ProductImageRes.builder()
+                        .url(productImage.getUrl())
+                        .product(productImage.getProduct())
+                        .isUrlImage(productImage.getProduct().getThumbnail().contains("https"))
+                        .build()).toList();
     }
 
     @Override

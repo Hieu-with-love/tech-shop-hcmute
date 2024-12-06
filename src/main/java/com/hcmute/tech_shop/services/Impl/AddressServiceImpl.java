@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -53,5 +54,15 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     public void deleteAll() {
         addressRepository.deleteAll();
+    }
+
+    @Override
+    public void updateAddress(Map<String, String> params) {
+        Address currentAddress = this.findById(Long.parseLong(params.get("addressId"))).get();
+        currentAddress.setCity(params.get("city"));
+        currentAddress.setDistrict(params.get("district"));
+        currentAddress.setStreet(params.get("street"));
+        currentAddress.setDetailLocation(params.get("detailLocation"));
+        addressRepository.save(currentAddress);
     }
 }

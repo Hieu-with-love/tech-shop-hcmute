@@ -84,6 +84,7 @@ public class CartController {
             }
             session.setAttribute("wishlistId", wishlist.getId());
             session.setAttribute("wishlistCount", wishlistItems);
+            model.addAttribute("isEmptyCart", cartDetailList.isEmpty());
         }
 
         User user = userService.getUserByUsername(username);
