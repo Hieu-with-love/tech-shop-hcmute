@@ -779,7 +779,7 @@
 
     document.querySelectorAll('.wishlist-form').forEach(form => {
         form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Ngăn tải lại trang
+            e.preventDefault(); // Prevent page reload
             const formData = new FormData(this);
             const actionUrl = this.getAttribute('action');
 
@@ -789,11 +789,16 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    alert(data); // Thông báo thành công
+                    if (data.includes('<div class="axil-signin-form">')) {
+                        // Redirect to login page if login page content is detected
+                        window.location.href = '/login';
+                    } else {
+                        alert(data); // Success notification
+                    }
                 })
                 .catch(error => {
-                    console.error('Lỗi:', error);
-                    alert('Có lỗi xảy ra!');
+                    console.error('Error:', error);
+                    alert('An error occurred!');
                 });
         });
     });
