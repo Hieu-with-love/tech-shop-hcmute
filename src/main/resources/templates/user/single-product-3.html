@@ -130,9 +130,17 @@
 
                                     <!-- Start Product Action  -->
                                     <ul class="product-action d-flex-center mb--0">
-                                        <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add
-                                            to Cart</a></li>
-                                        <li class="wishlist">
+                                        <li class="add-to-cart">
+                                            <form th:action="@{/user/cart/cart-add}" method="post"
+                                                  class="cart-action">
+                                                <input type="hidden" name="productId" th:value="${product.id}"/>
+                                                <input type="hidden" name="quantity" value="1"/>
+                                                <li class="select-option">
+                                                    <button type="submit" class="add-to-cart-btn">Thêm vào giỏ hàng
+                                                    </button>
+                                                </li>
+                                            </form>
+                                        </li>
                                         <li class="wishlist">
                                             <form th:action="@{/user/wishlist/insert}" method="post" class="wishlist-form">
                                                 <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">

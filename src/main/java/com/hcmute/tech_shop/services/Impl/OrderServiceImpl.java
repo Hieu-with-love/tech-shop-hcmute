@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
+import com.hcmute.tech_shop.dtos.responses.OrderReponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.enums.OrderStatus;
 import com.hcmute.tech_shop.repositories.OrderRepository;
@@ -153,5 +154,23 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public List<Order> findAll(Sort sort) {
         return orderRepository.findAll(sort);
+    }
+
+    @Override
+    public List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, String orderStatus) {
+        List<Order> orderList = orderRepository.findByShipper_IdAndStatusEquals(shipperId, orderStatus);
+        List<OrderReponse> orderReponseList = new ArrayList<>();
+        for (Order order : orderList) {
+            OrderReponse orderReponse = new OrderReponse();
+            orderReponse.setId(order.getId());
+            orderReponse.setShipper(order.getShipper());
+            orderReponse.setStatus(order.getStatus());
+            orderReponse.setCustomerName(order.getUser().getLastName()+order.getUser().getFirstName());
+            orderReponse.setPaymentName(order.getPayment().getName());
+            orderReponse.setTotalPrice(order.getTotalPrice());
+            orderReponse.setAddress(order.getAddress().getDetailLocation());
+            orderReponseList.add(orderReponse);
+        }
+        return orderReponseList;
     }
 }

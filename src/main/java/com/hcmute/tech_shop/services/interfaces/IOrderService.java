@@ -1,7 +1,9 @@
 package com.hcmute.tech_shop.services.interfaces;
 
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
+import com.hcmute.tech_shop.dtos.responses.OrderReponse;
 import com.hcmute.tech_shop.entities.*;
+import com.hcmute.tech_shop.enums.OrderStatus;
 import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
@@ -42,4 +44,5 @@ public interface IOrderService {
     void deleteById(Long aLong);
 
     List<Order> findAll(Sort sort);
+    List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, String orderStatus);
 }
