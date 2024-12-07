@@ -255,4 +255,31 @@ public class OrderServiceImpl implements IOrderService {
         List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.PENDING);
         return deliveredOrders.size();
     }
+
+    @Override
+    public int getTotalOrderDelivered() {
+        List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.DELIVERED);
+        return deliveredOrders.size();
+    }
+
+    @Override
+    public int getTotalOrderCancelled() {
+        List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.CANCELLED);
+        return deliveredOrders.size();
+    }
+
+    @Override
+    public int getTotalOrderShipping() {
+        List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.PENDING);
+        return deliveredOrders.size();
+    }
+
+    @Override
+    public List<Order> getRecentlyOrders() {
+        return orderRepository.findAll().stream()
+                .filter(order -> order.getStatus() == OrderStatus.PENDING)
+                .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
+                .limit(6)
+                .toList();
+    }
 }

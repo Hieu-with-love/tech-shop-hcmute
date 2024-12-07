@@ -16,20 +16,25 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     String user(User user);
 
     List<Order> getAllByShipperIdAndStatus(Long shipperId, OrderStatus status);
+
     List<Order> getAllByShipperId(Long shipperId);
+
     @Query("SELECT o " +
             "FROM orders o " +
             "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month AND o.shipper.id = :shipperId AND o.status = 'DELIVERED'")
     List<Order> ordersByYearAndMonthForShipper(@Param("year") int year,
-                                             @Param("month") int month,
-                                             @Param("shipperId") Long shipperId);
+                                               @Param("month") int month,
+                                               @Param("shipperId") Long shipperId);
+
     @Query("SELECT o " +
             "FROM orders o " +
             "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month AND o.shipper.id = :shipperId AND o.status = 'DELIVERED'")
     List<Order> totalPriceByYearAndMonthForShipper(@Param("year") int year,
-                                                       @Param("month") int month,
-                                                       @Param("shipperId") Long shipperId);
+                                                   @Param("month") int month,
+                                                   @Param("shipperId") Long shipperId);
+
     List<Order> findByStatus(OrderStatus status);
+
     @Query("SELECT o.user, SUM(o.totalPrice) " +
             "FROM orders o " +
             "WHERE o.status = 'DELIVERED' " +

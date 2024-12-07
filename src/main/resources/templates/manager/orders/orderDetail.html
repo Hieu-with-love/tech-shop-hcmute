@@ -21,7 +21,7 @@
             <div class="page-header">
                 <div class="page-title">
                     <h4>Order Detail</h4>
-                    <h6>Full detail of an Order</h6>
+                    <h6>Manage Your Order Here</h6>
                 </div>
             </div>
 
@@ -87,14 +87,19 @@
                                         <h6><span th:text="${detail.getQuantity()}"></span></h6>
                                     </li>
                                 </ul>
-                                <div style="display: flex; gap: 10px;">
-                                    <form th:action="@{/manager/orders/shipping(id=${order.get().getId()})}" method="post">
+                                <div style="display: flex; gap: 20px;">
+                                    <form th:if="${order.get().getStatus().equals(orderStatus[0])}"
+                                          th:action="@{/manager/orders/shipping(id=${order.get().getId()})}"
+                                          method="post">
                                         <input class="btn btn-submit" type="submit" th:value="Shipping">
                                     </form>
-                                    <form th:action="@{/manager/orders/pending(id=${order.get().getId()})}" method="post">
+                                    <form th:if="${order.get().getStatus().equals(orderStatus[1])}"
+                                          th:action="@{/manager/orders/pending(id=${order.get().getId()})}"
+                                          method="post">
                                         <input class="btn btn-submit" type="submit" th:value="Pending">
                                     </form>
-                                    <form th:action="@{/manager/orders/cancelled(id=${order.get().getId()})}" method="post">
+                                    <form th:action="@{/manager/orders/cancelled(id=${order.get().getId()})}"
+                                          method="post">
                                         <input class="btn btn-danger" type="submit" th:value="Cancelled">
                                     </form>
                                 </div>

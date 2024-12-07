@@ -33,7 +33,7 @@ public interface IProductService {
 
     Product updateProduct(Long productId, ProductRequest productRequest, MultipartFile file) throws IOException;
 
-    void deleteProduct(Long productId);
+    boolean deleteProduct(Long productId);
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
     Product findByName(String name);
@@ -89,4 +89,6 @@ public interface IProductService {
     int getTotalStockQuantity();
     List<Product> getTop4BestSellingProducts();
     List<Product> get4NewProducts();
+
+    List<Product> getRecentlyProducts();
 }

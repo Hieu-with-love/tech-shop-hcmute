@@ -6,8 +6,8 @@ import com.hcmute.tech_shop.entities.ProductImage;
 import com.hcmute.tech_shop.repositories.ProductImageRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.services.interfaces.IProductImageService;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,17 +17,19 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ProductImageServiceImpl implements IProductImageService {
     private final Path root = Paths.get("./uploads");
+    private final ProductImageRepository productImageRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private ProductImageRepository productImageRepository;
-    @Autowired
-    private ProductRepository productRepository;
-
-    public ProductImageServiceImpl(ProductImageRepository productImageRepository, ProductRepository productRepository) {
-        this.productImageRepository = productImageRepository;
-        this.productRepository = productRepository;
+    @Override
+    public void deleteAllByProduct_Id(Long productId) {
+        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+        productImages.forEach(productImage -> {
+            deleteImage(productImage.getUrl());
+            productImageRepository.deleteById(productImage.getId());
+        });
     }
 
     @Override
@@ -95,7 +97,22 @@ public class ProductImageServiceImpl implements IProductImageService {
 
     @Override
     public void deleteById(Integer integer) {
+        ProductImage productImage = productImageRepository.findById(integer).orElse(null);
+        deleteImage(productImage.getUrl());
         productImageRepository.deleteById(integer);
+    }
+
+    public boolean deleteImage(String filename) {
+        try {
+            java.nio.file.Path oldImage = Paths.get("uploads/" + filename);
+            if (Files.exists(oldImage)) {
+                Files.delete(oldImage);
+                return true;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+        return false;
     }
 
     @Override

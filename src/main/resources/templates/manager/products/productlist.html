@@ -25,13 +25,13 @@
                 </div>
                 <div class="page-btn">
                     <a href="/manager/products/add/computer" class="btn btn-added">
-                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Computer
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add Computer
                     </a>
                     <a href="/manager/products/add/phone" class="btn btn-added">
-                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Phone
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add Phone
                     </a>
                     <a href="/manager/products/add/accessory" class="btn btn-added">
-                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add New Accessory
+                        <img th:src="@{/admin/assets/img/icons/plus.svg}" alt="img" class="me-1">Add Accessory
                     </a>
                 </div>
             </div>
@@ -40,12 +40,6 @@
                 <div class="card-body">
                     <div class="table-top">
                         <div class="search-set">
-                            <div class="search-path">
-                                <a class="btn btn-filter" id="filter_search">
-                                    <img th:src="@{/admin/assets/img/icons/filter.svg}" alt="img">
-                                    <span><img th:src="@{/admin/assets/img/icons/closes.svg}" alt="img"></span>
-                                </a>
-                            </div>
                             <div class="search-input">
                                 <a class="btn btn-searchset"><img th:src="@{/admin/assets/img/icons/search-white.svg}"
                                                                   alt="img"></a>
@@ -155,6 +149,7 @@
                                         <span class="checkmarks"></span>
                                     </label>
                                 </td>
+                                <input type="hidden" class="product-id" th:value="${product.getId()}">
                                 <td class="productimgname">
                                     <a th:href="@{/manager/products/edit(id=${product.getId()})}" class="product-img">
                                         <img th:if="${product.thumbnail.startsWith('https')}"
@@ -185,13 +180,11 @@
                                     <a class="me-3" th:href="@{/manager/products/edit(id=${product.getId()})}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
-                                    <a class="confirm-text"
-                                       th:href="@{/manager/products/delete(id=${product.getId()})}">
+                                    <a class="me-3 confirm-text-delete">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -203,5 +196,58 @@
 </div>
 
 <div th:insert="~{admin/fragments/script::script}"></div>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".confirm-text-delete", function () {
+            var productId = $(this).closest("tr").find(".product-id").val(); // Get product_id from the current row
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false
+            }).then(function (t) {
+                if (t.value) {
+                    $.ajax({
+                        url: `/manager/products/delete/${productId}`,
+                        method: "GET",
+                        success: function (response) {
+                            if (response.status === "success") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-success"
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-danger"
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error!",
+                                text: `Failed to delete product.`,
+                                confirmButtonClass: "btn btn-danger"
+                            })
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

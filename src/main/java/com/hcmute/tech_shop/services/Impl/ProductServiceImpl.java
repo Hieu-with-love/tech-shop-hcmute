@@ -12,8 +12,10 @@ import com.hcmute.tech_shop.repositories.CategoryRepository;
 import com.hcmute.tech_shop.repositories.OrderDetailRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.repositories.custome.ProductRepositoryCustom;
+import com.hcmute.tech_shop.services.interfaces.IProductImageService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.utils.Constant;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +34,14 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements IProductService {
-    @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    BrandRepository brandRepository;
-    @Autowired
-    private ProductFilterBuilderConverter productFilterBuilderConverter;
-    @Autowired
-    OrderDetailRepository orderDetailRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final BrandRepository brandRepository;
+    private final ProductFilterBuilderConverter productFilterBuilderConverter;
+    private final OrderDetailRepository orderDetailRepository;
+    private final IProductImageService productImageService;
     private final Path root = Paths.get("./uploads");
 
     @Override
@@ -159,11 +158,6 @@ public class ProductServiceImpl implements IProductService {
         return false;
     }
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-    }
-
     @Override
     public boolean createProduct(ProductRequest productRequest, MultipartFile file) throws IOException {
         Category categoryExisting = categoryRepository.findById(productRequest.getCategoryId()).get();
@@ -274,10 +268,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void deleteProduct(Long productId) {
+    public boolean deleteProduct(Long productId) {
         Product product = findById(productId).get();
         deleteImage(product.getThumbnail());
+        productImageService.deleteAllByProduct_Id(productId);
         productRepository.delete(product);
+        return true;
     }
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
@@ -434,5 +430,13 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> get4NewProducts() {
         return productRepository.findTop4ByOrderByCreatedAtDesc();
+    }
+
+    @Override
+    public List<Product> getRecentlyProducts() {
+        return productRepository.findAll().stream()
+                .sorted(Comparator.comparing(Product::getCreatedAt).reversed())
+                .limit(5)
+                .toList();
     }
 }

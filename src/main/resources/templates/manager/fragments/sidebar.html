@@ -17,20 +17,20 @@
                         Order</span> </a>
                 </li>
                 <li class="submenu">
+                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/expense1.svg}" alt="img"><span>
+                                    Voucher</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a th:href="@{/manager/vouchers}">Voucher List</a></li>
+                        <li><a th:href="@{/manager/vouchers/save}">Add Voucher</a></li>
+                    </ul>
+                </li>
+                <li class="submenu">
                     <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/purchase1.svg}"
                                                        alt="img"><span>
                                     Brand</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a th:href="@{/manager/brands}">Brand List</a></li>
                         <li><a th:href="@{/manager/brands/add-brand}">Add Brand</a></li>
-                    </ul>
-                </li>
-                <li class="submenu">
-                    <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/expense1.svg}" alt="img"><span>
-                                    Voucher</span> <span class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a th:href="@{/manager/vouchers}">Voucher List</a></li>
-                        <li><a th:href="@{/manager/vouchers/save}">Add Voucher</a></li>
                     </ul>
                 </li>
                 <li class="inactive" th:if="${#strings.equalsIgnoreCase(session.user.role.name,'admin')}">

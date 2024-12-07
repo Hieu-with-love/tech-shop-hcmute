@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProductImageService {
+    void deleteAllByProduct_Id(Long productId);
+
     boolean createProductImages(Long productId, MultipartFile file) throws IOException;
 
     List<ProductImage> findByProductId(Long productId);

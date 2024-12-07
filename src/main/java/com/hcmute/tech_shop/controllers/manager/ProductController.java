@@ -9,6 +9,8 @@ import com.hcmute.tech_shop.services.interfaces.IProductImageService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -94,10 +96,18 @@ public class ProductController {
         return "redirect:manager/products";
     }
 
-    @GetMapping("/delete")
-    public String deleteProduct(@RequestParam Long id) {
-        productService.deleteProduct(id);
-        return "redirect:/manager/products";
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable(value = "id") Long id) {
+        Map<String, String> response = new HashMap<>();
+        if (productService.deleteProduct(id)) {
+            response.put("status", "success");
+            response.put("message", "Product deleted successfully.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "error");
+            response.put("message", "Failed to delete product.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/images")

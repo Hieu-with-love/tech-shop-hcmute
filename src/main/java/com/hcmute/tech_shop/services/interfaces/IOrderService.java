@@ -55,4 +55,12 @@ public interface IOrderService {
     int getTotalProductsSold();
     int getTotalOrder();
     int getTotalOrderForShipping();
+
+    int getTotalOrderDelivered();
+
+    int getTotalOrderCancelled();
+
+    int getTotalOrderShipping();
+
+    List<Order> getRecentlyOrders();
 }
