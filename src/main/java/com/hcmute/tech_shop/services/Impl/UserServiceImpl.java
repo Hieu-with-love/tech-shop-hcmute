@@ -35,7 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -58,7 +57,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    private void validation(UserRequest userRequest, BindingResult result){
+    @Override
+    public List<User> findByRoleName(String role) {
+        return userRepository.findByRole_Name(role);
+    }
+
+    private void validation(UserRequest userRequest, BindingResult result) {
         // Kiem tra username da ton tai chua?
 
         if (this.existsUsername(userRequest.getUsername())) {
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
         // Lấy day/month/year hiện tại, 11/2/2024 -> tru 15 năm -> 11/2/2009
         // giả sử một người có sinh nhật 1/2/2009 -> 1/2/2009 đã đu tuổi so voi day/month/year hiện tại
         // nên dùng isBefore (truoc rồi phủ định) chứ không dùng isAfter
-        if (!userRequest.getDob().isBefore(LocalDate.now().minusYears(15))){
+        if (!userRequest.getDob().isBefore(LocalDate.now().minusYears(15))) {
             result.addError(new FieldError("userRegister", "dob",
                     "Bạn chưa đủ 15 tuổi"));
         }
@@ -114,11 +118,11 @@ public class UserServiceImpl implements UserService {
             confirmationRepository.save(confirm);
 
             // TODO Send email to user with token, using SimpleMailSender
-            try{
+            try {
                 emailService.sendEmailToVerifyAccount(user.getUsername(), user.getEmail(),
                         confirm.getToken()
                 );
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException("Send email failed\n\n" + e.getMessage());
             }
             return true;
@@ -166,12 +170,12 @@ public class UserServiceImpl implements UserService {
                     "Username da ton tai. Vui long nhap username khac"));
         }
 
-        if (!user.getEmail().equals(profileDto.getEmail()) && this.existsEmail(profileDto.getEmail())){
+        if (!user.getEmail().equals(profileDto.getEmail()) && this.existsEmail(profileDto.getEmail())) {
             result.addError(new FieldError("userRequest", "username",
                     "Username da ton tai. Vui long nhap username khac"));
         }
 
-        if (!profileDto.getDob().isBefore(LocalDate.now().minusYears(15))){
+        if (!profileDto.getDob().isBefore(LocalDate.now().minusYears(15))) {
             result.addError(new FieldError("userRegister", "dob",
                     "Bạn chưa đủ 15 tuổi"));
         }
@@ -180,9 +184,9 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        try{
+        try {
             String avatar = null;
-            if (file == null){
+            if (file == null) {
                 avatar = "avtdefault.jpg";
             } else {
                 if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
@@ -207,13 +211,13 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(existingUser);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     @Override
-    public boolean updatePassword(Map<String,String> params, BindingResult result) {
+    public boolean updatePassword(Map<String, String> params, BindingResult result) {
         String oldPassword = params.get("old-password");
         String password = params.get("password");
         String username = params.get("username");
@@ -238,7 +242,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean verifyToken(String token) {
-        try{
+        try {
             Confirmation confirm = confirmationRepository.findByToken(token)
                     .orElseThrow(() -> new RuntimeException("Confirmation token not found at verify token"));
             User user = userRepository.findByUsernameIgnoreCase(confirm.getUser().getUsername())
@@ -246,7 +250,7 @@ public class UserServiceImpl implements UserService {
             user.setActive(true);
             userRepository.save(user);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -293,11 +297,11 @@ public class UserServiceImpl implements UserService {
         confirmationRepository.save(confirm);
 
         // TODO Send email to user with token, using SimpleMailSender
-        try{
+        try {
             emailService.sendEmailToVerifyAccount(user.getUsername(), user.getEmail(),
                     confirm.getToken()
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Send email failed\n\n" + e.getMessage());
         }
     }
@@ -394,7 +398,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        if ("anonymousUser".equals(username)){
+        if ("anonymousUser".equals(username)) {
             return null;
         }
         return userRepository.findByUsername(username)

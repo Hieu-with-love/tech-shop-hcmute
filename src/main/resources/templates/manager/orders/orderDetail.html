@@ -86,14 +86,18 @@
                                         <h4>Quantity</h4>
                                         <h6><span th:text="${detail.getQuantity()}"></span></h6>
                                     </li>
+                                    <select id="shipperSelect" class="form-select" style="display: none;">
+                                        <option value="">Select Shipper</option>
+                                        <option th:each="shipper : ${shippers}" th:value="${shipper.id}" th:text="${shipper.firstName}"></option>
+                                    </select>
                                 </ul>
                                 <div style="display: flex; gap: 20px;">
-                                    <form th:if="${order.get().getStatus().equals(orderStatus[0])}"
+                                    <form class="confirm-text-shipping" th:if="${order.get().getStatus().equals(orderStatus[0]) || order.get().getStatus().equals(orderStatus[3])}"
                                           th:action="@{/manager/orders/shipping(id=${order.get().getId()})}"
                                           method="post">
                                         <input class="btn btn-submit" type="submit" th:value="Shipping">
                                     </form>
-                                    <form th:if="${order.get().getStatus().equals(orderStatus[1])}"
+                                    <form th:if="${order.get().getStatus().equals(orderStatus[1]) || order.get().getStatus().equals(orderStatus[3])}"
                                           th:action="@{/manager/orders/pending(id=${order.get().getId()})}"
                                           method="post">
                                         <input class="btn btn-submit" type="submit" th:value="Pending">
@@ -116,3 +120,35 @@
 
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        $(".confirm-text-shipping").on("click", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            var form = $(this).closest("form");
+            var orderId = form.attr("action").split('=')[1]; // Get orderId from the form action URL
+            Swal.fire({
+                title: "Select Shipper",
+                html: $('#shipperSelect').clone().show()[0], // Clone and show the shipper dropdown
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, ship it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false,
+                preConfirm: () => {
+                    const shipperId = Swal.getPopup().querySelector('#shipperSelect').value;
+                    if (!shipperId) {
+                        Swal.showValidationMessage(`Please select a shipper`);
+                    }
+                    return { shipperId: shipperId };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.attr("action", `/manager/orders/shipping?id=${orderId}&shipper=${result.value.shipperId}`);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>

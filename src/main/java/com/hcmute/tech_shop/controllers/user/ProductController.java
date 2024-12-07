@@ -41,9 +41,6 @@ public class ProductController {
     private final IProductImageService productImageService;
     private final IRatingService ratingService;
     private final ICategoryService categoryService;
-
-    private final IOrderDetailService orderDetailService;
-
     private final IBrandService brandService;
 
 
@@ -53,14 +50,11 @@ public class ProductController {
         List<Brand> brands = brandService.findAll();
         List<ProductRequest> productDTOList = productService.findByCategoryName(name);
 
-
-
         model.addAttribute("brands", brands);
-
         model.addAttribute("categories", categoryDTOList);
         model.addAttribute("categoryName", name);
         model.addAttribute("products", productDTOList);
-        model.addAttribute("rating",new RatingRequest());
+        model.addAttribute("rating", new RatingRequest());
         return "user/shop-sidebar";
     }
 
@@ -115,20 +109,13 @@ public class ProductController {
 
     @GetMapping("/product-detail/{id}")
     public String productDetail(Model model, @PathVariable Long id) {
-        Optional<Product> product = productService.findById(id);
-        ProductResponse productResponse = productService.getProductResponse(id);
-        List<ProductImage> productImages = productImageService.findByProductId(id);
-        List<Rating> ratings = ratingService.findByProductId(id);
-        int ratingCount = ratingService.countRatingStar(id);
-        int ratingUser = ratingService.countUser(id);
-
-        model.addAttribute("product", product.get());
-        model.addAttribute("productRes", productResponse);
-        model.addAttribute("productImages", productImages);
-        model.addAttribute("ratings", ratings);
-        model.addAttribute("ratingCount", ratingCount);
-        model.addAttribute("ratingUser", ratingUser);
-        model.addAttribute("rating",new RatingRequest());
+        model.addAttribute("product", productService.findById(id).get());
+        model.addAttribute("productRes", productService.getProductResponse(id));
+        model.addAttribute("productImages", productImageService.findByProductId(id));
+        model.addAttribute("ratings", ratingService.findByProductId(id));
+        model.addAttribute("ratingCount", ratingService.countRatingStar(id));
+        model.addAttribute("ratingUser", ratingService.countUser(id));
+        model.addAttribute("rating", new RatingRequest());
 
         return "user/single-product-3";
     }

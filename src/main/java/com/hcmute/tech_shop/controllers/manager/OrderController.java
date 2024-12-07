@@ -23,6 +23,7 @@ public class OrderController {
     private final IOrderService orderService;
     private final IPaymentService paymentService;
     private final IVoucherService voucherService;
+    private final UserService userService;
 
     @GetMapping("") // localhost:8080/manager/orders
     public String index(Model model) {
@@ -41,6 +42,7 @@ public class OrderController {
         Optional<Order> order = orderService.findById(id);
         model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("order", order);
+        model.addAttribute("shippers", userService.findByRoleName("shipper"));
         return "manager/orders/orderDetail";
     }
 
@@ -59,19 +61,20 @@ public class OrderController {
     }
 
     @PostMapping("/pending")
-    public String pending(Model model, @RequestParam Long id) throws IOException {
+    public String pending(@RequestParam Long id) throws IOException {
         orderService.orderPending(id);
         return "redirect:/manager/orders";
     }
 
     @PostMapping("/shipping")
-    public String update(Model model, @RequestParam Long id) throws IOException {
+    public String shipping(@RequestParam Long id,  @RequestParam Long shipper) throws IOException {
         orderService.orderShipping(id);
+        System.out.println(shipper);
         return "redirect:/manager/orders";
     }
 
     @PostMapping("/cancelled")
-    public String cancel(Model model, @RequestParam Long id) throws IOException {
+    public String cancel(@RequestParam Long id) throws IOException {
         orderService.orderCancelled(id);
         return "redirect:/manager/orders";
     }
