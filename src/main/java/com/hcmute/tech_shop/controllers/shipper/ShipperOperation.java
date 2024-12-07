@@ -11,6 +11,7 @@ import com.hcmute.tech_shop.services.Impl.OrderDetailServiceImpl;
 import com.hcmute.tech_shop.services.Impl.OrderServiceImpl;
 import com.hcmute.tech_shop.services.Impl.UserServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.IAddressService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,26 @@ public class ShipperOperation {
     private OrderDetailServiceImpl orderDetailService;
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model){
+    public String dashboard(Model model, HttpSession session) {
+        UserRequest userRequest = getUser();
+
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
+
+        List<Order> orderList = orderService.ordersByYearAndMonthForShipper(currentYear, currentMonth, getUser().getId());
+        List<Order> totalPriceOrderList = orderService.totalPriceByYearAndMonthForShipper(currentYear, currentMonth, getUser().getId());
+
+        String totalPrice = orderService.totalPriceByYearAndMonthByShipper(currentYear, currentMonth, getUser().getId());
+
+        model.addAttribute("user", userRequest);
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("totalPriceOrderList", totalPriceOrderList);
+        model.addAttribute("totalPrice", totalPrice);
+
+        session.setAttribute("user", userRequest);
+        session.setAttribute("orderList", orderList);
+        session.setAttribute("totalPriceOrderList", totalPriceOrderList);
+        session.setAttribute("totalPrice", totalPrice);
 
         return "shipper/index";
     }
@@ -61,7 +81,7 @@ public class ShipperOperation {
     }
 
     @GetMapping("/shipping")
-    public String showListShipping(Model model, @RequestParam(value = "status", required = false) String status) {
+    public String showListShipping(Model model, @RequestParam(value = "status", required = false) String status, HttpSession session) {
         UserRequest userRequest = getUser();
         List<OrderReponse> orderReponses;
         if (status == null||status.isEmpty()||status.equals("")) {
@@ -84,6 +104,8 @@ public class ShipperOperation {
 
         model.addAttribute("orderReponses", orderReponses);
         model.addAttribute("orderStatus", OrderStatus.values());
+
+        session.setAttribute("user", userRequest);
         return "shipper/page-list-returns";
     }
 
@@ -149,7 +171,7 @@ public class ShipperOperation {
         }
 
         model.addAttribute("address", detailAddress);
-        return "shipper/infoShipper";
+        return "shipper/user-profile";
     }
 
     @PostMapping("/update-avatar")

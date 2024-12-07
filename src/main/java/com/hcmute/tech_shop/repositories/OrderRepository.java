@@ -18,13 +18,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> getAllByShipperId(Long shipperId);
     @Query("SELECT o " +
             "FROM orders o " +
-            "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month AND o.shipper.id = :shipperId")
+            "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month AND o.shipper.id = :shipperId AND o.status = 'DELIVERED'")
     List<Order> ordersByYearAndMonthForShipper(@Param("year") int year,
                                              @Param("month") int month,
                                              @Param("shipperId") Long shipperId);
     @Query("SELECT o " +
             "FROM orders o " +
-            "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month AND o.shipper.id = :shipperId")
+            "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month AND o.shipper.id = :shipperId AND o.status = 'DELIVERED'")
     List<Order> totalPriceByYearAndMonthForShipper(@Param("year") int year,
                                                        @Param("month") int month,
                                                        @Param("shipperId") Long shipperId);
