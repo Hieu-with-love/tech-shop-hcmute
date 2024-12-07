@@ -23,4 +23,9 @@ public class AdminController {
         session.setAttribute("user", user);
         return "admin/index";
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model, HttpSession session) {
+        return "admin/users/profile";
+    }
 }
