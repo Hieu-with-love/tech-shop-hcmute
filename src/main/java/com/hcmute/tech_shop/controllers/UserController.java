@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.controllers;
 
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.services.Impl.EmailServiceImpl;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +69,30 @@ public class UserController {
         }
 
         return "redirect:/login?success";
+    }
+
+    @PostMapping("/user/updateProfileImage")
+    public String updateProfileImage(@RequestParam("image") MultipartFile image, Principal principal, Model model) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String username = principal.getName();
+        User user = userService.getUserByUsername(username);
+
+        if (user == null) {
+            model.addAttribute("error", "User not found");
+            return "user/my-account";
+        }
+
+        try {
+            userService.updateProfileImage(user, image);
+            model.addAttribute("message", "Profile image updated successfully");
+        } catch (IOException e) {
+            model.addAttribute("error", "Failed to update profile image");
+        }
+
+        return "redirect:/user/my-account";
     }
 
 

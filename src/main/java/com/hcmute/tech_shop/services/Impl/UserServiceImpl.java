@@ -91,17 +91,6 @@ public class UserServiceImpl implements UserService {
         validation(userRequest, result);
 
         if (!result.hasErrors()) {
-
-//            String avatar = null;
-//            if (file == null){
-//                avatar = "avtdefault.jpg";
-//            } else {
-//                if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
-//                    throw new BadRequestException("Image is not valid");
-//                }
-//                avatar = ImageUtil.saveImage(file);
-//            }
-
             User user = User.builder()
                     .username(userRequest.getUsername())
                     .email(userRequest.getEmail())
@@ -112,6 +101,7 @@ public class UserServiceImpl implements UserService {
                     .dateOfBirth(userRequest.getDob())
                     .role(role)
                     .isActive(false)
+                    .image("avtdefault.jpg")
                     .build();
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
@@ -380,6 +370,15 @@ public class UserServiceImpl implements UserService {
             loyalCustomers.add(res);
         }
         return loyalCustomers;
+    }
+
+    @Override
+    public void updateProfileImage(User user, MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String imageName = ImageUtil.saveImage(image);
+            user.setImage(imageName);
+            userRepository.save(user);
+        }
     }
 
     @Override

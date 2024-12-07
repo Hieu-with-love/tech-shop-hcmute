@@ -36,4 +36,5 @@ public interface UserService {
     int getCountUsersByRoleUser();
     int getCountUsersByRoleShipper();
     List<LoyalCustomerRes> getTop4LoyalCustomers();
+    void updateProfileImage(User user, MultipartFile image) throws IOException;
 }
