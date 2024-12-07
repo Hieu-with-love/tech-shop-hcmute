@@ -63,10 +63,23 @@ public class ShipperOperation {
     public String showListShipping(Model model, @RequestParam(value = "status", required = false) String status) {
         UserRequest userRequest = getUser();
         List<OrderReponse> orderReponses;
-        if (status == null||status.isEmpty()) {
+        if (status == null||status.isEmpty()||status.equals("")) {
             orderReponses = orderService.findAllByShipperId(userRequest.getId());
         }
-        else orderReponses = orderService.findOrderByShipperNameAndStatus(userRequest.getId(),"PENDING");
+        else {
+            OrderStatus orderStatus = OrderStatus.valueOf(status);
+            orderReponses = orderService.findOrderByShipperNameAndStatus(userRequest.getId(),orderStatus);
+        }
+
+        // Tạo danh sách trạng thái, đặt trạng thái được chọn lên đầu
+        List<String> orderStatusNews = new ArrayList<>(List.of("SHIPPING", "DELIVERED", "CANCELLED"));
+        if (status != null && !status.isEmpty()) {
+            orderStatusNews.remove(status);
+            orderStatusNews.add(0, status); // Đặt trạng thái được chọn lên đầu
+        }
+
+        model.addAttribute("orderStatusNew", orderStatusNews);
+        model.addAttribute("currentStatus", status); // Để dùng trong view
 
         model.addAttribute("orderReponses", orderReponses);
         model.addAttribute("orderStatus", OrderStatus.values());
@@ -80,7 +93,20 @@ public class ShipperOperation {
 
         model.addAttribute("order", order);
         model.addAttribute("orderDetailList", orderDetailList);
+        model.addAttribute("orderStatus", OrderStatus.values());
         return "shipper/pages-invoice";
+    }
+
+    @PostMapping("/change-status")
+    public String changeStatus(@RequestParam(value = "status") String status, @RequestParam(value = "orderId") Long orderId, Model model) {
+        if (status.equals("SHIPPING")) {
+            orderService.orderShipping(orderId);
+        }
+        else if (status.equals("DELIVERED")){
+            orderService.orderDelivered(orderId);
+        }
+        else orderService.orderCancelled(orderId);
+        return "redirect:/shipper/shipping/"+orderId;
     }
 
     @GetMapping("/shipper-list-history-ship")

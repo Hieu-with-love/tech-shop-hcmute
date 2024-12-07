@@ -24,7 +24,19 @@
                               <p class="mb-0">Returns dashboard shows the graphical representation of the channel
                                and Reference <br>wise returns with the comparison to the total units sold..</p>
                           </div>
-                          <a href="page-add-return.html" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Returns</a>
+                          <form action="/shipper/shipping" method="get">
+                              <div class="form-group">
+                                  <select name="status" class="selectpicker form-control" data-style="py-0" onchange="this.form.submit()">
+                                      <option value="">All</option>
+                                      <option th:each="statusOption : ${orderStatusNew}"
+                                              th:value="${statusOption}"
+                                              th:text="${statusOption}"
+                                              th:selected="${statusOption == currentStatus}">
+                                      </option>
+                                  </select>
+                              </div>
+                          </form>
+
                       </div>
                   </div>
                   <div class="col-lg-12">
@@ -76,10 +88,6 @@
                                       <div class="d-flex align-items-center list-action">
                                           <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
                                               th:href="@{/shipper/shipping/{id}(id=${order.orderId})}"><i class="ri-eye-line mr-0"></i></a>
-                                          <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                              href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                          <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                              href="#"><i class="ri-delete-bin-line mr-0"></i></a>
                                       </div>
                                   </td>
                               </tr>

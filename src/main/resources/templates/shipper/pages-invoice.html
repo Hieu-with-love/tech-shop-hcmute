@@ -101,7 +101,7 @@
                              </div>
                           </div>
                           <div class="row mt-4 mb-3">
-                             <div class="col-lg-4">
+                              <div class="col-lg-4">
                                 <div class="or-detail rounded">
                                       <div class="p-3">
                                          <h5 class="mb-3">Order Details</h5>
@@ -119,6 +119,31 @@
                                          <h3 class="text-primary font-weight-700" th:text="${#numbers.formatCurrency(order.totalPrice)}"></h3>
                                       </div>
                                 </div>
+                             </div>
+                              <div class="offset-lg-4 col-lg-4">
+                                  <form th:action="@{/shipper/change-status}" method="post">
+                                      <div class="or-detail rounded">
+                                          <div class="p-3">
+                                              <h5 class="mb-3">Order Status</h5>
+                                              <input type="hidden" name="orderId" th:value="${order.id}">
+                                              <div class="form-group">
+                                                  <select name="status" class="selectpicker form-control" data-style="py-0">
+                                                      <option th:if="${order.status.name() == 'SHIPPING'}" th:text="'SHIPPING'" selected>Shipping</option>
+                                                      <option th:if="${order.status.name() != 'SHIPPING'}" th:text="'SHIPPING'">Shipping</option>
+                                                      <option th:if="${order.status.name() == 'DELIVERED'}" th:text="'DELIVERED'" selected>Delivered</option>
+                                                      <option th:if="${order.status.name() != 'DELIVERED'}" th:text="'DELIVERED'">Delivered</option>
+                                                      <option th:if="${order.status.name() == 'CANCELLED'}" th:text="'CANCELLED'" selected>Cancelled</option>
+                                                      <option th:if="${order.status.name() != 'CANCELLED'}" th:text="'CANCELLED'">Cancelled</option>
+                                                  </select>
+                                              </div>
+
+                                          </div>
+                                          <div class="ttl-amt py-2 px-3 d-flex justify-content-between align-items-center">
+                                              <div></div>
+                                              <button type="submit" class="btn btn-primary">Submit</button>
+                                          </div>
+                                      </div>
+                                  </form>
                              </div>
                           </div>
                     </div>

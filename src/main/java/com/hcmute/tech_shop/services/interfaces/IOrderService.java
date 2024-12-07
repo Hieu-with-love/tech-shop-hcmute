@@ -44,7 +44,7 @@ public interface IOrderService {
     void deleteById(Long aLong);
 
     List<Order> findAll(Sort sort);
-    List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, String orderStatus);
+    List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, OrderStatus orderStatus);
     List<OrderReponse> findAllByShipperId(Long shipperId);
 
     OrderReponse findByOrderId(Long id);

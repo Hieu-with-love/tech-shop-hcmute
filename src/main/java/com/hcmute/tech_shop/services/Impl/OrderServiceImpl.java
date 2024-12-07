@@ -158,8 +158,8 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, String orderStatus) {
-        List<Order> orderList = orderRepository.getAllByShipperIdAndStatusEquals(shipperId, orderStatus);
+    public List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, OrderStatus orderStatus) {
+        List<Order> orderList = orderRepository.getAllByShipperIdAndStatus(shipperId, orderStatus);
         List<OrderReponse> orderReponseList = new ArrayList<>();
         for (Order order : orderList) {
             OrderReponse orderReponse = new OrderReponse();
