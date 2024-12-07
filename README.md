@@ -5,6 +5,7 @@ TechShopHCMUTE is a project developed with the goal of learning about sales proc
 
 # Table of Contents
 - [Features](#features)
+- [Project Architecture](#-project-architecture-spring-boot-with-thymeleaf)
 - [Technologies Used](#technologies-used)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -63,6 +64,7 @@ This project leverages **Spring Boot** as the backend framework and **Thymeleaf*
 ## ⚙️ Key Components and Structure
 
 ### **📂 Project Structure**
+- Ex:
 ```
 src/
 ├── main/
@@ -130,7 +132,7 @@ src/
 
 ## Installation
 1. Clone the repository:
-`https://github.com/Hieu-with-love/tech-shop-hcmute.git`
+`git clone https://github.com/Hieu-with-love/tech-shop-hcmute.git`
 2. Open the project with your preferred IDE
 3. Configuration the database connection in `src\main\resources\application.yml`
 4. Modify the package name according to your project. If the libraries I used are outdated, you can replace them with newer or alternative libraries.
@@ -138,7 +140,7 @@ src/
 ## Configuration
 
 1. Configuration the database connection in `src\main\resources\application.yml`
-    Ex: 
+  - Ex: 
     ```
       datasource:
         url: jdbc:mysql://localhost:3306/tech_shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
