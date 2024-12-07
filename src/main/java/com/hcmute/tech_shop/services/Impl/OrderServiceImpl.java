@@ -206,4 +206,23 @@ public class OrderServiceImpl implements IOrderService {
         orderReponse.setShippingAddress(order.getAddress());
         return orderReponse;
     }
+
+    @Override
+    public List<Order> ordersByYearAndMonthForShipper(int year, int month, Long shipperId) {
+        return orderRepository.ordersByYearAndMonthForShipper(year, month, shipperId);
+    }
+
+    @Override
+    public List<Order> totalPriceByYearAndMonthForShipper(int year, int month, Long shipperId) {
+        return orderRepository.totalPriceByYearAndMonthForShipper(year, month, shipperId);
+    }
+
+    public String totalPriceByYearAndMonthByShipper(int year, int month, Long shipperId) {
+        List<Order> orderList = this.totalPriceByYearAndMonthForShipper(year, month, shipperId);
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (Order order : orderList) {
+            totalPrice = totalPrice.add(order.getTotalPrice());
+        }
+        return Constant.formatter.format(totalPrice);
+    }
 }

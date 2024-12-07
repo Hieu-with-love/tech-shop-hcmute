@@ -5,6 +5,7 @@ import com.hcmute.tech_shop.dtos.responses.OrderReponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.enums.OrderStatus;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -48,4 +49,6 @@ public interface IOrderService {
     List<OrderReponse> findAllByShipperId(Long shipperId);
 
     OrderReponse findByOrderId(Long id);
+    List<Order> ordersByYearAndMonthForShipper(int year, int month, Long shipperId);
+    List<Order> totalPriceByYearAndMonthForShipper(int year, int month, Long shipperId);
 }

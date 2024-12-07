@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -109,16 +110,31 @@ public class ShipperOperation {
         return "redirect:/shipper/shipping/"+orderId;
     }
 
-    @GetMapping("/shipper-list-history-ship")
-    public String showListHistShipOrder(){
+    @GetMapping("/summary")
+    public String showListHistShipOrder(Model model, @RequestParam(value = "year", required = false) Integer year, @RequestParam(value = "month", required = false) Integer month) {
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
 
-        return "shipper/listHisShipOrder";
-    }
+        if(year == null){
+            year = currentYear;
+        }
+        if(month == null){
+            month = currentMonth;
+        }
 
-    @GetMapping("/shipper-statistical")
-    public String showStatistical(){
+        List<Order> orderList = orderService.ordersByYearAndMonthForShipper(year, month, getUser().getId());
+        List<Order> totalPriceOrderList = orderService.totalPriceByYearAndMonthForShipper(year, month, getUser().getId());
 
-        return "shipper/statistical";
+        String totalPrice = orderService.totalPriceByYearAndMonthByShipper(year, month, getUser().getId());
+
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("totalPriceOrderList", totalPriceOrderList);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        model.addAttribute("currentYear", currentYear);
+        model.addAttribute("currentMonth", currentMonth);
+        return "shipper/page-report";
     }
 
     @GetMapping("/shipper-info")
