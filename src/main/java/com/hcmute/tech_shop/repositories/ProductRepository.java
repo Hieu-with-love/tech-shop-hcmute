@@ -55,4 +55,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     // Paging and Sorting methods
     Page<Product> findAll(Pageable pageable);
+
+    List<Product> findTop4ByOrderByCreatedAtDesc();
+
 }

@@ -9,6 +9,7 @@ import com.hcmute.tech_shop.entities.Category;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.repositories.BrandRepository;
 import com.hcmute.tech_shop.repositories.CategoryRepository;
+import com.hcmute.tech_shop.repositories.OrderDetailRepository;
 import com.hcmute.tech_shop.repositories.ProductRepository;
 import com.hcmute.tech_shop.repositories.custome.ProductRepositoryCustom;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
@@ -40,6 +41,8 @@ public class ProductServiceImpl implements IProductService {
     BrandRepository brandRepository;
     @Autowired
     private ProductFilterBuilderConverter productFilterBuilderConverter;
+    @Autowired
+    OrderDetailRepository orderDetailRepository;
     private final Path root = Paths.get("./uploads");
 
     @Override
@@ -413,4 +416,23 @@ public class ProductServiceImpl implements IProductService {
                 .sum();
     }
 
+    @Override
+    public List<Product> getTop4BestSellingProducts() {
+        List<Object[]> result = orderDetailRepository.findTop4BestSellingProducts();
+        List<Product> top4Products = new ArrayList<>();
+        for (Object[] row : result) {
+            Product product = (Product) row[0];
+            top4Products.add(product);
+
+            if (top4Products.size() >= 4) {
+                break;
+            }
+        }
+        return top4Products;
+    }
+
+    @Override
+    public List<Product> get4NewProducts() {
+        return productRepository.findTop4ByOrderByCreatedAtDesc();
+    }
 }

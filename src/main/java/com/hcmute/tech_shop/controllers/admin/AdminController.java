@@ -1,5 +1,7 @@
 package com.hcmute.tech_shop.controllers.admin;
 
+import com.hcmute.tech_shop.dtos.responses.LoyalCustomerRes;
+import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.User;
 import com.hcmute.tech_shop.entities.Voucher;
 import com.hcmute.tech_shop.services.interfaces.IOrderService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -55,6 +58,14 @@ public class AdminController {
         int totalOrdersPending = orderService.getTotalOrderForShipping();
         model.addAttribute("totalOrdersPending", totalOrdersPending);
 
+        List<Product> top4Products = productService.getTop4BestSellingProducts();
+        model.addAttribute("top4Products", top4Products);
+
+        List<Product> top4NewProducts = productService.get4NewProducts();
+        model.addAttribute("top4NewProducts", top4NewProducts);
+
+        List<LoyalCustomerRes> topLoyalCustomers = userService.getTop4LoyalCustomers();
+        model.addAttribute("loyalCustomers", topLoyalCustomers);
 
         return "admin/index";
     }

@@ -141,10 +141,7 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <li>
-                                            <a href="productlist.html" class="dropdown-item">Product List</a>
-                                        </li>
-                                        <li>
-                                            <a href="addproduct.html" class="dropdown-item">Product Add</a>
+                                            <a th:href="@{/admin/products}" class="dropdown-item">Product List</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -160,45 +157,15 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>1</td>
+                                        <tr th:each="product, iterStat : ${top4Products}">
+                                            <td th:text="${iterStat.index + 1}"></td>
                                             <td class="productimgname">
                                                 <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product22.jpg}" alt="product">
+                                                    <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="product"/>
                                                 </a>
-                                                <a href="productlist.html">Apple Earpods</a>
+                                                <a href="productlist.html" th:text="${product.name}"></a>
                                             </td>
-                                            <td>$891.2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product23.jpg}" alt="product">
-                                                </a>
-                                                <a href="productlist.html">iPhone 11</a>
-                                            </td>
-                                            <td>$668.51</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product24.jpg}" alt="product">
-                                                </a>
-                                                <a href="productlist.html">samsung</a>
-                                            </td>
-                                            <td>$522.29</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product6.jpg}" alt="product">
-                                                </a>
-                                                <a href="productlist.html">Macbook Pro</a>
-                                            </td>
-                                            <td>$291.01</td>
+                                            <td th:text="${product.price}"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -218,10 +185,7 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <li>
-                                            <a href="productlist.html" class="dropdown-item">Product List</a>
-                                        </li>
-                                        <li>
-                                            <a href="addproduct.html" class="dropdown-item">Product Add</a>
+                                            <a th:href="@{/admin/products}" class="dropdown-item">Product List</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -237,45 +201,15 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>1</td>
+                                        <tr th:each="product, iterStat : ${top4NewProducts}">
+                                            <td th:text="${iterStat.index + 1}"></td>
                                             <td class="productimgname">
                                                 <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product22.jpg}" alt="product">
+                                                    <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="product"/>
                                                 </a>
-                                                <a href="productlist.html">Apple Earpods</a>
+                                                <a href="productlist.html" th:text="${product.name}"></a>
                                             </td>
-                                            <td>$891.2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product23.jpg}" alt="product">
-                                                </a>
-                                                <a href="productlist.html">iPhone 11</a>
-                                            </td>
-                                            <td>$668.51</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product24.jpg}" alt="product">
-                                                </a>
-                                                <a href="productlist.html">samsung</a>
-                                            </td>
-                                            <td>$522.29</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{/admin/assets/img/product/product6.jpg}" alt="product">
-                                                </a>
-                                                <a href="productlist.html">Macbook Pro</a>
-                                            </td>
-                                            <td>$291.01</td>
+                                            <td th:text="${product.price}"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -301,57 +235,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
+                                    <tr th:each="customer, iterStat : ${loyalCustomers}">
+                                        <td th:text="${iterStat.index + 1}"></td>
                                         <td class="productimgname">
                                             <a class="product-img" href="productlist.html">
-                                                <img th:src="@{/admin/assets/img/product/product2.jpg}" alt="product">
+                                                <img th:src="@{'/uploads/' + ${customer.image}}" alt="user">
                                             </a>
-                                            <a href="productlist.html">Orange</a>
+                                            <a href="productlist.html" th:text="${customer.fullName}"></a>
                                         </td>
-                                        <td><a href="javascript:void(0);">IT0001</a></td>
-                                        <td>N/D</td>
-                                        <td>12-12-2022</td>
-                                        <td>Fruits</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td class="productimgname">
-                                            <a class="product-img" href="productlist.html">
-                                                <img th:src="@{/admin/assets/img/product/product3.jpg}" alt="product">
-                                            </a>
-                                            <a href="productlist.html">Pineapple</a>
-                                        </td>
-                                        <td><a href="javascript:void(0);">IT0002</a></td>
-                                        <td>N/D</td>
-                                        <td>25-11-2022</td>
-                                        <td>Fruits</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td class="productimgname">
-                                            <a class="product-img" href="productlist.html">
-                                                <img th:src="@{/admin/assets/img/product/product4.jpg}" alt="product">
-                                            </a>
-                                            <a href="productlist.html">Stawberry</a>
-                                        </td>
-                                        <td><a href="javascript:void(0);">IT0003</a></td>
-                                        <td>N/D</td>
-                                        <td>19-11-2022</td>
-                                        <td>Fruits</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4
-                                        <td class="productimgname">
-                                            <a class="product-img" href="productlist.html">
-                                                <img th:src="@{/admin/assets/img/product/product5.jpg}" alt="product">
-                                            </a>
-                                            <a href="productlist.html">Avocat</a>
-                                        </td>
-                                        <td><a href="javascript:void(0);">IT0004</a></td>
-                                        <td>N/D</td>
-                                        <td>20-11-2022</td>
-                                        <td>Fruits</td>
+                                        <td th:text="${customer.phone}"></td>
+                                        <td th:text="${customer.email}"></td>
+                                        <td th:text="${customer.dateOfBirth}"></td>
+                                        <td th:text="${customer.totalPurchaseDue}"></td>
                                     </tr>
                                 </tbody>
                             </table>

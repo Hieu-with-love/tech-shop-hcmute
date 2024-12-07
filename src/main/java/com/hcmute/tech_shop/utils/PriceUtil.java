@@ -2,6 +2,7 @@ package com.hcmute.tech_shop.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -19,5 +20,10 @@ public class PriceUtil {
         formatter.setMinimumFractionDigits(2);
         formatter.setMaximumFractionDigits(2);
         return formatter.format(price);
+    }
+
+    public static String formatCurrency(BigDecimal amount) {
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        return decimalFormat.format(amount);
     }
 }

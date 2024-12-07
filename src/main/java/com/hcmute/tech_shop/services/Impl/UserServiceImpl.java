@@ -4,10 +4,12 @@ import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.LoyalCustomerRes;
 import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.Confirmation;
 import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.repositories.OrderRepository;
 import com.hcmute.tech_shop.utils.ImageUtil;
 import com.hcmute.tech_shop.repositories.ConfirmationRepository;
 import com.hcmute.tech_shop.repositories.RoleRepository;
@@ -16,6 +18,7 @@ import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.EmailService;
 import com.hcmute.tech_shop.services.interfaces.RoleService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
+import com.hcmute.tech_shop.utils.PriceUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,6 +34,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
     CartService cartService;
     RoleService roleService;
     UserRepository userRepository;
+    OrderRepository orderRepository;
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
@@ -351,6 +356,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public int getCountUsersByRoleShipper() {
         return userRepository.countUsersByRoleShipper();
+    }
+
+    @Override
+    public List<LoyalCustomerRes> getTop4LoyalCustomers() {
+        List<Object[]> result = orderRepository.findTop4LoyalCustomers();
+        List<LoyalCustomerRes> loyalCustomers = new ArrayList<>();
+
+        for (Object[] row : result) {
+            User user = (User) row[0];
+            BigDecimal totalPurchase = (BigDecimal) row[1];
+
+            String totalPurchaseStr = PriceUtil.formatCurrency(totalPurchase);
+
+            LoyalCustomerRes res = new LoyalCustomerRes(
+                    user.getLastName() + " " + user.getFirstName(),
+                    user.getPhoneNumber(),
+                    user.getEmail(),
+                    user.getDateOfBirth(),
+                    totalPurchaseStr,
+                    user.getImage()
+            );
+            loyalCustomers.add(res);
+        }
+        return loyalCustomers;
     }
 
     @Override

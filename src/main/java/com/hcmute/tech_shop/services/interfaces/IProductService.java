@@ -87,4 +87,6 @@ public interface IProductService {
     Page<Product> getAllProducts(int pageNumber, int pageSize);
     Page<Product> getAllSortedProducts(int pageNumber, int pageSize, Sort sort);
     int getTotalStockQuantity();
+    List<Product> getTop4BestSellingProducts();
+    List<Product> get4NewProducts();
 }
