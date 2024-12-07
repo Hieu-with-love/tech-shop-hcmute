@@ -160,10 +160,16 @@
                                         <tr th:each="product, iterStat : ${top4Products}">
                                             <td th:text="${iterStat.index + 1}"></td>
                                             <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="product"/>
-                                                </a>
-                                                <a href="productlist.html" th:text="${product.name}"></a>
+                                                <img th:if="${product.thumbnail.startsWith('https')}"
+                                                     th:src="${product.thumbnail}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm mặc định" width="100px;">
+                                                <img th:unless="${product.thumbnail.startsWith('https')}"
+                                                     th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm" width="100px;">
+                                                <a th:href="@{/admin/products/edit(id=${product.getId()})}"
+                                                   th:text="${product.getName()}"></a>
                                             </td>
                                             <td th:text="${product.price}"></td>
                                         </tr>
@@ -204,10 +210,16 @@
                                         <tr th:each="product, iterStat : ${top4NewProducts}">
                                             <td th:text="${iterStat.index + 1}"></td>
                                             <td class="productimgname">
-                                                <a href="productlist.html" class="product-img">
-                                                    <img th:src="@{'/uploads/' + ${product.thumbnail}}" alt="product"/>
-                                                </a>
-                                                <a href="productlist.html" th:text="${product.name}"></a>
+                                                <img th:if="${product.thumbnail.startsWith('https')}"
+                                                     th:src="${product.thumbnail}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm mặc định" width="100px;">
+                                                <img th:unless="${product.thumbnail.startsWith('https')}"
+                                                     th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm" width="100px;">
+                                                <a th:href="@{/admin/products/edit(id=${product.getId()})}"
+                                                   th:text="${product.getName()}"></a>
                                             </td>
                                             <td th:text="${product.price}"></td>
                                         </tr>
@@ -239,8 +251,16 @@
                                         <td th:text="${iterStat.index + 1}"></td>
                                         <td class="productimgname">
                                             <a class="product-img" href="productlist.html">
-                                                <img th:src="@{'/uploads/' + ${customer.image}}" alt="user">
+                                                <img th:if="${customer.image.startsWith('https')}"
+                                                     th:src="${customer.image}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm mặc định" width="100px;">
+                                                <img th:unless="${customer.image.startsWith('https')}"
+                                                     th:src="@{'/uploads/' + ${customer.image}}"
+                                                     class="product-image"
+                                                     alt="Ảnh sản phẩm" width="100px;">
                                             </a>
+
                                             <a href="productlist.html" th:text="${customer.fullName}"></a>
                                         </td>
                                         <td th:text="${customer.phone}"></td>
