@@ -56,4 +56,6 @@ public class Order extends TrackingDate{
     @JoinColumn(name = "shipper_id", nullable = true)
     private User shipper;
 
+    @OneToMany(mappedBy = "order")
+    private List<Rating> ratings;
 }

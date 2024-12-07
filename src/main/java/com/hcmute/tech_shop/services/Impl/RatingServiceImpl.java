@@ -1,10 +1,7 @@
 package com.hcmute.tech_shop.services.Impl;
 
 import com.hcmute.tech_shop.dtos.requests.RatingRequest;
-import com.hcmute.tech_shop.entities.OrderDetail;
-import com.hcmute.tech_shop.entities.Product;
-import com.hcmute.tech_shop.entities.Rating;
-import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.entities.composites.RatingId;
 import com.hcmute.tech_shop.repositories.*;
 import com.hcmute.tech_shop.services.interfaces.IRatingService;
@@ -21,6 +18,7 @@ public class RatingServiceImpl implements IRatingService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public List<Rating> findByProductId(Long productId) {
@@ -84,11 +82,12 @@ public class RatingServiceImpl implements IRatingService {
         try {
             Product product = productRepository.findById(ratingRequest.getProductId()).orElse(null);
             User user = userRepository.findById(ratingRequest.getUserId()).orElse(null);
+            Order order = orderRepository.findById(ratingRequest.getOrderId()).orElse(null);
             if(product == null||user == null){
                 return false;
             }
-            Rating rating = new Rating(new RatingId(user.getId(),product.getId()),
-                    ratingRequest.getContent(),ratingRequest.getStar(),user,product);
+            Rating rating = new Rating(new RatingId(user.getId(),product.getId(),order.getId()),
+                    ratingRequest.getContent(),ratingRequest.getStar(),user,product,order);
 
             ratingRepository.save(rating);
             return true;

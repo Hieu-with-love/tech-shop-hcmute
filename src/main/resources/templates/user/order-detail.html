@@ -87,6 +87,7 @@
                             <th scope="col" class="product-price">Price</th>
                             <th scope="col" class="product-quantity">Quantity</th>
                             <th scope="col" class="product-subtotal">Subtotal</th>
+                            <th scope="col" class="product-action">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -114,6 +115,10 @@
                             </td>
                             <td class="product-subtotal" data-title="Price">
                                 <span th:text="${orderDetail.getTotalPrice()}"></span></td>
+                            <td>
+                                <a th:href="@{/user/orders/detail(id=${order.getId()})}" class="axil-btn view-btn">View</a>
+                            </td>
+
                         </tr>
                         </tbody>
                     </table>

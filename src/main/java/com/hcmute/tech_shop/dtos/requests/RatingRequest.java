@@ -1,5 +1,6 @@
 package com.hcmute.tech_shop.dtos.requests;
 
+import com.hcmute.tech_shop.entities.Order;
 import com.hcmute.tech_shop.entities.Product;
 import com.hcmute.tech_shop.entities.User;
 import jakarta.persistence.*;
@@ -27,4 +28,9 @@ public class RatingRequest {
     @MapsId("productId")
     @JoinColumn(name = "product_id", nullable = false)
     private Long productId;
+
+    @ManyToOne
+    @MapsId("orderId")
+    @JoinColumn(name = "order_id", nullable = false)
+    private Long orderId;
 }

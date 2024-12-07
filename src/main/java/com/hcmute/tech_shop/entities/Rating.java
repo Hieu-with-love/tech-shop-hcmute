@@ -34,4 +34,8 @@ public class Rating {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @ManyToOne
+    @MapsId("orderId")
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 }
