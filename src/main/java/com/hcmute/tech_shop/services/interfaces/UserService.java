@@ -32,4 +32,6 @@ public interface UserService {
     void saveUser(UserRequest userRequest, MultipartFile file);
     void updateProfile(ProfileRequest profileRequest, MultipartFile file);
     void editPassword(PasswordRequest passwordRequest);
+    int getCountUsersByRoleUser();
+    int getCountUsersByRoleShipper();
 }

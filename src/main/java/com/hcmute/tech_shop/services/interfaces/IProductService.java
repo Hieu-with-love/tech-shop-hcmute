@@ -86,4 +86,5 @@ public interface IProductService {
     List<ProductRequest> findByCategoryName(String categoryName);
     Page<Product> getAllProducts(int pageNumber, int pageSize);
     Page<Product> getAllSortedProducts(int pageNumber, int pageSize, Sort sort);
+    int getTotalStockQuantity();
 }

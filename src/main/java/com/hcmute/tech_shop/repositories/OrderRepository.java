@@ -2,9 +2,11 @@ package com.hcmute.tech_shop.repositories;
 
 import com.hcmute.tech_shop.entities.Order;
 import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -14,4 +16,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> getAllByShipperIdAndStatusEquals(Long shipperId, String status);
     List<Order> getAllByShipperId(Long shipperId);
+    List<Order> findByStatus(OrderStatus status);
+
 }

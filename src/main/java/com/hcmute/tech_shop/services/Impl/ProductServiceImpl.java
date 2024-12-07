@@ -404,4 +404,13 @@ public class ProductServiceImpl implements IProductService {
         return null;
     }
 
+    @Override
+    public int getTotalStockQuantity() {
+        List<Product> products = productRepository.findAll();
+
+        return products.stream()
+                .mapToInt(Product::getStockQuantity)
+                .sum();
+    }
+
 }

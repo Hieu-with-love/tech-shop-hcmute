@@ -45,7 +45,7 @@
                                 <span><img th:src="@{/admin/assets/img/icons/dash2.svg}" alt="img"></span>
                             </div>
                             <div class="dash-widgetcontent">
-                                <h5>$<span class="counters" data-count="307144.00">$307,144.00</span></h5>
+                                <h5><span class="counters" th:attr="data-count=${totalPurchaseDue}">0</span></h5>
                                 <h6>Total Purchase Due</h6>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 <span><img th:src="@{/admin/assets/img/icons/dash2.svg}" alt="img"></span>
                             </div>
                             <div class="dash-widgetcontent">
-                                <h5>$<span class="counters" data-count="4385.00">$4,385.00</span></h5>
+                                <h5><span class="counters" th:attr="data-count=${totalAvailableVouchers}">0</span></h5>
                                 <h6>Total Available Vouchers</h6>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                 <span><img th:src="@{/admin/assets/img/icons/product.svg}" alt="img"></span>
                             </div>
                             <div class="dash-widgetcontent">
-                                <h5>$<span class="counters" data-count="385656.50">385,656.50</span></h5>
+                                <h5><span class="counters" th:attr="data-count=${totalProductsSold}">0</span></h5>
                                 <h6>Total Products Sold</h6>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                                 <span><img th:src="@{/admin/assets/img/icons/product.svg}" alt="img"></span>
                             </div>
                             <div class="dash-widgetcontent">
-                                <h5><span class="counters" data-count="40.00">0.00</span></h5>
+                                <h5><span class="counters" th:attr="data-count=${totalProducts}">0</span></h5>
                                 <h6>Total Products</h6>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                     <div class="col-lg-3 col-sm-6 col-12 d-flex">
                         <div class="dash-count">
                             <div class="dash-counts">
-                                <h4>100</h4>
+                                <h4 th:text="${userCount}">0</h4>
                                 <h5>Customers</h5>
                             </div>
                             <div class="dash-imgs">
@@ -97,7 +97,7 @@
                     <div class="col-lg-3 col-sm-6 col-12 d-flex">
                         <div class="dash-count das1">
                             <div class="dash-counts">
-                                <h4>100</h4>
+                                <h4 th:text="${shipperCount}">0</h4>
                                 <h5>Shippers</h5>
                             </div>
                             <div class="dash-imgs">
@@ -108,7 +108,7 @@
                     <div class="col-lg-3 col-sm-6 col-12 d-flex">
                         <div class="dash-count das2">
                             <div class="dash-counts">
-                                <h4>100</h4>
+                                <h4 th:text="${totalOrders}">0</h4>
                                 <h5>Purchase Invoice</h5>
                             </div>
                             <div class="dash-imgs">
@@ -119,7 +119,7 @@
                     <div class="col-lg-3 col-sm-6 col-12 d-flex">
                         <div class="dash-count das3">
                             <div class="dash-counts">
-                                <h4>105</h4>
+                                <h4 th:text="${totalOrdersPending}">0</h4>
                                 <h5>Purchase Pending</h5>
                             </div>
                             <div class="dash-imgs">

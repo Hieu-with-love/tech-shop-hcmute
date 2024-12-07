@@ -344,6 +344,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getCountUsersByRoleUser() {
+        return userRepository.countUsersByRoleUser();
+    }
+
+    @Override
+    public int getCountUsersByRoleShipper() {
+        return userRepository.countUsersByRoleShipper();
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

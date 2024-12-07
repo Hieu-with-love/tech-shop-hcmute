@@ -66,4 +66,11 @@ public class VoucherServiceImpl implements IVoucherService {
     public Optional<Voucher> findByName(String name) {
         return voucherRepository.findByName(name);
     }
+
+    @Override
+    public int getAvailableVoucherCount() {
+        LocalDate currentDate = LocalDate.now();
+        List<Voucher> availableVouchers = voucherRepository.findByQuantityGreaterThanAndExpiredDateGreaterThan(0, currentDate);
+        return availableVouchers.size();
+    }
 }

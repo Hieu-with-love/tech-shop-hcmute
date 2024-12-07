@@ -48,4 +48,8 @@ public interface IOrderService {
     List<OrderReponse> findAllByShipperId(Long shipperId);
 
     OrderReponse findByOrderId(Long id);
+    BigDecimal getTotalPurchaseDueForDeliveredOrders();
+    int getTotalProductsSold();
+    int getTotalOrder();
+    int getTotalOrderForShipping();
 }

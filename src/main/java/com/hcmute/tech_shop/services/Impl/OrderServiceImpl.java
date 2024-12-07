@@ -206,4 +206,34 @@ public class OrderServiceImpl implements IOrderService {
         orderReponse.setShippingAddress(order.getAddress());
         return orderReponse;
     }
+
+    @Override
+    public BigDecimal getTotalPurchaseDueForDeliveredOrders() {
+        List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.DELIVERED);
+        return deliveredOrders.stream()
+                .map(Order::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public int getTotalProductsSold() {
+        List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.DELIVERED);
+
+        return deliveredOrders.stream()
+                .flatMap(order -> order.getOrderDetails().stream())
+                .mapToInt(OrderDetail::getQuantity)
+                .sum();
+    }
+
+    @Override
+    public int getTotalOrder() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.size();
+    }
+
+    @Override
+    public int getTotalOrderForShipping() {
+        List<Order> deliveredOrders = orderRepository.findByStatus(OrderStatus.PENDING);
+        return deliveredOrders.size();
+    }
 }
