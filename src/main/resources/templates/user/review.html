@@ -1,0 +1,331 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>TechShop || Product Details</title>
+    <div th:insert="~{user/fragments/head::head}"></div>
+    <link rel="stylesheet"
+          th:href="@{/user/customize/css/main.css}"/>
+</head>
+
+
+<body class="sticky-header overflow-md-visible">
+<a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+<!-- Start Header -->
+<div th:insert="~{user/fragments/header::header}"></div>
+<!-- End Header -->
+
+<main class="main-wrapper">
+    <!-- Start Shop Area  -->
+    <div class="axil-single-product-area bg-color-white">
+        <div class="single-product-thumb axil-section-gapcommon single-product-modern">
+            <div class="container">
+                <div class="row row--20">
+                    <div class="col-lg-6 mb--40">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="product-large-thumbnail-4 single-product-thumbnail axil-product">
+                                    <div class="thumbnail">
+                                        <img th:if="${productRes.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
+                                             alt="Ảnh sản phẩm mặc định">
+                                        <img th:unless="${productRes.isUrlImage()}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             alt="Ảnh sản phẩm">
+                                    </div>
+                                    <div class="thumbnail" th:each="productImage : ${productImages}">
+                                        <img th:if="${productImage.getUrl().startsWith('https')}"
+                                             th:src="${productImage.getUrl()}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="200px;">
+                                        <img th:unless="${productImage.getUrl().startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${productImage.getUrl()}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="small-thumb-wrapper product-small-thumb-4 slick-layout-wrapper--10 axil-slick-arrow arrow-both-side">
+                                    <div class="small-thumb-img">
+                                        <img th:if="${productRes.isUrlImage()}"
+                                             th:src="${product.thumbnail}"
+                                             alt="samll-thumb">
+                                        <img th:unless="${productRes.isUrlImage()}"
+                                             th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             alt="samll-thumb">
+                                    </div>
+                                    <div class="small-thumb-img" th:each="productImage : ${productImages}">
+                                        <img    th:if="${productImage.getUrl().startsWith('https')}"
+                                                th:src="${productImage.getProduct().getThumbnail()}">
+                                        <img    th:unless="${productImage.getUrl().startsWith('https')}"
+                                                th:src="@{'/uploads/'+${productImage.getUrl()}}" alt="samll-thumb">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb--40">
+                        <div class="single-product-content">
+                            <div class="inner">
+                                <h2 class="product-title" th:text="${product.getName()}"></h2>
+                                <span class="price-amount" th:text="${productRes.getPrice()}"></span>
+                                <div class="product-rating">
+                                    <div class="star-rating">
+                                        <!-- Define ratingCount to ensure it's a number -->
+                                        <th:block th:with="ratingCount=${ratingCount}">
+                                            <!-- Loop for filled stars -->
+                                            <th:block th:if="${ratingCount > 0}">
+                                                <th:block th:each="i : ${#numbers.sequence(1, ratingCount)}">
+                                                    <i class="fas fa-star"></i>
+                                                </th:block>
+                                            </th:block>
+
+                                            <!-- Loop for empty stars -->
+                                            <th:block th:if="${ratingCount < 5}">
+                                                <th:block th:each="i : ${#numbers.sequence(1, (5 - ratingCount))}">
+                                                    <i class="far fa-star"></i>
+                                                </th:block>
+                                            </th:block>
+                                        </th:block>
+                                    </div>
+                                    <div class="review-link">
+                                        <a href="#">(<span th:text="${ratingUser}"></span> customer reviews)</a>
+                                    </div>
+                                </div>
+                                <ul class="product-meta">
+                                    <li><i class="fal fa-check"></i>In stock</li>
+                                    <li><i class="fal fa-check"></i>Free delivery available</li>
+                                    <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
+                                </ul>
+
+                                <div class="product-variations-wrapper">
+
+                                    <!-- Start Product Variation  -->
+                                    <div class="product-variation product-size-variation">
+                                        <h6 class="title">RAM Type:</h6>
+                                        <ul class="radius">
+                                            <li>4 GB RAM</li>
+                                            <li>8 GB RAM</li>
+                                            <li>16 GB RAM</li>
+                                            <li>24 GB RAM</li>
+                                            <li>32 GB RAM</li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Product Variation  -->
+
+                                </div>
+
+                                <!-- Start Product Action Wrapper  -->
+                                <!-- End Product Action Wrapper  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End .single-product-thumb -->
+
+        <div class="woocommerce-tabs wc-tabs-wrapper bg-vista-white">
+            <div class="container">
+                <ul class="nav tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="active" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews"
+                           aria-selected="false">Reviews</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                        <div class="reviews-wrapper">
+                            <div class="row">
+                                <div class="col-lg-6 mb--40">
+                                    <div class="axil-comment-area pro-desc-commnet-area">
+                                        <h5 class="title" th:text="${ratingUser} + ' Review for this product'"></h5>
+                                        <ul class="comment-list">
+                                            <!-- Start Single Comment  -->
+                                            <li class="comment" th:each="rating : ${ratings}">
+                                                <div class="comment-body">
+                                                    <div class="single-comment">
+                                                        <div class="comment-img">
+                                                            <img th:src="@{'/uploads/'+${rating.getUser().getImage()}}"
+                                                                 style="height: 50px; width: 50px"
+                                                                 alt="Author Images">
+                                                        </div>
+                                                        <div class="comment-inner">
+                                                            <h6 class="commenter">
+                                                                <a class="hover-flip-item-wrapper" href="#">
+                                                                        <span class="hover-flip-item">
+                                                                            <span data-text="Cameron Williamson"
+                                                                                  th:text="${rating.getUser().getLastName()}"></span>
+                                                                        </span>
+                                                                </a>
+                                                                <span class="commenter-rating ratiing-four-star">
+                                                                    <!-- Define ratingCount to ensure it's a number -->
+                                                                    <th:block th:with="star=${rating.getStar()}">
+                                                                        <!-- Loop for filled stars -->
+                                                                        <th:block th:if="${star > 0}">
+                                                                            <th:block
+                                                                                    th:each="i : ${#numbers.sequence(1, star)}">
+                                                                                <i class="fas fa-star"></i>
+                                                                            </th:block>
+                                                                        </th:block>
+                                                                        <!-- Loop for empty stars -->
+                                                                        <th:block th:if="${star < 5}">
+                                                                            <th:block
+                                                                                    th:each="i : ${#numbers.sequence(1, (5 - star))}">
+                                                                                <i class="far fa-star"></i>
+                                                                            </th:block>
+                                                                        </th:block>
+                                                                    </th:block>
+                                                                </span>
+                                                            </h6>
+                                                            <div class="comment-text">
+                                                                <p th:text="${rating.getContent()}"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <!-- End Single Comment  -->
+                                        </ul>
+                                    </div>
+                                    <!-- End .axil-commnet-area -->
+                                </div>
+                                <!-- End .col -->
+                                <div class="col-lg-6 mb--40">
+                                    <!-- Start Comment Respond  -->
+                                    <div class="comment-respond pro-des-commend-respond mt--0">
+                                        <div class="title mb--30" >
+                                            <div th:if="${msg != null}">
+                                                <h6 th:text="${msg}"
+                                                    style="color: red;">
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <h5 class="title mb--30">Add a Review</h5>
+                                        <p>Your email address will not be published. Required fields are marked *</p>
+                                        <div class="rating-wrapper d-flex-center mb--40">
+                                            Your Rating <span class="require">*</span>
+                                            <div class="reating-inner ml--20">
+                                                <i class="fal fa-star" id="st1"></i>
+                                                <i class="fal fa-star" id="st2"></i>
+                                                <i class="fal fa-star" id="st3"></i>
+                                                <i class="fal fa-star" id="st4"></i>
+                                                <i class="fal fa-star" id="st5"></i>
+                                            </div>
+                                        </div>
+
+                                        <form th:action="@{/user/reviews/{productId}/{orderId}(productId=${product.id}, orderId=${orderId})}" method="post" th:object="${rating}">
+                                            <input type="hidden" name="ratingValue" id="ratingValue" th:field="*{star}"/>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Other Notes (optional)</label>
+                                                        <textarea placeholder="Your Comment" th:field="*{content}"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="form-submit">
+                                                        <button type="submit" id="submit"
+                                                                class="axil-btn btn-bg-primary w-auto">Submit Comment
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- End Comment Respond  -->
+                                </div>
+                                <!-- End .col -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- woocommerce-tabs -->
+
+    </div>
+    <!-- End Shop Area  -->
+
+    <!-- End Recently Viewed Product Area  -->
+</main>
+
+
+<div th:insert="~{/user/fragments/service-area::service-area}"></div>
+<!-- Start Footer Area  -->
+<div th:insert="~{/user/fragments/footer::footer}"></div>
+<!-- End Footer Area  -->
+
+<!-- Product Quick View Modal Start -->
+<div th:insert="~{/user/fragments/quickview::quick-view}"></div>
+<!-- Product Quick View Modal End -->
+
+<!-- Header Search Modal End -->
+<div th:insert="~{/user/fragments/header-search::header-search}"></div>
+<!-- Header Search Modal End -->
+
+<div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
+
+<!-- JS
+============================================ -->
+<!-- Modernizer JS -->
+<div th:insert="~{/user/fragments/script::script}"></div>
+<!--Tạo số sao-->
+<script>
+    $(document).ready(function() {
+        // Tạo trường ẩn lưu giá trị rating
+        const ratingValueInput = $("#ratingValue");
+
+        // Gán sự kiện click cho tất cả các sao
+        $(".fa-star").click(function (){
+            // Lấy ID của ngôi sao được click
+            const starId = $(this).attr("id");
+            // Lấy số sao từ ID (st1 -> 1, st2 -> 2, ...)
+            const  rating = starId.replace("st","");
+
+            // Cập nhật giá trị vào trường ẩn
+            ratingValueInput.val(rating);
+
+            // Đặt màu mặc định (đen) cho tất cả các sao
+            $(".fa-star").css("color","black");
+
+            // Tô màu xanh cho các sao từ 1 đến giá trị rating
+            for (let i = 1; i <= rating; i++) {
+                $("#st" + i).css("color", "blue");
+            }
+        });
+    });
+
+    document.querySelectorAll('.wishlist-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent page reload
+            const formData = new FormData(this);
+            const actionUrl = this.getAttribute('action');
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if (data.includes('<div class="axil-signin-form">')) {
+                        // Redirect to login page if login page content is detected
+                        window.location.href = '/login';
+                    } else {
+                        alert(data); // Success notification
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred!');
+                });
+        });
+    });
+</script>
+<!--End Tạo số sao-->
+
+</body>
+
+
+<!-- Mirrored from new.axilthemes.com/demo/template/etrade/single-product-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:20 GMT -->
+</html>

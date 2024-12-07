@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +52,8 @@ public class ProductController {
         List<Category> categoryDTOList = categoryService.findAll();
         List<Brand> brands = brandService.findAll();
         List<ProductRequest> productDTOList = productService.findByCategoryName(name);
+
+
 
         model.addAttribute("brands", brands);
 
@@ -154,24 +154,5 @@ public class ProductController {
             }
         }
         return "redirect:/user/products/product-detail/"+productId;
-    }
-
-    @GetMapping("/quick-view")
-    @ResponseBody
-    public ResponseEntity<Map<String, String>> quickView(@RequestParam("id") Long productId) {
-        // Lấy thông tin sản phẩm từ cơ sở dữ liệu
-        ProductResponse product = productService.getProductResponse(productId);
-        int ratings= ratingService.countUser(productId);
-        String ratingString = ratings > 0 ? String.valueOf(ratings) : "Chưa có đánh giá";
-        // Tạo Map để trả về dữ liệu
-        Map<String, String> response = new HashMap<>();
-        response.put("name", product.getName());
-        response.put("price", String.valueOf(product.getPrice())); // Chuyển giá trị số sang chuỗi
-        response.put("oldPrice", String.valueOf(product.getOldPrice()));
-        response.put("thumbnail", product.getThumbnail());
-        response.put("stockQuantity", String.valueOf(product.getStockQuantity()));
-        response.put("isUrlImage", String.valueOf(product.isUrlImage()));
-        response.put("ratings", ratingString);
-        return ResponseEntity.ok(response);
     }
 }

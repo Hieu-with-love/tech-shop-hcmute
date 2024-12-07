@@ -116,9 +116,8 @@
                             <td class="product-subtotal" data-title="Price">
                                 <span th:text="${orderDetail.getTotalPrice()}"></span></td>
                             <td>
-                                <a th:href="@{/user/orders/detail(id=${order.getId()})}" class="axil-btn view-btn">View</a>
+                                <a th:href="@{/user/reviews/product-detail/{productId}/{orderId}(productId=${orderDetail.product.id}, orderId=${orderDetail.id})}" class="axil-btn view-btn">Review</a>
                             </td>
-
                         </tr>
                         </tbody>
                     </table>

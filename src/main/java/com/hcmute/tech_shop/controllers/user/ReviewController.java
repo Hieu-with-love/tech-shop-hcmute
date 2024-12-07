@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+@Controller
 @RequestMapping("/user/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
@@ -27,14 +29,14 @@ public class ReviewController {
     private final IProductService productService;
     private final IProductImageService productImageService;
 
-    @GetMapping("/product-detail/{id}")
-    public String productDetail(Model model, @PathVariable Long id) {
-        Optional<Product> product = productService.findById(id);
-        ProductResponse productResponse = productService.getProductResponse(id);
-        List<ProductImage> productImages = productImageService.findByProductId(id);
-        List<Rating> ratings = ratingService.findByProductId(id);
-        int ratingCount = ratingService.countRatingStar(id);
-        int ratingUser = ratingService.countUser(id);
+    @GetMapping("/product-detail/{productId}/{orderId}")
+    public String productDetail(Model model, @PathVariable Long productId, @PathVariable Long orderId) {
+        Optional<Product> product = productService.findById(productId);
+        ProductResponse productResponse = productService.getProductResponse(productId);
+        List<ProductImage> productImages = productImageService.findByProductId(productId);
+        List<Rating> ratings = ratingService.findByProductId(productId);
+        int ratingCount = ratingService.countRatingStar(productId);
+        int ratingUser = ratingService.countUser(productId);
 
         model.addAttribute("product", product.get());
         model.addAttribute("productRes", productResponse);
@@ -43,18 +45,21 @@ public class ReviewController {
         model.addAttribute("ratingCount", ratingCount);
         model.addAttribute("ratingUser", ratingUser);
         model.addAttribute("rating",new RatingRequest());
+        model.addAttribute("orderId", orderId);
 
-        return "user/single-product-3";
+        return "user/review";
     }
 
-    @PostMapping("/reviews")
+    @PostMapping("/{productId}/{orderId}")
     public String reviews(@Valid @ModelAttribute("rating") RatingRequest ratingRequest,
-                          @RequestParam("productId") Long productId, HttpSession session,
+                          @PathVariable Long productId, HttpSession session,
+                          @PathVariable Long orderId,
                           RedirectAttributes redirectAttributes) {
         if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")){
             User user = (User) session.getAttribute("user");
             ratingRequest.setProductId(productId);
             ratingRequest.setUserId(user.getId());
+            ratingRequest.setOrderId(orderId);
 
             if(ratingService.checkOrderFirst(productId,user.getId())){
                 if (!ratingService.insert(ratingRequest)){
@@ -67,6 +72,6 @@ public class ReviewController {
                 redirectAttributes.addFlashAttribute("msg", msg);
             }
         }
-        return "redirect:/user/products/product-detail/"+productId;
+        return "redirect:/user/orders/detail/"+productId;
     }
 }

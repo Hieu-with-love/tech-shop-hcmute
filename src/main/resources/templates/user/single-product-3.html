@@ -55,9 +55,9 @@
                                              alt="samll-thumb">
                                     </div>
                                     <div class="small-thumb-img" th:each="productImage : ${productImages}">
-                                        <img    th:if="${productImage.isUrlImage()}"
+                                        <img    th:if="${productImage.getUrl().startsWith('https')}"
                                                 th:src="${productImage.getProduct().getThumbnail()}">
-                                        <img    th:unless="${productImage.isUrlImage()}"
+                                        <img    th:unless="${productImage.getUrl().startsWith('https')}"
                                                 th:src="@{'/uploads/'+${productImage.getUrl()}}" alt="samll-thumb">
                                     </div>
                                 </div>
