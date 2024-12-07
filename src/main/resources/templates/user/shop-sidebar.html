@@ -256,8 +256,8 @@
                     <input type="hidden" id="totalPages" th:value="${totalPages}">
                     <div th:if="${totalPages == 0}" id="error-notification" style="display: none;">
                         <div class="empty-notification">
-                            <img th:src="@{/user/assets/images/my-image/shop-empty.png}" alt="Error Notification">
-                            <p>Somethings you can don't available. You can looking for some different!</p>
+                            <img th:src="@{/user/assets/images/my-image/no-data.svg}" alt="Error Notification">
+                            <p>No data to show!</p>
                         </div>
                     </div>
                     <div class="custom-pagination">
