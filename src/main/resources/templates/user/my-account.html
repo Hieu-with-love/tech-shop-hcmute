@@ -83,6 +83,8 @@
                                        role="tab" aria-selected="true"><i class="fas fa-user"></i>Account Details</a>
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-reset-password"
                                        role="tab" aria-selected="false"><i class="fas fa-user"></i>Password Details</a>
+                                    <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-update-avatar"
+                                       role="tab" aria-selected="false"><i class="fas fa-user"></i>Your image</a>
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-orders" role="tab"
                                        aria-selected="false"><i class="fas fa-shopping-basket"></i>Orders</a>
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab"
@@ -201,6 +203,20 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show" id="nav-update-avatar" role="tabpanel">
+                                <div class="col-lg-9">
+                                    <div class="axil-dashboard-account">
+                                        <form th:action="@{/user/updateProfileImage}" method="post" enctype="multipart/form-data">
+                                            <!-- Other form fields -->
+                                            <div class="form-group">
+                                                <label for="image">Your Image</label>
+                                                <input type="file" id="image" name="image" class="form-control">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                         </form>
                                     </div>
                                 </div>

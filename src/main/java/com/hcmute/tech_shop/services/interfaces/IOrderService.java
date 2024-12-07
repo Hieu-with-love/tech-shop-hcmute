@@ -51,4 +51,8 @@ public interface IOrderService {
     OrderReponse findByOrderId(Long id);
     List<Order> ordersByYearAndMonthForShipper(int year, int month, Long shipperId);
     List<Order> totalPriceByYearAndMonthForShipper(int year, int month, Long shipperId);
+    BigDecimal getTotalPurchaseDueForDeliveredOrders();
+    int getTotalProductsSold();
+    int getTotalOrder();
+    int getTotalOrderForShipping();
 }

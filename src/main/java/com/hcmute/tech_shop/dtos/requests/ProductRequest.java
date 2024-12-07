@@ -60,5 +60,7 @@ public class ProductRequest implements Serializable {
 
     private String img;
 
+    private boolean isUrlImage;
+
     private MultipartFile thumbnail;
 }

@@ -4,10 +4,12 @@ import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.LoyalCustomerRes;
 import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.Confirmation;
 import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.repositories.OrderRepository;
 import com.hcmute.tech_shop.utils.ImageUtil;
 import com.hcmute.tech_shop.repositories.ConfirmationRepository;
 import com.hcmute.tech_shop.repositories.RoleRepository;
@@ -16,6 +18,7 @@ import com.hcmute.tech_shop.services.interfaces.CartService;
 import com.hcmute.tech_shop.services.interfaces.EmailService;
 import com.hcmute.tech_shop.services.interfaces.RoleService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
+import com.hcmute.tech_shop.utils.PriceUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,6 +34,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
     CartService cartService;
     RoleService roleService;
     UserRepository userRepository;
+    OrderRepository orderRepository;
     PasswordEncoder passwordEncoder;
     ConfirmationRepository confirmationRepository;
     EmailService emailService;
@@ -86,17 +91,6 @@ public class UserServiceImpl implements UserService {
         validation(userRequest, result);
 
         if (!result.hasErrors()) {
-
-//            String avatar = null;
-//            if (file == null){
-//                avatar = "avtdefault.jpg";
-//            } else {
-//                if (!ImageUtil.isValidSuffixImage(Objects.requireNonNull(file.getOriginalFilename()))) {
-//                    throw new BadRequestException("Image is not valid");
-//                }
-//                avatar = ImageUtil.saveImage(file);
-//            }
-
             User user = User.builder()
                     .username(userRequest.getUsername())
                     .email(userRequest.getEmail())
@@ -107,6 +101,7 @@ public class UserServiceImpl implements UserService {
                     .dateOfBirth(userRequest.getDob())
                     .role(role)
                     .isActive(false)
+                    .image("avtdefault.jpg")
                     .build();
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
@@ -341,6 +336,49 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(passwordRequest.getNewPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
+    }
+
+    @Override
+    public int getCountUsersByRoleUser() {
+        return userRepository.countUsersByRoleUser();
+    }
+
+    @Override
+    public int getCountUsersByRoleShipper() {
+        return userRepository.countUsersByRoleShipper();
+    }
+
+    @Override
+    public List<LoyalCustomerRes> getTop4LoyalCustomers() {
+        List<Object[]> result = orderRepository.findTop4LoyalCustomers();
+        List<LoyalCustomerRes> loyalCustomers = new ArrayList<>();
+
+        for (Object[] row : result) {
+            User user = (User) row[0];
+            BigDecimal totalPurchase = (BigDecimal) row[1];
+
+            String totalPurchaseStr = PriceUtil.formatCurrency(totalPurchase);
+
+            LoyalCustomerRes res = new LoyalCustomerRes(
+                    user.getLastName() + " " + user.getFirstName(),
+                    user.getPhoneNumber(),
+                    user.getEmail(),
+                    user.getDateOfBirth(),
+                    totalPurchaseStr,
+                    user.getImage()
+            );
+            loyalCustomers.add(res);
+        }
+        return loyalCustomers;
+    }
+
+    @Override
+    public void updateProfileImage(User user, MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String imageName = ImageUtil.saveImage(image);
+            user.setImage(imageName);
+            userRepository.save(user);
+        }
     }
 
     @Override

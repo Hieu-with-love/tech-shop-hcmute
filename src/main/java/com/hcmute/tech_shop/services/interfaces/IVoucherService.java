@@ -25,4 +25,6 @@ public interface IVoucherService {
     Optional<Voucher> findById(Long id);
 
     Optional<Voucher> findByName(String name);
+
+    int getAvailableVoucherCount();
 }

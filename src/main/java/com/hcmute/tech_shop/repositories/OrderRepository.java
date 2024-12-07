@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -28,4 +29,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> totalPriceByYearAndMonthForShipper(@Param("year") int year,
                                                        @Param("month") int month,
                                                        @Param("shipperId") Long shipperId);
+    List<Order> findByStatus(OrderStatus status);
+    @Query("SELECT o.user, SUM(o.totalPrice) " +
+            "FROM orders o " +
+            "WHERE o.status = 'DELIVERED' " +
+            "GROUP BY o.user " +
+            "ORDER BY SUM(o.totalPrice) DESC")
+    List<Object[]> findTop4LoyalCustomers();
+
 }

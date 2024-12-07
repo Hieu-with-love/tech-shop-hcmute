@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.PasswordRequest;
 import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.LoyalCustomerRes;
 import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.User;
 import org.apache.coyote.BadRequestException;
@@ -32,4 +33,8 @@ public interface UserService {
     void saveUser(UserRequest userRequest, MultipartFile file);
     void updateProfile(ProfileRequest profileRequest, MultipartFile file);
     void editPassword(PasswordRequest passwordRequest);
+    int getCountUsersByRoleUser();
+    int getCountUsersByRoleShipper();
+    List<LoyalCustomerRes> getTop4LoyalCustomers();
+    void updateProfileImage(User user, MultipartFile image) throws IOException;
 }
