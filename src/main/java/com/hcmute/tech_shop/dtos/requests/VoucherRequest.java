@@ -20,6 +20,8 @@ public class VoucherRequest implements Serializable {
     private String name;
 
     @NotNull(message = "Value cannot be null")
+    @DecimalMin(value = "1.00", message = "Value must be at least 1")
+    @DecimalMax(value = "100.00", message = "Value must be at most 100")
     @Digits(integer = 10, fraction = 2, message = "Value should have up to 10 integer digits and 2 decimal places")
     private BigDecimal value;
 
