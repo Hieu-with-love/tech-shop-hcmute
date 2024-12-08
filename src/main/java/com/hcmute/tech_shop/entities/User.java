@@ -16,8 +16,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = {"role", "addresses", "wishlist", "orders", "ratings"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "users")
+
 public class User extends TrackingDate implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +56,7 @@ public class User extends TrackingDate implements Serializable {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> ratings;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -67,7 +69,7 @@ public class User extends TrackingDate implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wishlist wishlist;
 
-    @OneToMany(mappedBy = "shipper")
+    @OneToMany(mappedBy = "shipper", cascade = CascadeType.ALL )
     private List<Order> orders;
 
 }

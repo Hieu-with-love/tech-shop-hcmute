@@ -10,6 +10,8 @@ import com.hcmute.tech_shop.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller("userControllerOfAdmin")
 @RequestMapping("/admin/users")
@@ -181,6 +185,18 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
-
+    @GetMapping("/delete-user/{id}")
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable(value = "id") Long id) {
+        Map<String, String> response = new HashMap<>();
+        if (userService.deleteUser(id)) {
+            response.put("status", "success");
+            response.put("message", "User deleted successfully.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "error");
+            response.put("message", "Failed to delete the user.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }

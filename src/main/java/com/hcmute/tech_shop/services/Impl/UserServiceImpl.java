@@ -19,6 +19,7 @@ import com.hcmute.tech_shop.services.interfaces.EmailService;
 import com.hcmute.tech_shop.services.interfaces.RoleService;
 import com.hcmute.tech_shop.services.interfaces.UserService;
 import com.hcmute.tech_shop.utils.PriceUtil;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -412,12 +413,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    @Transactional
+    public boolean deleteUser(Long id) {
+
+
         User existingUser = this.getUser(id);
         if (existingUser != null) {
             existingUser.setActive(false);
             userRepository.save(existingUser);
+            return true;
         }
+        return false;
     }
 
     @Override
