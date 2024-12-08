@@ -339,51 +339,6 @@
                                     <!-- End .axil-commnet-area -->
                                 </div>
                                 <!-- End .col -->
-                                <div class="col-lg-6 mb--40">
-                                    <!-- Start Comment Respond  -->
-                                    <div class="comment-respond pro-des-commend-respond mt--0">
-                                        <div class="title mb--30" >
-                                            <div th:if="${msg != null}">
-                                                <h6 th:text="${msg}"
-                                                    style="color: red;">
-                                                </h6>
-                                            </div>
-                                        </div>
-                                        <h5 class="title mb--30">Add a Review</h5>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                        <div class="rating-wrapper d-flex-center mb--40">
-                                            Your Rating <span class="require">*</span>
-                                            <div class="reating-inner ml--20">
-                                                <i class="fal fa-star" id="st1"></i>
-                                                <i class="fal fa-star" id="st2"></i>
-                                                <i class="fal fa-star" id="st3"></i>
-                                                <i class="fal fa-star" id="st4"></i>
-                                                <i class="fal fa-star" id="st5"></i>
-                                            </div>
-                                        </div>
-
-                                        <form th:action="@{/user/products/reviews(productId=${product.id})}" method="post" th:object="${rating}">
-                                            <input type="hidden" name="ratingValue" id="ratingValue" th:field="*{star}"/>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="form-group">
-                                                        <label>Other Notes (optional)</label>
-                                                        <textarea placeholder="Your Comment" th:field="*{content}"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-submit">
-                                                        <button type="submit" id="submit"
-                                                                class="axil-btn btn-bg-primary w-auto">Submit Comment
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <!-- End Comment Respond  -->
-                                </div>
-                                <!-- End .col -->
                             </div>
                         </div>
                     </div>

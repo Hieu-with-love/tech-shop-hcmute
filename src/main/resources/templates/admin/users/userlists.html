@@ -153,7 +153,14 @@
                                 </td>
                                 <td class="productimgname">
                                     <a href="javascript:void(0);" class="product-img">
-                                        <img th:src="@{|/uploads/${user.image != null ? user.image : 'avtdefault.jpg'}|}" alt="product" width="50" height="50">
+                                        <img th:if="${user.image.startsWith('https')}"
+                                             th:src="${user.image}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm mặc định" width="100px;">
+                                        <img th:unless="${user.image.startsWith('https')}"
+                                             th:src="@{'/uploads/' + ${user.image}}"
+                                             class="product-image"
+                                             alt="Ảnh sản phẩm" width="100px;">
                                     </a>
                                 </td>
                                 <td th:text="${user.firstName}">First Name</td>
@@ -369,7 +376,7 @@
 </div>
 
 
-<script data-cfasync="false" th:src="@{/admin/../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js}"></script>
+<!--<script data-cfasync="false" th:src="@{/admin/../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js}"></script>-->
 <script th:src="@{/admin/assets/js/jquery-3.6.0.min.js}"></script>
 
 <script th:src="@{/admin/assets/js/feather.min.js}"></script>

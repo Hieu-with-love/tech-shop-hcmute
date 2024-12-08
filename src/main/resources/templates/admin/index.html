@@ -213,11 +213,11 @@
                                                 <img th:if="${product.thumbnail.startsWith('https')}"
                                                      th:src="${product.thumbnail}"
                                                      class="product-image"
-                                                     alt="Ảnh sản phẩm mặc định" width="100px;">
+                                                     alt="Ảnh sản phẩm mặc định" width="80px;">
                                                 <img th:unless="${product.thumbnail.startsWith('https')}"
                                                      th:src="@{'/uploads/' + ${product.thumbnail}}"
                                                      class="product-image"
-                                                     alt="Ảnh sản phẩm" width="100px;">
+                                                     alt="Ảnh sản phẩm" width="80px;">
                                                 <a th:href="@{/admin/products/edit(id=${product.getId()})}"
                                                    th:text="${product.getName()}"></a>
                                             </td>
