@@ -1,9 +1,8 @@
 package com.hcmute.tech_shop.controllers.admin;
 
+import com.hcmute.tech_shop.dtos.requests.ProfileDto;
 import com.hcmute.tech_shop.dtos.responses.LoyalCustomerRes;
-import com.hcmute.tech_shop.entities.Product;
-import com.hcmute.tech_shop.entities.User;
-import com.hcmute.tech_shop.entities.Voucher;
+import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.IOrderService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.services.interfaces.IVoucherService;
@@ -71,7 +70,21 @@ public class AdminController {
     }
 
     @GetMapping("/profile")
-    public String profile(Model model, HttpSession session) {
+    public String profile(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            com.hcmute.tech_shop.entities.User user = userService.getUserByUsername(username);
+            ProfileDto profileDto = ProfileDto.builder()
+                    .username(username)
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .email(user.getEmail())
+                    .phone(user.getPhoneNumber())
+                    .gender(user.getGender())
+                    .dob(user.getDateOfBirth())
+                    .status(user.isActive())
+                    .image(user.getImage())
+                    .build();
+            model.addAttribute("profileDto", profileDto);
         return "admin/users/profile";
     }
 }

@@ -54,68 +54,78 @@
                         <div class="profile-top">
                             <div class="profile-content">
                                 <div class="profile-contentimg">
-                                    <img th:src="@{/admin/assets/img/customer/customer5.jpg}" alt="img" id="blah">
+                                    <img th:if="${profileDto.image != null}"
+                                         th:src="@{'/uploads/' + ${profileDto.image}}" alt="Hello Annie"
+                                    >
+                                    <img th:if="${profileDto.image == null}" alt="Welcome to LaptopShop"
+                                         th:src="@{/user/assets/images/product/author1.png}">
                                     <div class="profileupload">
                                         <input type="file" id="imgInp">
-                                        <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/edit-set.svg}"
-                                                                           alt="img"></a>
+                                        <!--                                        <a href="javascript:void(0);"><img th:src="@{/admin/assets/img/icons/edit-set.svg}"-->
+                                        <!--                                                                           alt="img"></a>-->
                                     </div>
                                 </div>
                                 <div class="profile-contentname">
-                                    <h2>William Castillo</h2>
-                                    <h4>Updates Your Photo and Personal Details.</h4>
+                                   <h2 th:text="${profileDto.lastName} + ' ' + ${profileDto.firstName}"></h2>
+                                    <!--                                    <h4>Updates Your Photo and Personal Details.</h4>-->
                                 </div>
                             </div>
-                            <div class="ms-auto">
-                                <a href="javascript:void(0);" class="btn btn-submit me-2">Save</a>
-                                <a href="javascript:void(0);" class="btn btn-cancel">Cancel</a>
-                            </div>
+                            <!--                            <div class="ms-auto">-->
+                            <!--                                <a href="javascript:void(0);" class="btn btn-submit me-2">Save</a>-->
+                            <!--                                <a href="javascript:void(0);" class="btn btn-cancel">Cancel</a>-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" placeholder="William">
+                                <input type="text" th:value="${profileDto.firstName}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" placeholder="Castilo">
+                                <input type="text" th:value="${profileDto.lastName}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="text" placeholder="william@example.com">
+                                <input type="text" th:value="${profileDto.email}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" placeholder="+1452 876 5432">
+                                <input type="text" th:value="${profileDto.phone}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-group">
                                 <label>User Name</label>
-                                <input type="text" placeholder="+1452 876 5432">
+                                <input type="text" th:value="${profileDto.username}">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-group">
-                                <label>Password</label>
-                                <div class="pass-group">
-                                    <input type="password" class=" pass-input">
-                                    <span class="fas toggle-password fa-eye-slash"></span>
-                                </div>
+                                <label>Date of Birth</label>
+                                <input type="date" class="form-control" th:value="${profileDto.dob}">
                             </div>
                         </div>
-                        <div class="col-12">
-                            <a href="javascript:void(0);" class="btn btn-submit me-2">Submit</a>
-                            <a href="javascript:void(0);" class="btn btn-cancel">Cancel</a>
-                        </div>
+                        <!--                        <div class="col-lg-6 col-sm-12">-->
+                        <!--                            <div class="form-group">-->
+                        <!--                                <label>Password</label>-->
+                        <!--                                <div class="pass-group">-->
+                        <!--                                    <input type="password" class=" pass-input">-->
+                        <!--                                    <span class="fas toggle-password fa-eye-slash"></span>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="col-12">-->
+                        <!--                            <a href="javascript:void(0);" class="btn btn-submit me-2">Submit</a>-->
+                        <!--                            <a href="javascript:void(0);" class="btn btn-cancel">Cancel</a>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
             </div>
