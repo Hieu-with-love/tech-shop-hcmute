@@ -93,11 +93,12 @@
                                 <td th:text="${#numbers.formatDecimal(voucher.value, 1, 'POINT', 2, 'COMMA')}">Value</td>
                                 <td th:text="${voucher.quantity}">Quantity</td>
                                 <td th:text="${voucher.expiredDate}">Expiration Date</td>
+                                <input type="hidden" th:value="${voucher.id}" class="voucher-id">
                                 <td>
                                     <a class="me-3" th:href="@{'/admin/vouchers/save/' + ${voucher.id}}">
                                         <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">
                                     </a>
-                                    <a class="me-3 confirm-text" th:href="@{'/admin/vouchers/delete/' + ${voucher.id}}">
+                                    <a class="me-3 confirm-text-delete">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>
@@ -133,6 +134,59 @@
 <script th:src="@{/admin/assets/plugins/sweetalert/sweetalerts.min.js}"></script>
 
 <script th:src="@{/admin/assets/js/script.js}"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".confirm-text-delete", function () {
+            var voucherId = $(this).closest("tr").find(".voucher-id").val();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false
+            }).then(function (t) {
+                if(t.value){
+                    $.ajax({
+                        url: `/admin/vouchers/delete/${voucherId}`,
+                        method: "GET",
+                        success: function (response) {
+                            if (response.status === "success") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-success"
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-danger"
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error!",
+                                text: `Failed to delete the user.`,
+                                confirmButtonClass: "btn btn-danger"
+                            })
+                        }
+                    });
+                }
+            });
+        })
+    });
+</script>
 </body>
 
 </html>

@@ -53,8 +53,14 @@ public class VoucherServiceImpl implements IVoucherService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        voucherRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        Optional<Voucher> voucher = voucherRepository.findById(id);
+        if (voucher.isPresent()) {
+            voucher.get().setQuantity(0);
+            voucherRepository.save(voucher.get());
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -5,13 +5,17 @@ import com.hcmute.tech_shop.entities.Voucher;
 import com.hcmute.tech_shop.services.interfaces.IVoucherService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -72,10 +76,19 @@ public class VoucherController {
         return "redirect:/admin/vouchers";
     }
 
+
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        voucherService.deleteById(id);
-        return "redirect:/admin/vouchers";
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable(value = "id") Long id) {
+        Map<String, String> response = new HashMap<>();
+        if (voucherService.deleteById(id)) {
+            response.put("status", "success");
+            response.put("message", "Voucher set to 0.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "error");
+            response.put("message", "Failed to delete the voucher.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 }

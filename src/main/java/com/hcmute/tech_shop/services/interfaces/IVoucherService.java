@@ -20,7 +20,7 @@ public interface IVoucherService {
 
     Voucher save(VoucherRequest voucherDTO);
 
-    void deleteById(Long id);
+    boolean deleteById(Long id);
 
     Optional<Voucher> findById(Long id);
 
