@@ -16,8 +16,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = {"role", "addresses", "wishlist", "orders", "ratings"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "users")
+
 public class User extends TrackingDate implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -54,20 +56,20 @@ public class User extends TrackingDate implements Serializable {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> ratings;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Address> addresses = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wishlist wishlist;
 
-    @OneToMany(mappedBy = "shipper")
+    @OneToMany(mappedBy = "shipper", cascade = CascadeType.ALL )
     private List<Order> orders;
 
 }

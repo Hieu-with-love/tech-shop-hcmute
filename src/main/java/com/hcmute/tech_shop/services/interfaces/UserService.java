@@ -6,9 +6,7 @@ import com.hcmute.tech_shop.dtos.requests.ProfileRequest;
 import com.hcmute.tech_shop.dtos.requests.UserRequest;
 import com.hcmute.tech_shop.dtos.responses.LoyalCustomerRes;
 import com.hcmute.tech_shop.entities.Address;
-import com.hcmute.tech_shop.entities.Role;
 import com.hcmute.tech_shop.entities.User;
-import org.apache.coyote.BadRequestException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +34,7 @@ public interface UserService {
 
     boolean updatePassword(Map<String, String> params, BindingResult result);
 
-    void deleteUser(Long id);
+    boolean deleteUser(Long id);
 
     boolean existsEmail(String email);
 

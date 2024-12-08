@@ -160,15 +160,16 @@
                                         <tr th:each="product, iterStat : ${top4Products}">
                                             <td th:text="${iterStat.index + 1}"></td>
                                             <td class="productimgname">
-                                                <img th:if="${product.thumbnail.startsWith('https')}"
-                                                     th:src="${product.thumbnail}"
-                                                     class="product-image"
-                                                     alt="Ảnh sản phẩm mặc định" width="100px;">
-                                                <img th:unless="${product.thumbnail.startsWith('https')}"
-                                                     th:src="@{'/uploads/' + ${product.thumbnail}}"
-                                                     class="product-image"
-                                                     alt="Ảnh sản phẩm" width="100px;">
-                                                <a th:href="@{/admin/products/edit(id=${product.getId()})}"
+                                                <a th:href="@{/manager/products/productDetail(id=${product.getId()})}"
+                                                   class="product-img">
+                                                    <img th:if="${product.getThumbnail().startsWith('https')}"
+                                                         th:src="${product.getThumbnail()}"
+                                                         alt="Ảnh sản phẩm mặc định">
+                                                    <img th:unless="${product.getThumbnail().startsWith('https')}"
+                                                         th:src="@{'/uploads/' + ${product.getThumbnail()}}"
+                                                         alt="Ảnh sản phẩm">
+                                                </a>
+                                                <a th:href="@{/manager/products/productDetail(id=${product.getId()})}"
                                                    th:text="${product.getName()}"></a>
                                             </td>
                                             <td th:text="${product.price}"></td>
@@ -213,11 +214,11 @@
                                                 <img th:if="${product.thumbnail.startsWith('https')}"
                                                      th:src="${product.thumbnail}"
                                                      class="product-image"
-                                                     alt="Ảnh sản phẩm mặc định" width="80px;">
+                                                     alt="Ảnh sản phẩm mặc định" width="100px;">
                                                 <img th:unless="${product.thumbnail.startsWith('https')}"
                                                      th:src="@{'/uploads/' + ${product.thumbnail}}"
                                                      class="product-image"
-                                                     alt="Ảnh sản phẩm" width="80px;">
+                                                     alt="Ảnh sản phẩm" width="100px;">
                                                 <a th:href="@{/admin/products/edit(id=${product.getId()})}"
                                                    th:text="${product.getName()}"></a>
                                             </td>

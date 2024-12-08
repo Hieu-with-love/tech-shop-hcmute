@@ -25,5 +25,6 @@ public class Role {
     private boolean isActive;
 
     @OneToMany(mappedBy = "role")
+    @ToString.Exclude
     private List<User> users;
 }
