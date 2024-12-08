@@ -83,7 +83,7 @@ public class RatingServiceImpl implements IRatingService {
             Product product = productRepository.findById(ratingRequest.getProductId()).orElse(null);
             User user = userRepository.findById(ratingRequest.getUserId()).orElse(null);
             Order order = orderRepository.findById(ratingRequest.getOrderId()).orElse(null);
-            if(product == null||user == null){
+            if(product == null||user == null||order == null){
                 return false;
             }
             Rating rating = new Rating(new RatingId(user.getId(),product.getId(),order.getId()),

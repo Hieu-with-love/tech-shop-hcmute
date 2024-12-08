@@ -2,10 +2,8 @@ package com.hcmute.tech_shop.controllers.user;
 
 import com.hcmute.tech_shop.dtos.requests.RatingRequest;
 import com.hcmute.tech_shop.dtos.responses.ProductResponse;
-import com.hcmute.tech_shop.entities.Product;
-import com.hcmute.tech_shop.entities.ProductImage;
-import com.hcmute.tech_shop.entities.Rating;
-import com.hcmute.tech_shop.entities.User;
+import com.hcmute.tech_shop.entities.*;
+import com.hcmute.tech_shop.services.interfaces.IOrderService;
 import com.hcmute.tech_shop.services.interfaces.IProductImageService;
 import com.hcmute.tech_shop.services.interfaces.IProductService;
 import com.hcmute.tech_shop.services.interfaces.IRatingService;
@@ -28,6 +26,7 @@ public class ReviewController {
     private final IRatingService ratingService;
     private final IProductService productService;
     private final IProductImageService productImageService;
+    private final IOrderService orderService;
 
     @GetMapping("/product-detail/{productId}/{orderId}")
     public String productDetail(Model model, @PathVariable Long productId, @PathVariable Long orderId) {
@@ -65,13 +64,15 @@ public class ReviewController {
                 if (!ratingService.insert(ratingRequest)){
                     String msg = "Not found user/product";
                     redirectAttributes.addFlashAttribute("msg", msg);
+                    return "redirect:/user/reviews/"+productId+"/"+orderId;
                 }
             }
             else {
                 String msg = "You need to buy first";
                 redirectAttributes.addFlashAttribute("msg", msg);
+                return "redirect:/user/reviews/"+productId+"/"+orderId;
             }
         }
-        return "redirect:/user/orders/detail/"+productId;
+        return "redirect:/user/orders/detail?id="+orderId;
     }
 }
