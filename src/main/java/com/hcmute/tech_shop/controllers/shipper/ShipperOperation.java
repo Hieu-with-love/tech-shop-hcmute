@@ -41,6 +41,8 @@ public class ShipperOperation {
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         UserRequest userRequest = getUser();
+        User user = userService.getUser(getUser().getId());
+
 
         int currentYear = LocalDate.now().getYear();
         int currentMonth = LocalDate.now().getMonthValue();
@@ -50,15 +52,17 @@ public class ShipperOperation {
 
         String totalPrice = orderService.totalPriceByYearAndMonthByShipper(currentYear, currentMonth, getUser().getId());
 
-        model.addAttribute("user", userRequest);
+        model.addAttribute("userRequest", userRequest);
         model.addAttribute("orderList", orderList);
         model.addAttribute("totalPriceOrderList", totalPriceOrderList);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("user", user);
 
-        session.setAttribute("user", userRequest);
+        session.setAttribute("userRequest", userRequest);
         session.setAttribute("orderList", orderList);
         session.setAttribute("totalPriceOrderList", totalPriceOrderList);
         session.setAttribute("totalPrice", totalPrice);
+        session.setAttribute("user", user);
 
         return "shipper/index";
     }
@@ -105,7 +109,7 @@ public class ShipperOperation {
         model.addAttribute("orderReponses", orderReponses);
         model.addAttribute("orderStatus", OrderStatus.values());
 
-        session.setAttribute("user", userRequest);
+        session.setAttribute("userRequest", userRequest);
         return "shipper/page-list-returns";
     }
 
@@ -161,16 +165,9 @@ public class ShipperOperation {
 
     @GetMapping("/shipper-info")
     public String showInfo(Model model){
-        List<Address> addressList = addressService.findAll();
-        var address = addressList.stream()
-                .findFirst()
-                .orElse(new Address());
-        String detailAddress = "Ho Chi Minh City";
-        if (address.getId() != null){
-            detailAddress = address.getDetailLocation() + " " + address.getDistrict() + " " + address.getCity();
-        }
+        User user = userService.getUser(getUser().getId());
 
-        model.addAttribute("address", detailAddress);
+        model.addAttribute("user", user);
         return "shipper/user-profile";
     }
 

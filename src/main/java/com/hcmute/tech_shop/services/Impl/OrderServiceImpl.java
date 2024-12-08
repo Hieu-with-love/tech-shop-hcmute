@@ -159,7 +159,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, OrderStatus orderStatus) {
-        List<Order> orderList = orderRepository.getAllByShipperIdAndStatus(shipperId, orderStatus);
+        List<Order> orderList = orderRepository.getAllByShipperIdAndStatusOrderByUpdatedAtAsc(shipperId, orderStatus);
         List<OrderReponse> orderReponseList = new ArrayList<>();
         for (Order order : orderList) {
             OrderReponse orderReponse = new OrderReponse();
@@ -177,7 +177,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<OrderReponse> findAllByShipperId(Long shipperId) {
-        List<Order> orderList = orderRepository.getAllByShipperId(shipperId);
+        List<Order> orderList = orderRepository.getAllByShipperIdOrderByUpdatedAtAsc(shipperId);
         List<OrderReponse> orderReponseList = new ArrayList<>();
         for (Order order : orderList) {
             OrderReponse orderReponse = new OrderReponse();

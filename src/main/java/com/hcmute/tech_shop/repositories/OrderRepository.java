@@ -15,9 +15,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     String user(User user);
 
-    List<Order> getAllByShipperIdAndStatus(Long shipperId, OrderStatus status);
+    List<Order> getAllByShipperIdAndStatusOrderByUpdatedAtAsc(Long shipperId, OrderStatus status);
 
-    List<Order> getAllByShipperId(Long shipperId);
+    List<Order> getAllByShipperIdOrderByUpdatedAtAsc(Long shipperId);
 
     @Query("SELECT o " +
             "FROM orders o " +

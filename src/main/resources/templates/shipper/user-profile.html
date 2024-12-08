@@ -31,14 +31,20 @@
                         <div class="card-body">
                            <div class="d-flex align-items-center mb-3">
                               <div class="profile-img position-relative">
-                                 <img th:src="@{/shipper/images/user/1.png}" class="img-fluid rounded avatar-110" alt="profile-image">
-                              </div>
+                                 <img th:if="${user.image.startsWith('https')}"
+                                      th:src="${user.image}"
+                                      class="product-image"
+                                      alt="Ảnh sản phẩm mặc định" width="100px;">
+                                 <img th:unless="${user.image.startsWith('https')}"
+                                      th:src="@{'/uploads/' + ${user.image}}"
+                                      class="product-image"
+                                      alt="Ảnh sản phẩm" width="100px;">                              </div>
                               <div class="ml-3">
-                                 <h4 class="mb-1" th:text="${session.user.lastName+' '+session.user.firstName}"></h4>
-                                 <p class="mb-2">Shipper</p>
+                                 <h4 class="mb-1" th:text="${session.userRequest.lastName+' '+session.userRequest.firstName}"></h4>
+                                 <p class="mb-2" th:text="${user.role.name}"></p>
                               </div>
                            </div>
-                           <p>
+                           <p th:if="${user.role.name == 'shipper'}">
                               As a shipper, I spend my entire day delivering goods to customers quickly and efficiently.
                               Every day, I explore new routes, optimize delivery paths, and interact with customers to
                               ensure they receive their products on time. My job is not just about delivering packages;
@@ -59,7 +65,7 @@
                                     <svg class="svg-icon mr-3" height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
                                     </svg>
-                                       <p class="mb-0" th:text="${session.user.dob.dayOfMonth+'/'+session.user.dob.monthValue+'/'+session.user.dob.year}"></p>
+                                       <p class="mb-0" th:text="${session.userRequest.dob.dayOfMonth+'/'+session.userRequest.dob.monthValue+'/'+session.userRequest.dob.year}"></p>
                                  </div>
                               </li>
                               <li class="mb-2">

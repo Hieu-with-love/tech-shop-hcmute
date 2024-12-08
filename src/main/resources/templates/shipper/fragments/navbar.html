@@ -67,20 +67,32 @@
                         <li class="nav-item nav-icon dropdown caption-content">
                             <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton4"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img th:src="@{/shipper/images/user/1.png}" class="img-fluid rounded" alt="user">
-                            </a>
+                                <img th:if="${session.user.image.startsWith('https')}"
+                                     th:src="${session.user.image}"
+                                     class="product-image"
+                                     alt="Ảnh sản phẩm mặc định" width="50px;">
+                                <img th:unless="${session.user.image.startsWith('https')}"
+                                     th:src="@{'/uploads/' + ${session.user.image}}"
+                                     class="product-image"
+                                     alt="Ảnh sản phẩm" width="50px;">                              </a>
                             <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <div class="card shadow-none m-0">
                                     <div class="card-body p-0 text-center">
                                         <div class="media-body profile-detail text-center">
                                             <img th:src="@{/shipper/images/page-img/profile-bg.jpg}" alt="profile-bg"
                                                  class="rounded-top img-fluid mb-4">
-                                            <img th:src="@{/shipper/images/user/1.png}" alt="profile-img"
-                                                 class="rounded profile-img img-fluid avatar-70">
+                                            <img th:if="${session.user.image.startsWith('https')}"
+                                                 th:src="${session.user.image}"
+                                                 class="product-image"
+                                                 alt="Ảnh sản phẩm mặc định" width="70px;">
+                                            <img th:unless="${session.user.image.startsWith('https')}"
+                                                 th:src="@{'/uploads/' + ${session.user.image}}"
+                                                 class="product-image"
+                                                 alt="Ảnh sản phẩm" width="70px;">
                                         </div>
                                         <div class="p-3">
-                                            <h5 class="mb-1" th:text="${session.user.lastName+' '+session.user.firstName}"></h5>
-                                            <p class="mb-0" th:text="${session.user.dob.dayOfMonth+'/'+session.user.dob.monthValue+'/'+session.user.dob.year}"></p>
+                                            <h5 class="mb-1" th:text="${session.userRequest.lastName+' '+session.userRequest.firstName}"></h5>
+                                            <p class="mb-0" th:text="${session.userRequest.dob.dayOfMonth+'/'+session.userRequest.dob.monthValue+'/'+session.userRequest.dob.year}"></p>
                                             <div class="d-flex align-items-center justify-content-center mt-3">
                                                 <a th:href="@{/shipper/shipper-info}" class="btn border mr-2">Profile</a>
                                                 <a th:href="@{/logout}" class="btn border">Sign Out</a>
