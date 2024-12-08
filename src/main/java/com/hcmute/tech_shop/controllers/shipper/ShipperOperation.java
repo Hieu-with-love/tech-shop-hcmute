@@ -127,7 +127,8 @@ public class ShipperOperation {
     @PostMapping("/change-status")
     public String changeStatus(@RequestParam(value = "status") String status, @RequestParam(value = "orderId") Long orderId, Model model) {
         if (status.equals("SHIPPING")) {
-            orderService.orderShipping(orderId);
+            UserRequest userRequest = getUser();
+            orderService.orderShipping(orderId, userRequest.getId());
         }
         else if (status.equals("DELIVERED")){
             orderService.orderDelivered(orderId);

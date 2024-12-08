@@ -68,7 +68,9 @@
                                     </li>
                                     <li>
                                         <h4>Buyer's Name</h4>
-                                        <h6><span th:text="${order.get().getUser().getLastName()}"></span></h6>
+                                        <h6><span
+                                                th:text="${order.get().getUser().getLastName()} + ' ' + ${order.get().getUser().getFirstName()}"></span>
+                                        </h6>
                                     </li>
                                     <li>
                                         <h4>Buyer's Phone number</h4>
@@ -88,11 +90,13 @@
                                     </li>
                                     <select id="shipperSelect" class="form-select" style="display: none;">
                                         <option value="">Select Shipper</option>
-                                        <option th:each="shipper : ${shippers}" th:value="${shipper.id}" th:text="${shipper.firstName}"></option>
+                                        <option th:each="shipper : ${shippers}" th:value="${shipper.id}"
+                                                th:text="${shipper.firstName}"></option>
                                     </select>
                                 </ul>
                                 <div style="display: flex; gap: 20px;">
-                                    <form class="confirm-text-shipping" th:if="${order.get().getStatus().equals(orderStatus[0]) || order.get().getStatus().equals(orderStatus[3])}"
+                                    <form class="confirm-text-shipping"
+                                          th:if="${order.get().getStatus().equals(orderStatus[0]) || order.get().getStatus().equals(orderStatus[3])}"
                                           th:action="@{/manager/orders/shipping(id=${order.get().getId()})}"
                                           method="post">
                                         <input class="btn btn-submit" type="submit" th:value="Shipping">
@@ -102,7 +106,8 @@
                                           method="post">
                                         <input class="btn btn-submit" type="submit" th:value="Pending">
                                     </form>
-                                    <form th:action="@{/manager/orders/cancelled(id=${order.get().getId()})}"
+                                    <form th:if="${!order.get().getStatus().equals(orderStatus[3])}"
+                                          th:action="@{/manager/orders/cancelled(id=${order.get().getId()})}"
                                           method="post">
                                         <input class="btn btn-danger" type="submit" th:value="Cancelled">
                                     </form>
@@ -141,7 +146,7 @@
                     if (!shipperId) {
                         Swal.showValidationMessage(`Please select a shipper`);
                     }
-                    return { shipperId: shipperId };
+                    return {shipperId: shipperId};
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

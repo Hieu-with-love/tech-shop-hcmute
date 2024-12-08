@@ -226,6 +226,7 @@ public class ProductServiceImpl implements IProductService {
         existingProduct.setWarranty(productRequest.getWarranty());
         existingProduct.setWeight(productRequest.getWeight());
         existingProduct.setBrand(brandExisting);
+        existingProduct.setUpdatedAt(LocalDate.now());
         // create if chua ton tai, update if ton tai
         return productRepository.save(existingProduct);
     }
@@ -263,6 +264,7 @@ public class ProductServiceImpl implements IProductService {
         existingProduct.setWeight(productRequest.getWeight());
         existingProduct.setThumbnail(thumbnail);
         existingProduct.setBrand(brandExisting);
+        existingProduct.setUpdatedAt(LocalDate.now());
         // create if chua ton tai, update if ton tai
         return productRepository.save(existingProduct);
     }

@@ -6,6 +6,8 @@ import com.hcmute.tech_shop.enums.OrderStatus;
 import com.hcmute.tech_shop.services.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller("controllerOfManager")
@@ -27,10 +31,12 @@ public class OrderController {
 
     @GetMapping("") // localhost:8080/manager/orders
     public String index(Model model) {
-        List<Order> orders = orderService.findAll();
         List<Payment> payments = paymentService.findAll();
         List<Voucher> vouchers = voucherService.findAll();
-        model.addAttribute("orders", orders);
+        model.addAttribute("orders", orderService.findAll()
+                .stream()
+                .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
+                .toList());
         model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("payments", payments);
         model.addAttribute("vouchers", vouchers);
@@ -54,10 +60,18 @@ public class OrderController {
         return "manager/orders/editOrder";
     }
 
-    @GetMapping("/delete")
-    public String deleteProduct(@RequestParam Long id) {
-        orderService.deleteById(id);
-        return "redirect:/manager/orders";
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable(value = "id") Long id) {
+        Map<String, String> response = new HashMap<>();
+        if (orderService.deleteById(id)) {
+            response.put("status", "success");
+            response.put("message", "Order deleted successfully.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "error");
+            response.put("message", "Failed to delete order.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/pending")
@@ -68,8 +82,7 @@ public class OrderController {
 
     @PostMapping("/shipping")
     public String shipping(@RequestParam Long id,  @RequestParam Long shipper) throws IOException {
-        orderService.orderShipping(id);
-        System.out.println(shipper);
+        orderService.orderShipping(id, shipper);
         return "redirect:/manager/orders";
     }
 

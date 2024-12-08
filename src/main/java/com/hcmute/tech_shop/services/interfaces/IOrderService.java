@@ -5,7 +5,6 @@ import com.hcmute.tech_shop.dtos.responses.OrderReponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.enums.OrderStatus;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,7 +19,7 @@ public interface IOrderService {
 
     void orderDelivered(Long id);
 
-    void orderShipping(Long id);
+    void orderShipping(Long id, Long shipperId);
 
     void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,
                      Long cartId,
@@ -42,7 +41,7 @@ public interface IOrderService {
 
     long count();
 
-    void deleteById(Long aLong);
+    boolean deleteById(Long aLong);
 
     List<Order> findAll(Sort sort);
     List<OrderReponse> findOrderByShipperNameAndStatus(Long shipperId, OrderStatus orderStatus);

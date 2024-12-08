@@ -50,71 +50,71 @@
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label>Stock Quantity</label>
-                                <input type="text" th:field="*{stockQuantity}" required>
+                                <input type="text" th:field="*{stockQuantity}" placeholder="Enter Quantity" required>
                                 <span th:if="${#fields.hasErrors('stockQuantity')}"
                                       th:errors="*{stockQuantity}"
                                       style="color: red;"></span>
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label>Price</label>
-                                <input type="text" th:field="*{price}" required>
+                                <input type="text" th:field="*{price}" placeholder="Enter Price" required>
                                 <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
                                       style="color: red;"></span>
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">CPU</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                       type="text" th:field="*{cpu}">
+                                       type="text" th:field="*{cpu}" placeholder="Enter CPU">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">RAM</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                       type="text" th:field="*{ram}">
+                                       type="text" th:field="*{ram}" placeholder="Enter RAM">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">OS</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                       type="text" th:field="*{os}">
+                                       type="text" th:field="*{os}" placeholder="Enter OS">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">Monitor</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                       type="text" th:field="*{monitor}">
+                                       type="text" th:field="*{monitor}" placeholder="Enter Monitor">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
                                     Weight</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
-                                       type="text" th:field="*{weight}">
+                                       type="text" th:field="*{weight}" placeholder="Enter Weight">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}">Battery</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' ? null : 'hidden'}"
-                                       type="text" th:field="*{battery}">
+                                       type="text" th:field="*{battery}" placeholder="Enter Battery">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
                                     Graphic Card</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
-                                       type="text" th:field="*{graphicCard}">
+                                       type="text" th:field="*{graphicCard}" placeholder="Enter Graphic Card">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}">
                                     Port</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'phone' ? null : 'hidden'}"
-                                       type="text" th:field="*{port}">
+                                       type="text" th:field="*{port}" placeholder="Enter Port">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}">
                                     Rear Camera</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}"
-                                       type="text" th:field="*{rearCamera}">
+                                       type="text" th:field="*{rearCamera}" placeholder="Enter Rear Camera">
                             </div>
                             <div class="form-group col-lg-3 col-sm-6 col-12">
                                 <label th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}">
                                     Front Camera</label>
                                 <input th:attr="hidden=${categoryChoice != 'accessory' && categoryChoice != 'computer' ? null : 'hidden'}"
-                                       type="text" th:field="*{frontCamera}">
+                                       type="text" th:field="*{frontCamera}" placeholder="Enter Front Camera">
                             </div>
                             <div class="col-lg-3 col-sm-6">
                                 <div class="form-group">
@@ -124,13 +124,15 @@
                             </div>
                             <div class="form-group col-lg-12">
                                 <label>Warranty</label>
-                                <textarea class="form-control" th:field="*{warranty}" required></textarea>
+                                <textarea class="form-control" th:field="*{warranty}" placeholder="Enter Warranty"
+                                          required></textarea>
                                 <span th:if="${#fields.hasErrors('warranty')}" th:errors="*{warranty}"
                                       style="color: red;"></span>
                             </div>
                             <div class="form-group col-lg-12">
                                 <label>Description</label>
-                                <textarea class="form-control" th:field="*{description}" required></textarea>
+                                <textarea class="form-control" th:field="*{description}" placeholder="Enter Description"
+                                          required></textarea>
                                 <span th:if="${#fields.hasErrors('description')}"
                                       th:errors="*{description}"
                                       style="color: red;"></span>

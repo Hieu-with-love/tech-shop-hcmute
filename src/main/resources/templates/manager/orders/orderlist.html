@@ -115,10 +115,10 @@
                                         <span class="checkmarks"></span>
                                     </label>
                                 </th>
-                                <th>ID</th>
+                                <th>Customer</th>
                                 <th>Total Price</th>
                                 <th>Status</th>
-                                <th>Voucher</th>
+                                <th>Date</th>
                                 <th>Payment</th>
                                 <th>Action</th>
                             </tr>
@@ -132,8 +132,8 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a th:href="@{/manager/products/edit(id=${order.getId()})}"
-                                       th:text="${order.getId()}">
+                                    <a th:href="@{/manager/orders/detail(id=${order.getId()})}"
+                                       th:text="${order.getUser().getFirstName()}">
                                     </a>
                                 </td>
                                 <td th:text="${order.getTotalPrice()}">
@@ -152,8 +152,9 @@
                                           th:if="${order.getStatus().equals(orderStatus[3])}">Cancelled
                                     </span>
                                 </td>
-                                <td th:text="${order.getVoucher() != null ? order.getVoucher().getName() : ''}"></td>
+                                <td th:text="${order.getCreatedAt()}"></td>
                                 <td th:text="${order.getPayment().getName()}"></td>
+                                <input type="hidden" class="order-id" th:value="${order.getId()}">
                                 <td>
                                     <a class="me-3"
                                        th:href="@{/manager/orders/detail(id=${order.getId()})}">
@@ -162,8 +163,7 @@
 <!--                                    <a class="me-3" th:href="@{/manager/orders/edit(id=${order.getId()})}">-->
 <!--                                        <img th:src="@{/admin/assets/img/icons/edit.svg}" alt="img">-->
 <!--                                    </a>-->
-                                    <a class="confirm-text"
-                                       th:href="@{/manager/orders/cancelled(id=${order.getId()})}">
+                                    <a class="confirm-text-delete">
                                         <img th:src="@{/admin/assets/img/icons/delete.svg}" alt="img">
                                     </a>
                                 </td>
@@ -180,3 +180,56 @@
 <div th:insert="~{admin/fragments/script::script}"></div>
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".confirm-text-delete", function () {
+            var orderId = $(this).closest("tr").find(".order-id").val(); // Get order_id from the current row
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: false
+            }).then(function (t) {
+                if (t.value) {
+                    $.ajax({
+                        url: `/manager/orders/delete/${orderId}`,
+                        method: "GET",
+                        success: function (response) {
+                            if (response.status === "success") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-success"
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: response.message,
+                                    confirmButtonClass: "btn btn-danger"
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error!",
+                                text: `Failed to delete order.`,
+                                confirmButtonClass: "btn btn-danger"
+                            })
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
