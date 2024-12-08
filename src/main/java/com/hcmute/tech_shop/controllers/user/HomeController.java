@@ -62,9 +62,9 @@ public class HomeController {
         List<CartDetailResponse> cartDetailList = new ArrayList<>();
         int numberProductInCart = 0;
         Cart cart = new Cart();
-        if(userRequest != null) {
+        if (userRequest != null) {
             cart = cartService.findByCustomerId(userRequest.getId());
-            if(cart == null) {
+            if (cart == null) {
                 cart = new Cart();
                 cart.setUserId(userRequest.getId());
                 cart.setTotalPrice(BigDecimal.ZERO);
@@ -72,7 +72,7 @@ public class HomeController {
             }
             cartDetailList = cartDetailServiceImpl.getAllItems(cartDetailServiceImpl.findAllByCart_Id(cart.getId()));
             numberProductInCart = cartDetailList.size();
-            if(cartDetailList.size() > 3) {
+            if (cartDetailList.size() > 3) {
                 cartDetailList = cartDetailList.subList(0, 3);
             }
         }
@@ -103,6 +103,7 @@ public class HomeController {
         model.addAttribute("orders", orderService.findByUsername(username)
                 .stream()
                 .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
+                .sorted((o1, o2) -> o2.getId().compareTo(o1.getId()))
                 .toList());
         model.addAttribute("addresses", addressService.findByUser_Username(username));
         return "user/my-account";
