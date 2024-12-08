@@ -1,8 +1,10 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org">
-
-<!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
-<div th:insert="~{user/fragments/head::head}"></div>
+<head>
+    <title>Checkout</title>
+    <!-- Mirrored from new.axilthemes.com/demo/template/etrade/blog-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 00:33:41 GMT -->
+    <div th:insert="~{user/fragments/head::head}"></div>
+</head>
 
 <body class="sticky-header">
 <!-- Start Header -->
@@ -67,7 +69,10 @@
                                 <div th:if="${!hasAddress}">
                                     <div class="form-group">
                                         <label>Your Address</label>
-                                        <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal" data-bs-target="#address-modal">You haven't address for payment, enter address to payment</button>
+                                        <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal"
+                                                data-bs-target="#address-modal">You haven't address for payment, enter
+                                            address to payment
+                                        </button>
                                     </div>
                                 </div>
                                 <div th:if="${hasAddress}">
@@ -127,7 +132,7 @@
                             <div class="order-payment-method">
                                 <div class="single-payment">
                                     <div class="input-group">
-                                        <input type="radio" id="radio5" name="payment" value="cod">
+                                        <input type="radio" id="radio5" name="payment" value="cod" checked>
                                         <label for="radio5">Cash on delivery</label>
                                     </div>
                                     <p>Pay with cash upon delivery.</p>
@@ -143,7 +148,7 @@
                                 </div>
                                 <div class="single-payment">
                                     <div class="input-group justify-content-between align-items-center">
-                                        <input type="radio" id="radio6" name="payment" value="paypal" checked>
+                                        <input type="radio" id="radio6" name="payment" value="paypal">
                                         <label for="radio6">Paypal</label>
                                         <img th:src="@{/user/assets/images/others/payment.png}" alt="Paypal payment">
                                     </div>
@@ -184,7 +189,8 @@
                     </div>
                     <div class="form-group">
                         <label for="city">Detail Location</label>
-                        <input type="text" class="form-control" id="detailLocation" placeholder="Enter your detail location">
+                        <input type="text" class="form-control" id="detailLocation"
+                               placeholder="Enter your detail location">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -278,7 +284,7 @@
             url: "/user/checkout/save-address",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ city: city, district: district, street: street, detailLocation: detailLocation }),
+            data: JSON.stringify({city: city, district: district, street: street, detailLocation: detailLocation}),
             success: function (response) {
                 alert("Address saved successfully!");
                 $('#address-modal').modal('hide'); // Hides the modal

@@ -25,9 +25,8 @@ public class OrderController {
 
     @GetMapping("/detail")
     public String detail(Model model, @RequestParam Long id) {
-        Order order = orderService.findById(id).get();
         model.addAttribute("orderStatus", OrderStatus.values());
-        model.addAttribute("order", order);
+        model.addAttribute("order", orderService.findById(id).get());
         return "user/order-detail";
     }
 

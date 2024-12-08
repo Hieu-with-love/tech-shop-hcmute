@@ -99,11 +99,12 @@ public class HomeController {
                 .status(user.isActive())
                 .image(user.getImage())
                 .build();
-        List<Order> orders = orderService.findByUsername(username);
-        List<Address> addresses = addressService.findByUser_Username(username);
         model.addAttribute("profileDto", profileDto);
-        model.addAttribute("orders", orders);
-        model.addAttribute("addresses", addresses);
+        model.addAttribute("orders", orderService.findByUsername(username)
+                .stream()
+                .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
+                .toList());
+        model.addAttribute("addresses", addressService.findByUser_Username(username));
         return "user/my-account";
     }
 

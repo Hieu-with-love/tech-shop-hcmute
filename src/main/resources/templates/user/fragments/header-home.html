@@ -211,10 +211,10 @@
                                         <a th:href="@{/admin/dashboard}">Dashboard Admin</a>
                                     </li>
                                     <li th:if="${#strings.equalsIgnoreCase(session.user.role.name, 'manager') || #strings.equalsIgnoreCase(session.user.role.name, 'admin')}">
-                                        <a th:href="@{/manager/home}">Home Manager</a>
+                                        <a th:href="@{/manager/home}">Manager Home</a>
                                     </li>
                                     <li th:if="${#strings.equalsIgnoreCase(session.user.role.name, 'shipper') || #strings.equalsIgnoreCase(session.user.role.name, 'admin')}">
-                                        <a th:href="@{/shipper/dashboard}">Shipper Manager</a>
+                                        <a th:href="@{/shipper/dashboard}">Shipper Dashboard</a>
                                     </li>
                                     <li>
                                         <a href="#">Initiate return</a>
