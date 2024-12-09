@@ -40,6 +40,7 @@ public class HomeController {
     private final WishlistService wishlistService;
     private final WishlistItemService wishlistItemService;
     private final AddressServiceImpl addressService;
+    private final IBrandService brandService;
 
     public UserRequest getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -74,6 +75,9 @@ public class HomeController {
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", currentPage.getTotalPages());
+
+        List<Brand> brands = brandService.findAll();
+        model.addAttribute("brands", brands);
 
         List<Category> categories = categoryService.findAll();
         List<CartDetailResponse> cartDetailList = new ArrayList<>();
