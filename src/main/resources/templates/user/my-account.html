@@ -276,20 +276,20 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label for="city">City</label>
-                                                                    <input type="text" class="form-control" id="edit-city" placeholder="Enter your city">
+                                                                    <label>City</label>
+                                                                    <input type="text" class="form-control edit-city" placeholder="Enter your city">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="district">District</label>
-                                                                    <input type="text" class="form-control" id="edit-district" placeholder="Enter your district">
+                                                                    <label>District</label>
+                                                                    <input type="text" class="form-control edit-district" placeholder="Enter your district">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="street">Street</label>
-                                                                    <input type="text" class="form-control" id="edit-street" placeholder="Enter your street">
+                                                                    <label>Street</label>
+                                                                    <input type="text" class="form-control edit-street" placeholder="Enter your street">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="detailLocation">Detail Location</label>
-                                                                    <input type="text" class="form-control" id="edit-detailLocation" placeholder="Enter your detail location">
+                                                                    <label>Detail Location</label>
+                                                                    <input type="text" class="form-control edit-detailLocation" placeholder="Enter your detail location">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -524,10 +524,10 @@
             url: `/user/get-address/${addressId}`,
             type: 'GET',
             success: function (response) {
-                $('#edit-city').val(response.city);
-                $('#edit-district').val(response.district);
-                $('#edit-street').val(response.street);
-                $('#edit-detailLocation').val(response.detailLocation);
+                $('.edit-city').val(response.city);
+                $('.edit-district').val(response.district);
+                $('.edit-street').val(response.street);
+                $('.edit-detailLocation').val(response.detailLocation);
                 $('#edit-address-modal').modal('show');
             },
             error: function (xhr) {
@@ -538,10 +538,10 @@
 
     function updateAddress() {
         const addressId = $('#address-edit').attr('value');
-        const city = $('#edit-city').val();
-        const district = $('#edit-district').val();
-        const street = $('#edit-street').val();
-        const detailLocation = $('#edit-detailLocation').val();
+        const city = $('.edit-city').val();
+        const district = $('.edit-district').val();
+        const street = $('.edit-street').val();
+        const detailLocation = $('.edit-detailLocation').val();
 
         if (city === "" || district === "" || street === "" || detailLocation === "") {
             alert("Please fill in all fields!");
