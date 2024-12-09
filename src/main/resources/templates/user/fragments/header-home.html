@@ -31,15 +31,15 @@
                 <div class="col-lg-10 col-sm-9 col-7">
                     <div class="header-top-dropdown dropdown-box-style">
                         <div class="axil-search">
-                            <form th:action="@{/user/products/search}" method="get" onsubmit="setSearchAction()">
+                            <form th:action="@{/user/products}" method="get" onsubmit="setSearchAction()">
                                 <button type="submit" class="icon wooc-btn-search">
                                     <i class="far fa-search"></i>
                                 </button>
                                 <input
                                         type="search"
                                         class="placeholder product-search-input"
-                                        name="search"
-                                        id="search"
+                                        name="name"
+                                        id="name"
                                         value=""
                                         maxlength="128"
                                         placeholder="What are you looking for...."
@@ -248,9 +248,9 @@
     <!-- End Mainmenu Area  -->
     <script>
         function setSearchAction() {
-            const searchInput = document.getElementById('search').value;
+            const searchInput = document.getElementById('name').value;
             const form = document.getElementById('searchForm');
-            form.action = `/user/products/search?search=${searchInput}`;
+            form.action = `/user/products?name=${searchInput}`;
         }
     </script>
 </header>
