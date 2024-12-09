@@ -392,8 +392,10 @@ public class ProductServiceImpl implements IProductService {
         List<ProductRequest> productDTOList = new ArrayList<>();
         List<Product> products = productRepository.findByCategoryName(categoryName);
         for (Product product : products) {
+            String oldPrice = Constant.formatter.format(product.getPrice().add(BigDecimal.valueOf(2000000)));
             ProductRequest productDTO = new ProductRequest();
             BeanUtils.copyProperties(product, productDTO);
+            productDTO.setOldPrice(oldPrice);
             productDTO.setImg(product.getThumbnail());
             productDTO.setUrlImage(product.getThumbnail().startsWith("https"));
             productDTOList.add(productDTO);

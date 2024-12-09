@@ -28,6 +28,8 @@ public class ProductRequest implements Serializable {
     @Digits(integer = 10, fraction = 2, message = "Giá trị phải có tối đa 10 chữ số nguyên và 2 chữ số thập phân")
     private BigDecimal price;
 
+    private String oldPrice;
+
     private String cpu = "";
 
     private String ram = "";

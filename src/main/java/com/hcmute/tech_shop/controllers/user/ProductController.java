@@ -109,7 +109,9 @@ public class ProductController {
 
     @GetMapping("/product-detail/{id}")
     public String productDetail(Model model, @PathVariable Long id) {
-        model.addAttribute("product", productService.findById(id).get());
+        Product product = productService.findById(id).get();
+        model.addAttribute("productRelated",productService.findByCategoryName(product.getCategory().getName()));
+        model.addAttribute("product", product);
         model.addAttribute("productRes", productService.getProductResponse(id));
         model.addAttribute("productImages", productImageService.findByProductId(id));
         model.addAttribute("ratings", ratingService.findByProductId(id));
