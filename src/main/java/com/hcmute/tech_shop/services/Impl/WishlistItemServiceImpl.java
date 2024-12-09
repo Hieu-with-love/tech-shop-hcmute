@@ -58,12 +58,17 @@ public class WishlistItemServiceImpl implements WishlistItemService {
                 .toList();
     }
 
-    private boolean existsItem(Long productId) {
-        List<WishlistItem> wishlistItems = wishlistItemRepository.findAll();
-        WishlistItem itemToInsert = wishlistItems.stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst().orElse(new WishlistItem());
-        return itemToInsert.getId() != null;
+    private boolean existsItem(Long wishlistId, Long productId) {
+        Wishlist thisWishlist = wishlistRepository.findById(wishlistId)
+                .orElse(new Wishlist());
+        if (thisWishlist.getId() != null){
+            List<WishlistItem> wishlistItems = thisWishlist.getItems().stream().toList();
+            WishlistItem itemToInsert = wishlistItems.stream()
+                    .filter(item -> item.getProduct().getId().equals(productId))
+                    .findFirst().orElse(new WishlistItem());
+            return itemToInsert.getId() != null;
+        }
+        return false;
     }
 
     @Override
@@ -77,13 +82,12 @@ public class WishlistItemServiceImpl implements WishlistItemService {
         );
         boolean status = product.getId() != null && product.getStockQuantity() > 0;
 
-        WishlistItem item = WishlistItem.builder()
-                .wishlist(wishlist)
-                .product(product)
-                .status(status)
-                .build();
-
-        if (!existsItem(productId)) {
+        if (!existsItem(wishlistId, productId)) {
+            WishlistItem item = WishlistItem.builder()
+                    .wishlist(wishlist)
+                    .product(product)
+                    .status(status)
+                    .build();
             wishlist.getItems().add(item);
             wishlistItemRepository.save(item);
             return true;

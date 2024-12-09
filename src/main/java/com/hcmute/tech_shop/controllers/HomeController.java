@@ -24,6 +24,7 @@ import org.springframework.data.domain.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,7 +140,13 @@ public class HomeController {
     @GetMapping("/get-address/{id}")
     public ResponseEntity<?> getAddress(@PathVariable Long id){
         try{
-            return ResponseEntity.ok((addressService.findById(id)));
+            Address address = addressService.findById(id).get();
+            Map<String, String> params = new HashMap<>();
+            params.put("city", address.getCity());
+            params.put("district", address.getDistrict());
+            params.put("street", address.getStreet());
+            params.put("detailLocation", address.getDetailLocation());
+            return ResponseEntity.ok(params);
         }catch (Exception e){
             return ResponseEntity.badRequest().body("Error");
         }
