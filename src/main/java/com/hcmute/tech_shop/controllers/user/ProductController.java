@@ -136,7 +136,7 @@ public class ProductController {
         response.put("name", product.getName());
         response.put("price", String.valueOf(product.getPrice())); // Chuyển giá trị số sang chuỗi
         response.put("oldPrice", String.valueOf(product.getOldPrice()));
-        response.put("thumbnail", product.getThumbnail());
+        response.put("description", product.getDescription());
         response.put("stockQuantity", String.valueOf(product.getStockQuantity()));
         response.put("isUrlImage", String.valueOf(product.isUrlImage()));
         response.put("ratings", ratingString);
