@@ -133,6 +133,7 @@ public class CheckoutController {
             return null; // Không cần trả về giao diện vì đã chuyển hướng
         } catch (Exception e) {
             e.printStackTrace();
+            orderService.deleteFailOrder();
             return "redirect:/user/checkout"; // Quay lại trang checkout nếu có lỗi
         }
     }

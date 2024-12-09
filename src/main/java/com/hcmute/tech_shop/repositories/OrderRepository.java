@@ -43,4 +43,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY SUM(o.totalPrice) DESC")
     List<Object[]> findTop4LoyalCustomers();
 
+    Optional<Order> findTopByOrderByCreatedAtDesc();
+
 }

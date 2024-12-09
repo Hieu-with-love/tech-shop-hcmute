@@ -24,9 +24,9 @@ public class WishlistRestController {
         try{
             boolean inserted = wishlistItemService.insertItemIntoWishlist(wishlistId, productId);
             if (inserted){
-                return ResponseEntity.ok("Sản phẩm đã được thêm vào Wishlist!");
+                return ResponseEntity.ok("Thêm sản phẩm vào Wishlist thành công!");
             }else{
-                return ResponseEntity.ok("Bạn đã thêm sản phẩm vào Wishlist rồi!");
+                return ResponseEntity.ok("Thêm thất bại. Sản phẩm đã ở trong Wishlist rồi!");
             }
         }catch (NotFoundException ex){
             return ResponseEntity.badRequest().body("Có lỗi xảy ra khi lưu, sản phẩm hoặc kho wihslist không tồn tại!");

@@ -62,4 +62,6 @@ public interface IOrderService {
     int getTotalOrderShipping();
 
     List<Order> getRecentlyOrders();
+
+    void deleteFailOrder();
 }

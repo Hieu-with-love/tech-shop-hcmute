@@ -49,16 +49,21 @@
                                     <div class="small-thumb-img">
                                         <img th:if="${productRes.isUrlImage()}"
                                              th:src="${product.thumbnail}"
+                                             class="product-image"
                                              alt="samll-thumb">
                                         <img th:unless="${productRes.isUrlImage()}"
                                              th:src="@{'/uploads/' + ${product.thumbnail}}"
+                                             class="product-image"
                                              alt="samll-thumb">
                                     </div>
                                     <div class="small-thumb-img" th:each="productImage : ${productImages}">
                                         <img    th:if="${productImage.getUrl().startsWith('https')}"
+                                                class="product-image"
                                                 th:src="${productImage.getUrl()}">
                                         <img    th:unless="${productImage.getUrl().startsWith('https')}"
-                                                th:src="@{'/uploads/'+${productImage.getUrl()}}" alt="samll-thumb">
+                                                th:src="@{'/uploads/'+${productImage.getUrl()}}"
+                                                class="product-image"
+                                                alt="samll-thumb">
                                     </div>
                                 </div>
                             </div>
