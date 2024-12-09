@@ -1,6 +1,7 @@
 package com.hcmute.tech_shop.payment.vnpay;
 
 import com.hcmute.tech_shop.entities.Cart;
+import com.hcmute.tech_shop.services.Impl.OrderServiceImpl;
 import com.hcmute.tech_shop.utils.Constant;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +25,9 @@ import java.util.Locale;
 public class VNPayController {
     @Autowired
     private VNPayService vnPayService;
+
+    @Autowired
+    private OrderServiceImpl orderService;
 
     // Chuyển hướng người dùng đến cổng thanh toán VNPAY
     @GetMapping({"/user/checkout/vnpay"})
@@ -63,6 +67,10 @@ public class VNPayController {
         model.addAttribute("totalPrice", Constant.formatter.format(Long.parseLong(totalPriceVND)));
         model.addAttribute("paymentTime", formattedDate);
         model.addAttribute("transactionId", transactionId);
+
+        if (paymentStatus == 0){
+            orderService.deleteFailOrder();
+        }
 
         return paymentStatus == 1 ? "user/orderSuccess" : "user/orderFail";
 

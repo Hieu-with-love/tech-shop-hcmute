@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.dtos.responses.OrderReponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.enums.OrderStatus;
+import com.hcmute.tech_shop.repositories.OrderDetailRepository;
 import com.hcmute.tech_shop.repositories.OrderRepository;
 import com.hcmute.tech_shop.services.interfaces.*;
 import com.hcmute.tech_shop.utils.Constant;
@@ -24,6 +25,7 @@ public class OrderServiceImpl implements IOrderService {
     private final ICartDetailService cartDetailService;
     private final IVoucherService voucherService;
     private final UserService userService;
+    private final OrderDetailRepository orderDetailRepository;
 
     @Override
     public List<Order> findByUsername(String username) {
@@ -79,7 +81,7 @@ public class OrderServiceImpl implements IOrderService {
             orderDetail.setProduct(productService.findByName(cartDetailResponse.getProductName()));
             orderDetail.setQuantity(cartDetailResponse.getQuantity());
             // Decrease product quantity
-            productService.decreaseStockQuantity(cartDetailResponse.getId(), cartDetailResponse.getQuantity());
+            productService.decreaseStockQuantity(cartDetailResponse.getProductId(), cartDetailResponse.getQuantity());
             orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
             orderDetails.add(orderDetail);
         }
@@ -106,7 +108,7 @@ public class OrderServiceImpl implements IOrderService {
                 orderDetail.setProduct(productService.findByName(cartDetailResponse.getProductName()));
                 orderDetail.setQuantity(cartDetailResponse.getQuantity());
                 // Decrease product quantity
-                productService.decreaseStockQuantity(cartDetailResponse.getId(), cartDetailResponse.getQuantity());
+                productService.decreaseStockQuantity(cartDetailResponse.getProductId(), cartDetailResponse.getQuantity());
                 orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
                 orderDetails.add(orderDetail);
             }
@@ -283,5 +285,21 @@ public class OrderServiceImpl implements IOrderService {
                 .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
                 .limit(6)
                 .toList();
+    }
+
+    @Override
+    public void deleteFailOrder(){
+        try {
+            Order order = orderRepository.findTopByOrderByCreatedAtDesc().orElse(null);
+            if (order != null){
+                List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(order.getId());
+                for (OrderDetail orderDetail : orderDetails){
+                    productService.increaseStockQuantity(orderDetail.getProduct().getId(),orderDetail.getQuantity());
+                }
+                orderRepository.deleteById(order.getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

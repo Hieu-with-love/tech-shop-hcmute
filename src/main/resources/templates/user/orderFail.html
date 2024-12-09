@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Failure Payment</title>
-    <div th:insert="~{fragments/head::head}"></div>
+    <div th:insert="~{/user/fragments/head::head}"></div>
 </head>
 <body>
 <div class="container">
@@ -10,9 +10,9 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <img th:src="@{/etrade/assets/images/my-img/vnpay.png}" style="width: 200px">
-                    <h2 class="card-title">Tạo Laij Đơn Hàng</h2>
-                    <form th:action="@{/user/checkout}" method="post">
+                    <img th:src="@{/user/assets/images/my-image/vnpay.png}" style="height: 100px; width: 100px">
+                    <h2 class="card-title">Tạo Lại Đơn Hàng</h2>
+                    <form th:action="@{/user/checkout}">
                         <div class="form-group">
                             <label for="amount">Số tiền:</label>
                             <input type="number" class="form-control" id="amount" name="amount" required value="299999">

@@ -36,7 +36,7 @@ public class ApplicationInitConfig {
 
         return args -> {
             // Tạo các role mặc định nếu chưa tồn tại
-            String[] roleNames = {"user", "admin", "manage", "shipper"};
+            String[] roleNames = {"user", "admin", "manager", "shipper"};
             for (String roleName : roleNames) {
                 if (roleService.getRoleByName(roleName) == null) {
                     RoleRequest role = RoleRequest.builder()

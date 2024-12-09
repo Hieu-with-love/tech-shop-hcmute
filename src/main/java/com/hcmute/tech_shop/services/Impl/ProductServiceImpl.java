@@ -18,7 +18,6 @@ import com.hcmute.tech_shop.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -65,6 +64,14 @@ public class ProductServiceImpl implements IProductService {
         product.setStockQuantity(product.getStockQuantity() - quantity);
         productRepository.save(product);
     }
+
+    @Override
+    public void increaseStockQuantity(Long productId, int quantity) {
+        Product product = productRepository.findById(productId).get();
+        product.setStockQuantity(product.getStockQuantity() + quantity);
+        productRepository.save(product);
+    }
+
 
     @Override
     public void init() {

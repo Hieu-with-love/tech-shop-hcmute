@@ -19,6 +19,8 @@ public interface IProductService {
 
     void decreaseStockQuantity(Long productId, int quantity);
 
+    void increaseStockQuantity(Long productId, int quantity);
+
     void init();
     List<ProductResponse> getAllProducts(List<Product> products);
     ProductResponse getProductResponse(Long productId);
