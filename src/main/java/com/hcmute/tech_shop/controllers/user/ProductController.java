@@ -3,6 +3,8 @@ package com.hcmute.tech_shop.controllers.user;
 import com.hcmute.tech_shop.dtos.requests.ProductRequest;
 
 import com.hcmute.tech_shop.dtos.requests.RatingRequest;
+import com.hcmute.tech_shop.dtos.requests.UserRequest;
+import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
 import jakarta.servlet.http.HttpSession;
@@ -29,10 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller(value = "UserProductController")
@@ -44,7 +44,28 @@ public class ProductController {
     private final IRatingService ratingService;
     private final ICategoryService categoryService;
     private final IBrandService brandService;
+    private final ICartDetailService cartDetailService;
+    private final CartService cartService;
+    private final UserService userService;
+    private final WishlistService wishlistService;
+    private final WishlistItemService wishlistItemService;
 
+    public UserRequest getUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getUserByUsername(username);
+        UserRequest userRequest = UserRequest.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .gender(user.getGender())
+                .dob(user.getDateOfBirth())
+                .active(user.isActive())
+                .image(user.getImage())
+                .build();
+        return userRequest;
+    }
 
     @GetMapping("/{name}")
     public String getProductsByCategoryName(Model model, @PathVariable String name) {
@@ -102,17 +123,37 @@ public class ProductController {
         return "user/shop-sidebar";
     }
 
-
-    @GetMapping("/single-product")
-    public String singleProduct() {
-        return "user/single-product-3";
-    }
-
-
     @GetMapping("/product-detail/{id}")
     public String productDetail(Model model, @PathVariable Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int numberProductInCart = 0;
+
+        Cart cart = new Cart();
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+        if(!username.equals("anonymousUser")) {
+            User user = userService.getUserByUsername(username);
+            wishlistService.createWishlist(user);
+            Wishlist wishlist = wishlistService.getWishlistByUserId(user.getId());
+            int wishlistItems = wishlistItemService.getItemsCount(wishlist.getId());
+
+            UserRequest userRequest = getUser();
+            cart = cartService.findByCustomerId(userRequest.getId());
+            if(cart == null) {
+                cart = cartService.createCart(new Cart(null, BigDecimal.ZERO,userRequest.getId(),null));
+            }
+            cartDetailList = cartDetailService.getAllItems(cartDetailService.findAllByCart_Id(cart.getId()));
+            numberProductInCart = cartDetailList.size();
+            if(cartDetailList.size() > 3) {
+                cartDetailList = cartDetailList.subList(0, 3);
+            }
+            model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+        }
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("numberProductInCart", numberProductInCart);
         Product product = productService.findById(id).get();
-        model.addAttribute("productRelated",productService.findByCategoryName(product.getCategory().getName()));
+        model.addAttribute("productRelated",productService.findByBrandNameAndAndCategoryName(product.getBrand().getName(), product.getCategory().getName()));
         model.addAttribute("product", product);
         model.addAttribute("productRes", productService.getProductResponse(id));
         model.addAttribute("productImages", productImageService.findByProductId(id));

@@ -135,7 +135,32 @@
     background: #0056b3;
 }
 
+.product-checkbox {
+    text-align: center; /* Căn giữa nội dung theo chiều ngang */
+    vertical-align: middle; /* Căn giữa nội dung theo chiều dọc */
+}
 
+.checkbox-container {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+}
+
+.checkout-container {
+    text-align: right; /* Aligns child elements to the right */
+    margin-top: 20px; /* Optional: Adds spacing above the button */
+}
+
+.btn-checkout {
+    display: inline-block; /* Ensures proper inline display */
+    padding: 10px 20px; /* Adjusts button padding */
+    background-color: #007bff; /* Button color */
+    color: #fff; /* Button text color */
+    border: none; /* Removes default border */
+    border-radius: 5px; /* Optional: Rounded corners */
+    cursor: pointer;
+    text-decoration: none; /* Removes underline on links */
+}
 
 /*!* Container bao bọc bộ lọc *!*/
 /*.filter-container {*/

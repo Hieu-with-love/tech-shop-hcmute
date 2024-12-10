@@ -33,21 +33,31 @@
                     </div>
                     <div class="table-responsive" >
                         <input type="hidden" id="is-cart-empty" th:value="${isEmptyCart}">
-                        <table class="table axil-product-table axil-cart-table mb--40">
-                            <thead>
+                        <form th:action="@{/user/checkout}" method="get" id="checkoutForm">
+                            <table class="table axil-product-table axil-cart-table mb--40">
+                                <thead>
                                 <tr>
-                                    <th scope="col" class="product-remove"></th>
+                                    <th scope="col" class="product-checkbox"></th>
                                     <th scope="col" class="product-thumbnail">Thumbnail</th>
                                     <th scope="col" class="product-title">Product Name</th>
                                     <th scope="col" class="product-price">Price</th>
                                     <th scope="col" class="product-quantity">Quantity</th>
                                     <th scope="col" class="product-subtotal">Subtotal</th>
+                                    <th scope="col" class="product-remove"></th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="cartDetail : ${session.cartDetailListFull}">
-                                    <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productName})}"
-                                                                  class="remove-wishlist"><i class="fal fa-times"></i></a></td>
+                                </thead>
+                                <tbody>
+                                <tr th:each="cartDetail : ${cartDetailListFull}">
+                                    <td class="product-checkbox">
+                                        <div class="checkbox-container">
+                                            <input type="checkbox"
+                                                   th:id="'brand-' + ${cartDetail.productId}"
+                                                   class="product-checkbox"
+                                                   th:name="selectedProducts"
+                                                   th:value="${cartDetail.productId}" />
+                                            <label th:for="'brand-' + ${cartDetail.productId}" class="checkbox-label"></label>
+                                        </div>
+                                    </td>
                                     <td class="product-thumbnail"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
                                         <a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
                                             <img th:if="${cartDetail.isUrlImage()}"
@@ -78,69 +88,23 @@
                                         </div>
                                     </td>
                                     <td class="product-subtotal" data-title="Price"><span th:text="${cartDetail.totalPriceString}"></span></td>
+                                    <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productName})}"
+                                                                  class="remove-wishlist"><i class="fal fa-times"></i></a></td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                            <div class="cart-update-btn-area">
+                                <div class="update-btn">
+                                    <button type="submit" class="axil-btn btn-outline">Check out</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div>
                         <h3 class="cart-subtotal">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="mb-20" th:text="${session.totalPriceOfCart.totalPrice}"></span>
+                            <span class="mb-20" th:text="${totalPriceOfCart.totalPrice}"></span>
                         </h3>
-                    </div>
-                    <div class="cart-update-btn-area">
-                        <div class="input-group product-cupon">
-                            <input placeholder="Enter coupon code" type="text">
-                            <div class="product-cupon-btn">
-                                <button type="submit" class="axil-btn btn-outline">Apply</button>
-                            </div>
-                        </div>
-                        <div class="update-btn">
-                            <a th:href="@{/user/checkout}" class="axil-btn btn-outline">Check out</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5">
-                            <div class="axil-order-summery mt--80">
-                                <h5 class="title mb--20">Order Summary</h5>
-                                <div class="summery-table-wrap">
-                                    <table class="table summery-table mb--30">
-                                        <tbody>
-                                            <tr class="order-subtotal">
-                                                <td>Subtotal</td>
-                                                <td>$117.00</td>
-                                            </tr>
-                                            <tr class="order-shipping">
-                                                <td>Shipping</td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="radio" id="radio1" name="shipping" checked>
-                                                        <label for="radio1">Free Shippping</label>
-                                                    </div>
-                                                    <div class="input-group">
-                                                        <input type="radio" id="radio2" name="shipping">
-                                                        <label for="radio2">Local: $35.00</label>
-                                                    </div>
-                                                    <div class="input-group">
-                                                        <input type="radio" id="radio3" name="shipping">
-                                                        <label for="radio3">Flat rate: $12.00</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="order-tax">
-                                                <td>State Tax</td>
-                                                <td>$8.00</td>
-                                            </tr>
-                                            <tr class="order-total">
-                                                <td>Total</td>
-                                                <td class="order-total-amount">$125.00</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <a th:href="@{/user/checkout}" class="axil-btn btn-bg-primary checkout-btn">Process to Checkout</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -169,7 +133,62 @@
     <div th:insert="~{/user/fragments/header-search::header-search}"></div>
     <!-- Header Search Modal End -->
 
-    <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
+    <div class="cart-dropdown" id="cart-dropdown">
+        <div class="cart-content-wrap">
+            <div class="cart-header">
+                <h2 class="header-title">Cart review</h2>
+                <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-body">
+                <ul class="cart-item-list" th:each="cartDetail : ${cartDetailList}">
+                    <li class="cart-item">
+                        <div class="item-img">
+                            <a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
+                                <img th:if="${cartDetail.isUrlImage()}"
+                                     th:src="${cartDetail.thumbnail}"
+                                     class="product-image"
+                                     alt="Ảnh sản phẩm mặc định">
+                                <img th:unless="${cartDetail.isUrlImage()}"
+                                     th:src="@{'/uploads/' + ${cartDetail.thumbnail}}"
+                                     class="product-image"
+                                     alt="Ảnh sản phẩm">
+                            </a>
+                        </div>
+                        <!-- End Single product cua Tuan-->
+                        <div class="item-content">
+                            <!--              <div class="product-rating">-->
+                            <!--                <span class="icon">-->
+                            <!--                  <i class="fas fa-star"></i>-->
+                            <!--                  <i class="fas fa-star"></i>-->
+                            <!--                  <i class="fas fa-star"></i>-->
+                            <!--                  <i class="fas fa-star"></i>-->
+                            <!--                  <i class="fas fa-star"></i>-->
+                            <!--                </span>-->
+                            <!--                <span class="rating-number">(64)</span>-->
+                            <!--              </div>-->
+                            <h3 class="item-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                                      th:text="${cartDetail.productName}"></a></h3>
+                            <div class="item-price"><span class="currency-symbol"></span><span th:text="${cartDetail.price}"></span></div>
+                            <div class="pro-qty item-quantity">
+                                <input type="number" class="quantity-input" th:value="${cartDetail.quantity}">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="cart-footer">
+                <h3 class="cart-subtotal">
+                    <span class="subtotal-title">Subtotal:</span>
+                    <span class="subtotal-amount" th:if="${cart.id != null}"
+                          th:text="${totalPriceOfCart.totalPrice}"></span>
+                </h3>
+                <div class="group-btn">
+                    <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                    <a th:href="@{/user/checkout}" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- JS
 ============================================ -->

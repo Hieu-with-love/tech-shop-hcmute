@@ -5,7 +5,7 @@
             <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-body">
-            <ul class="cart-item-list" th:each="cartDetail : ${session.cartDetailList}">
+            <ul class="cart-item-list" th:each="cartDetail : ${cartDetailList}">
                 <li class="cart-item">
                     <div class="item-img">
                         <a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
@@ -43,12 +43,13 @@
         <div class="cart-footer">
             <h3 class="cart-subtotal">
                 <span class="subtotal-title">Subtotal:</span>
-                <span class="subtotal-amount" th:if="${session.cart.id != null}"
-                      th:text="${session.totalPriceOfCart.totalPrice}"></span>
+                <span class="subtotal-amount" th:if="${cart.id != null}"
+                      th:text="${totalPriceOfCart.totalPrice}"></span>
             </h3>
             <div class="group-btn">
                 <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
                 <a th:href="@{/user/checkout}" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
             </div>
         </div>
-    </div></div>
+    </div>
+</div>

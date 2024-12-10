@@ -5,6 +5,7 @@ import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.Payment;
 import com.hcmute.tech_shop.services.interfaces.*;
+import com.hcmute.tech_shop.utils.Constant;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -37,14 +38,26 @@ public class CheckoutController {
     private final IVoucherService voucherService;
     private final IPaymentService paymentService;
     private final APIContext apiContext;
+    private final CartService cartService;
+    private final ICartDetailService cartDetailService;
 
     @GetMapping("")
-    public String checkout(Model model, HttpSession session) {
+    public String checkout(Model model, HttpSession session, @RequestParam("selectedProducts")List<Long> selectedProducts) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
         List<Address> addresses = addressService.findByUser_Username(username);
         Cart cart = (Cart) session.getAttribute("cart");
-        List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
+        cart = cartService.findById(cart.getId());
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+
+        BigDecimal totalPriceToPayment = BigDecimal.ZERO;
+
+        for (Long productId : selectedProducts) {
+            CartDetailResponse cartDetailResponse = cartDetailService.convertToCartDetailReponse(cartDetailService.findByCart_IdAndProductId(cart.getId(), productId));
+            totalPriceToPayment = totalPriceToPayment.add(cartDetailResponse.getTotalPrice());
+            cartDetailList.add(cartDetailResponse);
+        }
+
         // Extract voucher names and values
         List<Voucher> vouchers = voucherService.findValidVoucher();
         List<String> voucherNames = vouchers.stream().map(Voucher::getName).toList();
@@ -59,6 +72,10 @@ public class CheckoutController {
         model.addAttribute("voucherNames", voucherNames);
         model.addAttribute("voucherValues", voucherValues);
         model.addAttribute("hasAddress", hasAddress);
+        model.addAttribute("totalPriceToPayment", Constant.formatter.format(totalPriceToPayment));
+        model.addAttribute("totalPriceOfCart", cartService.getCartResponse(cart));
+
+        session.setAttribute("cartDetailList",cartDetailList);
 
         return "user/checkout";
     }
@@ -78,15 +95,17 @@ public class CheckoutController {
         // Find the payment method by its name
         Payment payment = paymentService.findByName(paymentMethod);
         // Retrieve the cart detail list from the session
-        List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
         // Retrieve the cart from the session
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart != null) {
+            cart = cartService.findById(cart.getId());
             // Update the cart's total price
             cart.setTotalPrice(newPrice);
             // Set the updated cart back into the session
             session.setAttribute("cart", cart);
         }
+
+        List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
 
         if (!Objects.equals(voucherCode, "")) {
             // Check if the voucher code is null
