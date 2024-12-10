@@ -383,7 +383,7 @@
                             </div>
                             <div class="product-hover-action">
                                 <ul class="cart-action">
-                                    <li class="quickview">
+                                    <li class="quickview" th:value="${product.id}">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
                                                 class="far fa-eye"></i></a>
                                     </li>
@@ -429,6 +429,31 @@
         </div>
     </div>
     <!-- End Recently Viewed Product Area  -->
+
+    <!-- Quick View Modal -->
+    <div class="modal fade" id="quick-view-modal" tabindex="-1" aria-labelledby="quick-view-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quick-view-modal-label">Chi tiết sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="product-details">
+                        <!-- Thông tin sản phẩm sẽ được chèn vào đây -->
+                        <p><strong>Tên sản phẩm:</strong> <span id="product-name"></span></p>
+                        <p><strong>Giá:</strong> <span id="product-price"></span></p>
+                        <p><strong>Giá cũ:</strong> <span id="product-old-price"></span></p>
+                        <p><strong>Chi tiết:</strong> <span id="product-description"></span></p>
+                        <p><strong>Số lượt đánh giá:</strong> <span id="product-feedback"></span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 
@@ -545,6 +570,69 @@
                     console.error('Error:', error);
                     alert('An error occurred!');
                 });
+        });
+    });
+    $(document).ready(function(){
+        $('.slick-slider').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+    });
+
+    $(document).on('click', '.quickview a', function (event) {
+        event.preventDefault();
+
+        // Lấy productId từ dữ liệu của thẻ đang được nhấn
+        const productId = $(this).closest('li').attr('value');
+
+        // Gửi yêu cầu AJAX để lấy dữ liệu sản phẩm từ server
+        $.ajax({
+            url: '/user/products/quick-view',  // URL endpoint trong controller Spring Boot
+            type: 'GET',
+            data: { id: productId },
+            success: function (data) {
+                // Kiểm tra xem dữ liệu trả về có hợp lệ không
+                if (data) {
+                    // Chèn dữ liệu vào modal
+
+                    $('#product-name').text(data.name);
+                    $('#product-price').text(data.price);
+                    $('#product-old-price').text(data.oldPrice);
+                    $('#product-feedback').text(data.ratings);
+
+                    // $('#product-price').text(data. + ' VND'); // Thêm đơn vị tiền tệ
+                    $('#product-description').text(data.description || 'Không có mô tả');
+                    // Hiển thị modal
+                    $('#quick-view-modal').modal('show');
+                } else {
+                    alert('Không tìm thấy thông tin sản phẩm!');
+                }
+            },
+            error: function () {
+                alert('Có lỗi xảy ra khi tải dữ liệu sản phẩm. Vui lòng thử lại!');
+            }
         });
     });
 </script>

@@ -31,15 +31,15 @@
                 <div class="col-lg-10 col-sm-9 col-7">
                     <div class="header-top-dropdown dropdown-box-style">
                         <div class="axil-search">
-                            <form th:action="@{/user/products/search}" method="get" onsubmit="setSearchAction()">
+                            <form th:action="@{/user/products}" method="get" onsubmit="setSearchAction()">
                                 <button type="submit" class="icon wooc-btn-search">
                                     <i class="far fa-search"></i>
                                 </button>
                                 <input
                                         type="search"
                                         class="placeholder product-search-input"
-                                        name="search"
-                                        id="search"
+                                        name="name"
+                                        id="name"
                                         value=""
                                         maxlength="128"
                                         placeholder="What are you looking for...."
@@ -121,11 +121,7 @@
 
                             <!--              Start shop-->
                             <li class="menu-item-has-children">
-                                <a href="#">Shop</a>
-                                <ul class="axil-submenu">
-                                    <li><a href="shop-sidebar.html">Shop With Sidebar</a></li>
-                                    <li><a href="shop.html">Shop no Sidebar</a></li>
-                                </ul>
+                                <a th:href="@{/user/products}">Shop</a>
                             </li>
                             <!--              End home-->
 
@@ -147,20 +143,11 @@
                             <!--              Start blog-->
                             <li class="menu-item-has-children">
                                 <a href="#">Blog</a>
-                                <ul class="axil-submenu">
-                                    <li><a href="blog.html">Blog List</a></li>
-                                    <li><a href="blog-grid.html">Blog Grid</a></li>
-                                    <li><a href="blog-details.html">Standard Post</a></li>
-                                    <li><a href="blog-gallery.html">Gallery Post</a></li>
-                                    <li><a href="blog-video.html">Video Post</a></li>
-                                    <li><a href="blog-audio.html">Audio Post</a></li>
-                                    <li><a href="blog-quote.html">Quote Post</a></li>
-                                </ul>
                             </li>
                             <!--              Start blog-->
 
                             <!--              Start contact-->
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#footer">Contact</a></li>
                             <!--              Start contact-->
 
                         </ul>
@@ -248,9 +235,9 @@
     <!-- End Mainmenu Area  -->
     <script>
         function setSearchAction() {
-            const searchInput = document.getElementById('search').value;
+            const searchInput = document.getElementById('name').value;
             const form = document.getElementById('searchForm');
-            form.action = `/user/products/search?search=${searchInput}`;
+            form.action = `/user/products?name=${searchInput}`;
         }
     </script>
 </header>

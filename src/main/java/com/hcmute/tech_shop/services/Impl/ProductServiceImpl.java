@@ -98,6 +98,7 @@ public class ProductServiceImpl implements IProductService {
                 .price(Constant.formatter.format(p.getPrice()))
                 .oldPrice(oldPrice)
                 .thumbnail(p.getThumbnail())
+                .description(p.getDescription())
                 .isUrlImage(isUrlImage)
                 .build();
     }
