@@ -73,6 +73,34 @@ public class ProductController {
         List<Brand> brands = brandService.findAll();
         List<ProductRequest> productDTOList = productService.findByCategoryName(name);
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int numberProductInCart = 0;
+
+        Cart cart = new Cart();
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+        if(!username.equals("anonymousUser")) {
+            User user = userService.getUserByUsername(username);
+            wishlistService.createWishlist(user);
+            Wishlist wishlist = wishlistService.getWishlistByUserId(user.getId());
+            int wishlistItems = wishlistItemService.getItemsCount(wishlist.getId());
+
+            UserRequest userRequest = getUser();
+            cart = cartService.findByCustomerId(userRequest.getId());
+            if(cart == null) {
+                cart = cartService.createCart(new Cart(null, BigDecimal.ZERO,userRequest.getId(),null));
+            }
+            cartDetailList = cartDetailService.getAllItems(cartDetailService.findAllByCart_Id(cart.getId()));
+            numberProductInCart = cartDetailList.size();
+            if(cartDetailList.size() > 3) {
+                cartDetailList = cartDetailList.subList(0, 3);
+            }
+            model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+        }
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("numberProductInCart", numberProductInCart);
+
         model.addAttribute("brands", brands);
         model.addAttribute("categories", categoryDTOList);
         model.addAttribute("categoryName", name);
@@ -108,6 +136,34 @@ public class ProductController {
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .collect(Collectors.joining("&"));
         String baseUrl = "/user/products" + (queryParams.isEmpty() ? "?" : "?" + queryParams + "&");
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int numberProductInCart = 0;
+
+        Cart cart = new Cart();
+        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+        if(!username.equals("anonymousUser")) {
+            User user = userService.getUserByUsername(username);
+            wishlistService.createWishlist(user);
+            Wishlist wishlist = wishlistService.getWishlistByUserId(user.getId());
+            int wishlistItems = wishlistItemService.getItemsCount(wishlist.getId());
+
+            UserRequest userRequest = getUser();
+            cart = cartService.findByCustomerId(userRequest.getId());
+            if(cart == null) {
+                cart = cartService.createCart(new Cart(null, BigDecimal.ZERO,userRequest.getId(),null));
+            }
+            cartDetailList = cartDetailService.getAllItems(cartDetailService.findAllByCart_Id(cart.getId()));
+            numberProductInCart = cartDetailList.size();
+            if(cartDetailList.size() > 3) {
+                cartDetailList = cartDetailList.subList(0, 3);
+            }
+            model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+        }
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("numberProductInCart", numberProductInCart);
 
         model.addAttribute("brands", brands);
         model.addAttribute("categories", categoryDTOList);
