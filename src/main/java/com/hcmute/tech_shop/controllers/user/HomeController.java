@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.requests.*;
 import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.services.interfaces.*;
+import com.hcmute.tech_shop.utils.Constant;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +108,16 @@ public class HomeController {
                 .toList());
         model.addAttribute("addresses", addressService.findByUser_Username(username));
         return "user/my-account";
+    }
+
+    @GetMapping("/wallet")
+    public String showWallet(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getUserByUsername(username);
+        String balanceVND = user.getBalance() != null ? Constant.formatter.format(user.getBalance()) : "0";
+        model.addAttribute("user", user);
+        model.addAttribute("balanceVND", balanceVND);
+        return "user/wallet";
     }
 
 }
