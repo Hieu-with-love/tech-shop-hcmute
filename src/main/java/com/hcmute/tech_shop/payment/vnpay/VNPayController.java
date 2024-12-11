@@ -33,8 +33,8 @@ public class VNPayController {
     @GetMapping({"/user/checkout/vnpay"})
     public String submidOrder(HttpServletRequest request, HttpSession session) {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        Cart cart = (Cart) session.getAttribute("cart");
-        String vnpayUrl = vnPayService.createOrder(request, cart.getTotalPrice().intValue(), baseUrl);
+        BigDecimal totalPriceToPayment = (BigDecimal) session.getAttribute("totalPriceToPayment");
+        String vnpayUrl = vnPayService.createOrder(request, totalPriceToPayment.intValue(), baseUrl);
         return "redirect:" + vnpayUrl;
     }
 

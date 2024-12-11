@@ -98,7 +98,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="order-product" th:each="cartDetail : ${cartDetailList}">
+                                    <tr class="order-product" th:each="cartDetail : ${cartDetailResponseToBuy}">
                                         <td th:text="|${cartDetail.getProductName()} x${cartDetail.getQuantity()}|"></td>
                                         <td th:text="${T(com.hcmute.tech_shop.utils.PriceUtil).formatPrice(cartDetail.getTotalPrice())}"></td>
                                     </tr>

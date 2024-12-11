@@ -48,14 +48,26 @@ public class CheckoutController {
         List<Address> addresses = addressService.findByUser_Username(username);
         Cart cart = (Cart) session.getAttribute("cart");
         cart = cartService.findById(cart.getId());
-        List<CartDetailResponse> cartDetailList = new ArrayList<>();
+        List<CartDetailResponse> cartDetailList = cartDetailService.getAllItems(cartDetailService.findAllByCart_Id(cart.getId()));
+        List<CartDetailResponse> cartDetailResponseToBuy = new ArrayList<>();
+        int numberProductInCart = cartDetailList.size();
+        if(cartDetailList.size() > 3) {
+            cartDetailList = cartDetailList.subList(0, 3);
+        }
+        model.addAttribute("isEmptyCart", cartDetailList.isEmpty());
+        session.setAttribute("user", user);
+        model.addAttribute("cart",cart);
+        model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("numberProductInCart", numberProductInCart);
+        model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
+
 
         BigDecimal totalPriceToPayment = BigDecimal.ZERO;
 
         for (Long productId : selectedProducts) {
             CartDetailResponse cartDetailResponse = cartDetailService.convertToCartDetailReponse(cartDetailService.findByCart_IdAndProductId(cart.getId(), productId));
             totalPriceToPayment = totalPriceToPayment.add(cartDetailResponse.getTotalPrice());
-            cartDetailList.add(cartDetailResponse);
+            cartDetailResponseToBuy.add(cartDetailResponse);
         }
 
         // Extract voucher names and values
@@ -69,13 +81,14 @@ public class CheckoutController {
         model.addAttribute("addresses", addresses);
         model.addAttribute("cart", cart);
         model.addAttribute("cartDetailList", cartDetailList);
+        model.addAttribute("cartDetailResponseToBuy", cartDetailResponseToBuy);
         model.addAttribute("voucherNames", voucherNames);
         model.addAttribute("voucherValues", voucherValues);
         model.addAttribute("hasAddress", hasAddress);
-        model.addAttribute("totalPriceToPayment", Constant.formatter.format(totalPriceToPayment));
+        model.addAttribute("totalPriceToPayment", totalPriceToPayment);
         model.addAttribute("totalPriceOfCart", cartService.getCartResponse(cart));
 
-        session.setAttribute("cartDetailList",cartDetailList);
+        session.setAttribute("cartDetailListToBuy",cartDetailResponseToBuy);
 
         return "user/checkout";
     }
@@ -100,12 +113,11 @@ public class CheckoutController {
         if (cart != null) {
             cart = cartService.findById(cart.getId());
             // Update the cart's total price
-            cart.setTotalPrice(newPrice);
             // Set the updated cart back into the session
-            session.setAttribute("cart", cart);
+            session.setAttribute("totalPriceToPayment", newPrice);
         }
 
-        List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailList");
+        List<CartDetailResponse> cartDetailList = (List<CartDetailResponse>) session.getAttribute("cartDetailListToBuy");
 
         if (!Objects.equals(voucherCode, "")) {
             // Check if the voucher code is null
@@ -139,7 +151,7 @@ public class CheckoutController {
             }
 
             // Tổng số tiền trong giỏ hàng (VND)
-            BigDecimal totalPriceVND = cart.getTotalPrice();
+            BigDecimal totalPriceVND = (BigDecimal) session.getAttribute("totalPriceToPayment");
 
             // Chuyển đổi từ VND sang USD
             BigDecimal totalPriceUSD = PriceUtil.convertVNDToUSD(totalPriceVND);
