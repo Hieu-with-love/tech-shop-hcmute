@@ -128,11 +128,30 @@
                         <span class="mb-20" th:text="${order.getTotalPrice()}"></span>
                     </h3>
                 </div>
-                <div class="cart-update-btn-area" th:if="${order.getStatus().equals(orderStatus[0])}">
-                    <form th:action="@{/user/orders/cancelled(id=${order.getId()})}" method="post">
-                        <input class="btn btn-danger" type="submit" th:value="Cancelled">
-                    </form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="cart-update-btn-area" th:if="${order.getStatus().equals(orderStatus[0])}">
+                            <form th:action="@{/user/orders/cancelled(id=${order.getId()})}" method="post">
+                                <input class="btn btn-danger" type="submit" th:value="Cancelled">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn btn-secondary" th:if="${order.getStatus().equals(orderStatus[1])}">
+                            <form th:action="@{/user/orders/refund(id=${order.getId()})}" method="post">
+                                <input class="btn btn-danger" type="submit" th:value="Refund">
+                            </form>
+                        </div>
+
+                        <div class="btn btn-primary" th:if="${order.getStatus().equals(orderStatus[2])}">
+                            <form th:action="@{/user/orders/completed(id=${order.getId()})}" method="post">
+                                <input class="btn btn-danger" type="submit" th:value="Completed">
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
         </div>
     </div>
