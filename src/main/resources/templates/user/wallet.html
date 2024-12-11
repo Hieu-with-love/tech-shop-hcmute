@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <title>TechShop || User Wallet</title>
+  <div th:insert="~{/user/fragments/head::head}"></div>
+</head>
+<body>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h3>User Wallet</h3>
+        </div>
+        <div class="card-body">
+          <h4>Số tiền trong ví: <span id="wallet-balance" th:text="${balanceVND}"></span></h4>
+          <button class="btn btn-success mt-3" onclick="recharge()">Nạp tiền vào ví</button>
+          <button class="btn btn-danger mt-3" onclick="withdraw()">Rút tiền khỏi ví</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function recharge() {
+    // Implement recharge logic here
+    alert('Recharge button clicked');
+  }
+
+  function withdraw() {
+    // Implement withdraw logic here
+    alert('Withdraw button clicked');
+  }
+</script>
+</body>
+</html>
