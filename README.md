@@ -3,6 +3,19 @@
 
 TechShopHCMUTE is a project developed with the goal of learning about sales processes through various stages, from the manager's steps in preparing to add products to inventory, to showcasing products on the website for users to view, favorite, add to their cart, and proceed through the complex payment processes. TechShopHCMUTE is not only a capstone project for the Web Programming course but also a passionate initiative driven by the spirit of curiosity, innovation, and self-challenge to continuously improve the product. This is also our team’s first project, so it might still have shortcomings. We sincerely welcome feedback from everyone to help us improve and learn even more.
 
+## GUI of App
+### Login at here
+![alt text](image.png)
+### Main Interface
+![alt text](image-1.png)
+![alt text](image-2.png)
+### Preference searching 
+![alt text](image-3.png)
+### Shopping you prefer right here
+![alt text](image-4.png)
+### After purchasing the product, you can share your purchasing experience here
+![alt text](image-5.png)
+
 # Table of Contents
 - [Features](#features)
 - [Project Architecture](#-project-architecture-spring-boot-with-thymeleaf)
@@ -60,53 +73,6 @@ This project leverages **Spring Boot** as the backend framework and **Thymeleaf*
   - Define repository interfaces for CRUD operations.
   - Handle complex queries using JPA or custom `@Query` annotations.
   - Ensure data integrity and consistency.
-
-## ⚙️ Key Components and Structure
-
-### **📂 Project Structure**
-- Ex:
-```
-src/
-├── main/
-│   ├── java/com/example/project/
-│   │   ├── config/               # Configuration files
-│   │   │   ├── WebConfig.java
-│   │   │   └── SecurityConfig.java
-│   │   ├── controller/           # Controller layer (handling HTTP requests)
-│   │   │   ├── UserController.java
-│   │   │   ├── ProductController.java
-│   │   │   └── OrderController.java
-│   │   ├── dto/                  # Data Transfer Objects (DTOs)
-│   │   │   ├── UserDTO.java
-│   │   │   └── ProductDTO.java
-│   │   ├── exception/            # Exception handling
-│   │   │   └── GlobalExceptionHandler.java
-│   │   ├── model/                # Entities representing database tables
-│   │   │   ├── User.java
-│   │   │   ├── Product.java
-│   │   │   └── Order.java
-│   │   ├── repository/           # Repository layer for database operations
-│   │   │   ├── UserRepository.java
-│   │   │   └── ProductRepository.java
-│   │   ├── service/              # Service layer (business logic)
-│   │   │   ├── UserService.java
-│   │   │   └── ProductService.java
-│   │   └── ProjectApplication.java # Main entry point
-│   ├── resources/
-│   │   ├── templates/            # Thymeleaf templates for frontend
-│   │   │   ├── index.html
-│   │   │   ├── login.html
-│   │   │   └── product/
-│   │   │       ├── product-list.html
-│   │   │       └── product-detail.html
-│   │   ├── static/               # Static assets (CSS, JS, images)
-│   │   │   ├── css/
-│   │   │   └── js/
-│   │   └── application.yml       # Application configuration file
-├── test/                         # Unit and integration tests
-└── pom.xml                       # Maven dependencies
-```
-
 
 
 ## Technologies Used
