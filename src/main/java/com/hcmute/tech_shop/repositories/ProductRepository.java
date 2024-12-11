@@ -58,4 +58,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     List<Product> findTop4ByOrderByCreatedAtDesc();
 
+    List<Product> findByBrandNameAndAndCategoryName(String brandName, String categoryName);
 }

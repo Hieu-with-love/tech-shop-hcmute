@@ -95,9 +95,7 @@ public class CartController {
         model.addAttribute("numberProductInCart", numberProductInCart);
         model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
 
-
         session.setAttribute("cart", cart);
-        session.setAttribute("cartDetailList", cartDetailList);
         session.setAttribute("cartDetailListFull", cartDetailListFull);
         session.setAttribute("numberProductInCart", numberProductInCart);
         session.setAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
@@ -155,6 +153,7 @@ public class CartController {
     @PostMapping("/inc-cart")
     public String incrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
+        cart = cartService.findById(cart.getId());
 
         Product product = productServiceImpl.findByName(productName);
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
@@ -183,6 +182,7 @@ public class CartController {
     @PostMapping("/dec-cart")
     public String decrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
+        cart = cartService.findById(cart.getId());
 
         Product product = productServiceImpl.findByName(productName);
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
@@ -209,6 +209,7 @@ public class CartController {
     @GetMapping("/delete-all")
     public String deleteAllCart(HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
+        cart = cartService.findById(cart.getId());
 
         if(cart != null) {
             if(!cartDetailServiceImpl.deleteAll(cart.getId())){
@@ -223,6 +224,7 @@ public class CartController {
     @GetMapping("/delete/{id}")
     public String delete(@Valid @PathVariable("id") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
+        cart = cartService.findById(cart.getId());
 
         Product product = productServiceImpl.findByName(productName);
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
@@ -239,6 +241,8 @@ public class CartController {
     @PostMapping("/cart-add-wishlist")
     public String addToCartFromWishList(Model model, @Valid @RequestParam("productId") Long productId,@RequestParam("quantity") int quantity, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
+        cart = cartService.findById(cart.getId());
+
         Long wishlistId = (Long) session.getAttribute("wishlistId");
         if(cart == null) {
             cart = cartService.createCart(new Cart(null,BigDecimal.ZERO,cart.getUserId(),null));

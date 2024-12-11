@@ -10,6 +10,9 @@ import java.util.List;
 public interface ICartDetailService {
     List<CartDetail> findAllByCart_Id(Long id);
     List<CartDetailResponse> getAllItems(List<CartDetail> cartDetails);
+
+    CartDetailResponse convertToCartDetailReponse(CartDetail cartDetail);
+
     List<WishlistItemResponse> getAllWishlist();
     boolean create(CartDetailRequest cartDetailRequest);
     boolean update(CartDetailRequest cartDetailRequest);

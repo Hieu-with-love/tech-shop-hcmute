@@ -119,11 +119,6 @@ public class HomeController {
         return "user/home";
     }
 
-    @GetMapping("/not-found")
-    public String notFound(Model model) {
-        return "user/404";
-    }
-
     @PostMapping("/save-address")
     public ResponseEntity<?> createNewAddress(@Valid @RequestBody Map<String, String> params,
                                               BindingResult result){

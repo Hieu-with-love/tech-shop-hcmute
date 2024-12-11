@@ -84,10 +84,11 @@ public class OrderServiceImpl implements IOrderService {
             productService.decreaseStockQuantity(cartDetailResponse.getProductId(), cartDetailResponse.getQuantity());
             orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
             orderDetails.add(orderDetail);
+            CartDetail cartDetail = cartDetailService.findByCart_IdAndProductId(cartId, cartDetailResponse.getProductId());
+            cartDetailService.delete(cartDetail);
         }
         order.setOrderDetails(orderDetails);
         orderRepository.save(order);
-        cartDetailService.deleteAll(cartId);
     }
 
     @Override
@@ -111,10 +112,11 @@ public class OrderServiceImpl implements IOrderService {
                 productService.decreaseStockQuantity(cartDetailResponse.getProductId(), cartDetailResponse.getQuantity());
                 orderDetail.setTotalPrice(cartDetailResponse.getTotalPrice());
                 orderDetails.add(orderDetail);
+                CartDetail cartDetail = cartDetailService.findByCart_IdAndProductId(cartId, cartDetailResponse.getProductId());
+                cartDetailService.delete(cartDetail);
             }
             order.setOrderDetails(orderDetails);
             orderRepository.save(order);
-            cartDetailService.deleteAll(cartId);
         } catch (Exception e) {
             e.printStackTrace();
         }

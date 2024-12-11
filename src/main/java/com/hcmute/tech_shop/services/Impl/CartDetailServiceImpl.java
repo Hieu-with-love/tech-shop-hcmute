@@ -60,6 +60,28 @@ public class CartDetailServiceImpl implements ICartDetailService {
     }
 
     @Override
+    public CartDetailResponse convertToCartDetailReponse(CartDetail cartDetail){
+        BigDecimal totalPrice = cartDetail.getTotalPrice();
+        String totalPriceStr = Constant.formatter.format(totalPrice);
+
+        boolean isUrlImage = false;
+        if (cartDetail.getProduct().getThumbnail() != null && cartDetail.getProduct().getThumbnail().startsWith("https") ){
+            isUrlImage = true;
+        }
+        return CartDetailResponse.builder()
+                .id(cartDetail.getId().getCartId())
+                .productId(cartDetail.getProduct().getId())
+                .thumbnail(cartDetail.getProduct().getThumbnail())
+                .productName(cartDetail.getProduct().getName())
+                .price(Constant.formatter.format(cartDetail.getProduct().getPrice()))
+                .totalPriceString(totalPriceStr)
+                .totalPrice(totalPrice)
+                .isUrlImage(isUrlImage)
+                .quantity(cartDetail.getQuantity())
+                .build();
+    }
+
+    @Override
     public List<WishlistItemResponse> getAllWishlist() {
         List<CartDetail> cartDetails = cartDetailRepository.findAll();
         return cartDetails.stream().map(item -> {

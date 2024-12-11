@@ -104,8 +104,52 @@
     <div th:insert="~{/user/fragments/header-search::header-search}"></div>
     <!-- Header Search Modal End -->
 
-    <div th:insert="~{/user/fragments/cart-dropdown::cart-dropdown}"></div>
-
+    <div class="cart-dropdown" id="cart-dropdown">
+        <div class="cart-content-wrap">
+            <div class="cart-header">
+                <h2 class="header-title">Cart review</h2>
+                <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-body">
+                <ul class="cart-item-list" th:each="cartDetail : ${cartDetailList}">
+                    <li class="cart-item">
+                        <div class="item-img">
+                            <a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}">
+                                <img th:if="${cartDetail.isUrlImage()}"
+                                     th:src="${cartDetail.thumbnail}"
+                                     class="product-image"
+                                     alt="Ảnh sản phẩm mặc định">
+                                <img th:unless="${cartDetail.isUrlImage()}"
+                                     th:src="@{'/uploads/' + ${cartDetail.thumbnail}}"
+                                     class="product-image"
+                                     alt="Ảnh sản phẩm">
+                            </a>
+                        </div>
+                        <!-- End Single product cua Tuan-->
+                        <div class="item-content">
+                            <h3 class="item-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                                      th:text="${cartDetail.productName}"></a></h3>
+                            <div class="item-price"><span class="currency-symbol"></span><span th:text="${cartDetail.price}"></span></div>
+                            <div class="pro-qty item-quantity">
+                                <input type="number" class="quantity-input" th:value="${cartDetail.quantity}">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="cart-footer">
+                <h3 class="cart-subtotal">
+                    <span class="subtotal-title">Subtotal:</span>
+                    <span class="subtotal-amount" th:if="${cart.id != null}"
+                          th:text="${totalPriceOfCart.totalPrice}"></span>
+                </h3>
+                <div class="group-btn">
+                    <a th:href="@{/user/cart}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                    <a th:href="@{/user/checkout}" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->

@@ -451,4 +451,14 @@ public class ProductServiceImpl implements IProductService {
                 .limit(5)
                 .toList();
     }
+
+    @Override
+    public List<ProductResponse> findByBrandNameAndAndCategoryName(String brandName, String categoryName) {
+        List<Product> products = productRepository.findByBrandNameAndAndCategoryName(brandName, categoryName);
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        for (Product product : products) {
+            productResponseList.add(convertToProductResponse(product));
+        }
+        return productResponseList;
+    }
 }

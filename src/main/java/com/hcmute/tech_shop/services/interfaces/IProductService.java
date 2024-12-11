@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -93,4 +94,6 @@ public interface IProductService {
     List<Product> get4NewProducts();
 
     List<Product> getRecentlyProducts();
+
+    List<ProductResponse> findByBrandNameAndAndCategoryName(String brandName, String categoryName);
 }
