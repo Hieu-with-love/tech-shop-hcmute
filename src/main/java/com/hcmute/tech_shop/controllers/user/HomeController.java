@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
 
+import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller(value = "homeUserController")
 @RequestMapping("/user")
@@ -143,6 +145,34 @@ public class HomeController {
         model.addAttribute("user", user);
         model.addAttribute("balanceVND", balanceVND);
         return "user/wallet";
+    }
+
+    @PostMapping("/wallet/recharge")
+    public ResponseEntity<?> recharge(@RequestBody Map<String, String> params){
+        try{
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userService.getUserByUsername(username);
+            BigDecimal amount = new BigDecimal(params.get("amount"));
+            user.setBalance(Optional.ofNullable(user.getBalance()).orElse(BigDecimal.ZERO).add(amount));
+            userService.updateUser(user);
+            return ResponseEntity.ok(user.getBalance());
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body("Recharge failed");
+        }
+    }
+
+    @PostMapping("/wallet/withdraw")
+    public ResponseEntity<?> withdraw(@RequestBody Map<String, String> params){
+        try{
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userService.getUserByUsername(username);
+            BigDecimal amount = new BigDecimal(params.get("amount"));
+            user.setBalance(Optional.ofNullable(user.getBalance()).orElse(BigDecimal.ZERO).add(amount.multiply(BigDecimal.valueOf(-1))));
+            userService.updateUser(user);
+            return ResponseEntity.ok(user.getBalance());
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body("Recharge failed");
+        }
     }
 
 }

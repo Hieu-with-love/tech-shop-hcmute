@@ -387,6 +387,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
