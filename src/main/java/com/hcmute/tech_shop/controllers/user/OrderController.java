@@ -73,6 +73,8 @@ public class OrderController {
             model.addAttribute("isEmptyCart", cartDetailListFull.isEmpty());
         }
 
+        Order order = orderService.findById(id).get();
+
         User user = userService.getUserByUsername(username);
         model.addAttribute("cart",cart);
         model.addAttribute("cartDetailList", cartDetailListFull);
@@ -80,7 +82,8 @@ public class OrderController {
         model.addAttribute("totalPriceOfCart",cartService.getCartResponse(cart));
 
         model.addAttribute("orderStatus", OrderStatus.values());
-        model.addAttribute("order", orderService.findById(id).get());
+        model.addAttribute("order", order);
+        model.addAttribute("paymentMethod", order.getPayment().getName());
         return "user/order-detail";
     }
 
@@ -88,5 +91,22 @@ public class OrderController {
     public String cancel(Model model, @RequestParam Long id) throws IOException {
         orderService.orderCancelled(id);
         return "redirect:/user/my-account";
+    }
+
+    @PostMapping("/completed")
+    public String completedOrder(Model model, @RequestParam Long id) {
+        orderService.orderCompleted(id);
+        model.addAttribute("msg", "Đã hoàn thành đơn hàng");
+        return "redirect:/user/my-account";
+    }
+
+    @PostMapping("/refund")
+    public String refundOrder(Model model, @RequestParam Long id) {
+        User user = userService.getUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        orderService.orderRefund(id);
+        orderService.orderCompleted(id);
+        model.addAttribute("msg", "Đã hoàn tiền cho đơn hàng");
+        model.addAttribute("balanceVND", user.getBalance());
+        return "user/wallet";
     }
 }

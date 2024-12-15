@@ -8,28 +8,69 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-6 offset-md-3">
+      <div th:text="${msg}"></div>
       <div class="card">
         <div class="card-header">
           <h3>User Wallet</h3>
         </div>
         <div class="card-body">
           <h4>Số tiền trong ví: <span id="wallet-balance" th:text="${balanceVND}"></span></h4>
-          <button class="btn btn-success mt-3" onclick="recharge()">Nạp tiền vào ví</button>
-          <button class="btn btn-danger mt-3" onclick="withdraw()">Rút tiền khỏi ví</button>
+          <form id="recharge-form" class="form-control" onsubmit="recharge(event)">
+            <input type="number" id="recharge-amount" placeholder="Enter amount" required>
+            <button type="submit" class="btn btn-success mt-3 form-control">Nạp tiền vào ví</button>
+          </form>
+
+          <form id="withdraw-form" class="form-control mt-3" onsubmit="withdraw(event)">
+            <input type="number" id="withdraw-amount" placeholder="Enter amount" required>
+            <button type="submit" class="btn btn-danger mt-3 form-control">Rút tiền khỏi ví</button>
+          </form>
         </div>
       </div>
+      <button class="btn btn-primary mt-3" onclick="window.location.href='/user/home'">Quay lại</button>
     </div>
   </div>
 </div>
 <script>
-  function recharge() {
-    // Implement recharge logic here
-    alert('Recharge button clicked');
+  function recharge(event) {
+    event.preventDefault();
+    const amount = document.getElementById('recharge-amount').value;
+    fetch('user/wallet/recharge', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount: amount })
+    })
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('wallet-balance').innerText = data.balance;
+              alert('Recharge successful');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Recharge failed');
+            });
   }
 
-  function withdraw() {
-    // Implement withdraw logic here
-    alert('Withdraw button clicked');
+  function withdraw(event) {
+    event.preventDefault();
+    const amount = document.getElementById('withdraw-amount').value;
+    fetch('user/wallet/withdraw', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount: amount })
+    })
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('wallet-balance').innerText = data.balance;
+              alert('Withdraw successful');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Withdraw failed');
+            });
   }
 </script>
 </body>

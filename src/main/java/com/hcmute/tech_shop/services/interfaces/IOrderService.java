@@ -20,6 +20,8 @@ public interface IOrderService {
     void orderDelivered(Long id);
 
     void orderShipping(Long id, Long shipperId);
+    void orderRefund(Long id);
+    void orderCompleted(Long id);
 
     void createOrder(User user, BigDecimal totalPrice, Voucher voucher, Payment payment, Address address,
                      Long cartId,
