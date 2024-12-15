@@ -63,3 +63,7 @@ paypal:
   cancel-url: http://localhost:8080/user/checkout/paypal/cancel
 jwt:
   signedKey: "zsB+WqpHBR2Lorx/E7adcBsor1NwJQswYtB/bnFZdfThjCXxwyDGlpRtI1dcTPHE"
+
+currency:
+  api:
+    url: "https://v6.exchangerate-api.com/v6/35e55f125051d62ab8e392f6/latest/VND"

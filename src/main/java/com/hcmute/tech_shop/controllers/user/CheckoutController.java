@@ -4,6 +4,7 @@ import com.hcmute.tech_shop.dtos.responses.CartDetailResponse;
 import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.entities.Address;
 import com.hcmute.tech_shop.entities.Payment;
+import com.hcmute.tech_shop.services.Impl.CurrencyService;
 import com.hcmute.tech_shop.services.interfaces.*;
 import com.hcmute.tech_shop.utils.Constant;
 import com.paypal.api.payments.*;
@@ -40,6 +41,7 @@ public class CheckoutController {
     private final APIContext apiContext;
     private final CartService cartService;
     private final ICartDetailService cartDetailService;
+    private final CurrencyService currencyService;
 
     @GetMapping("")
     public String checkout(Model model, HttpSession session, @RequestParam("selectedProducts")List<Long> selectedProducts) {
@@ -153,11 +155,12 @@ public class CheckoutController {
             // Tổng số tiền trong giỏ hàng (VND)
             BigDecimal totalPriceVND = (BigDecimal) session.getAttribute("totalPriceToPayment");
 
-            // Chuyển đổi từ VND sang USD
-            BigDecimal totalPriceUSD = PriceUtil.convertVNDToUSD(totalPriceVND);
+            BigDecimal exchangeRate = currencyService.getExchangeRateVNDToUSD();
+            BigDecimal amountInUSD = totalPriceVND.multiply(exchangeRate);
+
 
             // Tạo giao dịch PayPal với số tiền USD
-            String approvalUrl = createPayPalPayment(totalPriceUSD);
+            String approvalUrl = createPayPalPayment(amountInUSD);
 
             // Chuyển hướng người dùng đến PayPal để thanh toán
             response.sendRedirect(approvalUrl);
