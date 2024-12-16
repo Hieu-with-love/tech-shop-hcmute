@@ -107,14 +107,21 @@ public class ReviewController {
             ratingRequest.setProductId(productId);
             ratingRequest.setUserId(user.getId());
             ratingRequest.setOrderId(orderId);
+            Order order = orderService.findById(orderId).get();
 
-            if(ratingService.checkOrderFirst(productId,user.getId())){
+            if (!order.getStatus().equals("DELIVERED")){
+                String msg = "Order status not delivered";
+                redirectAttributes.addFlashAttribute("msg", msg);
+                return "redirect:/user/reviews/"+productId+"/"+orderId;
+            }
+            else if(ratingService.checkOrderFirst(productId,user.getId())){
                 if (!ratingService.insert(ratingRequest)){
                     String msg = "Not found user/product";
                     redirectAttributes.addFlashAttribute("msg", msg);
                     return "redirect:/user/reviews/"+productId+"/"+orderId;
                 }
             }
+
             else {
                 String msg = "You need to buy first";
                 redirectAttributes.addFlashAttribute("msg", msg);
