@@ -76,19 +76,21 @@
                                     <td class="product-price" data-title="Price"><span th:text="${cartDetail.price}"></span></td>
                                     <td class="product-quantity" data-title="Qty">
                                         <div class="pro-qty">
-                                            <form th:action="@{/user/cart/dec-cart}" method="post">
-                                                <input type="hidden" name="productId" th:value="${cartDetail.productName}"/>
-                                                <button type="submit" class="dec qtybtn">-</button>
-                                            </form>
+                                            <a th:href="@{/user/cart/dec-cart(productId=${cartDetail.productId})}" class="dec qtybtn">-</a>
+<!--                                            <form th:action="@{/user/cart/dec-cart}" method="post">-->
+<!--                                                <input type="hidden" name="productId" th:value="${cartDetail.productId}"/>-->
+<!--                                                <button type="submit" class="dec qtybtn">-</button>-->
+<!--                                            </form>-->
                                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}" readonly>
-                                            <form th:action="@{/user/cart/inc-cart}" method="post">
-                                                <input type="hidden" name="productId" th:value="${cartDetail.productName}" />
-                                                <button type="submit" class="inc qtybtn">+</button>
-                                            </form>
+                                            <a th:href="@{/user/cart/inc-cart(productId=${cartDetail.productId})}" class="inc qtybtn">+</a>
+<!--                                            <form th:action="@{/user/cart/inc-cart}" method="post">-->
+<!--                                                <input type="hidden" name="productId" th:value="${cartDetail.productId}" />-->
+<!--                                                <button type="submit" class="inc qtybtn">+</button>-->
+<!--                                            </form>-->
                                         </div>
                                     </td>
                                     <td class="product-subtotal" data-title="Price"><span th:text="${cartDetail.totalPriceString}"></span></td>
-                                    <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productName})}"
+                                    <td class="product-remove"><a th:href="@{/user/cart/delete/{id}(id=${cartDetail.productId})}"
                                                                   class="remove-wishlist"><i class="fal fa-times"></i></a></td>
                                 </tr>
                                 </tbody>

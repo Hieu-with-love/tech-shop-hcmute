@@ -150,12 +150,12 @@ public class CartController {
         return "redirect:/user/home";
     }
 
-    @PostMapping("/inc-cart")
-    public String incrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
+    @GetMapping("/inc-cart")
+    public String incrementCart(@Valid @RequestParam("productId") Long productId, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
         cart = cartService.findById(cart.getId());
 
-        Product product = productServiceImpl.findByName(productName);
+        Product product = productServiceImpl.findById(productId).get();
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         CartDetailRequest cartDetailRequest;
         BigDecimal price,limit = new BigDecimal("10000000000");
@@ -179,12 +179,12 @@ public class CartController {
         return "redirect:/user/cart";
     }
 
-    @PostMapping("/dec-cart")
-    public String decrementCart(@Valid @RequestParam("productId") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
+    @GetMapping("/dec-cart")
+    public String decrementCart(@Valid @RequestParam("productId") Long productId, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
         cart = cartService.findById(cart.getId());
 
-        Product product = productServiceImpl.findByName(productName);
+        Product product = productServiceImpl.findById(productId).get();
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         CartDetailRequest cartDetailRequest;
         BigDecimal price;
@@ -222,11 +222,11 @@ public class CartController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@Valid @PathVariable("id") String productName, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String delete(@Valid @PathVariable("id") Long producId, HttpSession session, RedirectAttributes redirectAttributes) {
         Cart cart = (Cart) session.getAttribute("cart");
         cart = cartService.findById(cart.getId());
 
-        Product product = productServiceImpl.findByName(productName);
+        Product product = productServiceImpl.findById(producId).get();
         CartDetail cartDetail = cartDetailServiceImpl.findByCart_IdAndProductId(cart.getId(), product.getId());
         if(cartDetail != null) {
             if(!cartDetailServiceImpl.delete(cartDetail)) {
