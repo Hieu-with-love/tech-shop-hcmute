@@ -59,4 +59,5 @@ public interface UserService {
     List<LoyalCustomerRes> getTop4LoyalCustomers();
 
     void updateProfileImage(User user, MultipartFile image) throws IOException;
+    void updateUser(User user);
 }

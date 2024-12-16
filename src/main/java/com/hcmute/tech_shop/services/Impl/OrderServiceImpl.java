@@ -6,6 +6,7 @@ import com.hcmute.tech_shop.entities.*;
 import com.hcmute.tech_shop.enums.OrderStatus;
 import com.hcmute.tech_shop.repositories.OrderDetailRepository;
 import com.hcmute.tech_shop.repositories.OrderRepository;
+import com.hcmute.tech_shop.repositories.UserRepository;
 import com.hcmute.tech_shop.services.interfaces.*;
 import com.hcmute.tech_shop.utils.Constant;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements IOrderService {
     private final IVoucherService voucherService;
     private final UserService userService;
     private final OrderDetailRepository orderDetailRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<Order> findByUsername(String username) {
@@ -58,6 +60,23 @@ public class OrderServiceImpl implements IOrderService {
         Order order = orderRepository.findById(id).get();
         order.setStatus(OrderStatus.SHIPPING);
         order.setShipper(userService.getUser(shipperId));
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderRefund(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.REFUND);
+        User user = order.getUser();
+        user.setBalance(Optional.ofNullable(user.getBalance()).orElse(BigDecimal.ZERO).add(order.getTotalPrice()));
+        userRepository.save(user);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void orderCompleted(Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.COMPLETED);
         orderRepository.save(order);
     }
 
