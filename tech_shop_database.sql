@@ -201,7 +201,7 @@ CREATE TABLE `orders` (
   `user_id` bigint NOT NULL,
   `voucher_id` bigint DEFAULT NULL,
   `address_id` bigint DEFAULT NULL,
-  `status` enum('CANCELLED','DELIVERED','PENDING','SHIPPING') NOT NULL,
+  `status` enum('CANCELLED', 'COMPLETED', 'DELIVERED', 'REFUND', 'PENDING','SHIPPING') NOT NULL,
   `shipper_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK8aol9f99s97mtyhij0tvfj41f` (`payment_id`),
