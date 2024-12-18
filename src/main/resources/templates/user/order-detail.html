@@ -93,7 +93,8 @@
                         <tbody>
                         <tr th:each="orderDetail : ${order.getOrderDetails()}">
                             <td class="product-thumbnail">
-                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}" class="product-img">
+                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}"
+                                   class="product-img">
                                     <img th:if="${orderDetail.getProduct().getThumbnail().startsWith('https')}"
                                          th:src="${orderDetail.getProduct().getThumbnail()}"
                                          class="product-image"
@@ -105,7 +106,8 @@
                                 </a>
                             </td>
                             <td class="product-title">
-                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}" th:text="${orderDetail.getProduct().getName()}"></a>
+                                <a th:href="@{/user/products/product-detail/{id}(id=${orderDetail.getProduct().getId()})}"
+                                   th:text="${orderDetail.getProduct().getName()}"></a>
                             </td>
                             <td class="product-price" data-title="Price">
                                 <span th:text="${orderDetail.getProduct().getPrice()}"></span>
@@ -116,7 +118,10 @@
                             <td class="product-subtotal" data-title="Price">
                                 <span th:text="${orderDetail.getTotalPrice()}"></span></td>
                             <td>
-                                <a th:href="@{/user/reviews/product-detail/{productId}/{orderId}(productId=${orderDetail.product.id}, orderId=${order.id})}" class="axil-btn view-btn">Review</a>
+                                <a
+                                        th:if="${order.getStatus().equals(OrderStatus[2])}"
+                                        th:href="@{/user/reviews/product-detail/{productId}/{orderId}(productId=${orderDetail.product.id}, orderId=${order.id})}"
+                                        class="axil-btn view-btn">Review</a>
                             </td>
                         </tr>
                         </tbody>
@@ -137,7 +142,8 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="btn btn-secondary" th:if="${paymentMethod != 'cod' || order.getStatus().equals(orderStatus[5])}">
+                        <div class="btn btn-secondary"
+                             th:if="${paymentMethod != 'cod' || order.getStatus().equals(orderStatus[5])}">
                             <form th:action="@{/user/orders/refund(id=${order.getId()})}" method="post">
                                 <input type="submit" th:value="Refund">
                             </form>
@@ -196,9 +202,11 @@
                     </div>
                     <!-- End Single product cua Tuan-->
                     <div class="item-content">
-                        <h3 class="item-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
-                                                  th:text="${cartDetail.productName}"></a></h3>
-                        <div class="item-price"><span class="currency-symbol"></span><span th:text="${cartDetail.price}"></span></div>
+                        <h3 class="item-title"><a
+                                th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                th:text="${cartDetail.productName}"></a></h3>
+                        <div class="item-price"><span class="currency-symbol"></span><span
+                                th:text="${cartDetail.price}"></span></div>
                         <div class="pro-qty item-quantity">
                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}">
                         </div>

@@ -84,6 +84,7 @@ public class OrderController {
         model.addAttribute("orderStatus", OrderStatus.values());
         model.addAttribute("order", order);
         model.addAttribute("paymentMethod", order.getPayment().getName());
+        model.addAttribute("OrderStatus", OrderStatus.values());
         return "user/order-detail";
     }
 
