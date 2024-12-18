@@ -66,15 +66,6 @@
                             </div>
                             <div class="form-group">
                                 <label>Address <span>*</span></label>
-                                <div th:if="${!hasAddress}">
-                                    <div class="form-group">
-                                        <label>Your Address</label>
-                                        <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#address-modal">You haven't address for payment, enter
-                                            address to payment
-                                        </button>
-                                    </div>
-                                </div>
                                 <div th:if="${hasAddress}">
                                     <select id="Region">
                                         <option th:each="address : ${addresses}"
@@ -82,6 +73,13 @@
                                                 th:text="|${address.getDetailLocation()}, ${address.getStreet()}, ${address.getDistrict()}, ${address.getCity()}|">
                                         </option>
                                     </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <button type="button" class="axil-btn btn-bg-secondary" data-bs-toggle="modal"
+                                            data-bs-target="#address-modal">Enter address to payment
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -103,24 +101,24 @@
                                         <td th:text="${T(com.hcmute.tech_shop.utils.PriceUtil).formatPrice(cartDetail.getTotalPrice())}"></td>
                                     </tr>
                                     <tr class="order-shipping">
-                                        <td colspan="2">
-                                            <div class="shipping-amount">
-                                                <span class="title">Shipping Method</span>
-                                                <span class="amount">$35.00</span>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="radio" id="radio1" name="shipping" checked>
-                                                <label for="radio1">Free Shippping</label>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="radio" id="radio2" name="shipping">
-                                                <label for="radio2">Local</label>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="radio" id="radio3" name="shipping">
-                                                <label for="radio3">Flat rate</label>
-                                            </div>
-                                        </td>
+                                        <!--                                        <td colspan="2">-->
+                                        <!--                                            <div class="shipping-amount">-->
+                                        <!--                                                <span class="title">Shipping Method</span>-->
+                                        <!--                                                <span class="amount">$35.00</span>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="input-group">-->
+                                        <!--                                                <input type="radio" id="radio1" name="shipping" checked>-->
+                                        <!--                                                <label for="radio1">Free Shippping</label>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="input-group">-->
+                                        <!--                                                <input type="radio" id="radio2" name="shipping">-->
+                                        <!--                                                <label for="radio2">Local</label>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="input-group">-->
+                                        <!--                                                <input type="radio" id="radio3" name="shipping">-->
+                                        <!--                                                <label for="radio3">Flat rate</label>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </td>-->
                                     </tr>
                                     <tr class="order-total">
                                         <td>Total</td>
@@ -240,9 +238,11 @@
                     </div>
                     <!-- End Single product cua Tuan-->
                     <div class="item-content">
-                        <h3 class="item-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
-                                                  th:text="${cartDetail.productName}"></a></h3>
-                        <div class="item-price"><span class="currency-symbol"></span><span th:text="${cartDetail.price}"></span></div>
+                        <h3 class="item-title"><a
+                                th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                th:text="${cartDetail.productName}"></a></h3>
+                        <div class="item-price"><span class="currency-symbol"></span><span
+                                th:text="${cartDetail.price}"></span></div>
                         <div class="pro-qty item-quantity">
                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}">
                         </div>
