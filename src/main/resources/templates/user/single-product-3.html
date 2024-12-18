@@ -57,13 +57,13 @@
                                              alt="samll-thumb">
                                     </div>
                                     <div class="small-thumb-img" th:each="productImage : ${productImages}">
-                                        <img    th:if="${productImage.getUrl().startsWith('https')}"
-                                                class="product-image"
-                                                th:src="${productImage.getUrl()}">
-                                        <img    th:unless="${productImage.getUrl().startsWith('https')}"
-                                                th:src="@{'/uploads/'+${productImage.getUrl()}}"
-                                                class="product-image"
-                                                alt="samll-thumb">
+                                        <img th:if="${productImage.getUrl().startsWith('https')}"
+                                             class="product-image"
+                                             th:src="${productImage.getUrl()}">
+                                        <img th:unless="${productImage.getUrl().startsWith('https')}"
+                                             th:src="@{'/uploads/'+${productImage.getUrl()}}"
+                                             class="product-image"
+                                             alt="samll-thumb">
                                     </div>
                                 </div>
                             </div>
@@ -98,9 +98,9 @@
                                     </div>
                                 </div>
                                 <ul class="product-meta">
-                                    <li><i class="fal fa-check"></i>In stock</li>
+                                    <li th:if="${product.getStockQuantity() > 0}"><i class="fal fa-check"></i>In stock</li>
                                     <li><i class="fal fa-check"></i>Free delivery available</li>
-                                    <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
+<!--                                    <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>-->
                                 </ul>
 
                                 <div class="product-variations-wrapper">
@@ -141,7 +141,8 @@
                                             </form>
                                         </li>
                                         <li class="wishlist">
-                                            <form th:action="@{/user/wishlist/insert}" method="post" class="wishlist-form">
+                                            <form th:action="@{/user/wishlist/insert}" method="post"
+                                                  class="wishlist-form">
                                                 <input type="hidden" name="wishlistId" th:value="${session.wishlistId}">
                                                 <input type="hidden" name="productId" th:value="${product.id}">
                                                 <button type="submit" class="wishlist-btn">
@@ -431,7 +432,8 @@
     <!-- End Recently Viewed Product Area  -->
 
     <!-- Quick View Modal -->
-    <div class="modal fade" id="quick-view-modal" tabindex="-1" aria-labelledby="quick-view-modal-label" aria-hidden="true">
+    <div class="modal fade" id="quick-view-modal" tabindex="-1" aria-labelledby="quick-view-modal-label"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -493,9 +495,11 @@
                     </div>
                     <!-- End Single product cua Tuan-->
                     <div class="item-content">
-                        <h3 class="item-title"><a th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
-                                                  th:text="${cartDetail.productName}"></a></h3>
-                        <div class="item-price"><span class="currency-symbol"></span><span th:text="${cartDetail.price}"></span></div>
+                        <h3 class="item-title"><a
+                                th:href="@{/user/products/product-detail/{id}(id=${cartDetail.productId})}"
+                                th:text="${cartDetail.productName}"></a></h3>
+                        <div class="item-price"><span class="currency-symbol"></span><span
+                                th:text="${cartDetail.price}"></span></div>
                         <div class="pro-qty item-quantity">
                             <input type="number" class="quantity-input" th:value="${cartDetail.quantity}">
                         </div>
@@ -523,22 +527,22 @@
 <div th:insert="~{/user/fragments/script::script}"></div>
 <!--Tạo số sao-->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Tạo trường ẩn lưu giá trị rating
         const ratingValueInput = $("#ratingValue");
 
         // Gán sự kiện click cho tất cả các sao
-        $(".fa-star").click(function (){
+        $(".fa-star").click(function () {
             // Lấy ID của ngôi sao được click
             const starId = $(this).attr("id");
             // Lấy số sao từ ID (st1 -> 1, st2 -> 2, ...)
-            const  rating = starId.replace("st","");
+            const rating = starId.replace("st", "");
 
             // Cập nhật giá trị vào trường ẩn
             ratingValueInput.val(rating);
 
             // Đặt màu mặc định (đen) cho tất cả các sao
-            $(".fa-star").css("color","black");
+            $(".fa-star").css("color", "black");
 
             // Tô màu xanh cho các sao từ 1 đến giá trị rating
             for (let i = 1; i <= rating; i++) {
@@ -572,7 +576,7 @@
                 });
         });
     });
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.slick-slider').slick({
             slidesToShow: 4,
             slidesToScroll: 1,
@@ -611,7 +615,7 @@
         $.ajax({
             url: '/user/products/quick-view',  // URL endpoint trong controller Spring Boot
             type: 'GET',
-            data: { id: productId },
+            data: {id: productId},
             success: function (data) {
                 // Kiểm tra xem dữ liệu trả về có hợp lệ không
                 if (data) {
