@@ -119,7 +119,7 @@
                                 <span th:text="${orderDetail.getTotalPrice()}"></span></td>
                             <td>
                                 <a
-                                        th:if="${order.getStatus().equals(OrderStatus[2])}"
+                                        th:if="${order.getStatus().equals(orderStatus[2]) || order.getStatus().equals(orderStatus[5])}"
                                         th:href="@{/user/reviews/product-detail/{productId}/{orderId}(productId=${orderDetail.product.id}, orderId=${order.id})}"
                                         class="axil-btn view-btn">Review</a>
                             </td>
