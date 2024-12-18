@@ -84,9 +84,17 @@
                                     </li>
                                     <li th:each="detail : ${order.get().getOrderDetails()}">
                                         <h4>Product</h4>
-                                        <h6><span th:text="${detail.getProduct().getName()}"></span></h6>
-                                        <h4>Quantity</h4>
-                                        <h6><span th:text="${detail.getQuantity()}"></span></h6>
+                                        <h6>
+                                            <a th:href="@{/manager/products/productDetail(id=${detail.getProduct().getId()})}"
+                                               th:text="${detail.getProduct().getName()}"></a>
+                                            <span th:text="' x ' + ${detail.getQuantity()}"></span>
+                                            <img th:if="${detail.getProduct().getThumbnail().startsWith('http')}"
+                                                 th:src="${detail.getProduct().getThumbnail()}"
+                                                 alt="Ảnh sản phẩm mặc định">
+                                            <img th:unless="${detail.getProduct().getThumbnail().startsWith('http')}"
+                                                 th:src="@{'/uploads/' + ${detail.getProduct().getThumbnail()}}"
+                                                 alt="Ảnh sản phẩm">
+                                        </h6>
                                     </li>
                                     <select id="shipperSelect" class="form-select" style="display: none;">
                                         <option value="">Select Shipper</option>
